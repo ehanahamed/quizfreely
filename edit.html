@@ -31,7 +31,6 @@
     </header>
     <main>
       <article>
-          <h2>Edit a study set</h2>
         <section id="load">
           <h2>Load a Study Set to Edit</h3>
           <p>Create a new study set...</p>
@@ -39,16 +38,13 @@
           <p>...or import an existing one</p>
           <button>Import</button>
         </section>
-        <section id="info">
-          <h2 id="infoName">Study Set</h2>
-          <p id="infoAuthor">Author</p>
-          <p id="infoDescription">Description</p>
-        </section>
         <section id="settings">
           <h2>Settings</h2>
         </section>
-        <section id="edit">
-          <h2>Vocabullary</h2>
+        <section id="studySet">
+          <h2 id="studySetName">Study Set Name</h2>
+          <p id="studySetCreator">Creator</p>
+          <p id="StudySetDescription">Description</p>
         <table>
           <thead>
             <tr>
@@ -61,6 +57,7 @@
         </table>
         </section>
         <section id="export">
+          <h2>Export Study Set</h2>
         </section>
       </article>
     </main>
@@ -79,12 +76,12 @@
     </footer>
     <script>
       var elementLoad = document.getElementById("load");
-      var elementInfo = document.getElementById("info")
       var elementSettings = document.getElementById("settings");
+      var elementStudySet = document.getElementById("studySet");
       var elementExport = document.getElementById("export");
       elementLoad.style.display = "block";
-      elementInfo.style.display = "none";
       elementSettings.style.display = "none";
+      elementStudySet.style.display = "none";
       elementExport.style.display = "none";
     </script>
   </body>
