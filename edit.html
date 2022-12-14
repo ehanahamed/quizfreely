@@ -33,7 +33,7 @@
       <section id="load">
         <h2>Load a Study Set to Edit</h3>
         <p>Create a new study set...</p>
-        <button>Create</button>
+        <button onclick="createButton();">Create</button>
         <p>...or import an existing one</p>
         <button>Import</button>
       </section>
@@ -72,6 +72,7 @@
       <br />
       <br />
     </footer>
+    <script src="studySet.js"/>
     <script>
       var elementLoad = document.getElementById("load");
       var elementSettings = document.getElementById("settings");
@@ -81,6 +82,14 @@
       elementSettings.style.display = "none";
       elementStudySet.style.display = "none";
       elementExport.style.display = "none";
+      
+      createButton() {
+        var studySetData = studySet.create();
+        elementLoad.style.display = "none";
+        elementSettings.style.display = "block";
+        elementStudySet.style.display = "block";
+        elementExport.style.display = "block";
+      }
     </script>
   </body>
 </html>
