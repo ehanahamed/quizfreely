@@ -16,4 +16,3 @@ function serverlessDownload(content, mimetype, filename){
 }
 
 // this is the mimetype for json btw: application/json
-

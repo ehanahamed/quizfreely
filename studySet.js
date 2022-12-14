@@ -6,8 +6,6 @@
  * See license file: https://projects.ehan.dev/Quizlate/LICENSE.txt
 **/
 
-var createStudySet = {
-  set: {},
-  ui: {}
+var studySet = {
+  
 }
-
