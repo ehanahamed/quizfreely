@@ -1,4 +1,7 @@
-/home  /  301
-/join  /review.html?type=join  301
-/create  /edit.html  301
+/home  /  200
+/edit  /edit.html  200
+/review  /review.html  200
+
+/join  /review?type=join  301
+/create  /edit  301
 
