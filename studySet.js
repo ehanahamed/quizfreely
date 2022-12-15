@@ -45,7 +45,7 @@ var studySet = {
     }) {
       return {
         valid: false,
-        error: "Study Set imported is not supported. If you are using the Quizlate app, try installing the latest update."
+        error: "Study Set imported is not supported. If you are using the Quizlate app, try installing the latest update.",
         debug: "Study Set imported contains valid JSON, and has correct value for the json key: `quizlate`. However, the json contains extra keys and values that this version of Quizlet does not support. The Quizlate website automatically fetches the latest update from GitHub and is hosted using Netlify. The Quizlate app loads itself locally, so try updating to the latest version if you are using the app."
       }
     }
