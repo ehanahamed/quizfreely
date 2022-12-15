@@ -37,9 +37,6 @@
         <p>...or import an existing one</p>
         <button>Import</button>
       </section>
-      <section id="settings">
-        <h2>Settings</h2>
-      </section>
       <section id="studySet">
         <h2 id="studySetName">Study Set Name</h2>
         <p id="studySetCreator">Creator</p>
@@ -75,18 +72,15 @@
     <script src="studySet.js"></script>
     <script>
       var elementLoad = document.getElementById("load");
-      var elementSettings = document.getElementById("settings");
       var elementStudySet = document.getElementById("studySet");
       var elementExport = document.getElementById("export");
       elementLoad.style.display = "block";
-      elementSettings.style.display = "none";
       elementStudySet.style.display = "none";
       elementExport.style.display = "none";
       
       function createButton() {
         var studySetData = studySet.create();
         elementLoad.style.display = "none";
-        elementSettings.style.display = "block";
         elementStudySet.style.display = "block";
         elementExport.style.display = "block";
       };
