@@ -35,10 +35,10 @@
         <p>Create a new study set...</p>
         <button onclick="createButton();">Create</button>
         <p>...or import an existing one</p>
-        <button>Import</button>
+        <button onclick="importButton();">Import</button>
       </section>
       <section id="studySet">
-        <h2 id="studySetName">Study Set Name</h2>
+        <h2 id="studySetName">Edit Study Set</h2>
         <p id="studySetCreator">Creator</p>
         <p id="StudySetDescription">Description</p>
         <table>
@@ -71,19 +71,29 @@
     </footer>
     <script src="studySet.js"></script>
     <script>
-      var elementLoad = document.getElementById("load");
-      var elementStudySet = document.getElementById("studySet");
-      var elementExport = document.getElementById("export");
-      elementLoad.style.display = "block";
-      elementStudySet.style.display = "none";
-      elementExport.style.display = "none";
+      var sectionLoad = document.getElementById("load");
+      var sectionImport = document.getElementById("import");
+      var sectionEdit = document.getElementById("edit");
+      var sectionExport = document.getElementById("export");
+      sectionLoad.style.display = "block";
+      sectionImport.style.display = "none";
+      sectionEdit.style.display = "none";
+      sectionExport.style.display = "none";
       
       function createButton() {
         var studySetData = studySet.create();
-        elementLoad.style.display = "none";
-        elementStudySet.style.display = "block";
-        elementExport.style.display = "block";
+        sectionLoad.style.display = "none";
+        sectionImport.style.display = "none";
+        sectionEdit.style.display = "block";
+        sectionExport.style.display = "block";
       };
+
+      function importButton() {
+        sectionLoad.style.display = "none";
+        sectionImport.style.display = "block";
+        sectionEdit.style.display = "none";
+        sectionExport.style.display = "none";
+      }
     </script>
   </body>
 </html>
