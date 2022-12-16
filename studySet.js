@@ -7,7 +7,7 @@
 **/
 
 var studySet = {
-  create: function (metadata) {
+  make: function (metadata) {
     return {
       quizlate: "Quizlate",
       metadata: metadata,
