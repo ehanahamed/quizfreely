@@ -1687,8 +1687,8 @@ var downloader = {
     "audio/vnd.sealedmedia.softseal.mpeg",
     "audio/vnd.vmx.cvsd",
     "audio/vorbis",
-    "audio/vorbis-config"
-    "font/collection
+    "audio/vorbis-config",
+    "font/collection",
     "font/otf",
     "font/sfnt",
     "font/ttf",
