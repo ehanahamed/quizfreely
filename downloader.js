@@ -12,14 +12,5 @@ var downloader = {
   },
   makeBlobUrl: function (content, mimetype, filename) {
     return URL.createObjectURL(new Blob([content], { type: mimetype }));
-  },
-  mimetypes: []
+  }
 }
-
-// this is the mimetype for json btw: application/json
-// use attribute "href" set to downloadUrl (downloadUrl is returned by this function)
-// use attribute "download" set to filename, use attribute on download button ("a" tag)
-
-// also see
-// https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types/Common_types
-// https://iana.org/assignments/media-types/media-types.xhtml
