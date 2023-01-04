@@ -1,15 +1,15 @@
 /**
- * Quizlate (https://quizlate.ehan.dev)
+ * Studyapp (https://studyapp.ehan.dev)
  *
  * Copyright (c) 2022 Ehan Ahamed and contributors
  * Licensed under the UPL-1.0 License
- * See license file: https://projects.ehan.dev/Quizlate/LICENSE.txt
+ * See license file: https://projects.ehan.dev/Studyapp/LICENSE.txt
 **/
 
 var studySet = {
   make: function (metadata) {
     return {
-      quizlate: "Quizlate",
+      studyapp: "Studyapp",
       metadata: metadata,
       name: "Study Set Name",
       creator: "Creator",
