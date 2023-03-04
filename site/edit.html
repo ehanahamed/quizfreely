@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+  <!--
+    Quizlate (https://quizlate.ehan.dev)
+    Copyright (c) 2022 Ehan Ahamed and contributors
+    Licensed under the UPL-1.0 License
+    See license file: https://projects.ehan.dev/Quizlate/LICENSE.txt
+  -->
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Quizlate</title>
+    <link rel="stylesheet" href="https://cdn.simplecss.org/simple.css" />
+    <link
+         rel="stylesheet"
+         href="https://raw.ehan.dev/purpurite/simple.css/dist/purpurite-colors-simple.css"/>
+  </head>
+  <body>
+    <header>
+      <br />
+      <br />
+      <img width="200" height="200" src="./logo.png" />
+      <h1 style="color:#9999ff;">Quizlate</h1>
+      <p style="color:#99ffdd;">A free & open source studying tool</p>
+      <nav>
+        <a href="https://quizlate.ehan.dev">Home</a>
+        <a href="./edit.html" class="current">Edit</a>
+        <a href="./review.html">Review</a>
+        <a href="./help.html">Help & Documentation</a>
+      </nav>
+    </header>
+    <main>
+      <section id="load">
+        <h2>Load a Study Set to Edit</h3>
+        <p>Create a new study set...</p>
+        <button onclick="createButton();">Create</button>
+        <p>...or import an existing one</p>
+        <button onclick="importButton();">Import</button>
+      </section>
+      <section id="studySet">
+        <h2 id="studySetName">Edit Study Set</h2>
+        <p id="studySetCreator">Creator</p>
+        <p id="StudySetDescription">Description</p>
+        <table>
+          <thead>
+            <tr>
+              <th>Term</th>
+              <th>Definition</th>
+            </tr>
+          </thead>
+          <tbody>
+          </tbody>
+        </table>
+      </section>
+      <section id="export">
+        <h2>Export Study Set</h2>
+      </section>
+    </main>
+    <footer>
+      <h2>Quizlate</h2>
+      <p>Copyright (c) 2022 Ehan Ahamed and contributors
+      <br />
+      Licensed under the UPL-1.0 License
+      <br />
+      <a href="projects.ehan.dev/Quizlate/LICENSE.txt">See license file</a>
+      </p>
+      <br />
+      <br />
+      <br />
+      <br />
+    </footer>
+    <script src="studySet.js"></script>
+    <script>
+      var sectionLoad = document.getElementById("load");
+      var sectionImport = document.getElementById("import");
+      var sectionEdit = document.getElementById("edit");
+      var sectionExport = document.getElementById("export");
+      sectionLoad.style.display = "block";
+      sectionImport.style.display = "none";
+      sectionEdit.style.display = "none";
+      sectionExport.style.display = "none";
+      
+      function createButton() {
+        var studySetData = studySet.create();
+        sectionLoad.style.display = "none";
+        sectionImport.style.display = "none";
+        sectionEdit.style.display = "block";
+        sectionExport.style.display = "block";
+      };
+
+      function importButton() {
+        sectionLoad.style.display = "none";
+        sectionImport.style.display = "block";
+        sectionEdit.style.display = "none";
+        sectionExport.style.display = "none";
+      }
+    </script>
+  </body>
+</html>
