@@ -1,3 +1,14 @@
+
+function editAddButton() {
+    var table = document.getElementById("editTable");
+    var row = table.insertRow(table.rows.length - 1);
+    var cellTerm = row.insertCell(0);
+    var cellDef = row.insertCell(1);
+    cellTerm.innerHTML = "<input type='text' placeholder='Term' value='Type here!''></input>";
+    cellDef.innerHTML = "<input type='text' placeholder='Definition' value='Type here!''></input>";
+    console.log(saveTable("editTable"));
+}
+
 /* save html table content into js array */
 function saveTable(id) {
     tableRows = document.getElementById(id).rows
