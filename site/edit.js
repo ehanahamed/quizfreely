@@ -1,14 +1,14 @@
 /* save html table content into js array */
 function saveTable(id) {
-    table = document.getElementById(id);
-    array = [];
-    for (var i = 0; i < table.rows.length; i++) {
-        rows = table.rows[i].children;
-        row = [];
-        for (var i2 = 0; i2 < rows.length; i2++) {
-            row.push(rows[i2].innerText);
+    tableRows = document.getrowsementById(id).rows
+    tableData = []
+    for (var i = 0; i < tableRows.length; i++) {
+        rows = tableRows[i].children
+        row = []
+        for (var j = 0; j < rows.length; j++) {
+            row.push(rows[j].innerText);
         }
-        array.push(row);
+        tableData.push(row)
     }
-    return array;
+    return tableData
 }
