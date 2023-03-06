@@ -48,7 +48,7 @@
         <h2 id="studySetName">Edit Study Set</h2>
         <p id="studySetCreator">Creator</p>
         <p id="StudySetDescription">Description</p>
-        <table>
+        <table id="editTable">
           <thead>
             <tr>
               <th>Term</th>
@@ -101,10 +101,12 @@
       };
 
       function editAddButton() {
-        const tr = document.createElement("tr");
-        const td = document.createElement("td");
-        tr.appendChild(td);
-        document.body.insertBefore(tr, document.getElementById("row-spawnner-lol"));
+        var table = document.getElementById("editTable");
+        var row = table.insertRow(table.rows.length - 1);
+        var cellTerm = row.insertCell(0);
+        var cellDef = row.insertCell(1);
+        cell1.innerHTML = "<h2>test</h2>";
+        cell2.innerHTML = "NEW CELL mabye?";
       }
 
       function importButton() {
