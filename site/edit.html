@@ -110,7 +110,7 @@
         var row = table.insertRow(table.rows.length);
         var cellTerm = row.insertCell(0);
         var cellDef = row.insertCell(1);
-        cellTerm.innerHTML = "<input type='text' value='term'></input>";
+        cellTerm.contentEditable=true;
         cellDef.innerHTML = "<input type='text' value='definition'></input>";
         console.log(saveTable("editTable"));
       }
