@@ -1,6 +1,6 @@
 /* save html table content into js array */
 function saveTable(id) {
-    tableRows = document.getrowsementById(id).rows
+    tableRows = document.getElementById(id).rows
     tableData = []
     for (var i = 0; i < tableRows.length; i++) {
         rows = tableRows[i].children
