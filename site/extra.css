@@ -1,24 +1,3 @@
-:root {
-    --purpleish-redish: #FF6666;
-    --purpleish-redishFaded: #FF9999;
-    --purpleish-orangeish: #FF9966;
-    --purpleish-orangeishFaded: #FFBB99;
-    --purpleish-yellowish: #FFCC66;
-    --purpleish-yellowishFaded: #FFDD99;
-    --purpleish-greem: #52CCA3;
-    --purpleish-greemFaded: #7ACCB1;
-    --purpleish-blueish: #5252CC;
-    --purpleish-blueishFaded4: #7A7ACC;
-    --purpleish-blueishFaded3: #5C5C99;
-    --purpleish-blueishFaded2: #3D3D66;
-    --purpleish-blueishFaded1: #1E1E32;
-    --purpleish-blueishGray: #A3A3CC;
-    --purpleish-purpleish: #7A52CC;
-    --purpleish-purpleishFaded: #967ACC;
-    --purpleish-pimk: #CC52A3;
-    --purpleish-pimkFaded: #CC7AB1;
-}
-
 .extra-table-end {
     background-color: var(--purpleish-blueishFaded2);
 }
