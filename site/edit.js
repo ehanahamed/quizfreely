@@ -8,7 +8,7 @@ function saveTable(id) {
         for (var i2 = 0; i2 < rows.length; i2++) {
             row.push(rows[i2].innerText);
         }
-        array.push( );
+        array.push(row);
     }
     return array;
 }
