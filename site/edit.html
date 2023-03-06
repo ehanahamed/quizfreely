@@ -117,8 +117,8 @@ See license file: https://src.ehan.dev/quizfreely/LICENSE.txt
         var row = table.insertRow(table.rows.length - 1);
         var cellTerm = row.insertCell(0);
         var cellDef = row.insertCell(1);
-        cellTerm.innerHtml="<textarea placeholder='Term'>Type here!</textarea>"
-        cellDef.innerHtml="<textarea placeholder='Definition'>Type here!</textarea>"
+        cellTerm.innerHTML = "<textarea placeholder='Term'>Type here!</textarea>";
+        cellDef.innerHTML = "<textarea placeholder='Definition'>Type here!</textarea>";
         console.log(saveTable("editTable"));
       }
 
