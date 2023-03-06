@@ -56,7 +56,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr>
+            <tr id="row-spawnner-lol">
               <td>
                 <button onclick="">+</button>
               </td>
@@ -99,6 +99,13 @@
         sectionEdit.style.display = "block";
         sectionExport.style.display = "block";
       };
+
+      function editAddButton() {
+        const tr = document.createElement("tr");
+        const td = document.createElement("td");
+        tr.appendChild(td);
+        document.body.insertBefore(tr, document.getElementById("row-spawnner-lol"););
+      }
 
       function importButton() {
         sectionLoad.style.display = "none";
