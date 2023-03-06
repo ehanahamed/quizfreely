@@ -1,4 +1,4 @@
-/*
+/*!
 Quizfreely (https://quizfreely.ehan.dev)
 
 Copyright (c) 2022 Ehan Ahamed and contributors
