@@ -3,7 +3,7 @@ function saveTable(id) {
     table = document.getElementById(id);
     data = [];
     for (var i = 0; i < table.rows.length; i++) {
-        console.log(i);
+        console.log(table.rows[i]);
     }
-    return data
+    return data;
 }
