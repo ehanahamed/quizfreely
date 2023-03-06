@@ -57,11 +57,11 @@
           </thead>
           <tbody>
             <tr>
-              <td>
-                <input type="text" value="term"></input>   
+              <td contenteditable="true">
+                term   
               </td>
-              <td>
-                <input type="text" value="definition"></input>   
+              <td contenteditable="true">
+                definition   
               </td>
             </tr>
           </tbody>
@@ -111,7 +111,7 @@
         var cellTerm = row.insertCell(0);
         var cellDef = row.insertCell(1);
         cellTerm.contentEditable=true;
-        cellDef.innerHTML = "<input type='text' value='definition'></input>";
+        cellDef.contentEditable=true;
         console.log(saveTable("editTable"));
       }
 
