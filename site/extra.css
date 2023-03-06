@@ -1,3 +1,3 @@
 .extra-table-end {
-    background-color: var(--purpleish-blueishFaded2);
+    background-color: var(--purpleish-blueishFaded2) !important;
 }
