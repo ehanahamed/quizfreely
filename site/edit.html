@@ -56,7 +56,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr id="row-spawnner-lol">
+            <tr>
               <td>
                 <button onclick="editAddButton();">+</button>
               </td>
@@ -106,8 +106,8 @@
         var row = table.insertRow(table.rows.length - 1);
         var cellTerm = row.insertCell(0);
         var cellDef = row.insertCell(1);
-        cellTerm.innerHTML = "<h2>test</h2>";
-        cellDef.innerHTML = "NEW CELL mabye?";
+        cellTerm.innerHTML = "<input type='text' value='term'></input>";
+        cellDef.innerHTML = "<input type='text' value='definition'></input>";
       }
 
       function importButton() {
