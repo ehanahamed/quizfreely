@@ -6,7 +6,7 @@ function saveTable(id) {
         rows = tableRows[i].children
         row = []
         for (var i2 = 0; i2 < rows.length; i2++) {
-            row.push(rows[j].innerText);
+            row.push(rows[i2].innerText);
         }
         tableData.push(row)
     }
