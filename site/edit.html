@@ -58,11 +58,11 @@ See license file: https://src.ehan.dev/quizfreely/LICENSE.txt
         </thead>
         <tbody>
           <tr>
-            <td contenteditable="true">
-              Type here!
+            <td>
+              <textarea placeholder="Term">Type here!</textarea>
             </td>
-            <td contenteditable="true">
-              Type here!
+            <td>
+              <textarea placeholder="Definition">Type here!</textarea>
             </td>
           </tr>
           <tr>
@@ -116,10 +116,8 @@ See license file: https://src.ehan.dev/quizfreely/LICENSE.txt
         var row = table.insertRow(table.rows.length - 1);
         var cellTerm = row.insertCell(0);
         var cellDef = row.insertCell(1);
-        cellTerm.contentEditable=true;
-        cellTerm.innerText="Type here!"
-        cellDef.contentEditable=true;
-        cellDef.innerText="Type here!"
+        cellTerm.innerHtml="<textarea placeholder='Term'>Type here!</textarea>"
+        cellDef.innerHtml="<textarea placeholder='Definition'>Type here!</textarea>"
         console.log(saveTable("editTable"));
       }
 
