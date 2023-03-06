@@ -1,9 +1,9 @@
 /*
-Quizlate (https://quizlate.ehan.dev)
+Quizfreely (https://quizfreely.ehan.dev)
 
 Copyright (c) 2022 Ehan Ahamed and contributors
 Licensed under the UPL-1.0 License
-See license file: https://projects.ehan.dev/Quizlate/LICENSE.txt
+See license file: https://src.ehan.dev/quizfreely/LICENSE.txt
 */
 
 var download = {
