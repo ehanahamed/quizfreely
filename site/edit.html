@@ -85,6 +85,7 @@
       <br />
       <br />
     </footer>
+    <script src="edit.js"></script>
     <script src="studySet.js"></script>
     <script>
       var sectionLoad = document.getElementById("load");
@@ -111,6 +112,7 @@
         var cellDef = row.insertCell(1);
         cellTerm.innerHTML = "<input type='text' value='term'></input>";
         cellDef.innerHTML = "<input type='text' value='definition'></input>";
+        alert(saveTable("editTable"))
       }
 
       function importButton() {
