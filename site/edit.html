@@ -1,94 +1,100 @@
 <!DOCTYPE html>
 <html lang="en">
-  <!--
-    Quizfreely (https://quizfreely.ehan.dev)
-    Copyright (c) 2022 Ehan Ahamed and contributors
-    Licensed under the UPL-1.0 License
-    See license file: https://src.ehan.dev/quizfreely/LICENSE.txt
-  -->
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Quizfreely</title>
-    <link rel="stylesheet" href="https://cdn.simplecss.org/simple.css" />
-    <link
-         rel="stylesheet"
-         href="https://cdn.ehan.dev/purpleish/themes/simplecss/purpleishColors.css"/>
-  </head>
-  <body>
-    <header>
-      <br />
-      <br />
-      <img width="200" height="200" src="./logo.png" />
-      <h1 style="color:#7a52cc;">Quizfreely</h1>
-      <p>A free & open source studying tool</p>
-      <nav>
-        <a href="https://quizfreely.ehan.dev">Home</a>
-        <a href="./edit.html" class="current">Edit</a>
-        <a href="./review.html">Review</a>
-        <a href="./help.html">Help & Documentation</a>
-      </nav>
-    </header>
-    <main>
-      <section id="load">
-        <h2>Create or Load a Study Set to Edit</h3>
+<!--
+Quizfreely (https://quizfreely.ehan.dev)
+Copyright (c) 2022 Ehan Ahamed and contributors
+Licensed under the UPL-1.0 License
+See license file: https://src.ehan.dev/quizfreely/LICENSE.txt
+-->
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Quizfreely</title>
+  <link rel="stylesheet" href="https://cdn.simplecss.org/simple.css" />
+  <link rel="stylesheet" href="https://cdn.ehan.dev/purpleish/themes/simplecss/purpleishColors.css" />
+  <link rel="sylesheet" href="https://cdn.ehan.dev/purpleish/themes/css/purpleish.css" />
+</head>
+
+<body>
+  <header>
+    <br />
+    <br />
+    <img width="200" height="200" src="./logo.png" />
+    <h1 style="color:#7a52cc;">Quizfreely</h1>
+    <p>A free & open source studying tool</p>
+    <nav>
+      <a href="https://quizfreely.ehan.dev">Home</a>
+      <a href="./edit.html" class="current">Edit</a>
+      <a href="./review.html">Review</a>
+      <a href="./help.html">Help & Documentation</a>
+    </nav>
+  </header>
+  <main>
+    <section id="load">
+      <h2>Create or Load a Study Set to Edit</h3>
         <p>Create a new study set...</p>
         <button onclick="createButton();">Create</button>
         <p>...or import an existing one</p>
         <button onclick="importButton();">Import</button>
-      </section>
-      <section id="import">
-        <h2>Import a Study Set to Edit</h3>
+    </section>
+    <section id="import">
+      <h2>Import a Study Set to Edit</h3>
         <p>Import from...</p>
         <button onclick="">button ig</button>
         <p>...or something</p>
         <button onclick="">button ig</button>
-      </section>
-      <section id="edit">
-        <h2 id="studySetName">Edit Study Set</h2>
-        <p id="studySetCreator">Creator</p>
-        <p id="StudySetDescription">Description</p>
-        <table id="editTable">
-          <thead>
-            <tr>
-              <th>Term</th>
-              <th>Definition</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td contenteditable="true">
-                Type here!   
-              </td>
-              <td contenteditable="true">
-                Type here!   
-              </td>
-            </tr>
-          </tbody>
-        </table>
-        <button onclick="editAddButton();">+</button>
-      </section>
-      <section id="export">
-        <h2>Export Study Set</h2>
-      </section>
-    </main>
-    <footer>
-      <h2>Quizfreely</h2>
-      <p>Copyright (c) 2022 Ehan Ahamed and contributors
+    </section>
+    <section id="edit">
+      <h2 id="studySetName">Edit Study Set</h2>
+      <p id="studySetCreator">Creator</p>
+      <p id="StudySetDescription">Description</p>
+      <table id="editTable">
+        <thead>
+          <tr>
+            <th>Term</th>
+            <th>Definition</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td contenteditable="true">
+              Type here!
+            </td>
+            <td contenteditable="true">
+              Type here!
+            </td>
+          </tr>
+          <tr>
+            <td class="extra-table-end">
+              <button onclick="editAddButton();">+</button>
+            </td>
+            <td class="extra-table-end"></td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+    <section id="export">
+      <h2>Export Study Set</h2>
+    </section>
+  </main>
+  <footer>
+    <h2>Quizfreely</h2>
+    <p>Copyright (c) 2022 Ehan Ahamed and contributors
       <br />
       Licensed under the UPL-1.0 License
       <br />
       <a href="https://src.ehan.dev/quizfreely/LICENSE.txt">See license file</a>
-      </p>
-      <br />
-      <br />
-      <br />
-      <br />
-    </footer>
-    <script src="edit.js"></script>
-    <script src="studySet.js"></script>
-    <script>
-      var sectionLoad = document.getElementById("load");
+    </p>
+    <br />
+    <br />
+    <br />
+    <br />
+  </footer>
+  <script src="edit.js"></script>
+  <script src="studySet.js"></script>
+  <script>
+    var sectionLoad = document.getElementById("load");
       var sectionImport = document.getElementById("import");
       var sectionEdit = document.getElementById("edit");
       var sectionExport = document.getElementById("export");
@@ -123,6 +129,7 @@
         sectionEdit.style.display = "none";
         sectionExport.style.display = "none";
       }
-    </script>
-  </body>
+  </script>
+</body>
+
 </html>
