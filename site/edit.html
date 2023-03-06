@@ -111,7 +111,9 @@
         var cellTerm = row.insertCell(0);
         var cellDef = row.insertCell(1);
         cellTerm.contentEditable=true;
+        cellTerm.innerText="Term"
         cellDef.contentEditable=true;
+        cellDef.innerText="Definition"
         console.log(saveTable("editTable"));
       }
 
