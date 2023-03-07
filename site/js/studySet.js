@@ -6,20 +6,32 @@ See license file: https://src.ehan.dev/quizfreely/LICENSE.txt
 */
 
 var studySet = {
-  create: function (metadata) {
+  create: function (settings, metadata) {
     return {
       quizfreely: "Quizfreely",
-      metadata: metadata,
       name: "Study Set Name",
       creator: "Creator",
-      description: "Description",
-      settings: {
-        debug: false,
-        type: "generic",
-        creator: true,
-        vocab: false
-      },
+      settings: settings,
+      metadata: metadata,
       set: []
     }
   },
+  /*
+  Example
+
+  {
+    quizfreely: "Quizfreely",
+    name: "Some Name",
+    creator: "Someone",
+    settings: {
+      "debug": false,
+    },
+    metadata: "20230307",
+    set: [
+      ["term","definition"],
+      ["there are","arrays in this array for each row of the table"]
+    ]
+  }
+  
+  */
 }
