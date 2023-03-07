@@ -19,11 +19,7 @@ var studySet = {
         creator: true,
         vocab: false
       },
-      set: [{
-          term: "Example Term",
-          term: "Example Definition"
-        }
-      ]
+      set: []
     }
   },
 }
