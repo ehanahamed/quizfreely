@@ -1,3 +1,12 @@
+/*!
+Quizfreely (https://quizfreely.ehan.dev)
+Copyright (c) 2022-2023 Ehan Ahamed and contributors
+Licensed under the UPL-1.0 License
+See license file: https://src.ehan.dev/quizfreely/LICENSE.txt
+*/
+
+var uploader = {
+  /*
 const [file] = document.querySelector("input[type=file]").files;
 const reader = new FileReader();
 
@@ -13,3 +22,4 @@ reader.addEventListener(
 if (file) {
   reader.readAsText(file);
 }
+*/
