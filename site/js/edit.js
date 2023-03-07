@@ -5,12 +5,20 @@ Licensed under the UPL-1.0 License
 See license file: https://src.ehan.dev/quizfreely/LICENSE.txt
 */
 
+var studySetData = {};
+
+var sectionLoad = document.getElementById("load");
+var sectionImport = document.getElementById("import");
+var sectionEdit = document.getElementById("edit");
+var sectionExport = document.getElementById("export");
+
 function createButton() {
-    var studySetData = studySet.create();
+    studySetData = studySet.create();
+
     sectionLoad.style.display = "none";
     sectionImport.style.display = "none";
     sectionEdit.style.display = "block";
-    sectionExport.style.display = "block";
+    sectionExport.style.display = "none";
 };
 
 function importButton() {
@@ -46,4 +54,9 @@ function getTableData(id) {
 function editDone() {
     studySetData.set = getTableData("editTable");
     console.log(studySetData);
+
+    sectionLoad.style.display = "none";
+    sectionImport.style.display = "none";
+    sectionEdit.style.display = "none";
+    sectionExport.style.display = "block";
 }
