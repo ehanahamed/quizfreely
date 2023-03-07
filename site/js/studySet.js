@@ -9,8 +9,8 @@ var studySet = {
   create: function (settings, metadata) {
     return {
       quizfreely: "Quizfreely",
-      name: "Study Set Name",
-      creator: "Creator",
+      name: "",
+      creator: "",
       settings: settings,
       metadata: metadata,
       set: []
