@@ -11,8 +11,7 @@ function editAddButton() {
     var cellTerm = row.insertCell(0);
     var cellDef = row.insertCell(1);
     cellTerm.innerHTML = "<input type='text' placeholder='Term'></input>";
-    cellDef.innerHTML = "<textarea rows='1' placeholder='Definition'></textarea>";
-    console.log(saveTable("editTable"));
+    cellDef.innerHTML = "<textarea rows='2' placeholder='Definition'></textarea>";
 }
 
 /* save html table content into js array */
