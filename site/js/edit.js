@@ -12,6 +12,8 @@ var sectionImport = document.getElementById("import");
 var sectionEdit = document.getElementById("edit");
 var sectionExport = document.getElementById("export");
 
+var editName = document.getElementById("editName");
+
 function createButton() {
     studySetData = studySet.create();
 
@@ -52,6 +54,7 @@ function getTableData(id) {
 }
 
 function editDone() {
+    studySetData.name = editName.value;
     studySetData.set = getTableData("editTable");
     console.log(studySetData);
 
