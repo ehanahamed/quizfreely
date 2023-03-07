@@ -7,6 +7,9 @@ See license file: https://src.ehan.dev/quizfreely/LICENSE.txt
 
 var importLocal = {
   button: function () {
+
+    const selectedFile = document.getElementById("input").files[0];
+
     const [file] = document.querySelector("input[type=file]").files;
     const reader = new FileReader();
 
