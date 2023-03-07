@@ -31,5 +31,5 @@ function getTableData(id) {
 
 function editDone() {
     studySetData.set = getTableData("editTable");
-    alert(studySetData);
+    console.log(studySetData);
 }
