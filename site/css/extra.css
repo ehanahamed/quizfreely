@@ -1,3 +1,7 @@
 .extra-table-end {
     background-color: var(--blueishFaded2) !important;
 }
+
+textarea {
+    resize: vertical !important;
+}
