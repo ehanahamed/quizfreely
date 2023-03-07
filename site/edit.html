@@ -32,21 +32,21 @@ See license file: https://src.ehan.dev/quizfreely/LICENSE.txt
     </nav>
   </header>
   <main>
-    <section id="load">
+    <section id="load" display="block">
       <h2>Create or Load a Study Set to Edit</h3>
         <p>Create a new study set...</p>
         <button onclick="createButton();">Create</button>
         <p>...or import an existing one</p>
         <button onclick="importButton();">Import</button>
     </section>
-    <section id="import">
+    <section id="import" display="none">
       <h2>Import a Study Set to Edit</h3>
         <p>Import from...</p>
         <button onclick="">button ig</button>
         <p>...or something</p>
         <button onclick="">button ig</button>
     </section>
-    <section id="edit">
+    <section id="edit" display="none">
       <h2>Edit Study Set</h2>
       <label>Name</label>
       <input id="editName" type="text" placeholder="Name" value="Study Set">
@@ -76,7 +76,7 @@ See license file: https://src.ehan.dev/quizfreely/LICENSE.txt
       </table>
       <button onclick="editDone()">Done</button>
     </section>
-    <section id="export">
+    <section id="export" display="none">
       <h2>Export Study Set</h2>
     </section>
   </main>
@@ -93,16 +93,6 @@ See license file: https://src.ehan.dev/quizfreely/LICENSE.txt
     <br />
     <br />
   </footer>
-  <script>
-      var sectionLoad = document.getElementById("load");
-      var sectionImport = document.getElementById("import");
-      var sectionEdit = document.getElementById("edit");
-      var sectionExport = document.getElementById("export");
-      sectionLoad.style.display = "block";
-      sectionImport.style.display = "none";
-      sectionEdit.style.display = "none";
-      sectionExport.style.display = "none";
-  </script>
   <script src="./js/studySet.js"></script>
   <script src="./js/edit.js"></script>
 </body>
