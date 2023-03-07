@@ -5,6 +5,21 @@ Licensed under the UPL-1.0 License
 See license file: https://src.ehan.dev/quizfreely/LICENSE.txt
 */
 
+function createButton() {
+    var studySetData = studySet.create();
+    sectionLoad.style.display = "none";
+    sectionImport.style.display = "none";
+    sectionEdit.style.display = "block";
+    sectionExport.style.display = "block";
+};
+
+function importButton() {
+    sectionLoad.style.display = "none";
+    sectionImport.style.display = "block";
+    sectionEdit.style.display = "none";
+    sectionExport.style.display = "none";
+}
+
 function editAddButton() {
     var table = document.getElementById("editTable");
     var row = table.insertRow(table.rows.length - 1);
@@ -14,7 +29,6 @@ function editAddButton() {
     cellDef.innerHTML = "<textarea rows='2' placeholder='Definition'></textarea>";
 }
 
-/* save html table content into js array */
 function getTableData(id) {
     tableRows = document.getElementById(id).rows
     tableData = []
