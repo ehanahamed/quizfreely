@@ -16,7 +16,7 @@ function editAddButton() {
 }
 
 /* save html table content into js array */
-function saveTable(id) {
+function getTableData(id) {
     tableRows = document.getElementById(id).rows
     tableData = []
     for (var i = 1; i < tableRows.length - 1; i++) {
@@ -28,4 +28,8 @@ function saveTable(id) {
         tableData.push(row)
     }
     return tableData
+}
+
+function editDone() {
+    studySetData.set = getTableData("editTable");
 }
