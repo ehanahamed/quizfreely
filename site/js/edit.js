@@ -5,7 +5,7 @@ function editAddButton() {
     var cellTerm = row.insertCell(0);
     var cellDef = row.insertCell(1);
     cellTerm.innerHTML = "<input type='text' placeholder='Term' value='Type here!''></input>";
-    cellDef.innerHTML = "<input type='text' placeholder='Definition' value='Type here!''></input>";
+    cellDef.innerHTML = "<textarea rows='1' placeholder='Definition' value='Type here!'></textarea>";
     console.log(saveTable("editTable"));
 }
 
