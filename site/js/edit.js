@@ -18,15 +18,26 @@ var edit = {
         studySetData = studySet.create();
     },
 
-    addButtonOnClick: function (id) {
-        var table = document.getElementById(id);
-        var row = table.insertRow(table.rows.length - 1);
-        var cellTerm = row.insertCell(0);
-        var cellDef = row.insertCell(1);
-        cellTerm.innerHTML = "<input type='text' placeholder='Term'></input>";
-        cellDef.innerHTML = "<textarea rows='2' placeholder='Definition'></textarea>";
-    },
+    buttons: {
+        add: function (id) {
+            var table = document.getElementById(id);
+            var row = table.insertRow(table.rows.length - 1);
+            var cellTerm = row.insertCell(0);
+            var cellDef = row.insertCell(1);
+            cellTerm.innerHTML = "<input type='text' placeholder='Term'></input>";
+            cellDef.innerHTML = "<textarea rows='2' placeholder='Definition'></textarea>";
+        },
+        done: function () {
+            studySetData.name = editName.value;
+            studySetData.set = getTableData("editTable");
+            console.log(studySetData);
 
+            sectionLoad.style.display = "none";
+            sectionImport.style.display = "none";
+            sectionEdit.style.display = "none";
+            sectionExport.style.display = "block";
+        }
+    },
     getTableDataArray: function (id) {
         tableData = document.getElementById(id).rows
         tableDataArray = []
@@ -40,15 +51,4 @@ var edit = {
         }
         return tableDataArray
     },
-
-    doneButtonOnClick: function () {
-        studySetData.name = editName.value;
-        studySetData.set = getTableData("editTable");
-        console.log(studySetData);
-
-        sectionLoad.style.display = "none";
-        sectionImport.style.display = "none";
-        sectionEdit.style.display = "none";
-        sectionExport.style.display = "block";
-    }
 }
