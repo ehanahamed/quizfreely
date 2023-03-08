@@ -6,5 +6,17 @@ See license file: https://src.ehan.dev/quizfreely/LICENSE.txt
 */
 
 var importLocal = {
-    buttonOnClick: function () { }
+    init: function () {
+        fileSelect.addEventListener(
+            "click",
+            (e) => {
+                if (id) {
+                    id.click();
+                }
+                e.preventDefault();
+            },
+            false
+        );
+
+    }
 };
