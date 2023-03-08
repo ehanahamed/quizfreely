@@ -6,7 +6,7 @@ See license file: https://src.ehan.dev/quizfreely/LICENSE.txt
 */
 
 var sections = {
-    importButton: function () {
+    importButtonOnClick: function () {
         sectionLoad.style.display = "none";
         sectionImport.style.display = "block";
         sectionEdit.style.display = "none";
