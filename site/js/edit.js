@@ -14,13 +14,8 @@ var sectionExport = document.getElementById("export");
 var editName = document.getElementById("editName");
 
 var edit = {
-    createButtonOnClick: function () {
+    create: function () {
         studySetData = studySet.create();
-
-        sectionLoad.style.display = "none";
-        sectionImport.style.display = "none";
-        sectionEdit.style.display = "block";
-        sectionExport.style.display = "none";
     },
 
     addButtonOnClick: function (id) {
