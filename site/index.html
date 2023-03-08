@@ -44,9 +44,9 @@ See license file: https://src.ehan.dev/quizfreely/LICENSE.txt
     <section id="load">
       <h2>Create or Load a Study Set to Edit</h3>
         <p>Create a new study set...</p>
-        <button onclick="edit.createButtonOnClick();">Create</button>
+        <button onclick="sections.buttons.create();">Create</button>
         <p>...or import an existing one</p>
-        <button onclick="sections.import.buttonOnClick();">Import</button>
+        <button onclick="sections.buttons.import();">Import</button>
     </section>
     <!--
     Import section
@@ -54,7 +54,7 @@ See license file: https://src.ehan.dev/quizfreely/LICENSE.txt
     <section id="import">
       <h2>Import a Study Set to Edit</h3>
         <p>Import from local files</p>
-        <button onclick="importLocal.buttonOnClick()">Import Local File</button>
+        <button onclick="sections.buttons.importLocal()">Import Local File</button>
         <p>Import from other apps</p>
         <button onclick="">Coming Soon</button>
         <p>Other import options</p>
@@ -89,13 +89,13 @@ See license file: https://src.ehan.dev/quizfreely/LICENSE.txt
           </tr>
           <tr>
             <td class="extra-table-end">
-              <button onclick="edit.addButtonOnClick();">Add more</button>
+              <button onclick="edit.buttons.add();">Add more</button>
             </td>
             <td class="extra-table-end"></td>
           </tr>
         </tbody>
       </table>
-      <button onclick="edit.doneButtonOnClick()">Done</button>
+      <button onclick="edit.buttons.done()">Done</button>
     </section>
     <!--
     Export section
