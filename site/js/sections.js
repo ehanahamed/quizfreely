@@ -12,7 +12,7 @@ var sections = {
         var sectionImportLocal = document.getElementById("importLocal")
         var sectionEdit = document.getElementById("edit");
         var sectionExport = document.getElementById("export");
-        
+
         sectionLoad.style.display = "block";
         sectionImport.style.display = "none";
         sectionImportLocal.style.display = "none";
@@ -21,11 +21,25 @@ var sections = {
     },
     buttons: {
         create: function () {
+            edit.create();
 
+            sectionLoad.style.display = "none";
+            sectionImport.style.display = "none";
+            sectionImportLocal.style.display = "none";
+            sectionEdit.style.display = "block";
+            sectionExport.style.display = "none";
         },
         import: function () {
             sectionLoad.style.display = "none";
             sectionImport.style.display = "block";
+            sectionImportLocal.style.display = "none";
+            sectionEdit.style.display = "none";
+            sectionExport.style.display = "none";
+        },
+        importLocal: function () {
+            sectionLoad.style.display = "none";
+            sectionImport.style.display = "none";
+            sectionImportLocal.style.display = "block";
             sectionEdit.style.display = "none";
             sectionExport.style.display = "none";
         }
