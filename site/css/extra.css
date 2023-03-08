@@ -13,3 +13,16 @@ textarea {
     overflow: hidden;
     clip: rect(1px, 1px, 1px, 1px);
 }
+
+.input-file {
+    /*
+    same properties as a simplecss button
+    */
+    border: none;
+    border-radius: var(--standard-border-radius);
+    background-color: var(--accent);
+    font-size: 1rem;
+    color: var(--bg);
+    padding: 0.7rem 0.9rem;
+    margin: 0.5rem 0;
+}
