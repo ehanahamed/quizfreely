@@ -7,9 +7,10 @@ See license file: https://src.ehan.dev/quizfreely/LICENSE.txt
 
 var importLocal = {
     init: function () {
+        document.
         fileSelect.addEventListener(
             "click",
-            (e) => {
+            function (e) {
                 if (id) {
                     id.click();
                 }
