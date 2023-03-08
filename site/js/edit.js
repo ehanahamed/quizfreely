@@ -5,8 +5,6 @@ Licensed under the UPL-1.0 License
 See license file: https://src.ehan.dev/quizfreely/LICENSE.txt
 */
 
-var studySetData = {};
-
 var sectionLoad = document.getElementById("load");
 var sectionImport = document.getElementById("import");
 var sectionImportLocal = document.getElementById("importLocal");
@@ -25,7 +23,7 @@ var edit = {
         sectionExport.style.display = "none";
     },
 
-    editAddButton: function (id) {
+    addButtonOnClick: function (id) {
         var table = document.getElementById(id);
         var row = table.insertRow(table.rows.length - 1);
         var cellTerm = row.insertCell(0);
@@ -34,21 +32,21 @@ var edit = {
         cellDef.innerHTML = "<textarea rows='2' placeholder='Definition'></textarea>";
     },
 
-    getTableData: function (id) {
-        tableRows = document.getElementById(id).rows
-        tableData = []
-        for (var i = 1; i < tableRows.length - 1; i++) {
-            rows = tableRows[i].children
+    getTableDataArray: function (id) {
+        tableData = document.getElementById(id).rows
+        tableDataArray = []
+        for (var i = 1; i < tableData.length - 1; i++) {
+            tableRows = tableData[i].children
             row = []
-            for (var i2 = 0; i2 < rows.length; i2++) {
-                row.push(rows[i2].children[0].value);
+            for (var i2 = 0; i2 < tableRows.length; i2++) {
+                row.push(tableRows[i2].children[0].value);
             }
-            tableData.push(row)
+            tableDataArray.push(row)
         }
-        return tableData
+        return tableDataArray
     },
 
-    editDone: function () {
+    doneButtonOnClick: function () {
         studySetData.name = editName.value;
         studySetData.set = getTableData("editTable");
         console.log(studySetData);
