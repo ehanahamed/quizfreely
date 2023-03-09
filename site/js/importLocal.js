@@ -6,18 +6,10 @@ See license file: https://src.ehan.dev/quizfreely/LICENSE.txt
 */
 
 var importLocal = {
-    init: function () {
-        var importLocal = document.getElementById("importLocal");
-        fileSelect.addEventListener(
-            "click",
-            function (e) {
-                if (id) {
-                    id.click();
-                }
-                e.preventDefault();
-            },
-            false
-        );
-
+    buttons: {
+        fileSelect: function() {
+            var importLocalInput = document.getElementById("importLocalInput");
+            importLocalInput.click();
+        }
     }
 };
