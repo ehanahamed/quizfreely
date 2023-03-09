@@ -8,13 +8,13 @@ See license file: https://src.ehan.dev/quizfreely/LICENSE.txt
 var sections = {
     init: function () {
         var sectionLoad = document.getElementById("load");
-        var sectionImport = document.getElementById("import");
+        var sectionImportOptions = document.getElementById("importOptions");
         var sectionImportLocal = document.getElementById("importLocal")
         var sectionEdit = document.getElementById("edit");
         var sectionExport = document.getElementById("export");
 
         sectionLoad.style.display = "block";
-        sectionImport.style.display = "none";
+        sectionImportOptions.style.display = "none";
         sectionImportLocal.style.display = "none";
         sectionEdit.style.display = "none";
         sectionExport.style.display = "none";
@@ -24,21 +24,21 @@ var sections = {
             edit.create();
 
             sectionLoad.style.display = "none";
-            sectionImport.style.display = "none";
+            sectionImportOptions.style.display = "none";
             sectionImportLocal.style.display = "none";
             sectionEdit.style.display = "block";
             sectionExport.style.display = "none";
         },
-        import: function () {
+        importOptions: function () {
             sectionLoad.style.display = "none";
-            sectionImport.style.display = "block";
+            sectionImportOptionsstyle.display = "block";
             sectionImportLocal.style.display = "none";
             sectionEdit.style.display = "none";
             sectionExport.style.display = "none";
         },
         importLocal: function () {
             sectionLoad.style.display = "none";
-            sectionImport.style.display = "none";
+            sectionImportOptionsstyle.display = "none";
             sectionImportLocal.style.display = "block";
             sectionEdit.style.display = "none";
             sectionExport.style.display = "none";
