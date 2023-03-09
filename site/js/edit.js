@@ -19,8 +19,8 @@ var edit = {
     },
 
     buttons: {
-        add: function (id) {
-            var table = document.getElementById(id);
+        add: function () {
+            var table = document.getElementById("editTable");
             var row = table.insertRow(table.rows.length - 1);
             var cellTerm = row.insertCell(0);
             var cellDef = row.insertCell(1);
