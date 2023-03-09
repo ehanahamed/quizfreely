@@ -6,6 +6,12 @@ See license file: https://src.ehan.dev/quizfreely/LICENSE.txt
 */
 
 var importLocal = {
+    init: function () {
+        var importLocalInput = document.getElementById("importLocalInput");
+        importLocalInput.onchange = function() {
+            importLocal.input();
+        };
+    },
     buttons: {
         fileSelect: function() {
             var importLocalInput = document.getElementById("importLocalInput");
