@@ -31,14 +31,14 @@ var sections = {
         },
         importOptions: function () {
             sectionLoad.style.display = "none";
-            sectionImportOptionsstyle.display = "block";
+            sectionImportOptions.style.display = "block";
             sectionImportLocal.style.display = "none";
             sectionEdit.style.display = "none";
             sectionExport.style.display = "none";
         },
         importLocal: function () {
             sectionLoad.style.display = "none";
-            sectionImportOptionsstyle.display = "none";
+            sectionImportOptions.style.display = "none";
             sectionImportLocal.style.display = "block";
             sectionEdit.style.display = "none";
             sectionExport.style.display = "none";
