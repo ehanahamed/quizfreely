@@ -5,13 +5,15 @@ Licensed under the UPL-1.0 License
 See license file: https://src.ehan.dev/quizfreely/LICENSE.txt
 */
 
+
+var sectionLoad = document.getElementById("load");
+var sectionImportOptions = document.getElementById("importOptions");
+var sectionImportLocal = document.getElementById("importLocal")
+var sectionEdit = document.getElementById("edit");
+var sectionExport = document.getElementById("export");
+
 var sections = {
     init: function () {
-        var sectionLoad = document.getElementById("load");
-        var sectionImportOptions = document.getElementById("importOptions");
-        var sectionImportLocal = document.getElementById("importLocal")
-        var sectionEdit = document.getElementById("edit");
-        var sectionExport = document.getElementById("export");
 
         sectionLoad.style.display = "block";
         sectionImportOptions.style.display = "none";
