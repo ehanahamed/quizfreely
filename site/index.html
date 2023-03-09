@@ -46,12 +46,12 @@ See license file: https://src.ehan.dev/quizfreely/LICENSE.txt
         <p>Create a new study set...</p>
         <button onclick="sections.buttons.create();">Create</button>
         <p>...or import an existing one</p>
-        <button onclick="sections.buttons.import();">Import</button>
+        <button onclick="sections.buttons.importOptions();">Import</button>
     </section>
     <!--
     Import section
     -->
-    <section id="import">
+    <section id="importOptions">
       <h2>Import a Study Set to Edit</h3>
         <p>Import from local files</p>
         <button onclick="sections.buttons.importLocal();">Import Local File</button>
@@ -61,6 +61,7 @@ See license file: https://src.ehan.dev/quizfreely/LICENSE.txt
         <button onclick="">Coming Soon</button>
     </section>
     <section id="importLocal">
+      <h2>Import a Local File</h2>
       <label for="importLocalInput"><button onclick="importLocal.buttons.fileSelect();">Select file</button></label>
       <input id="importLocalInput" type="file" />
     </section>
