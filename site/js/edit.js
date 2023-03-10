@@ -5,14 +5,6 @@ Licensed under the UPL-1.0 License
 See license file: https://src.ehan.dev/quizfreely/LICENSE.txt
 */
 
-var sectionLoad = document.getElementById("load");
-var sectionImport = document.getElementById("import");
-var sectionImportLocal = document.getElementById("importLocal");
-var sectionEdit = document.getElementById("edit");
-var sectionExport = document.getElementById("export");
-
-var editName = document.getElementById("editName");
-
 var edit = {
     create: function () {
         studySetData = studySet.create();
@@ -23,9 +15,8 @@ var edit = {
         newRow.insertCell(1).innerHTML = "<textarea rows='2' placeholder='Definition'></textarea>";
     },
     save: function () {
-            studySetData.name = editName.value;
-            studySetData.set = getTableData("editTable");
-            console.log(studySetData);
+            studySetData.name = elements.inputs.edit.name.value;
+            studySetData.set = arrayFromTable(elements.inputs.edit.table);
     },
     arrayFromTable: function (element) {
         tableData = element.rows
