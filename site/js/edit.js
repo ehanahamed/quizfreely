@@ -6,8 +6,8 @@ See license file: https://src.ehan.dev/quizfreely/LICENSE.txt
 */
 
 var edit = {
-    create: function () {
-        studySetData = studySet.create();
+    make: function () {
+        studySetData = studySet.make();
     },
     add: function() {
         var newRow = elements.inputs.edit.table.insertRow(elements.inputs.edit.table.rows.length - 1);
@@ -18,7 +18,7 @@ var edit = {
             studySetData.name = elements.inputs.edit.name.value;
             studySetData.set = arrayFromTable(elements.inputs.edit.table);
     },
-    arrayFromTable: function (element) {
+    makeArrayFromTable: function (element) {
         tableData = element.rows
         tableDataArray = []
         for (var i = 1; i < tableData.length - 1; i++) {
