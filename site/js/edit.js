@@ -27,8 +27,8 @@ var edit = {
             studySetData.set = getTableData("editTable");
             console.log(studySetData);
     },
-    getTableDataArray: function (id) {
-        tableData = document.getElementById(id).rows
+    arrayFromTable: function (element) {
+        tableData = element.rows
         tableDataArray = []
         for (var i = 1; i < tableData.length - 1; i++) {
             tableRows = tableData[i].children
