@@ -17,26 +17,10 @@ var edit = {
     create: function () {
         studySetData = studySet.create();
     },
-
-    buttons: {
-        add: function () {
-            var table = document.getElementById("editTable");
-            var row = table.insertRow(table.rows.length - 1);
-            var cellTerm = row.insertCell(0);
-            var cellDef = row.insertCell(1);
-            cellTerm.innerHTML = "<input type='text' placeholder='Term'></input>";
-            cellDef.innerHTML = "<textarea rows='2' placeholder='Definition'></textarea>";
-        },
-        done: function () {
+    save: function () {
             studySetData.name = editName.value;
             studySetData.set = getTableData("editTable");
             console.log(studySetData);
-
-            sectionLoad.style.display = "none";
-            sectionImport.style.display = "none";
-            sectionEdit.style.display = "none";
-            sectionExport.style.display = "block";
-        }
     },
     getTableDataArray: function (id) {
         tableData = document.getElementById(id).rows
