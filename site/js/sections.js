@@ -12,5 +12,13 @@ var sections = {
         elements.sections.importLocal.style.display = "none";
         elements.sections.edit.style.display = "none";
         elements.sections.exportOptions.style.display = "none";
+    },
+    changeTo: function (section) {
+        elements.sections.load.style.display = "none";
+        elements.sections.importOptions.style.display = "none";
+        elements.sections.importLocal.style.display = "none";
+        elements.sections.edit.style.display = "none";
+        elements.sections.exportOptions.style.display = "none";
+        elements.sections[section].style.display = "block"
     }
 }
