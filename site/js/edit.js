@@ -17,6 +17,14 @@ var edit = {
     create: function () {
         studySetData = studySet.create();
     },
+    add: function() {
+        var table = document.getElementById("editTable");
+        var row = table.insertRow(table.rows.length - 1);
+        var cellTerm = row.insertCell(0);
+        var cellDef = row.insertCell(1);
+        cellTerm.innerHTML = "<input type='text' placeholder='Term'></input>";
+        cellDef.innerHTML = "<textarea rows='2' placeholder='Definition'></textarea>";
+    },
     save: function () {
             studySetData.name = editName.value;
             studySetData.set = getTableData("editTable");
