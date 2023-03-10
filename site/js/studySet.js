@@ -6,7 +6,7 @@ See license file: https://src.ehan.dev/quizfreely/LICENSE.txt
 */
 
 var studySet = {
-  create: function (settings, metadata) {
+  make: function (settings, metadata) {
     return {
       quizfreely: "Quizfreely",
       name: "",
