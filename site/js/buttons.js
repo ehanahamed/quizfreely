@@ -7,9 +7,10 @@ See license file: https://src.ehan.dev/quizfreely/LICENSE.txt
 
 var buttons = {
     create: function() {
-
+        edit.create();
+        sections.changeTo("edit");
     },
     importOptions: function () {
-
+        sections.changeTo("importOptions")
     }
 }
