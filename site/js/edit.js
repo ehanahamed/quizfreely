@@ -18,12 +18,9 @@ var edit = {
         studySetData = studySet.create();
     },
     add: function() {
-        var table = document.getElementById("editTable");
-        var row = table.insertRow(table.rows.length - 1);
-        var cellTerm = row.insertCell(0);
-        var cellDef = row.insertCell(1);
-        cellTerm.innerHTML = "<input type='text' placeholder='Term'></input>";
-        cellDef.innerHTML = "<textarea rows='2' placeholder='Definition'></textarea>";
+        elements.edit.table.insertRow(elements.edit.table.rows.length - 1)
+            .insertCell(0).innerHTML = "<input type='text' placeholder='Term'></input>"
+            .insertCell(1).innerHTML = "<textarea rows='2' placeholder='Definition'></textarea>";
     },
     save: function () {
             studySetData.name = editName.value;
