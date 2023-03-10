@@ -14,5 +14,19 @@ var buttons = {
         importOptions: function () {
             sections.changeTo("importOptions")
         }
+    },
+    importOptions: {
+        importLocal: function () {
+            sections.changeTo("importLocal");
+        },
+    },
+    edit: {
+        add: function () {
+            edit.add();
+        },
+        done: function() {
+            edit.save();
+            sections.changeTo("exportOptions");
+        }
     }
 }
