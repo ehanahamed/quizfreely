@@ -7,14 +7,20 @@ See license file: https://src.ehan.dev/quizfreely/LICENSE.txt
 
 var elements = {
     sections: {
-        load: document.getElementById("load"),
-        importOptions: document.getElementById("importOptions"),
-        importLocal: document.getElementById("importLocal"),
-        edit: document.getElementById("edit"),
-        exportOptions: document.getElementById("export"),
+        load: document.getElementById("sectionLoad"),
+        importOptions: document.getElementById("sectionImportOptions"),
+        importLocal: document.getElementById("sectionImportLocal"),
+        edit: document.getElementById("sectionEdit"),
+        exportOptions: document.getElementById("sectionExportOptions"),
     },
     buttons: {
-        create: document.getElementById("create"),
-        importOptions: document.getElementById()
+        create: document.getElementById("buttonCreate"),
+        importOptions: document.getElementById("buttonImportOptions")
+    },
+    inputs: {
+        edit: {
+            name: document.getElementById("inputEditName"),
+            table: document.getElementById("inputEditTable")
+        }
     }
 }
