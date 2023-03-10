@@ -16,7 +16,7 @@ var edit = {
     },
     save: function () {
             studySetData.name = elements.inputs.edit.name.value;
-            studySetData.set = arrayFromTable(elements.inputs.edit.table);
+            studySetData.set = makeArrayFromTable(elements.inputs.edit.table);
     },
     makeArrayFromTable: function (element) {
         tableData = element.rows
