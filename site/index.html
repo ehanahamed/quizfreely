@@ -44,17 +44,17 @@ See license file: https://src.ehan.dev/quizfreely/LICENSE.txt
     <section id="load">
       <h2>Create or Load a Study Set to Edit</h3>
         <p>Create a new study set...</p>
-        <button onclick="sections.buttons.create();">Create</button>
+        <button id="buttonCreate" onclick="sections.buttons.create();">Create</button>
         <p>...or import an existing one</p>
-        <button onclick="sections.buttons.importOptions();">Import</button>
+        <button id="buttonImportOptions" onclick="sections.buttons.importOptions();">Import</button>
     </section>
     <!--
     Import section
     -->
-    <section id="importOptions">
+    <section id="sectionImportOptions">
       <h2>Import a Study Set to Edit</h3>
         <p>Import from local files</p>
-        <button onclick="sections.buttons.importLocal();">Import Local File</button>
+        <button id="buttonImportLocal" onclick="sections.buttons.importLocal();">Import Local File</button>
         <p>Import from other apps</p>
         <button onclick="">Coming Soon</button>
         <p>Other import options</p>
