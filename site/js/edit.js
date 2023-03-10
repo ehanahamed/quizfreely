@@ -18,7 +18,7 @@ var edit = {
         studySetData = studySet.create();
     },
     add: function() {
-        elements.edit.table.insertRow(elements.edit.table.rows.length - 1)
+        elements.inputs.edit.table.insertRow(elements.inputs.edit.table.rows.length - 1)
             .insertCell(0).innerHTML = "<input type='text' placeholder='Term'></input>"
             .insertCell(1).innerHTML = "<textarea rows='2' placeholder='Definition'></textarea>";
     },
