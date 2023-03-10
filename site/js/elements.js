@@ -14,7 +14,7 @@ var elements = {
         exportOptions: document.getElementById("sectionExportOptions"),
     },
     buttons: {
-        create: document.getElementById("buttonCreate"),
+        make: document.getElementById("buttonMake"),
         importOptions: document.getElementById("buttonImportOptions")
     },
     inputs: {
