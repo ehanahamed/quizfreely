@@ -8,34 +8,9 @@ See license file: https://src.ehan.dev/quizfreely/LICENSE.txt
 var sections = {
     init: function () {
         elements.sections.load.style.display = "block";
-        sectionImportOptions.style.display = "none";
-        sectionImportLocal.style.display = "none";
-        sectionEdit.style.display = "none";
-        sectionExport.style.display = "none";
-    },
-    buttons: {
-        create: function () {
-            edit.create();
-
-            sectionLoad.style.display = "none";
-            sectionImportOptions.style.display = "none";
-            sectionImportLocal.style.display = "none";
-            sectionEdit.style.display = "block";
-            sectionExport.style.display = "none";
-        },
-        importOptions: function () {
-            sectionLoad.style.display = "none";
-            sectionImportOptions.style.display = "block";
-            sectionImportLocal.style.display = "none";
-            sectionEdit.style.display = "none";
-            sectionExport.style.display = "none";
-        },
-        importLocal: function () {
-            sectionLoad.style.display = "none";
-            sectionImportOptions.style.display = "none";
-            sectionImportLocal.style.display = "block";
-            sectionEdit.style.display = "none";
-            sectionExport.style.display = "none";
-        }
+        elements.sections.importOptions.style.display = "none";
+        elements.sections.importLocal.style.display = "none";
+        elements.sections.edit.style.display = "none";
+        elements.sections.exportOptions.style.display = "none";
     }
 }
