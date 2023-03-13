@@ -6,6 +6,9 @@ See license file: https://src.ehan.dev/quizfreely/LICENSE.txt
 */
 
 var exportLocal = {
+  save: function () {
+    elements.buttons.exportLocal.download.href = exportLocal.makeBlobUrl(JSON.stringify(studySetData), "application/json");
+  },
   makeBlobUrl: function (content, mimetype) {
     return URL.createObjectURL(new Blob([content], { type: mimetype }));
   }
