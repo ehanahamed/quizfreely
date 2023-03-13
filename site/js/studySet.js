@@ -13,7 +13,7 @@ var studySet = {
       creator: "",
       settings: settings,
       metadata: metadata,
-      set: []
+      data: []
     }
   },
   /*
@@ -27,7 +27,7 @@ var studySet = {
       "debug": false,
     },
     metadata: "20230307",
-    set: [
+    data: [
       ["term","definition"],
       ["there are","arrays in this array for each row of the table"]
     ]
