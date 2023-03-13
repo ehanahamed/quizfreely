@@ -25,6 +25,7 @@ var edit = {
     save: function () {
             studySetData.name = elements.inputs.edit.name.value;
             studySetData.data = edit.makeArrayFromTable(elements.inputs.edit.table);
+            exportLocal.save();
     },
     makeArrayFromTable: function (element) {
         var tableArray = [];
