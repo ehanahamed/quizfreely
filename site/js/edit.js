@@ -10,7 +10,7 @@ var edit = {
         studySetData = studySet.make();
     },
     load: function (importContent) {
-        studySetData = importContent;
+        studySetData = JSON.parse(importContent);
         edit.makeTableFromArray(studySetData.data, elements.inputs.edit.table);
     },
     add: function() {
