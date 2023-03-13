@@ -1,4 +1,4 @@
-.extra-table-end {
+.table-end {
     background-color: var(--blueishFaded2) !important;
 }
 
@@ -10,4 +10,8 @@ input[type="file"] {
     opacity: 0;
     z-index: -1;
     position: absolute;
+}
+
+h1 {
+    color: var(--purpleish) !important;
 }
