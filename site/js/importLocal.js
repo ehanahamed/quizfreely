@@ -7,15 +7,15 @@ See license file: https://src.ehan.dev/quizfreely/LICENSE.txt
 
 var importLocal = {
     init: function () {
-        var importLocalInput = document.getElementById("importLocalInput");
-        importLocalInput.onchange = function() {
+        elements.inputs.importLocal.file.onchange = function () {
             importLocal.input();
         };
     },
-    buttons: {
-        fileSelect: function() {
-            var importLocalInput = document.getElementById("importLocalInput");
-            importLocalInput.click();
-        }
+    input: function () {
+        var fileReader = new FileReader();
+        fileReader.onload = function (event) {
+            console.log(event.target.result);
+        };
+        fileReader.readAsText(elements.inputs.importLocal.file.files[0]);
     }
 };
