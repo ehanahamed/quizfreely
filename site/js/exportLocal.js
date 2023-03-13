@@ -7,8 +7,8 @@ See license file: https://src.ehan.dev/quizfreely/LICENSE.txt
 
 var exportLocal = {
   save: function () {
-    elements.buttons.exportLocal.download.href = exportLocal.makeBlobUrl(JSON.stringify(studySetData), "application/json");
-    elements.buttons.exportLocal.download.download = studySetData.name + ".json"
+    elements.links.exportLocal.download.href = exportLocal.makeBlobUrl(JSON.stringify(studySetData), "application/json");
+    elements.links.exportLocal.download.download = studySetData.name + ".json"
   },
   makeBlobUrl: function (content, mimetype) {
     return URL.createObjectURL(new Blob([content], { type: mimetype }));
