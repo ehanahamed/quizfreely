@@ -16,7 +16,10 @@ var elements = {
     },
     buttons: {
         make: document.getElementById("buttonMake"),
-        importOptions: document.getElementById("buttonImportOptions")
+        importOptions: document.getElementById("buttonImportOptions"),
+        exportOptions: {
+            download: document.getElementById("buttonExportOptionsDownload")
+        }
     },
     inputs: {
         importLocal: {
