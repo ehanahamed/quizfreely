@@ -5,10 +5,7 @@ Licensed under the UPL-1.0 License
 See license file: https://src.ehan.dev/quizfreely/LICENSE.txt
 */
 
-var downloader = {
-  makeBlob: function (content, mimetype) {
-    return new Blob([content], { type: mimetype })
-  },
+var exportLocal = {
   makeBlobUrl: function (content, mimetype) {
     return URL.createObjectURL(new Blob([content], { type: mimetype }));
   }
