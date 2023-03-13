@@ -19,11 +19,10 @@ var edit = {
             studySetData.data = edit.makeArrayFromTable(elements.inputs.edit.table);
     },
     makeArrayFromTable: function (element) {
-        tableRows = element.rows
-        tableArray = []
-        for (var i = 1; i < tableRows.length - 1; i++) {
-            tableCells = tableRows[i].children
-            row = []
+        var tableArray = [];
+        for (var i = 1; i < element.rows.length - 1; i++) {
+            var row = [];
+            var tableCells = element.rows[i].children;
             for (var i2 = 0; i2 < tableCells.length; i2++) {
                 row.push(tableCells[i2].children[0].value);
             }
