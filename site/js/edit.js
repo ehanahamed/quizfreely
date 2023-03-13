@@ -19,15 +19,15 @@ var edit = {
             studySetData.set = edit.makeArrayFromTable(elements.inputs.edit.table);
     },
     makeArrayFromTable: function (element) {
-        tableData = element.rows
-        tableDataArray = []
-        for (var i = 1; i < tableData.length - 1; i++) {
-            tableRows = tableData[i].children
+        tableRows = element.rows
+        tableArray = []
+        for (var i = 1; i < tableRows.length - 1; i++) {
+            tableCells = tableRows[i].children
             row = []
-            for (var i2 = 0; i2 < tableRows.length; i2++) {
-                row.push(tableRows[i2].children[0].value);
+            for (var i2 = 0; i2 < tableCells.length; i2++) {
+                row.push(tableCells[i2].children[0].value);
             }
-            tableDataArray.push(row)
+            tableArray.push(row)
         }
         return tableDataArray
     },
