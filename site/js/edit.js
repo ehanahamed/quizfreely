@@ -9,6 +9,10 @@ var edit = {
     make: function () {
         studySetData = studySet.make();
     },
+    load: function (importContent) {
+        studySetData = importContent;
+        edit.makeTableFromArray(studySetData, elements.inputs.edit.table);
+    },
     add: function() {
         var newRow = elements.inputs.edit.table.insertRow(elements.inputs.edit.table.rows.length - 1);
         newRow.insertCell(0).innerHTML = "<input type='text' placeholder='Term'></input>";
@@ -30,7 +34,7 @@ var edit = {
         }
         return tableArray
     },
-    makeTableFromArray: function (array, element) {
+    makeTableFromArray: function (array, table) {
         for (var i = 0; i < array.length; i++) {
             var row = array[i]
             var newRow = table.insertRow(table.rows.length - 1);
@@ -45,8 +49,6 @@ var edit = {
                     newCell.children[0].value = row[i2];
                 }
             }
-            tableArray.push(row)
         }
-        return tableDataArray
     },
 }
