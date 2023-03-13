@@ -15,6 +15,7 @@ var edit = {
     },
     load: function (importContent) {
         studySetData = JSON.parse(importContent);
+        elements.inputs.edit.name.value = studySetData.name;
         edit.makeTableFromArray(studySetData.data, elements.inputs.edit.table);
     },
     add: function() {
