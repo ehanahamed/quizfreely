@@ -20,6 +20,11 @@ var buttons = {
             sections.changeTo("importLocal");
         },
     },
+    importLocal: {
+        fileSelect: function () {
+            elements.inputs.importLocal.file.click();
+        }
+    },
     edit: {
         add: function () {
             edit.add();
