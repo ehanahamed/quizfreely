@@ -11,7 +11,7 @@ var edit = {
     },
     load: function (importContent) {
         studySetData = importContent;
-        edit.makeTableFromArray(studySetData, elements.inputs.edit.table);
+        edit.makeTableFromArray(studySetData.data, elements.inputs.edit.table);
     },
     add: function() {
         var newRow = elements.inputs.edit.table.insertRow(elements.inputs.edit.table.rows.length - 1);
