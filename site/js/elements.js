@@ -12,6 +12,7 @@ var elements = {
         importLocal: document.getElementById("sectionImportLocal"),
         edit: document.getElementById("sectionEdit"),
         exportOptions: document.getElementById("sectionExportOptions"),
+        exportLocal: document.getElementById("sectionExportLocal")
     },
     buttons: {
         make: document.getElementById("buttonMake"),
