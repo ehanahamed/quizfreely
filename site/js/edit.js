@@ -8,6 +8,10 @@ See license file: https://src.ehan.dev/quizfreely/LICENSE.txt
 var edit = {
     make: function () {
         studySetData = studySet.make();
+        
+        var newRow = elements.inputs.edit.table.insertRow(elements.inputs.edit.table.rows.length - 1);
+        newRow.insertCell(0).innerHTML = "<input type='text' placeholder='Term' value='Type here!'></input>";
+        newRow.insertCell(1).innerHTML = "<textarea rows='2' placeholder='Definition'>Type here! Drag the corner to resize.</textarea>";
     },
     load: function (importContent) {
         studySetData = JSON.parse(importContent);
