@@ -18,6 +18,9 @@ var elements = {
         importOptions: document.getElementById("buttonImportOptions")
     },
     inputs: {
+        importLocal: {
+            file: document.getElementById("inputImportLocalFile")
+        },
         edit: {
             name: document.getElementById("inputEditName"),
             table: document.getElementById("inputEditTable")
