@@ -17,9 +17,6 @@ var elements = {
     buttons: {
         make: document.getElementById("buttonMake"),
         importOptions: document.getElementById("buttonImportOptions"),
-        exportLocal: {
-            download: document.getElementById("buttonExportLocalDownload")
-        }
     },
     inputs: {
         importLocal: {
@@ -28,6 +25,11 @@ var elements = {
         edit: {
             name: document.getElementById("inputEditName"),
             table: document.getElementById("inputEditTable")
+        }
+    },
+    links: {
+        exportLocal: {
+            download: document.getElementById("linkExportLocalDownload")
         }
     }
 }
