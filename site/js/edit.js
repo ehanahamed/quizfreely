@@ -29,7 +29,7 @@ var edit = {
             }
             tableArray.push(row)
         }
-        return tableDataArray
+        return tableArray
     },
     makeTableFromArray: function (array, element) {
         for (var i = 0; i < array.length; i++) {
