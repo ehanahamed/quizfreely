@@ -41,17 +41,17 @@ See license file: https://src.ehan.dev/quizfreely/LICENSE.txt
     <!--
     "Create new" or "import existing" option selection
     -->
-    <section id="sectionLoad">
+    <div id="sectionLoad">
       <h2>Create or import a study set</h3>
         <p>Create a new study set</p>
         <button id="buttonMake" onclick="buttons.load.make();">Create new</button>
         <p>Import an existing study set to review or edit</p>
         <button id="buttonImportOptions" onclick="buttons.load.importOptions();">Import existing</button>
-    </section>
+    </div>
     <!--
     Import section
     -->
-    <section id="sectionImportOptions">
+    <div id="sectionImportOptions">
       <h2>Import a study set</h3>
         <p>Import from local files</p>
         <button id="buttonImportLocal" onclick="buttons.importOptions.importLocal();">Import local file</button>
@@ -59,16 +59,16 @@ See license file: https://src.ehan.dev/quizfreely/LICENSE.txt
         <button onclick="">Coming Soon</button>
         <p>Other import options</p>
         <button onclick="">Coming Soon</button>
-    </section>
-    <section id="sectionImportLocal">
+    </div>
+    <div id="sectionImportLocal">
       <h2>Import a local file</h2>
       <label for="importLocalInput"><button onclick="buttons.importLocal.fileSelect();">Select file</button></label>
       <input id="importLocalInput" type="file" />
-    </section>
+    </div>
     <!--
     Edit section
     -->
-    <section id="sectionEdit">
+    <div id="sectionEdit">
       <h2>Edit study set</h2>
       <label>Name</label>
       <input id="inputEditName" type="text" placeholder="Name" value="Study Set">
@@ -97,13 +97,13 @@ See license file: https://src.ehan.dev/quizfreely/LICENSE.txt
         </tbody>
       </table>
       <button id="buttonEditDone" onclick="buttons.edit.done()">Done</button>
-    </section>
+    </div>
     <!--
     Export section
     -->
-    <section id="sectionExportOptions">
+    <div id="sectionExportOptions">
       <h2>Export study Set</h2>
-    </section>
+    </div>
   </main>
   <!--
   Footer, copyright, & license
