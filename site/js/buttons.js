@@ -33,5 +33,10 @@ var buttons = {
             edit.save();
             sections.changeTo("exportOptions");
         }
-    }
+    },
+    exportOptions: {
+        exportLocal: function () {
+            sections.changeTo("exportLocal");
+        },
+    },
 }
