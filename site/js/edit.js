@@ -38,7 +38,7 @@ var edit = {
         for (var i = 0; i < array.length; i++) {
             var row = array[i]
             var newRow = table.insertRow(table.rows.length - 1);
-            for (var i2 = 0; i2 < tableCells.length; i2++) {
+            for (var i2 = 0; i2 < row.length; i2++) {
                 if (i2 === 0) {
                     var newCell = newRow.insertCell(i2)
                     newCell.innerHTML = "<input type='text' placeholder='Term'></input>";
