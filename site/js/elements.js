@@ -17,8 +17,8 @@ var elements = {
     buttons: {
         make: document.getElementById("buttonMake"),
         importOptions: document.getElementById("buttonImportOptions"),
-        exportOptions: {
-            download: document.getElementById("buttonExportOptionsDownload")
+        exportLocal: {
+            download: document.getElementById("buttonExportLocalDownload")
         }
     },
     inputs: {
