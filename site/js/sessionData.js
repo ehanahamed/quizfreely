@@ -1,0 +1,4 @@
+var sessionData = {
+    importLocal: {},
+    edit: {}
+}
