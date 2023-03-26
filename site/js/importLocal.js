@@ -14,8 +14,8 @@ var importLocal = {
     input: function () {
         var fileReader = new FileReader();
         fileReader.onload = function (event) {
-            edit.load(event.target.result);
-            sections.changeTo("edit");
+            sessionData.importLocal.fileData = event.target.result;
+            sections.changeTo("actionOptions");
         };
         fileReader.readAsText(elements.inputs.importLocal.file.files[0]);
     }
