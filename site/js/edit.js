@@ -7,16 +7,16 @@ https://src.ehan.dev/quizfreely/LICENSE.txt
 
 var edit = {
     make: function () {
-        studySetData = studySet.make();
+        sessionData.studySetData = studySet.make();
         
         var newRow = elements.inputs.edit.table.insertRow(elements.inputs.edit.table.rows.length - 1);
         newRow.insertCell(0).innerHTML = "<input type='text' placeholder='Term' value='Type here!'></input>";
         newRow.insertCell(1).innerHTML = "<textarea rows='2' placeholder='Definition'>Type here! Drag the corner to resize.</textarea>";
     },
     load: function (importContent) {
-        studySetData = JSON.parse(importContent);
-        elements.inputs.edit.name.value = studySetData.name;
-        edit.makeTableFromArray(studySetData.data, elements.inputs.edit.table);
+        sessionData.studySetData = JSON.parse(importContent);
+        elements.inputs.edit.name.value = sessionData.studySetData.name;
+        edit.makeTableFromArray(sessionData.studySetData.data, elements.inputs.edit.table);
     },
     add: function() {
         var newRow = elements.inputs.edit.table.insertRow(elements.inputs.edit.table.rows.length - 1);
@@ -24,8 +24,8 @@ var edit = {
         newRow.insertCell(1).innerHTML = "<textarea rows='2' placeholder='Definition'></textarea>";
     },
     save: function () {
-            studySetData.name = elements.inputs.edit.name.value;
-            studySetData.data = edit.makeArrayFromTable(elements.inputs.edit.table);
+            sessionData.studySetData.name = elements.inputs.edit.name.value;
+            sessionData.studySetData.data = edit.makeArrayFromTable(elements.inputs.edit.table);
             exportLocal.save();
     },
     makeArrayFromTable: function (element) {
