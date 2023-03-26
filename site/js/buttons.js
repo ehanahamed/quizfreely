@@ -25,6 +25,12 @@ var buttons = {
             elements.inputs.importLocal.file.click();
         }
     },
+    actionOptions: {
+        edit: function () {
+            edit.load(sessionData.importLocal.fileData);
+            sections.changeTo("edit");
+        }
+    },
     edit: {
         add: function () {
             edit.add();
