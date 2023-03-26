@@ -13,7 +13,8 @@ var elements = {
         actionOptions: document.getElementById("sectionActionOptions"),
         edit: document.getElementById("sectionEdit"),
         exportOptions: document.getElementById("sectionExportOptions"),
-        exportLocal: document.getElementById("sectionExportLocal")
+        exportLocal: document.getElementById("sectionExportLocal"),
+        reviewOptions: document.getElementById("sectionReviewOptions")
     },
     buttons: {
         make: document.getElementById("buttonMake"),
