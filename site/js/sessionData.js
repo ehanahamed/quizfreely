@@ -5,6 +5,5 @@ Licensed under the UPL-1.0 License
 https://src.ehan.dev/quizfreely/LICENSE.txt
 */
 var sessionData = {
-    importLocal: {},
-    edit: {}
+    importLocal: {}
 }
