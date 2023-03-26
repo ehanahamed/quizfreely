@@ -48,4 +48,10 @@ var buttons = {
             sections.changeTo("exportLocal");
         },
     },
+    reviewOptions: {
+        flashcards: function () {
+            studySet.load(sessionData.importLocal.fileData);
+            
+        }
+    }
 }
