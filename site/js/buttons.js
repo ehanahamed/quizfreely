@@ -62,6 +62,12 @@ var buttons = {
     flashcards: {
         flip: function () {
             flashcards.flip();
+        },
+        prev: function () {
+            flashcards.prev();
+        },
+        next: function () {
+            flashcards.next();
         }
     }
 }
