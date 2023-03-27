@@ -16,11 +16,6 @@ var buttons = {
         }
     },
     importOptions: {
-        importLocal: function () {
-            sections.changeTo("importLocal");
-        },
-    },
-    importLocal: {
         fileSelect: function () {
             elements.inputs.importLocal.file.click();
         }
