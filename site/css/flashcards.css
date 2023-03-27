@@ -37,6 +37,9 @@ https://src.ehan.dev/quizfreely/LICENSE.txt
     -webkit-backface-visibility: hidden;
     -moz-backface-visibility: hidden;
     transform: rotateX(0deg); /* firefox is broken, this fixes it for now? */
+    display:flex;
+    align-items: center;
+    justify-content:center;
 }
 #flashcardsCardBack {
     transform: rotateY(180deg);
