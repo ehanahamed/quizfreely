@@ -1,10 +1,15 @@
 #flashcardsContainer {
-    perspective: 1000;
+    width: 100%;
+    height: 300px;
+    perspective: 1000px;
 }
 #flashcardsCard {
-    transition: 1s;
-    transform-style: preserve-3d;
     position: relative;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    transition: transform 1s;
+    transform-style: preserve-3d;
 }
 #flashcardsCard.flashcardsFlip {
     transform: rotateY(180deg);
@@ -18,12 +23,13 @@
   border-radius: 5px;
 }
 #flashcardsCardFront, #flashcardsCardBack {
+    position: absolute;
+    width: 100%;
+    height: 100%;
     backface-visibility: hidden;
-	position: absolute;
-	top: 0;
-	left: 0;
+    -webkit-backface-visibility: hidden;
+    -moz-backface-visibility: hidden;
 }
-#flashcardsCardFront {
-    z-index: 2;
-    
+#flashcardsCardBack {
+    transform: rotateY(180deg);
 }
