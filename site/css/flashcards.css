@@ -6,6 +6,24 @@
     transform-style: preserve-3d;
     position: relative;
 }
-.flashcardsFlip {
+#flashcardsCard.flashcardsFlip {
     transform: rotateY(180deg);
+}
+#flashcardsContainer, #flashcardsCardFront, #flashcardsCardBack {
+  width: 400px;
+  height: 400px;
+  line-height: 100px;
+  text-align: center;
+  font-size: 40px;
+  border-radius: 5px;
+}
+#flashcardsCardFront, #flashcardsCardBack {
+    backface-visibility: hidden;
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+#flashcardsCardFront {
+    z-index: 2;
+    
 }
