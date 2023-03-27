@@ -27,7 +27,8 @@ var buttons = {
     },
     actionOptions: {
         edit: function () {
-            edit.load(sessionData.importLocal.fileData);
+            studySet.load(sessionData.importLocal.fileData)
+            edit.load();
             sections.changeTo("edit");
             alerts.clear();
         },
@@ -53,7 +54,8 @@ var buttons = {
     reviewOptions: {
         flashcards: function () {
             studySet.load(sessionData.importLocal.fileData);
-            
+            flashcards.load();
+            sections.changeTo("flashcards");
         }
     }
 }
