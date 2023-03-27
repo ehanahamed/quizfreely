@@ -37,7 +37,9 @@ var elements = {
     },
     alerts: {
         successImport: document.getElementById("alertSuccessImport"),
-        errorImport: document.getElementById("alertErrorImport")
+        errorImport: document.getElementById("alertErrorImport"),
+        flashcardsEnd: document.getElementById("alertFlashcardsEnd")
+
     },
     flashcards: {
         card: document.getElementById("flashcardsCard"),
