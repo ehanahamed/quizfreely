@@ -14,11 +14,11 @@ var flashcards = {
         elements.flashcards.card.classList.toggle("flip");
     },
     next: function () {
-        sessionData.flashcards += 1
+        sessionData.flashcards.index += 1
         flashcards.load(sessionData.flashcards.index);
     },
     prev: function () {
-        sessionData.flashcards -= 1
+        sessionData.flashcards.index -= 1
         flashcards.load(sessionData.flashcards.index);
     }
 }
