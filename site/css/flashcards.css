@@ -18,7 +18,7 @@ https://src.ehan.dev/quizfreely/LICENSE.txt
     transition: transform 1s;
     transform-style: preserve-3d;
 }
-#flashcardsCard.flashcardsFlip {
+#flashcardsCard.flip {
     transform: rotateY(180deg);
 }
 #flashcardsContainer, #flashcardsCardFront, #flashcardsCardBack {
