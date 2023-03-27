@@ -46,12 +46,6 @@ https://src.ehan.dev/quizfreely/LICENSE.txt
   -->
   <main>
     <!--
-    Work in Progress alert
-    -->
-    <div id="alertWorkInProgress">
-      <p class="notice">Some features are still under development and will be added soon!<br/>:D</p>
-    </div>
-    <!--
     Success import alert
     -->
     <div id="alertSuccessImport">
@@ -63,16 +57,25 @@ https://src.ehan.dev/quizfreely/LICENSE.txt
     <div id="alertErrorImport">
       <p id="error" class="notice">Error! The imported file is not a Quizfreely file!</p>
     </div>
+
     <!--
-    "Create new" or "import existing" option selection
+    Starting point ig
     -->
     <div id="sectionLoad">
+      <!--
+      Work in Progress alert
+      -->
+      <div id="alertWorkInProgress">
+        <p class="notice">Some features are still under development and will be added soon!<br/>:D</p>
+      </div>
+
       <h2>Create or import a study set</h2>
       <p>Create a new study set</p>
       <button id="buttonMake" onclick="buttons.load.make();">Create new</button>
       <p>Import an existing study set to review or edit</p>
       <button id="buttonImportOptions" onclick="buttons.load.importOptions();">Import existing</button>
     </div>
+
     <!--
     Import section
     -->
