@@ -54,7 +54,8 @@ var buttons = {
     reviewOptions: {
         flashcards: function () {
             studySet.load(sessionData.importLocal.fileData);
-            flashcards.load(0);
+            sessionData.flashcards.index = 0;
+            flashcards.load(sessionData.flashcards.index);
             sections.changeTo("flashcards");
         }
     },
