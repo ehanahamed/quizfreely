@@ -9,7 +9,6 @@ var sections = {
     init: function () {
         elements.sections.load.style.display = "block";
         elements.sections.importOptions.style.display = "none";
-        elements.sections.importLocal.style.display = "none";
         elements.sections.actionOptions.style.display = "none";
         elements.sections.edit.style.display = "none";
         elements.sections.exportOptions.style.display = "none";
@@ -20,7 +19,6 @@ var sections = {
     changeTo: function (section) {
         elements.sections.load.style.display = "none";
         elements.sections.importOptions.style.display = "none";
-        elements.sections.importLocal.style.display = "none";
         elements.sections.actionOptions.style.display = "none";
         elements.sections.edit.style.display = "none";
         elements.sections.exportOptions.style.display = "none";
