@@ -14,7 +14,8 @@ var elements = {
         edit: document.getElementById("sectionEdit"),
         exportOptions: document.getElementById("sectionExportOptions"),
         exportLocal: document.getElementById("sectionExportLocal"),
-        reviewOptions: document.getElementById("sectionReviewOptions")
+        reviewOptions: document.getElementById("sectionReviewOptions"),
+        flashcards: document.getElementById("sectionFlashcards")
     },
     buttons: {
         make: document.getElementById("buttonMake"),
