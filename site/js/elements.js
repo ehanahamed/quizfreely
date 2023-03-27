@@ -40,6 +40,8 @@ var elements = {
         errorImport: document.getElementById("alertErrorImport")
     },
     flashcards: {
-        card: document.getElementById("flashcardsCard")
+        card: document.getElementById("flashcardsCard"),
+        cardFront: document.getElementById("flashcardsCardFront"),
+        cardBack: document.getElementById("flashcardsCardBack")
     }
 }
