@@ -15,6 +15,7 @@ var importLocal = {
         var fileReader = new FileReader();
         fileReader.onload = function (event) {
             sessionData.importLocal.fileData = event.target.result;
+            alerts.clear();
             if (studySet.validate(sessionData.importLocal.fileData) === true) {
                 alerts.show("successImport");
                 sections.changeTo("actionOptions");
