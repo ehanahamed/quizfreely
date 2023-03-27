@@ -16,6 +16,10 @@ var studySet = {
       data: []
     }
   },
+  load: function (importContent) {
+    sessionData.studySetData = JSON.parse(importContent);
+    elements.inputs.edit.name.value = sessionData.studySetData.name;
+  }
   /*
   Example
 
