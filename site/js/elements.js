@@ -33,5 +33,8 @@ var elements = {
         exportLocal: {
             download: document.getElementById("linkExportLocalDownload")
         }
+    },
+    alerts: {
+        successImport: document.getElementById("alertSuccessImport")
     }
 }
