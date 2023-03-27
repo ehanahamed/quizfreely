@@ -90,17 +90,13 @@ https://src.ehan.dev/quizfreely/LICENSE.txt
     -->
     <div id="sectionImportOptions">
       <h2>Import study set</h2>
-      <p>Import from local files</p>
-      <button id="buttonImportLocal" onclick="buttons.importOptions.importLocal();">Import local file</button>
+      <p>Import a local file</p>
+      <label for="importLocalInput"><button onclick="buttons.importLocal.fileSelect();">Select file</button></label>
+      <input id="inputImportLocalFile" type="file" />
       <p>Import from other apps</p>
       <button onclick="">Coming Soon</button>
       <p>Other import options</p>
       <button onclick="">Coming Soon</button>
-    </div>
-    <div id="sectionImportLocal">
-      <h2>Import a local file</h2>
-      <label for="importLocalInput"><button onclick="buttons.importLocal.fileSelect();">Select file</button></label>
-      <input id="inputImportLocalFile" type="file" />
     </div>
     <!--
     Action section
