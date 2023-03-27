@@ -8,9 +8,11 @@ https://src.ehan.dev/quizfreely/LICENSE.txt
 var alerts = {
     init: function () {
         elements.alerts.successImport.style.display = "none";
+        elements.alerts.errorImport.style.display = "none";
     },
     clear: function () {
         elements.alerts.successImport.style.display = "none";
+        elements.alerts.errorImport.style.display = "none";
     },
     show: function (alert) {
         elements.alerts[alert].style.display = "block";
