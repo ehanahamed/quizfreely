@@ -14,11 +14,19 @@ var flashcards = {
         elements.flashcards.card.classList.toggle("flip");
     },
     next: function () {
-        sessionData.flashcards.index += 1
-        flashcards.load(sessionData.flashcards.index);
+        if (sessionData.flashcards.index < sessionData.studySetData.data.length) {
+            sessionData.flashcards.index += 1
+            flashcards.load(sessionData.flashcards.index);
+        } else {
+            alerts.show("flashcardsEnd");
+        }
     },
     prev: function () {
-        sessionData.flashcards.index -= 1
-        flashcards.load(sessionData.flashcards.index);
+        if (sessionData.flashcards.index >= 0) {
+            sessionData.flashcards.index -= 1
+            flashcards.load(sessionData.flashcards.index);
+        } else {
+            alerts.show("flashcardsEnd");
+        }
     }
 }
