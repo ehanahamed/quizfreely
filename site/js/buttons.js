@@ -29,9 +29,11 @@ var buttons = {
         edit: function () {
             edit.load(sessionData.importLocal.fileData);
             sections.changeTo("edit");
+            alerts.clear();
         },
         review: function () {
             sections.changeTo("reviewOptions");
+            alerts.clear();
         }
     },
     edit: {
