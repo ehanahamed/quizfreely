@@ -57,5 +57,10 @@ var buttons = {
             flashcards.load();
             sections.changeTo("flashcards");
         }
+    },
+    flashcards: {
+        flip: function () {
+            flashcards.flip();
+        }
     }
 }
