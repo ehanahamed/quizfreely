@@ -13,9 +13,7 @@ var edit = {
         newRow.insertCell(0).innerHTML = "<input type='text' placeholder='Term' value='Type here!'></input>";
         newRow.insertCell(1).innerHTML = "<textarea rows='2' placeholder='Definition'>Type here! Drag the corner to resize.</textarea>";
     },
-    load: function (importContent) {
-        sessionData.studySetData = JSON.parse(importContent);
-        elements.inputs.edit.name.value = sessionData.studySetData.name;
+    load: function () {
         edit.makeTableFromArray(sessionData.studySetData.data, elements.inputs.edit.table);
     },
     add: function() {
