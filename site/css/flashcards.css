@@ -1,0 +1,11 @@
+#flashcardsContainer {
+    perspective: 1000;
+}
+#flashcardsCard {
+    transition: 1s;
+    transform-style: preserve-3d;
+    position: relative;
+}
+.flashcardsFlip {
+    transform: rotateY(180deg);
+}
