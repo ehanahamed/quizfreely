@@ -4,3 +4,9 @@ Copyright (c) 2022-present Ehan Ahamed and contributors
 Licensed under the UPL-1.0 License
 https://src.ehan.dev/quizfreely/LICENSE.txt
 */
+
+var flashcards = {
+    flip: function () {
+        elements.flashcards.card.classList.toggle("flip");
+    }
+}
