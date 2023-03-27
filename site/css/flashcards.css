@@ -36,6 +36,7 @@ https://src.ehan.dev/quizfreely/LICENSE.txt
     backface-visibility: hidden;
     -webkit-backface-visibility: hidden;
     -moz-backface-visibility: hidden;
+    transform: rotateX(0deg); /* firefox is broken, this fixes it for now? */
 }
 #flashcardsCardBack {
     transform: rotateY(180deg);
