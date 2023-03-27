@@ -19,6 +19,21 @@ var studySet = {
   load: function (importContent) {
     sessionData.studySetData = JSON.parse(importContent);
     elements.inputs.edit.name.value = sessionData.studySetData.name;
+  },
+  validate: function (importContent) {
+    function isJson(string) {
+      try {
+        JSON.parse(string);
+      } catch (error) {
+        return false;
+      }
+      return true;
+    }
+    if (isJson(importContent) === true && (JSON.parse(importContent).quizfreely === "Quizfreely")) {
+      return true;
+    } else {
+      return false;
+    }
   }
   /*
   Example
