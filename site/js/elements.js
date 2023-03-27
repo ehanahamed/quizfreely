@@ -38,5 +38,8 @@ var elements = {
     alerts: {
         successImport: document.getElementById("alertSuccessImport"),
         errorImport: document.getElementById("alertErrorImport")
+    },
+    flashcards: {
+        card: document.getElementById("flashcardsCard")
     }
 }
