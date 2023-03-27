@@ -15,8 +15,12 @@ var importLocal = {
         var fileReader = new FileReader();
         fileReader.onload = function (event) {
             sessionData.importLocal.fileData = event.target.result;
-            sections.changeTo("actionOptions");
-            alerts.show("successImport");
+            if (studySet.validate(sessionData.importLocal.fileData) === true) {
+                alerts.show("successImport");
+                sections.changeTo("actionOptions");
+            } else {
+                alerts.show("errorImport");
+            }
         };
         fileReader.readAsText(elements.inputs.importLocal.file.files[0]);
     }
