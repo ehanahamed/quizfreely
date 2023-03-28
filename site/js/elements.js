@@ -12,7 +12,6 @@ var elements = {
         actionOptions: document.getElementById("sectionActionOptions"),
         edit: document.getElementById("sectionEdit"),
         exportOptions: document.getElementById("sectionExportOptions"),
-        exportLocal: document.getElementById("sectionExportLocal"),
         flashcards: document.getElementById("sectionFlashcards")
     },
     buttons: {
