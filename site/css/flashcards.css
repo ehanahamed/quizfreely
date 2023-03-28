@@ -52,18 +52,19 @@ https://src.ehan.dev/quizfreely/LICENSE.txt
 
 #flashcardsButtons {
     display: grid;
-    grid-template-rows: 1fr 1fr 1fr;
-    grid-template-areas: "prev flip next";
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: auto;
+    grid-template-areas: "prev . next" ". flip .";
 }
 #flashcardsPrev {
     grid-area: "prev";
     justify-self: start;
 }
-#flashcardsFlip {
-    grid-area: "flip";
-    justify-self: center;
-}
 #flashcardsNext {
     grid-area: "next";
     justify-self: end;
+}
+#flashcardsFlip {
+    grid-area: "flip";
+    justify-self: center;
 }
