@@ -50,11 +50,15 @@ https://src.ehan.dev/quizfreely/LICENSE.txt
     transform: rotateY(180deg);
 }
 
-#flashcardsButtons {
+#flashcardsButtons1 {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
-    grid-template-rows: auto;
-    grid-template-areas: "prev . next" ". flip .";
+    grid-template-areas: "prev . next";
+}
+#flashcardsButtons2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-areas: ". flip .";
 }
 #flashcardsPrev {
     grid-area: "prev";
