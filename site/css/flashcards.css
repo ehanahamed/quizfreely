@@ -55,7 +55,7 @@ https://src.ehan.dev/quizfreely/LICENSE.txt
     grid-template-columns: 1fr 1fr;
     grid-template-areas: "prev next";
 }
-#flashcardsButtons2 {
+#flashcardsHelp {
     display: grid;
     grid-template-columns: 1fr;
     grid-template-areas: "flip";
