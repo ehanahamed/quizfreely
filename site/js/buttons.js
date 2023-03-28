@@ -27,9 +27,11 @@ var buttons = {
             sections.changeTo("edit");
             alerts.clear();
         },
-        review: function () {
-            sections.changeTo("reviewOptions");
-            alerts.clear();
+        flashcards: function () {
+            studySet.load(sessionData.importLocal.fileData);
+            sessionData.flashcards.index = 0;
+            flashcards.load(sessionData.flashcards.index);
+            sections.changeTo("flashcards");
         }
     },
     edit: {
@@ -42,14 +44,6 @@ var buttons = {
         }
     },
     exportOptions: {
-    },
-    reviewOptions: {
-        flashcards: function () {
-            studySet.load(sessionData.importLocal.fileData);
-            sessionData.flashcards.index = 0;
-            flashcards.load(sessionData.flashcards.index);
-            sections.changeTo("flashcards");
-        }
     },
     flashcards: {
         flip: function () {
