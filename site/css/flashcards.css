@@ -21,13 +21,9 @@ https://src.ehan.dev/quizfreely/LICENSE.txt
 #flashcardsCard.flip {
     transform: rotateY(180deg);
 }
-#flashcardsContainer, #flashcardsCardFront, #flashcardsCardBack {
+#flashcardsContainer {
   width: 100%;
-  height: 200px;
-  line-height: 100px;
-  text-align: center;
-  font-size: 40px;
-  border-radius: 5px;
+  height: 280px;
 }
 #flashcardsCardFront, #flashcardsCardBack {
     position: absolute;
@@ -39,8 +35,16 @@ https://src.ehan.dev/quizfreely/LICENSE.txt
     transform: rotateX(0deg); /* firefox is broken, this fixes it for now? */
     display:flex;
     align-items: center;
-    justify-content:center;
+    justify-content: center;
+    text-align: center;
+    border-radius: 5px;
+}
+#flashcardsFront {
+    line-height: 60px;
+    font-size: 40px;
 }
 #flashcardsCardBack {
+    line-height: 10px;
+    font-size: 20px;
     transform: rotateY(180deg);
 }
