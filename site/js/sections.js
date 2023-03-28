@@ -12,7 +12,6 @@ var sections = {
         elements.sections.actionOptions.style.display = "none";
         elements.sections.edit.style.display = "none";
         elements.sections.exportOptions.style.display = "none";
-        elements.sections.exportLocal.style.display = "none";
         elements.sections.reviewOptions.style.display = "none";
         elements.sections.flashcards.style.display = "none";
     },
@@ -22,7 +21,6 @@ var sections = {
         elements.sections.actionOptions.style.display = "none";
         elements.sections.edit.style.display = "none";
         elements.sections.exportOptions.style.display = "none";
-        elements.sections.exportLocal.style.display = "none";
         elements.sections.reviewOptions.style.display = "none";
         elements.sections.flashcards.style.display = "none";
         elements.sections[section].style.display = "block";
