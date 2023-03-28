@@ -49,3 +49,21 @@ https://src.ehan.dev/quizfreely/LICENSE.txt
     font-size: 20px;
     transform: rotateY(180deg);
 }
+
+#flashcardsButtons {
+    display: grid;
+    grid-template-rows: 1fr 1fr 1fr;
+    grid-template-areas: "prev flip next";
+}
+#flashcardsPrev {
+    grid-area: "prev";
+    justify-self: start;
+}
+#flashcardsFlip {
+    grid-area: "flip";
+    justify-self: center;
+}
+#flashcardsNext {
+    grid-area: "next";
+    justify-self: end;
+}
