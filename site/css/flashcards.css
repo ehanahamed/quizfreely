@@ -52,13 +52,13 @@ https://src.ehan.dev/quizfreely/LICENSE.txt
 
 #flashcardsButtons1 {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    grid-template-areas: "prev . next";
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas: "prev next";
 }
 #flashcardsButtons2 {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    grid-template-areas: ". flip .";
+    grid-template-columns: 1fr;
+    grid-template-areas: "flip";
 }
 #flashcardsPrev {
     grid-area: "prev";
