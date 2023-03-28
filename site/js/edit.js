@@ -10,8 +10,8 @@ var edit = {
         sessionData.studySetData = studySet.make();
         
         var newRow = elements.inputs.edit.table.insertRow(elements.inputs.edit.table.rows.length - 1);
-        newRow.insertCell(0).innerHTML = "<input type='text' placeholder='Term' value='Type here!'></input>";
-        newRow.insertCell(1).innerHTML = "<textarea rows='2' placeholder='Definition'>Type here! Drag the corner to resize.</textarea>";
+        newRow.insertCell(0).innerHTML = "<input type='text' placeholder='Term'></input>";
+        newRow.insertCell(1).innerHTML = "<textarea rows='2' placeholder='Definition'></textarea>";
     },
     load: function () {
         edit.makeTableFromArray(sessionData.studySetData.data, elements.inputs.edit.table);
