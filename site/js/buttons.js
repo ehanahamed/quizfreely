@@ -42,9 +42,6 @@ var buttons = {
         }
     },
     exportOptions: {
-        exportLocal: function () {
-            sections.changeTo("exportLocal");
-        },
     },
     reviewOptions: {
         flashcards: function () {
