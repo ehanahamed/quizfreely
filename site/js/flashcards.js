@@ -14,7 +14,7 @@ var flashcards = {
         elements.flashcards.card.classList.toggle("flip");
     },
     next: function () {
-        if (sessionData.flashcards.index < sessionData.studySetData.data.length) {
+        if (sessionData.flashcards.index < sessionData.studySetData.data.length - 1) {
             sessionData.flashcards.index += 1
             flashcards.load(sessionData.flashcards.index);
         } else {
@@ -22,7 +22,7 @@ var flashcards = {
         }
     },
     prev: function () {
-        if (sessionData.flashcards.index >= 0) {
+        if (sessionData.flashcards.index >= 1) {
             sessionData.flashcards.index -= 1
             flashcards.load(sessionData.flashcards.index);
         } else {
