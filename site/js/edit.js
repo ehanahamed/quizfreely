@@ -14,11 +14,11 @@ var edit = {
         edit.makeTableFromArray(sessionData.studySetData.data, elements.inputs.edit.table);
     },
     add: function() {
+        var newIndex = elements.inputs.edit.table.rows.length - 1;
         var newRow = elements.inputs.edit.table.insertRow(elements.inputs.edit.table.rows.length - 1);
         newRow.insertCell(0).innerHTML = "<input type='text' placeholder='Term'></input>";
         newRow.insertCell(1).innerHTML = "<textarea rows='2' placeholder='Definition'></textarea>";
-        newRow.insertCell(2).innerHTML = "<button onclick='edit.remove("+newRow.index+")'>X ("+newRow.index+")</button>";
-        console.log(newRow);
+        newRow.insertCell(2).innerHTML = "<button onclick='edit.remove("+newIndex+")'>X ("+newIndex+")</button>";
     },
     save: function () {
             sessionData.studySetData.name = elements.inputs.edit.name.value;
