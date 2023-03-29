@@ -13,16 +13,12 @@ var edit = {
     load: function () {
         edit.makeTableFromArray(sessionData.studySetData.data, elements.inputs.edit.table);
     },
-    insert: function (index) {
-        var newRow = elements.inputs.edit.table.insertRow(index);
+    add: function() {
+        var newIndex = elements.inputs.edit.table.rows.length - 1;
+        var newRow = elements.inputs.edit.table.insertRow(elements.inputs.edit.table.rows.length - 1);
         newRow.insertCell(0).innerHTML = "<input type='text' placeholder='Term'></input>";
         newRow.insertCell(1).innerHTML = "<textarea rows='2' placeholder='Definition'></textarea>";
-        newRow.insertCell(2).innerHTML = "<button onclick='edit.remove("+index+")'>✕</button>";
-        newRow.insertCell(3).innerHTML = "<button onclick='edit.move("+index+","+index+"-1)'>↑</button>";
-        newRow.insertCell(4).innerHTML = "<button onclick='edit.move("+index+","+index+"+1)'>↓</button>";
-    },
-    add: function() {
-        edit.insert(elements.inputs.edit.table.rows.length - 1);
+        newRow.insertCell(2).innerHTML = "<button onclick='edit.remove("+newIndex+")'>X</button>";
     },
     save: function () {
             sessionData.studySetData.name = elements.inputs.edit.name.value;
@@ -31,16 +27,6 @@ var edit = {
     },
     remove: function (index) {
         elements.inputs.edit.table.deleteRow(index);
-    },
-    move: function (index, newIndex) {
-        edit.insert(newIndex); /* insert new row */
-
-        /* copy old rows input into new row */
-        elements.inputs.edit.table.rows[newIndex].children[0].children[0].value = elements.inputs.edit.table.rows[index].children[0].children[0].value;
-        elements.inputs.edit.table.rows[newIndex].children[1].children[0].value = elements.inputs.edit.table.rows[index].children[1].children[0].value;
-       
-       /* remove old row */
-        edit.remove(index);
     },
     makeArrayFromTable: function (element) {
         var tableArray = [];
