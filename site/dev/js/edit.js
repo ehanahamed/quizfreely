@@ -20,7 +20,7 @@ var edit = {
         newRow.insertCell(1).innerHTML = "<textarea rows='2' placeholder='Definition'></textarea>";
         var newRmButton = newRow.insertCell(2);
         newRmButton.innerHTML = "<button>X</button>";
-        newRmButton.addEventListener("click", function (event) { edit.remove(event.target.rowIndex) });        
+        newRmButton.addEventListener("click", function (event) { edit.remove(event.target.parentElement.parentElement.rowIndex) });        
     },
     save: function () {
             sessionData.studySetData.name = elements.inputs.edit.name.value;
