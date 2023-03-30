@@ -20,15 +20,15 @@ var edit = {
         newRow.insertCell(1).innerHTML = "<textarea rows='2' placeholder='Definition'></textarea>";
         var newRmButton = newRow.insertCell(2);
         newRmButton.innerHTML = "<button>X</button>";
-        newRmButton.addEventListener("");        
+        newRmButton.addEventListener("click", function (event) { edit.remove(event.target.rowIndex) });        
     },
     save: function () {
             sessionData.studySetData.name = elements.inputs.edit.name.value;
             sessionData.studySetData.data = edit.makeArrayFromTable(elements.inputs.edit.table);
             exportLocal.save();
     },
-    remove: function () {
-        elements.inputs.edit.table.deleteRow();
+    remove: function (index) {
+        elements.inputs.edit.table.deleteRow(index);
     },
     makeArrayFromTable: function (element) {
         var tableArray = [];
