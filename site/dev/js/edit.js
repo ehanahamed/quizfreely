@@ -19,7 +19,7 @@ var edit = {
         newRow.insertCell(0).innerHTML = "<input type='text' placeholder='Term'></input>";
         newRow.insertCell(1).innerHTML = "<textarea rows='2' placeholder='Definition'></textarea>";
         var newActions = newRow.insertCell(2);
-        newActions.innerHTML = "<button>X</button><button>↕</button>";
+        newActions.innerHTML = "<button>X</button> <button>move</button>";
         newActions.children[0].addEventListener("click", function (event) { edit.remove(event.target.parentElement.parentElement.rowIndex) });
         newActions.children[1].addEventListener("click", function (event) { edit.remove(event.target.parentElement.parentElement.rowIndex) });        
     },
