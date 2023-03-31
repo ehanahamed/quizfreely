@@ -31,6 +31,9 @@ var edit = {
     remove: function (index) {
         elements.inputs.edit.table.deleteRow(index);
     },
+    move: function () {
+        
+    },
     makeArrayFromTable: function (element) {
         var tableArray = [];
         for (var i = 1; i < element.rows.length - 1; i++) {
