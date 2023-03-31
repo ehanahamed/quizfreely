@@ -21,7 +21,8 @@ var edit = {
         var newActions = newRow.insertCell(2);
         newActions.innerHTML = "<button>RM</button> <button>MV</button>";
         newActions.children[0].addEventListener("click", function (event) { edit.remove(event.target.parentElement.parentElement.rowIndex) });
-        newActions.children[1].addEventListener("click", function (event) { edit.remove(event.target.parentElement.parentElement.rowIndex) });        
+        newActions.children[1].addEventListener("dragstart", function (event) { edit.move.dragstart(event) });
+        newActions.children[1].addEventListener("dragover", function (event) { edit.move.dragover(event) });        
     },
     save: function () {
             sessionData.studySetData.name = elements.inputs.edit.name.value;
@@ -31,8 +32,15 @@ var edit = {
     remove: function (index) {
         elements.inputs.edit.table.deleteRow(index);
     },
-    move: function () {
-        
+    move: {
+        dragstart: function (event) {
+            tempData.edit.table.drag.row = event.target.parentElement.parentElement;
+        },
+        dragover: function (event) {
+            event.preventDefault;
+
+  e.target.parentNode.after(row);
+        }
     },
     makeArrayFromTable: function (element) {
         var tableArray = [];
