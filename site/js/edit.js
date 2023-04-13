@@ -59,12 +59,8 @@ var edit = {
             } else if (index < newIndex) {
                 newOldIndex = index;
             }
-            if (typeof elements.inputs.edit.table.rows[newIndex].children[0].children[0].value !== "undefined") {
-                elements.inputs.edit.table.rows[newIndex].children[0].children[0].value = elements.inputs.edit.table.rows[newOldIndex].children[0].children[0].value;
-            }
-            if (typeof elements.inputs.edit.table.rows[newIndex].children[1].children[0].value !== "undefined") {
-                elements.inputs.edit.table.rows[newIndex].children[1].children[0].value = elements.inputs.edit.table.rows[newOldIndex].children[1].children[0].value;
-            }
+            elements.inputs.edit.table.rows[newIndex].children[0].children[0].value = elements.inputs.edit.table.rows[newOldIndex].children[0].children[0].value;
+            elements.inputs.edit.table.rows[newIndex].children[1].children[0].value = elements.inputs.edit.table.rows[newOldIndex].children[1].children[0].value;
             edit.remove(newOldIndex);
         }
     },
