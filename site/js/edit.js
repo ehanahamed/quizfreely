@@ -35,20 +35,22 @@ var edit = {
         elements.inputs.edit.table.deleteRow(index);
     },
     move: function (index, newIndex) {
-        edit.insert(newIndex);
-        var newOldIndex;
-        if (index > newIndex) {
-            newOldIndex = index + 1;
-        } else if (index < newIndex) {
-            newOldIndex = index;
+        if ((index !== newIndex) && (index !== 1) && (index < elements.inputs.edit.table.rows.length - 1)) {
+            edit.insert(newIndex);
+            var newOldIndex;
+            if (index > newIndex) {
+                newOldIndex = index + 1;
+            } else if (index < newIndex) {
+                newOldIndex = index;
+            }
+            if (typeof elements.inputs.edit.table.rows[newIndex].children[0].children[0].value !== "undefined") {
+                elements.inputs.edit.table.rows[newIndex].children[0].children[0].value = elements.inputs.edit.table.rows[newOldIndex].children[0].children[0].value;
+            }
+            if (typeof elements.inputs.edit.table.rows[newIndex].children[1].children[0].value !== "undefined") {
+                elements.inputs.edit.table.rows[newIndex].children[1].children[0].value = elements.inputs.edit.table.rows[newOldIndex].children[1].children[0].value;
+            }
+            edit.remove(newOldIndex);
         }
-        if (typeof elements.inputs.edit.table.rows[newIndex].children[0].children[0].value !== "undefined") {
-            elements.inputs.edit.table.rows[newIndex].children[0].children[0].value = elements.inputs.edit.table.rows[newOldIndex].children[0].children[0].value;
-        }
-        if (typeof elements.inputs.edit.table.rows[newIndex].children[1].children[0].value !== "undefined") {
-            elements.inputs.edit.table.rows[newIndex].children[1].children[0].value = elements.inputs.edit.table.rows[newOldIndex].children[1].children[0].value;
-        }
-        edit.remove(newOldIndex);
     },
     makeArrayFromTable: function (element) {
         var tableArray = [];
