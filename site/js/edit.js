@@ -35,7 +35,15 @@ var edit = {
         elements.inputs.edit.table.deleteRow(index);
     },
     move: function (index, newIndex) {
-        if ((index !== newIndex) && (index !== 1) && (index < elements.inputs.edit.table.rows.length - 1)) {
+        if (
+            (index !== newIndex) &&
+            (
+                (index > newIndex) && (index !== 1)
+            ) &&
+            (
+                (index < newIndex) && (index < elements.inputs.edit.table.rows.length - 2)
+            )
+        ) {
             edit.insert(newIndex);
             var newOldIndex;
             if (index > newIndex) {
