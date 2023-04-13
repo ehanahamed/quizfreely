@@ -36,13 +36,19 @@ var edit = {
     },
     move: function (index, newIndex) {
         edit.insert(newIndex);
+        var newOldIndex;
+        if (index > newIndex) {
+            newOldIndex = index + 1;
+        } else if (index < newIndex) {
+            newOldIndex = index;
+        }
         if (typeof elements.inputs.edit.table.rows[newIndex].children[0].children[0].value !== "undefined") {
-            elements.inputs.edit.table.rows[newIndex].children[0].children[0].value = elements.inputs.edit.table.rows[index].children[0].children[0].value;
+            elements.inputs.edit.table.rows[newIndex].children[0].children[0].value = elements.inputs.edit.table.rows[newOldIndex].children[0].children[0].value;
         }
         if (typeof elements.inputs.edit.table.rows[newIndex].children[1].children[0].value !== "undefined") {
-            elements.inputs.edit.table.rows[newIndex].children[1].children[0].value = elements.inputs.edit.table.rows[index].children[1].children[0].value;
+            elements.inputs.edit.table.rows[newIndex].children[1].children[0].value = elements.inputs.edit.table.rows[newOldIndex].children[1].children[0].value;
         }
-        edit.remove(index);
+        edit.remove(newOldIndex);
     },
     makeArrayFromTable: function (element) {
         var tableArray = [];
