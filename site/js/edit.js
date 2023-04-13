@@ -36,8 +36,12 @@ var edit = {
     },
     move: function (index, newIndex) {
         edit.insert(newIndex);
-        elements.inputs.edit.table.rows[newIndex].children[0].children[0].value = elements.inputs.edit.table.rows[index].children[0].children[0].value;
-        elements.inputs.edit.table.rows[newIndex].children[1].children[1].value = elements.inputs.edit.table.rows[index].children[1].children[1].value;
+        if (typeof elements.inputs.edit.table.rows[newIndex].children[0].children[0].value !== "undefined") {
+            elements.inputs.edit.table.rows[newIndex].children[0].children[0].value = elements.inputs.edit.table.rows[index].children[0].children[0].value;
+        }
+        if (typeof elements.inputs.edit.table.rows[newIndex].children[1].children[1].value !== "undefined") {
+            elements.inputs.edit.table.rows[newIndex].children[1].children[1].value = elements.inputs.edit.table.rows[index].children[1].children[1].value;
+        }
         edit.remove(index);
     },
     makeArrayFromTable: function (element) {
