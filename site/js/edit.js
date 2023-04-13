@@ -23,7 +23,7 @@ var edit = {
         var actions = newRow.insertCell(2);
         actions.innerHTML = "<button>X</button><button>/\\</button><button>\\/</button>";
         actions.children[0].addEventListener("click", function (event) { edit.remove(event.target.parentElement.parentElement.rowIndex) });
-        actions.children[1].addEventListener("click", function (event) { edit.move(event.target.parentElement.parentElement.rowIndex, event.target.parentElement.parentElement.rowIndex - 2)});
+        actions.children[1].addEventListener("click", function (event) { edit.move(event.target.parentElement.parentElement.rowIndex, event.target.parentElement.parentElement.rowIndex - 1)});
         actions.children[2].addEventListener("click", function (event) { edit.move(event.target.parentElement.parentElement.rowIndex, event.target.parentElement.parentElement.rowIndex + 2)});
     },
     save: function () {
