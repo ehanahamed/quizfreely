@@ -14,8 +14,10 @@ var edit = {
         edit.makeTableFromArray(sessionData.studySetData.data, elements.inputs.edit.table);
     },
     add: function() {
-        var newIndex = elements.inputs.edit.table.rows.length - 1;
-        var newRow = elements.inputs.edit.table.insertRow(elements.inputs.edit.table.rows.length - 1);
+        edit.insert(elements.inputs.edit.table.rows.length - 1);
+    },
+    insert: function(index) {
+        var newRow = elements.inputs.edit.table.insertRow(index);
         newRow.insertCell(0).innerHTML = "<input type='text' placeholder='Term'></input>";
         newRow.insertCell(1).innerHTML = "<textarea rows='2' placeholder='Definition'></textarea>";
         var actions = newRow.insertCell(2);
@@ -32,12 +34,10 @@ var edit = {
     remove: function (index) {
         elements.inputs.edit.table.deleteRow(index);
     },
-    move: function (index, dir) {
-        if (dir === "up") {
-            console.log("moved (not really) " + index + " up")
-        } else if (dir === "down") {
-            console.log("moved (not really) " + index + " down")
-        }
+    move: function (index, newIndex) {
+        edit.insert(newIndex);
+        elements.inputs.edit.table.rows[newIndex].innerHTML = elements.inputs.edit.table.rows[index].innerHTML;
+        edit.remove(index);
     },
     makeArrayFromTable: function (element) {
         var tableArray = [];
