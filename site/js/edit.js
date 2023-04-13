@@ -19,7 +19,7 @@ var edit = {
         newRow.insertCell(0).innerHTML = "<input type='text' placeholder='Term'></input>";
         newRow.insertCell(1).innerHTML = "<textarea rows='2' placeholder='Definition'></textarea>";
         var actions = newRow.insertCell(2);
-        actions.innerHTML = "<button>X</button><button>/\</button><button>\/</button>";
+        actions.innerHTML = "<button>X</button><button>/\\</button><button>\\/</button>";
         actions.children[0].addEventListener("click", function (event) { edit.remove(event.target.parentElement.parentElement.rowIndex) });
         actions.children[1].addEventListener("click", function (event) { edit.move(event.target.parentElement.parentElement.rowIndex, "up")});
         actions.children[2].addEventListener("click", function (event) { edit.move(event.target.parentElement.parentElement.rowIndex, "down")});
