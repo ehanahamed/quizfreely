@@ -18,9 +18,11 @@ var edit = {
         var newRow = elements.inputs.edit.table.insertRow(elements.inputs.edit.table.rows.length - 1);
         newRow.insertCell(0).innerHTML = "<input type='text' placeholder='Term'></input>";
         newRow.insertCell(1).innerHTML = "<textarea rows='2' placeholder='Definition'></textarea>";
-        var newRmButton = newRow.insertCell(2);
-        newRmButton.innerHTML = "<button>X</button>";
-        newRmButton.addEventListener("click", function (event) { edit.remove(event.target.parentElement.parentElement.rowIndex) });        
+        var actions = newRow.insertCell(2);
+        actions.innerHTML = "<button>X</button><button>/\</button><button>\/</button>";
+        actions.children[0].addEventListener("click", function (event) { edit.remove(event.target.parentElement.parentElement.rowIndex) });
+        actions.children[1].addEventListener("click", function (event) { edit.move(event.target.parentElement.parentElement.rowIndex, "up")});
+        actions.children[2].addEventListener("click", function (event) { edit.move(event.target.parentElement.parentElement.rowIndex, "down")});
     },
     save: function () {
             sessionData.studySetData.name = elements.inputs.edit.name.value;
@@ -29,6 +31,13 @@ var edit = {
     },
     remove: function (index) {
         elements.inputs.edit.table.deleteRow(index);
+    },
+    move: function (index, dir) {
+        if (dir === "up") {
+            console.log("moved (not really) " + index + " up")
+        } else if (dir === "down") {
+            console.log("moved (not really) " + index + " down")
+        }
     },
     makeArrayFromTable: function (element) {
         var tableArray = [];
