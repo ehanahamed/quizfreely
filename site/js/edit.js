@@ -91,8 +91,8 @@ var edit = {
             } else if (index < newIndex) {
                 newOldIndex = index;
             }
-            elements.inputs.edit.table.rows[newIndex].children[0].children[0].children[0].value = elements.inputs.edit.table.rows[newOldIndex].children[0].children[0].value;
-            elements.inputs.edit.table.rows[newIndex].children[0].children[1].children[0].value = elements.inputs.edit.table.rows[newOldIndex].children[1].children[0].value;
+            elements.inputs.edit.table.rows[newIndex].children[0].children[0].value = elements.inputs.edit.table.rows[newOldIndex].children[0].children[0].value;
+            elements.inputs.edit.table.rows[newIndex].children[1].children[0].value = elements.inputs.edit.table.rows[newOldIndex].children[1].children[0].value;
             edit.remove(newOldIndex);
         }
     },
@@ -115,8 +115,8 @@ var edit = {
             
             edit.add();
 
-            table.rows[i + 1].children[0].children[0].children[0].value = row[0]
-            table.rows[i + 1].children[0].children[1].children[0].value = row[1]
+            table.rows[i + 1].children[0].children[0].value = row[0]
+            table.rows[i + 1].children[1].children[0].value = row[1]
         }
     },
 }
