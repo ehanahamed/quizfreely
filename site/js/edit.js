@@ -14,7 +14,7 @@ var edit = {
         edit.makeTableFromArray(sessionData.studySetData.data, elements.inputs.edit.table);
     },
     add: function() {
-        edit.insert(elements.inputs.edit.table.rows.length - 1);
+        edit.insert(elements.inputs.edit.table.rows.length);
     },
     insert: function(index) {
         var newRow = elements.inputs.edit.table.insertRow(index);
@@ -47,7 +47,7 @@ var edit = {
             (
                 (
                     (index < newIndex) &&
-                    (index < elements.inputs.edit.table.rows.length - 2)
+                    (index < elements.inputs.edit.table.rows.length - 1)
                 ) ||
                 (index > newIndex)
             )
@@ -66,7 +66,7 @@ var edit = {
     },
     makeArrayFromTable: function (element) {
         var tableArray = [];
-        for (var i = 1; i < element.rows.length - 1; i++) {
+        for (var i = 1; i < element.rows.length; i++) {
             var row = [];
             var tableCells = element.rows[i].children;
             
