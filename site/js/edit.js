@@ -33,6 +33,9 @@ var edit = {
     },
     remove: function (index) {
         elements.inputs.edit.table.deleteRow(index);
+        if (index < 2) {
+            edit.add();
+        }
     },
     move: function (index, newIndex) {
         /*
