@@ -13,18 +13,18 @@ var edit = {
     load: function () {
         edit.makeTableFromArray(sessionData.studySetData.data, elements.inputs.edit.table);
     },
-    add: function() {
-        edit.insert(elements.inputs.edit.table.rows.length - 1);
-    },
     insert: function(index) {
         var newRow = elements.inputs.edit.table.insertRow(index);
         newRow.insertCell(0).innerHTML = "<input type='text' placeholder='Term'></input>";
         newRow.insertCell(1).innerHTML = "<textarea rows='2' placeholder='Definition'></textarea>";
         var actions = newRow.insertCell(2);
-        actions.innerHTML = "<button>X</button><button>/\\</button><button>\\/</button>";
-        actions.children[0].addEventListener("click", function (event) { edit.remove(event.target.parentElement.parentElement.rowIndex) });
-        actions.children[1].addEventListener("click", function (event) { edit.move(event.target.parentElement.parentElement.rowIndex, event.target.parentElement.parentElement.rowIndex - 1)});
-        actions.children[2].addEventListener("click", function (event) { edit.move(event.target.parentElement.parentElement.rowIndex, event.target.parentElement.parentElement.rowIndex + 2)});
+        actions.innerHTML = "<div class='flex center'><button>X</button><button>/\\</button><button>\\/</button></div>";
+        actions.children[0].children[0].addEventListener("click", function (event) { edit.remove(event.target.parentElement.parentElement.rowIndex) });
+        actions.children[0].children[1].addEventListener("click", function (event) { edit.move(event.target.parentElement.parentElement.rowIndex, event.target.parentElement.parentElement.rowIndex - 1)});
+        actions.children[0].children[2].addEventListener("click", function (event) { edit.move(event.target.parentElement.parentElement.rowIndex, event.target.parentElement.parentElement.rowIndex + 2)});
+    },
+    add: function() {
+        edit.insert(elements.inputs.edit.table.rows.length - 1);
     },
     save: function () {
             sessionData.studySetData.name = elements.inputs.edit.name.value;
