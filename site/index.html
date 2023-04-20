@@ -20,154 +20,153 @@ https://src.ehan.dev/quizfreely/LICENSE.txt
 </head>
 
 <body>
-  <!--
-  Header & Nav
-  -->
-  <header class="grid hero logo">
-    <div class="content">
-      <h1>Quizfreely</h1>
-      <p>A free & open source studying tool</p>
-      <div class="flex center">
-        <a href="./index.html" class="button">Home</a>
-        <a href="./about.html" class="button alt">About</a>
-        <a href="./docs.html" class="button alt">Help & Documentation</a>
-        <a href="./src.html" class="button alt">Source Code</a>
-      </div>
-    </div>
-    <div class="logo">
-      <picture>
-        <source srcset="https://raw.ehan.dev/quizfreely/assets/icon800.png" media="(min-width: 800px)" width="400" height="400" />
-        <img src="https://raw.ehan.dev/quizfreely/assets/icon400.png" alt="logo" width="200" height="200" />
-      </picture>
-    </div>
-  </header>
-  <!--
-  Main Content
-  -->
   <main>
-    <!--
-    Success import alert
-    -->
-    <div id="alertSuccessImport">
-      <p class="notice success">Successfully imported file!</p>
-    </div>
-    <!--
-    Error import is not Quizfreely json alert
-    -->
-    <div id="alertErrorImport">
-      <p class="notice error">Error! The imported file is not a Quizfreely file!</p>
-    </div>
-
-    <!--
-    End of flashcards alert
-    -->
-    <div id="alertFlashcardsEnd">
-      <p class="notice">You've reached the end of your flashcards!<br />Add some more, or continue studying.</p>
-    </div>
-
-    <!--
-    Starting point ig
-    -->
-    <div id="sectionLoad">
-      <!--
-      Work in Progress alert
-      -->
-      <div id="alertWorkInProgress">
-        <p class="notice">Some <b>new</b> features are under development and will be added in a few days!<br/>See the <a href="./about.html">about</a> page for details.</p>
-      </div>
-
-      <h2>Create or import a study set</h2>
-      <p>Create a new study set</p>
-      <button id="buttonMake" onclick="buttons.load.make();">Create new</button>
-      <p>Import an existing study set to review or edit</p>
-      <button id="buttonImportOptions" onclick="buttons.load.importOptions();">Import existing</button>
-    </div>
-
-    <!--
-    Import section
-    -->
-    <div id="sectionImportOptions">
-      <h2>Import study set</h2>
-      <p>Import a local file</p>
-      <label for="importLocalInput"><button onclick="buttons.importOptions.fileSelect();">Select file</button></label>
-      <input id="inputImportLocalFile" type="file" />
-      <p>Import from other apps</p>
-      <button onclick="">Coming Soon</button>
-      <p>Other import options</p>
-      <button onclick="">Coming Soon</button>
-    </div>
-    <!--
-    Action section
-    -->
-    <div id="sectionActionOptions">
-      <h2>Would you like to edit or review?</h2>
-      <h3>Edit the study set</h3>
-      <p>After editing, you'll be able to save and review it.</p>
-      <button onclick="buttons.actionOptions.edit();">Edit</button>
-      <h3>Review the study set</h3>
-      <p>Review with flashcards</p>
-      <button onclick="buttons.actionOptions.flashcards()">Flashcards</button>
-      <p>More options (practice tests, "learn mode", etc)</p>
-      <button onclick="">Coming soon</button>
-    </div>
-    <!--
-    Edit section
-    -->
-    <div id="sectionEdit">
-      <h2>Edit study set</h2>
-      <label>Title</label>
-      <input id="inputEditName" type="text" placeholder="Title">
-      <table id="inputEditTable">
-        <thead>
-          <tr>
-            <th>Term</th>
-            <th>Definition</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td class="table-end">
-              <button onclick="buttons.edit.add();">Add more</button>
-            </td>
-            <td class="table-end"></td>
-            <td class="table-end"></td>
-          </tr>
-        </tbody>
-      </table>
-      <button id="buttonEditDone" onclick="buttons.edit.done()">Done</button>
-    </div>
-    <!--
-    Export section
-    -->
-    <div id="sectionExportOptions">
-      <h2>Export study set</h2>
-      <p>Export as a local file</p>
-      <a id="linkExportLocalDownload" class="button">Export & Download File</a>
-      <p>Export to other apps</p>
-      <button onclick="">Coming Soon</button>
-      <p>Other export options</p>
-      <button onclick="">Coming Soon</button>
-    </div>
-    <!--
-    Flashcards! POG!!!
-    -->
-    <div id="sectionFlashcards">
-      <h2>Flashcards</h2>
-      <div id="flashcardsContainer" onclick="buttons.flashcards.flip()">
-        <div id="flashcardsCard">
-          <div id="flashcardsCardFront">front</div>
-          <div id="flashcardsCardBack">back</div>
+    <div class="grid hero">
+      <div class="content">
+        <h1>Quizfreely</h1>
+        <p>A free & open source studying tool</p>
+        <div class="flex center">
+          <a href="./index.html" class="button">Home</a>
+          <a href="./about.html" class="button alt">About</a>
+          <a href="./docs.html" class="button alt">Help & Documentation</a>
+          <a href="./src.html" class="button alt">Source Code</a>
         </div>
       </div>
-      <br />
-      <div id="flashcardsButtons1">
-        <button id="flashcardsPrev" onclick="buttons.flashcards.prev()">Previous</button>
-        <button id="flashcardsNext" onclick="buttons.flashcards.next()">Next</button>
+      <div class="logo">
+        <picture>
+          <source srcset="https://raw.ehan.dev/quizfreely/assets/icon800.png" media="(min-width: 800px)" width="400" height="400" />
+          <img src="https://raw.ehan.dev/quizfreely/assets/icon400.png" alt="logo" width="200" height="200" />
+        </picture>
       </div>
-      <div id="flashcardsHelp">
-        <p id="flashcardsFlip">Tap flashcard to flip!</p>
+    </div>
+    <div class="main">
+      <div class="content">
+          <!--
+          Success import alert
+          -->
+        <div id="alertSuccessImport">
+          <p class="notice success">Successfully imported file!</p>
+        </div>
+        <!--
+        Error import is not Quizfreely json alert
+        -->
+        <div id="alertErrorImport">
+          <p class="notice error">Error! The imported file is not a Quizfreely file!</p>
+        </div>
+
+        <!--
+        End of flashcards alert
+        -->
+        <div id="alertFlashcardsEnd">
+          <p class="notice">You've reached the end of your flashcards!<br />Add some more, or continue studying.</p>
+        </div>
+
+        <!--
+        Starting point ig
+        -->
+        <div id="sectionLoad">
+          <!--
+          Work in Progress alert
+          -->
+          <div id="alertWorkInProgress">
+            <p class="notice">Some <b>new</b> features are under development and will be added in a few days!<br/>See the <a href="./about.html">about</a> page for details.</p>
+          </div>
+
+          <h2>Create or import a study set</h2>
+          <p>Create a new study set</p>
+          <button id="buttonMake" onclick="buttons.load.make();">Create new</button>
+          <p>Import an existing study set to review or edit</p>
+          <button id="buttonImportOptions" onclick="buttons.load.importOptions();">Import existing</button>
+        </div>
+
+        <!--
+        Import section
+        -->
+        <div id="sectionImportOptions">
+          <h2>Import study set</h2>
+          <p>Import a local file</p>
+          <label for="importLocalInput"><button onclick="buttons.importOptions.fileSelect();">Select file</button></label>
+          <input id="inputImportLocalFile" type="file" />
+          <p>Import from other apps</p>
+          <button onclick="">Coming Soon</button>
+          <p>Other import options</p>
+          <button onclick="">Coming Soon</button>
+        </div>
+        <!--
+        Action section
+        -->
+        <div id="sectionActionOptions">
+          <h2>Would you like to edit or review?</h2>
+          <h3>Edit the study set</h3>
+          <p>After editing, you'll be able to save and review it.</p>
+          <button onclick="buttons.actionOptions.edit();">Edit</button>
+          <h3>Review the study set</h3>
+          <p>Review with flashcards</p>
+          <button onclick="buttons.actionOptions.flashcards()">Flashcards</button>
+          <p>More options (practice tests, "learn mode", etc)</p>
+          <button onclick="">Coming soon</button>
+        </div>
+        <!--
+        Edit section
+        -->
+        <div id="sectionEdit">
+          <h2>Edit study set</h2>
+          <label>Title</label>
+          <input id="inputEditName" type="text" placeholder="Title">
+          <table id="inputEditTable">
+            <thead>
+              <tr>
+                <th>Term</th>
+                <th>Definition</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="table-end">
+                  <button onclick="buttons.edit.add();">Add more</button>
+                </td>
+                <td class="table-end"></td>
+                <td class="table-end"></td>
+              </tr>
+            </tbody>
+          </table>
+          <button id="buttonEditDone" onclick="buttons.edit.done()">Done</button>
+        </div>
+        <!--
+        Export section
+        -->
+        <div id="sectionExportOptions">
+          <h2>Export study set</h2>
+          <p>Export as a local file</p>
+          <a id="linkExportLocalDownload" class="button">Export & Download File</a>
+          <p>Export to other apps</p>
+          <button onclick="">Coming Soon</button>
+          <p>Other export options</p>
+          <button onclick="">Coming Soon</button>
+        </div>
+        <!--
+        Flashcards! POG!!!
+        -->
+        <div id="sectionFlashcards">
+          <h2>Flashcards</h2>
+          <div id="flashcardsContainer" onclick="buttons.flashcards.flip()">
+            <div id="flashcardsCard">
+              <div id="flashcardsCardFront">front</div>
+              <div id="flashcardsCardBack">back</div>
+            </div>
+          </div>
+          <br />
+          <div id="flashcardsButtons1">
+            <button id="flashcardsPrev" onclick="buttons.flashcards.prev()">Previous</button>
+            <button id="flashcardsNext" onclick="buttons.flashcards.next()">Next</button>
+          </div>
+          <div id="flashcardsHelp">
+            <p id="flashcardsFlip">Tap flashcard to flip!</p>
+          </div>
+        </div>
       </div>
+    </div>
   </main>
   <!--
   Footer, copyright, & license
