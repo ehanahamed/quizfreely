@@ -13,11 +13,8 @@ var edit = {
     load: function () {
         edit.makeTableFromArray(sessionData.studySetData.data, elements.inputs.edit.table);
     },
-    add: function() {
-        edit.insert(elements.inputs.edit.table.rows.length);
-    },
     insert: function(index) {
-        var newRow = elements.inputs.edit.table.insertRow(index);
+        var newRow = elements.inputs.edit.table.children[1].insertRow(index);
         newRow.insertCell(0).innerHTML = "<input type='text' placeholder='Term'></input>";
         newRow.insertCell(1).innerHTML = "<textarea rows='2' placeholder='Definition'></textarea>";
         var actions = newRow.insertCell(2);
@@ -25,6 +22,9 @@ var edit = {
         actions.children[0].children[0].addEventListener("click", function (event) { edit.remove(event.target.parentElement.parentElement.rowIndex) });
         actions.children[0].children[1].addEventListener("click", function (event) { edit.move(event.target.parentElement.parentElement.rowIndex, event.target.parentElement.parentElement.rowIndex - 1)});
         actions.children[0].children[2].addEventListener("click", function (event) { edit.move(event.target.parentElement.parentElement.rowIndex, event.target.parentElement.parentElement.rowIndex + 2)});
+    },
+    add: function() {
+        edit.insert(elements.inputs.edit.table.rows.length);
     },
     save: function () {
             sessionData.studySetData.name = elements.inputs.edit.name.value;
