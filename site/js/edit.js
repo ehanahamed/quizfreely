@@ -19,9 +19,41 @@ var edit = {
         newRow.insertCell(1).innerHTML = "<textarea rows='2' placeholder='Definition'></textarea>";
         var actions = newRow.insertCell(2);
         actions.innerHTML = "<div class='flex'><button>Delete</button><button>Move up</button><button>Move down</button></div>";
-        actions.children[0].children[0].addEventListener("click", function (event) { edit.remove(event.target.parentElement.parentElement.parentElement.rowIndex) });
-        actions.children[0].children[1].addEventListener("click", function (event) { edit.move(event.target.parentElement.parentElement.parentElement.rowIndex, event.target.parentElement.parentElement.parentElement.rowIndex - 1)});
-        actions.children[0].children[2].addEventListener("click", function (event) { edit.move(event.target.parentElement.parentElement.parentElement.rowIndex, event.target.parentElement.parentElement.parentElement.rowIndex + 2)});
+        actions.children[0].children[0].addEventListener(
+            "click",
+            function (event) {
+                edit.remove(
+                    event.target.parentElement.parentElement.parentElement.rowIndex
+                );
+            }
+        );
+        actions.children[0].children[1].addEventListener(
+            "click",
+            function (event) {
+                edit.move(
+                    event.target.parentElement.parentElement.parentElement.rowIndex,
+                    event.target.parentElement.parentElement.parentElement.rowIndex - 1
+                );
+            }
+        );
+        actions.children[0].children[2].addEventListener(
+            "click",
+            function (event) {
+                if (
+                    event.target.parentElement.parentElement.parentElement.rowIndex + 2 < elements.inputs.edit.table.length
+                ) {
+                    edit.move(
+                        event.target.parentElement.parentElement.parentElement.rowIndex,
+                        event.target.parentElement.parentElement.parentElement.rowIndex + 2
+                    );
+                } else {
+                    edit.move(
+                        event.target.parentElement.parentElement.parentElement.rowIndex,
+                        -1
+                    );
+                }
+            }
+        );
     },
     add: function() {
         edit.insert(elements.inputs.edit.table.rows.length - 1);
@@ -59,8 +91,8 @@ var edit = {
             } else if (index < newIndex) {
                 newOldIndex = index;
             }
-            elements.inputs.edit.table.rows[newIndex].children[0].children[0].value = elements.inputs.edit.table.rows[newOldIndex].children[0].children[0].value;
-            elements.inputs.edit.table.rows[newIndex].children[1].children[0].value = elements.inputs.edit.table.rows[newOldIndex].children[1].children[0].value;
+            elements.inputs.edit.table.rows[newIndex].children[0].children[0].children[0].value = elements.inputs.edit.table.rows[newOldIndex].children[0].children[0].value;
+            elements.inputs.edit.table.rows[newIndex].children[0].children[1].children[0].value = elements.inputs.edit.table.rows[newOldIndex].children[1].children[0].value;
             edit.remove(newOldIndex);
         }
     },
@@ -83,8 +115,8 @@ var edit = {
             
             edit.add();
 
-            table.rows[i + 1].children[0].children[0].value = row[0]
-            table.rows[i + 1].children[1].children[0].value = row[1]
+            table.rows[i + 1].children[0].children[0].children[0].value = row[0]
+            table.rows[i + 1].children[0].children[1].children[0].value = row[1]
         }
     },
 }
