@@ -15,6 +15,7 @@ var edit = {
     },
     insert: function(index) {
         var newRow = elements.inputs.edit.table.children[1].insertRow(index);
+        console.log(elements.inputs.edit.table);
         newRow.insertCell(0).innerHTML = "<input type='text' placeholder='Term'></input>";
         newRow.insertCell(1).innerHTML = "<textarea rows='2' placeholder='Definition'></textarea>";
         var actions = newRow.insertCell(2);
