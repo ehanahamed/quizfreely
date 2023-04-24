@@ -25,8 +25,11 @@ var edit = {
                 event.target.parentElement.parentElement.parentElement.classList.add("fade");
                 event.target.parentElement.parentElement.parentElement.addEventListener(
                     "transitionend",
-                    function (event) {
-                        edit.move(event.target.rowIndex, event.target.rowIndex - 1);
+                    function () {
+                        edit.move(
+                            event.target.parentElement.parentElement.parentElement.rowIndex,
+                            event.target.parentElement.parentElement.parentElement.rowIndex - 1
+                        );
                     }
                 );
             }
@@ -37,8 +40,11 @@ var edit = {
                 event.target.parentElement.parentElement.parentElement.classList.add("fade");
                 event.target.parentElement.parentElement.parentElement.addEventListener(
                     "transitionend",
-                    function (event) {
-                        edit.move(event.target.rowIndex, event.target.rowIndex + 2);
+                    function () {
+                        edit.move(
+                            event.target.parentElement.parentElement.parentElement.rowIndex,
+                            event.target.parentElement.parentElement.parentElement.rowIndex + 2
+                        );
                     }
                 );
             }
@@ -49,8 +55,10 @@ var edit = {
                 event.target.parentElement.parentElement.parentElement.classList.add("fade");
                 event.target.parentElement.parentElement.parentElement.addEventListener(
                     "transitionend",
-                    function (event) {
-                        edit.remove(event.target.rowIndex)
+                    function () {
+                        edit.remove(
+                            event.target.parentElement.parentElement.parentElement.rowIndex
+                        );
                     }
                 );
             }
