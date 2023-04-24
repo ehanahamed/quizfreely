@@ -32,13 +32,3 @@ input[type="file"] {
 .success {
     color: var(--greem) !important;
 }
-
-tr * {
-    opacity: 1;
-    transition-property: opacity;
-    transition-duration: 0.4s;
-}
-
-tr.fade * {
-    opacity: 0;
-}
