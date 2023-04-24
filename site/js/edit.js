@@ -19,9 +19,12 @@ var edit = {
         newRow.insertCell(1).innerHTML = "<textarea rows='2' placeholder='Definition'></textarea>";
         var actions = newRow.insertCell(2);
         actions.innerHTML = "<div class='flex center'><button>Move up</button><button>Move down</button><button>Remove</button></div>";
-        actions.children[0].children[0].addEventListener("click", function (event) { edit.move(event.target.parentElement.parentElement.parentElement.rowIndex, event.target.parentElement.parentElement.parentElement.rowIndex - 1)});
-        actions.children[0].children[1].addEventListener("click", function (event) { edit.move(event.target.parentElement.parentElement.parentElement.rowIndex, event.target.parentElement.parentElement.parentElement.rowIndex + 2)});
-        actions.children[0].children[2].addEventListener("click", function (event) { edit.remove(event.target.parentElement.parentElement.parentElement.rowIndex) });
+        actions.children[0].children[0].addEventListener("click", function (event) { event.target.classList.add("fade"); } );
+        actions.children[0].children[0].addEventListener("transitionend", function (event) { edit.move(event.target.parentElement.parentElement.parentElement.rowIndex, event.target.parentElement.parentElement.parentElement.rowIndex - 1)});
+        actions.children[0].children[1].addEventListener("click", function (event) { event.target.classList.add("fade"); });
+        actions.children[0].children[1].addEventListener("transitionend", function (event) { edit.move(event.target.parentElement.parentElement.parentElement.rowIndex, event.target.parentElement.parentElement.parentElement.rowIndex + 2)});
+        actions.children[0].children[2].addEventListener("click", function (event) { event.target.classList.add("fade"); });
+        actions.children[0].children[2].addEventListener("transitionend", function (event) { edit.remove(event.target.parentElement.parentElement.parentElement.rowIndex) });
     },
     add: function() {
         edit.insert(elements.inputs.edit.table.rows.length - 1);
