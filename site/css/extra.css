@@ -5,10 +5,6 @@ Licensed under the UPL-1.0 License
 https://src.ehan.dev/quizfreely/LICENSE.txt
 */
 
-.table-end {
-    background-color: var(--blueishFaded2) !important;
-}
-
 textarea {
     resize: vertical !important;
 }
@@ -17,18 +13,4 @@ input[type="file"] {
     opacity: 0;
     z-index: -1;
     position: absolute;
-}
-
-.notice.success {
-    border-color: var(--greem) !important;
-    color: var(--greem) !important;
-}
-
-.notice.error {
-    border-color: var(--redish) !important;
-    color: var(--redish) !important;
-}
-
-.success {
-    color: var(--greem) !important;
 }
