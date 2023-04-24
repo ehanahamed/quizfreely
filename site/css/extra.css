@@ -33,6 +33,12 @@ input[type="file"] {
     color: var(--greem) !important;
 }
 
-table {
+tr * {
+    opacity: 1;
+    transition-property: opacity;
     transition-duration: 0.4s;
+}
+
+tr.fade * {
+    opacity: 0;
 }
