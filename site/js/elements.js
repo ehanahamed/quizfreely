@@ -39,6 +39,7 @@ var elements = {
 
     },
     flashcards: {
+        card: document.getElementById("flashcardsCard"),
         content: document.getElementById("flashcardsContent"),
         front: document.getElementById("flashcardsFront"),
         back: document.getElementById("flashcardsBack")
