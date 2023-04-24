@@ -22,7 +22,6 @@ var edit = {
         actions.children[0].children[0].addEventListener(
             "click",
             function (event) {
-                event.target.parentElement.parentElement.parentElement.classList.add("fade");
                 event.target.parentElement.parentElement.parentElement.addEventListener(
                     "transitionend",
                     function () {
@@ -32,12 +31,12 @@ var edit = {
                         );
                     }
                 );
+                event.target.parentElement.parentElement.parentElement.classList.add("fade");
             }
         );
         actions.children[0].children[1].addEventListener(
             "click",
             function (event) {
-                event.target.parentElement.parentElement.parentElement.classList.add("fade");
                 event.target.parentElement.parentElement.parentElement.addEventListener(
                     "transitionend",
                     function () {
@@ -47,12 +46,12 @@ var edit = {
                         );
                     }
                 );
+                event.target.parentElement.parentElement.parentElement.classList.add("fade");
             }
         );
         actions.children[0].children[2].addEventListener(
             "click",
             function (event) {
-                event.target.parentElement.parentElement.parentElement.classList.add("fade");
                 event.target.parentElement.parentElement.parentElement.addEventListener(
                     "transitionend",
                     function () {
@@ -61,6 +60,7 @@ var edit = {
                         );
                     }
                 );
+                event.target.parentElement.parentElement.parentElement.classList.add("fade");
             }
         );
     },
