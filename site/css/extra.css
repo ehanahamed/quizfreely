@@ -32,3 +32,7 @@ input[type="file"] {
 .success {
     color: var(--greem) !important;
 }
+
+table {
+    transition-duration: 0.4s;
+}
