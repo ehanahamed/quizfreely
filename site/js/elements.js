@@ -39,8 +39,8 @@ var elements = {
 
     },
     flashcards: {
-        card: document.getElementById("flashcardsCard"),
-        cardFront: document.getElementById("flashcardsCardFront"),
-        cardBack: document.getElementById("flashcardsCardBack")
+        content: document.getElementById("flashcardsContent"),
+        front: document.getElementById("flashcardsFront"),
+        back: document.getElementById("flashcardsBack")
     }
 }
