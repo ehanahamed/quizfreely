@@ -40,3 +40,12 @@ The html files are in `site/`, so far there are
    - use `js/...`, do **not** use `https://quizfreely.ehan.dev/js/...`
  - Do **not** use javascript modules
   - **no** `<script ... type="module"></script>`
+
+### Reference
+
+the `site/js/elements.js` file has `document.getElementById("...")`s for (almost) every element with specific javascript function using an element selector (section elements, flashcards, etc do this).
+
+Other elements use a `onclick="function"` in their html, to directly call the required javascript function (most buttons do this). They do **not** have a selector in `elements.js`.
+
+A list of element ids and stuff is below
+ - work in progress
