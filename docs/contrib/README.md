@@ -23,3 +23,20 @@ After editing, they save their study set (as a json file)
 Then they import their study set (the json file they saved earlier).
 
 When they import their study set, from the initial main page, they are given the option to either edit to add more to their study set or to review their study set.
+
+## Source code & stuff
+
+All javascript code ~~is~~ (should be\*) in the `site/js` folder, and there should be **no** inline js in the html files.
+
+The html files are in `site/`, so far there are
+ - `index.html` the main page (obvously)
+ - `src.html` page with links to source code repo
+ - `about.html` basically answers "why use Quizfreely" **work in progress**
+ - `docs.html` user, developer, and contributor documentation **work in progress**
+ - `404.html` 404 page **work in progress**
+
+ The javascript is linked to the html using standard `<script src="..."></script>` tags.
+ - The src attribute should be a relative path
+   - use `js/...`, do **not** use `https://quizfreely.ehan.dev/js/...`
+ - Do **not** use javascript modules
+  - **no** `<script ... type="module"></script>`
