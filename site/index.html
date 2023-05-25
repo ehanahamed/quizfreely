@@ -58,7 +58,7 @@ https://src.ehan.dev/quizfreely/LICENSE.txt
           <div id="theme" class="hide">
               <div class="radio">
                 <input type="radio" name="theme" id="purpleish" checked/>
-                <label for="en">Purpleish</label>
+                <label for="purpleish">Purpleish</label>
               </div>
               <div class="radio">
                 <input type="radio" name="theme" id="owl" />
@@ -268,10 +268,6 @@ https://src.ehan.dev/quizfreely/LICENSE.txt
         function setTheme(theme) {
             document.documentElement.classList.remove("purpleish", "owl", "vampire");
             document.documentElement.classList.add(theme);
-            document.getElementById("purpleish").classList.add("alt");
-            document.getElementById("owl").classList.add("alt");
-            document.getElementById("vampire").classList.add("alt");
-            document.getElementById(theme).classList.remove("alt");
         }
 
         document.getElementById("min").addEventListener("change", function (event) {
