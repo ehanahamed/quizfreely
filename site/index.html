@@ -42,7 +42,7 @@ https://src.ehan.dev/quizfreely/LICENSE.txt
           </div>
           <div id="lang" class="hide">
               <div class="radio">
-                <input type="radio" name="lang" id="en" />
+                <input type="radio" name="lang" id="en" checked/>
                 <label for="en">English</label>
               </div>
               <!-- <div class="radio">
@@ -56,7 +56,7 @@ https://src.ehan.dev/quizfreely/LICENSE.txt
           </div>
           <div id="theme" class="hide">
               <div class="radio">
-                <input type="radio" name="theme" id="purpleish" />
+                <input type="radio" name="theme" id="purpleish" checked/>
                 <label for="en">Purpleish</label>
               </div>
               <div class="radio">
@@ -254,6 +254,28 @@ https://src.ehan.dev/quizfreely/LICENSE.txt
     sections.init();
     alerts.init();
     importLocal.init();
+
+    document.getElementById("purpleish").addEventListener("change", function (event) {
+            setTheme("purpleish");
+        });
+        document.getElementById("owl").addEventListener("change", function (event) {
+            setTheme("owl");
+        });
+        document.getElementById("vampire").addEventListener("change", function (event) {
+            setTheme("vampire");
+        });
+        function setTheme(theme) {
+            document.documentElement.classList.remove("purpleish", "owl", "vampire");
+            document.documentElement.classList.add(theme);
+            document.getElementById("purpleish").classList.add("alt");
+            document.getElementById("owl").classList.add("alt");
+            document.getElementById("vampire").classList.add("alt");
+            document.getElementById(theme).classList.remove("alt");
+        }
+
+        document.getElementById("min").addEventListener("change", function (event) {
+            document.documentElement.classList.toggle("min")
+        });
   </script>
 </body>
 
