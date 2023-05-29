@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<!--
+Quizfreely (quizfreely.ehan.dev)
+Copyright (c) 2022-present Ehan Ahamed and contributors
+Licensed under the UPL-1.0 License
+https://src.ehan.dev/quizfreely/LICENSE.txt
+-->
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Quizfreely</title>
+  <link rel="stylesheet" href="https://cdn.ehan.dev/designsys/src/css/colors.css" />
+  <link rel="stylesheet" href="https://cdn.ehan.dev/designsys/src/css/components.css" />
+  <link rel="stylesheet" href="https://cdn.ehan.dev/designsys/src/css/layouts.css" />
+  <link rel="stylesheet" href="https://cdn.ehan.dev/designsys/src/css/utils.css" />
+  <link rel="stylesheet" href="https://www.nerdfonts.com/assets/css/webfont.css" />
+</head>
+
+<body>
+  <header>
+      <div class="menu">
+          <button onclick="document.getElementById('menu').classList.toggle('hide');">
+              <i class="nf nf-md-menu"></i>
+              Menu
+          </button>
+          <div id="menu" class="hide">
+              <ul>
+                  <li><a href="#" class="text fg">Home</a></li>
+                  <li><a href="#">Page</a></li>
+                  <li><a href="#">Page</a></li>
+                  <li><a href="#">Page</a></li>
+              </ul>
+          </div>
+      </div>
+      <div class="options">
+          <div class="flex">
+              <button onclick="document.getElementById('lang').classList.toggle('hide');document.getElementById('theme').classList.add('hide');document.getElementById('options').classList.add('hide');">
+                  <i class="nf nf-md-translate"></i>
+                  Language
+              </button>
+              <button onclick="document.getElementById('lang').classList.add('hide');document.getElementById('theme').classList.toggle('hide');document.getElementById('options').classList.add('hide');">
+                  <i class="nf nf-cod-symbol_color"></i>
+                  Theme
+              </button>
+              <button onclick="document.getElementById('lang').classList.add('hide');document.getElementById('theme').classList.add('hide');document.getElementById('options').classList.toggle('hide');">
+                  <i class="nf nf-cod-settings"></i>
+                  Options
+              </button>
+          </div>
+          <div id="lang" class="hide">
+              <div class="radio">
+                <input type="radio" name="lang" id="en" checked/>
+                <label for="en">English</label>
+              </div>
+              <!-- <div class="radio">
+                <input type="radio" name="lang" id="de" />
+                <label for="de">Deutsch</label>
+              </div>
+              <div class="radio">
+                <input type="radio" name="lang" id="gz" />
+                <label for="gz">中文</label>
+              </div> -->
+          </div>
+          <div id="theme" class="hide">
+              <div class="radio">
+                <input type="radio" name="theme" id="purpleish" checked/>
+                <label for="purpleish">Purpleish</label>
+              </div>
+              <div class="radio">
+                <input type="radio" name="theme" id="owl" />
+                <label for="owl">Owl</label>
+              </div>
+              <div class="radio">
+                <input type="radio" name="theme" id="vampire" />
+                <label for="vampire">Vampire</label>
+              </div>
+          </div>
+          <div id="options" class="hide">
+              <div class="checkbox">
+                <input type="checkbox" name="options" id="min" />
+                <label for="min">Disable Animations</label>
+              </div>
+          </div>
+      </div>
+  </header>
+  <main>
+    <div class="grid main">
+      <div class="content">
+        <h1>Create or open a study set</h1>
+        <div class="box">
+            <h2>Continue without an account or...</h2>
+            <p>Accounts are optional. All of Quizfreely's features can be used and study sets can be saved locally without an account.</p>
+            <button>Create New</button>
+            <button class="alt">Open Existing</button>
+        </div>
+        <div class="box">
+            <h2>...create an account or log in</h2>
+            An account lets you save study sets to the cloud, no other features require an account.
+        </div>
+      </div>
+    </div>
+  </main>
+  <footer>
+    <h2>Quizfreely</h2>
+    <p>Copyright © 2022-present Ehan Ahamed and contributors
+      <br />
+      Licensed under the UPL-1.0 License
+      <br />
+      <a href="https://src.ehan.dev/quizfreely/LICENSE.txt">See license file</a>
+    </p>
+  </footer>
+</body>
+
+</html>
