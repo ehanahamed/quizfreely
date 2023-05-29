@@ -108,20 +108,20 @@ https://src.ehan.dev/quizfreely/LICENSE.txt
           <!--
           Success import alert
           -->
-        <div id="alertSuccessImport">
+        <div id="alertSuccessImport" class="hide">
           <p class="box center green">Successfully imported file!</p>
         </div>
         <!--
         Error import is not Quizfreely json alert
         -->
-        <div id="alertErrorImport">
+        <div id="alertErrorImport" class="hide">
           <p class="box center red">Error! The imported file is not a Quizfreely file!</p>
         </div>
 
         <!--
         End of flashcards alert
         -->
-        <div id="alertFlashcardsEnd">
+        <div id="alertFlashcardsEnd" class="hide">
           <p class="box center">You've reached the end of your flashcards!<br />Add some more, or continue studying.</p>
         </div>
 
@@ -133,7 +133,10 @@ https://src.ehan.dev/quizfreely/LICENSE.txt
           Work in Progress alert
           -->
           <div id="alertWorkInProgress">
-            <p class="box center">Some <b>new</b> features are under development and will be added in a few days!<br/>See the <a href="./about.html">about</a> page for details.</p>
+            <div class="box center">
+              <i class="nf nf-cod-warning"></i>
+              <p>This website is under development...</p>
+            </div>
           </div>
 
           <h2>Create or import a study set</h2>
@@ -146,7 +149,7 @@ https://src.ehan.dev/quizfreely/LICENSE.txt
         <!--
         Import section
         -->
-        <div id="sectionImportOptions">
+        <div id="sectionImportOptions" class="hide">
           <h2>Import study set</h2>
           <p>Import a local file</p>
           <label for="importLocalInput"><button onclick="buttons.importOptions.fileSelect();">Select file</button></label>
@@ -159,7 +162,7 @@ https://src.ehan.dev/quizfreely/LICENSE.txt
         <!--
         Action section
         -->
-        <div id="sectionActionOptions">
+        <div id="sectionActionOptions" class="hide">
           <h2>Would you like to edit or review?</h2>
           <h3>Edit the study set</h3>
           <p>After editing, you'll be able to save and review it.</p>
@@ -173,7 +176,7 @@ https://src.ehan.dev/quizfreely/LICENSE.txt
         <!--
         Edit section
         -->
-        <div id="sectionEdit">
+        <div id="sectionEdit" class="hide">
           <h2>Edit study set</h2>
           <label>Title</label>
           <input id="inputEditName" type="text" placeholder="Title">
@@ -200,7 +203,7 @@ https://src.ehan.dev/quizfreely/LICENSE.txt
         <!--
         Export section
         -->
-        <div id="sectionExportOptions">
+        <div id="sectionExportOptions" class="hide">
           <h2>Export study set</h2>
           <p>Export as a local file</p>
           <a id="linkExportLocalDownload" class="button">Export & Download File</a>
@@ -210,9 +213,9 @@ https://src.ehan.dev/quizfreely/LICENSE.txt
           <button onclick="">Coming Soon</button>
         </div>
         <!--
-        Flashcards! POG!!!
+        Flashcards
         -->
-        <div id="sectionFlashcards">
+        <div id="sectionFlashcards" class="hide">
           <h2>Flashcards</h2>
           <div class="card double" id="flashcardsCard" onclick="buttons.flashcards.flip()">
             <div class="content" id="flashcardsContent">
