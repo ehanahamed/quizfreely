@@ -1,4 +1,4 @@
 TODO
  - make stuff actually work
- - implement https://codeberg.org/ehanahamed/designsys/src/branch/main/docs/styleguide.md#html-ids
- - implement https://codeberg.org/ehanahamed/designsys/src/branch/main/docs/wording.md#grammar-and-capitalization
+ - implement [designsys/docs/styleguide.md#html-ids](https://codeberg.org/ehanahamed/designsys/src/branch/main/docs/styleguide.md#html-ids)
+ - implement [designsys/docs/wording.md#grammar-and-capitalization](https://codeberg.org/ehanahamed/designsys/src/branch/main/docs/wording.md#grammar-and-capitalization)
