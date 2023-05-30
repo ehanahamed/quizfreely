@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<!--
+Quizfreely (quizfreely.ehan.dev)
+Copyright (c) 2022-present Ehan Ahamed and contributors
+Licensed under the UPL-1.0 License
+https://src.ehan.dev/quizfreely/LICENSE.txt
+-->
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Quizfreely</title>
+  <link rel="stylesheet" href="https://cdn.ehan.dev/designsys/src/css/colors.css" />
+  <link rel="stylesheet" href="https://cdn.ehan.dev/designsys/src/css/components.css" />
+  <link rel="stylesheet" href="https://cdn.ehan.dev/designsys/src/css/layouts.css" />
+  <link rel="stylesheet" href="https://cdn.ehan.dev/designsys/src/css/utils.css" />
+  <link rel="stylesheet" href="https://www.nerdfonts.com/assets/css/webfont.css" />
+</head>
+
+<body>
+  <header>
+      <div class="menu">
+          <button onclick="document.getElementById('menu').classList.toggle('hide');">
+              <i class="nf nf-md-menu"></i>
+              Menu
+          </button>
+          <div id="menu" class="hide">
+              <ul>
+                  <li><a href="#" class="text fg">Home</a></li>
+                  <li><a href="#">Page</a></li>
+                  <li><a href="#">Page</a></li>
+                  <li><a href="#">Page</a></li>
+              </ul>
+          </div>
+      </div>
+      <div class="options">
+          <div class="flex">
+              <button onclick="document.getElementById('lang').classList.toggle('hide');document.getElementById('theme').classList.add('hide');document.getElementById('options').classList.add('hide');">
+                  <i class="nf nf-md-translate"></i>
+                  Language
+              </button>
+              <button onclick="document.getElementById('lang').classList.add('hide');document.getElementById('theme').classList.toggle('hide');document.getElementById('options').classList.add('hide');">
+                  <i class="nf nf-cod-symbol_color"></i>
+                  Theme
+              </button>
+              <button onclick="document.getElementById('lang').classList.add('hide');document.getElementById('theme').classList.add('hide');document.getElementById('options').classList.toggle('hide');">
+                  <i class="nf nf-cod-settings"></i>
+                  Options
+              </button>
+          </div>
+          <div id="lang" class="hide">
+              <div class="radio">
+                <input type="radio" name="lang" id="en" checked/>
+                <label for="en">English</label>
+              </div>
+              <!-- <div class="radio">
+                <input type="radio" name="lang" id="de" />
+                <label for="de">Deutsch</label>
+              </div>
+              <div class="radio">
+                <input type="radio" name="lang" id="gz" />
+                <label for="gz">中文</label>
+              </div> -->
+          </div>
+          <div id="theme" class="hide">
+              <div class="radio">
+                <input type="radio" name="theme" id="purpleish" checked/>
+                <label for="purpleish">Purpleish</label>
+              </div>
+              <div class="radio">
+                <input type="radio" name="theme" id="owl" />
+                <label for="owl">Owl</label>
+              </div>
+              <div class="radio">
+                <input type="radio" name="theme" id="vampire" />
+                <label for="vampire">Vampire</label>
+              </div>
+          </div>
+          <div id="options" class="hide">
+              <div class="checkbox">
+                <input type="checkbox" name="options" id="min" />
+                <label for="min">Disable Animations</label>
+              </div>
+          </div>
+      </div>
+  </header>
+  <main>
+    <div class="grid hero">
+      <div class="content">
+        <h1>Quizfreely</h1>
+        <p>A free & open source studying tool</p>
+        <div class="flex center">
+          <a href="./index.html" class="button">Get started</a>
+          <a href="./about.html" class="button alt">Why Quizfreely?</a>
+          <a href="./docs.html" class="button alt">Help & Docs</a>
+        </div>
+      </div>
+      <div class="logo">
+        <picture>
+          <source srcset="https://raw.ehan.dev/quizfreely/assets/logo800.png" media="(min-width: 800px)" width="400" height="400" />
+          <img src="https://raw.ehan.dev/quizfreely/assets/logo400.png" alt="logo" width="200" height="200" />
+        </picture>
+      </div>
+    </div>
+    <div class="grid main">
+      <div class="content">
+          <!--
+          Success import alert
+          -->
+        <div id="alertSuccessImport" class="hide">
+          <p class="box center green">Successfully imported file!</p>
+        </div>
+        <!--
+        Error import is not Quizfreely json alert
+        -->
+        <div id="alertErrorImport" class="hide">
+          <p class="box center red">Error! The imported file is not a Quizfreely file!</p>
+        </div>
+
+        <!--
+        End of flashcards alert
+        -->
+        <div id="alertFlashcardsEnd" class="hide">
+          <p class="box center">You've reached the end of your flashcards!<br />Add some more, or continue studying.</p>
+        </div>
+
+        <!--
+        Starting point ig
+        -->
+        <div id="sectionLoad">
+          <!--
+          Work in Progress alert
+          -->
+          <div id="alertWorkInProgress">
+            <div class="box center">
+              <i class="nf nf-oct-alert"></i>
+              <p>This website is under development...</p>
+            </div>
+          </div>
+
+          <h2>Create or import a study set</h2>
+          <p>Create a new study set</p>
+          <button id="buttonMake" onclick="buttons.load.make();">Create new</button>
+          <p>Import an existing study set to review or edit</p>
+          <button id="buttonImportOptions" onclick="buttons.load.importOptions();">Import existing</button>
+        </div>
+
+        <!--
+        Import section
+        -->
+        <div id="sectionImportOptions" class="hide">
+          <h2>Import study set</h2>
+          <p>Import a local file</p>
+          <label for="importLocalInput"><button onclick="buttons.importOptions.fileSelect();">Select file</button></label>
+          <input id="inputImportLocalFile" class="invisible" type="file" />
+          <p>Import from other apps</p>
+          <button onclick="">Coming Soon</button>
+          <p>Other import options</p>
+          <button onclick="">Coming Soon</button>
+        </div>
+        <!--
+        Action section
+        -->
+        <div id="sectionActionOptions" class="hide">
+          <h2>Would you like to edit or review?</h2>
+          <h3>Edit the study set</h3>
+          <p>After editing, you'll be able to save and review it.</p>
+          <button onclick="buttons.actionOptions.edit();">Edit</button>
+          <h3>Review the study set</h3>
+          <p>Review with flashcards</p>
+          <button onclick="buttons.actionOptions.flashcards()">Flashcards</button>
+          <p>More options (practice tests, "learn mode", etc)</p>
+          <button onclick="">Coming soon</button>
+        </div>
+        <!--
+        Edit section
+        -->
+        <div id="sectionEdit" class="hide">
+          <h2>Edit study set</h2>
+          <label>Title</label>
+          <input id="inputEditName" type="text" placeholder="Title">
+          <table id="inputEditTable">
+            <thead>
+              <tr>
+                <th>Term</th>
+                <th>Definition</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>  
+                  <button onclick="buttons.edit.add();">Add row</button>
+                  <button id="buttonEditDone" class="alt" onclick="buttons.edit.done()">Done</button>
+                </td>
+                <td></td>
+                <td></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <!--
+        Export section
+        -->
+        <div id="sectionExportOptions" class="hide">
+          <h2>Export study set</h2>
+          <p>Export as a local file</p>
+          <a id="linkExportLocalDownload" class="button">Export & Download File</a>
+          <p>Export to other apps</p>
+          <button onclick="">Coming Soon</button>
+          <p>Other export options</p>
+          <button onclick="">Coming Soon</button>
+        </div>
+        <!--
+        Flashcards
+        -->
+        <div id="sectionFlashcards" class="hide">
+          <h2>Flashcards</h2>
+          <div class="card double" id="flashcardsCard" onclick="buttons.flashcards.flip()">
+            <div class="content" id="flashcardsContent">
+              <div class="front" id="flashcardsFront">front</div>
+              <div class="back" id="flashcardsBack">back</div>
+            </div>
+          </div>
+          <br />
+          <div id="flashcardsButtons1">
+            <button id="flashcardsPrev" onclick="buttons.flashcards.prev()">Previous</button>
+            <button id="flashcardsNext" onclick="buttons.flashcards.next()">Next</button>
+          </div>
+          <div id="flashcardsHelp">
+            <p id="flashcardsFlip">Tap flashcard to flip!</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+  <!--
+  Footer, copyright, & license
+  -->
+  <footer>
+    <h2>Quizfreely</h2>
+    <p>Copyright © 2022-present Ehan Ahamed and contributors
+      <br />
+      Licensed under the UPL-1.0 License
+      <br />
+      <a href="https://src.ehan.dev/quizfreely/LICENSE.txt">See license file</a>
+    </p>
+    <br />
+    <br />
+    <br />
+    <br />
+  </footer>
+  <script src="./js/elements.js"></script>
+  <script src="./js/sections.js"></script>
+  <script src="./js/alerts.js"></script>
+  <script src="./js/buttons.js"></script>
+  <script src="./js/studySet.js"></script>
+  <script src="./js/sessionData.js"></script>
+  <script src="./js/importLocal.js"></script>
+  <script src="./js/edit.js"></script>
+  <script src="./js/exportLocal.js"></script>
+  <script src="./js/flashcards.js"></script>
+  <script>
+    sections.init();
+    alerts.init();
+    importLocal.init();
+
+    document.getElementById("purpleish").addEventListener("change", function (event) {
+            setTheme("purpleish");
+        });
+        document.getElementById("owl").addEventListener("change", function (event) {
+            setTheme("owl");
+        });
+        document.getElementById("vampire").addEventListener("change", function (event) {
+            setTheme("vampire");
+        });
+        function setTheme(theme) {
+            document.documentElement.classList.remove("purpleish", "owl", "vampire");
+            document.documentElement.classList.add(theme);
+        }
+
+        document.getElementById("min").addEventListener("change", function (event) {
+            document.documentElement.classList.toggle("min")
+        });
+  </script>
+</body>
+
+</html>
