@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="200"
+   height="200"
+   viewBox="0 0 200 200"
+   version="1.1"
+   id="SVGRoot"
+   sodipodi:docname="bitmap.svg"
+   inkscape:export-filename="bitmap.svg"
+   inkscape:export-xdpi="96"
+   inkscape:export-ydpi="96"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#505050"
+     bordercolor="#ffffff"
+     borderopacity="1"
+     inkscape:showpageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="1"
+     inkscape:deskcolor="#505050"
+     showgrid="false" />
+  <defs
+     id="defs1887" />
+  <path
+     d="M 100.00004,20.000005 C 57.321955,20.000005 30,52.603775 30,96.880499 30,141.15722 57.321955,173.761 100.00004,173.761 c 14.95727,0 26.12537,-3.01887 37.69233,-10.0629 l 17.15101,16.30189 15.1567,-16.30189 -15.95442,-15.29559 c 9.77208,-12.07547 15.95442,-32.20125 15.95442,-51.924527 0,-43.069177 -26.72365,-76.477978 -70.00004,-76.477978 z m 17.15101,93.182385 -15.15671,16.30188 15.35614,14.69182 c -4.5869,2.4151 -11.1681,3.8239 -17.549868,3.8239 -23.931638,0 -39.886063,-20.32704 -39.886063,-51.119491 0,-30.792449 15.954425,-51.119491 40.085491,-51.119491 24.33051,0 40.08549,20.125784 40.08549,51.320749 0,12.075473 -2.19373,22.943393 -6.58119,31.798733 z"
+     id="path167"
+     style="font-weight:bold;font-size:200.342px;-inkscape-font-specification:'sans-serif Bold';fill:#7a52cc;stroke-width:1.00161"
+     inkscape:label="quizfreely" />
+</svg>
