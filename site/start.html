@@ -21,10 +21,12 @@ https://src.ehan.dev/quizfreely/LICENSE.txt
 <body>
   <header>
       <div class="menu">
-          <button onclick="document.getElementById('menu').classList.toggle('hide');">
-              <i class="nf nf-md-menu"></i>
-              Menu
-          </button>
+          <div class="flex itemscenter">
+            <button onclick="document.getElementById('menu').classList.toggle('hide');">
+                <i class="nf nf-md-menu"></i>
+                Menu
+            </button>
+          </div>
           <div id="menu" class="hide">
               <ul>
                   <li><a href="./index.html">Home</a></li>
@@ -35,7 +37,7 @@ https://src.ehan.dev/quizfreely/LICENSE.txt
           </div>
       </div>
       <div class="options">
-          <div class="flex">
+          <div class="flex center">
               <button onclick="document.getElementById('lang').classList.toggle('hide');document.getElementById('theme').classList.add('hide');document.getElementById('options').classList.add('hide');">
                   <i class="nf nf-md-translate"></i>
                   Language
