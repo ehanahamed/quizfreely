@@ -10,11 +10,11 @@ var alerts = {
         alerts.clear();
     },
     clear: function () {
-        elements.alerts.successImport.style.display = "none";
-        elements.alerts.errorImport.style.display = "none";
-        elements.alerts.flashcardsEnd.style.display = "none";
+        elements.alerts.successImport.classList.add("hide");
+        elements.alerts.errorImport.classList.add("hide");
+        elements.alerts.flashcardsEnd.classList.add("hide");
     },
     show: function (alert) {
-        elements.alerts[alert].style.display = "block";
+        elements.alerts[alert].classList.remove("hide");
     }
 }
