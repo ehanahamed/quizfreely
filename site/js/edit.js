@@ -18,7 +18,7 @@ var edit = {
         newRow.insertCell(0).innerHTML = "<input type='text' placeholder='Term'></input>";
         newRow.insertCell(1).innerHTML = "<textarea rows='2' placeholder='Definition'></textarea>";
         var actions = newRow.insertCell(2);
-        actions.innerHTML = "<div class='flex center'><button> <i class='nf nf-cod-arrow_small_up'></i> Move up </button><button> <i class='nf nf-cod-arrow_small_down'></i> Move down </button><button class='red'> <i class='nf nf-cod-trash'></i> Remove </button></div>";
+        actions.innerHTML = "<div class='flex center'><button> <i class='nf nf-cod-arrow_small_up'></i> Move Up </button><button> <i class='nf nf-cod-arrow_small_down'></i> Move Down </button><button class='red'> <i class='nf nf-cod-trash'></i> Remove </button></div>";
         actions.children[0].children[0].addEventListener("click", function (event) { edit.move(event.target.parentElement.parentElement.parentElement.rowIndex, event.target.parentElement.parentElement.parentElement.rowIndex - 1)});
         actions.children[0].children[1].addEventListener("click", function (event) { edit.move(event.target.parentElement.parentElement.parentElement.rowIndex, event.target.parentElement.parentElement.parentElement.rowIndex + 2)});
         actions.children[0].children[2].addEventListener("click", function (event) { edit.remove(event.target.parentElement.parentElement.parentElement.rowIndex) });
