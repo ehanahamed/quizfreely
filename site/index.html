@@ -130,24 +130,7 @@ https://src.ehan.dev/quizfreely/LICENSE.txt
       <a href="https://src.ehan.dev/quizfreely/LICENSE.txt">See license file</a>
     </p>
   </footer>
-  <script>
-    document.getElementById("purpleish").addEventListener("change", function (event) {
-        setTheme("purpleish");
-    });
-    document.getElementById("owl").addEventListener("change", function (event) {
-        setTheme("owl");
-    });
-    document.getElementById("vampire").addEventListener("change", function (event) {
-        setTheme("vampire");
-    });
-    function setTheme(theme) {
-        document.documentElement.classList.remove("purpleish", "owl", "vampire");
-        document.documentElement.classList.add(theme);
-    }
-    document.getElementById("min").addEventListener("change", function (event) {
-        document.documentElement.classList.toggle("min")
-    });
-  </script>
+  <script src="https://cdn.ehan.dev/design/src/js/header.js"></script>
 </body>
 
 </html>
