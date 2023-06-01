@@ -15,11 +15,6 @@ var buttons = {
             sections.changeTo("importOptions")
         }
     },
-    importOptions: {
-        fileSelect: function () {
-            elements.inputs.importLocal.file.click();
-        }
-    },
     actionOptions: {
         edit: function () {
             studySet.load(sessionData.importLocal.fileData)
