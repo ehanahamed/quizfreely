@@ -126,7 +126,7 @@ https://src.ehan.dev/quizfreely/LICENSE.txt
           <p>Create a new study set, or open an existing study set to review or edit.</p>
           <div class="flex">
             <button id="buttonMake" onclick="buttons.load.make();">Create new</button>
-            <button id="buttonImportOptions" class="alt" onclick="buttons.load.importOptions();">Import existing</button>
+            <button id="buttonImportOptions" class="alt" onclick="buttons.load.importOptions();">Open existing</button>
           </div>
         </div>
 
@@ -134,14 +134,10 @@ https://src.ehan.dev/quizfreely/LICENSE.txt
         Import section
         -->
         <div id="sectionImportOptions" class="hide">
-          <h2>Import study set</h2>
-          <p>Import a local file</p>
-          <label for="importLocalInput"><button onclick="buttons.importOptions.fileSelect();">Select file</button></label>
+          <h2>Open study set</h2>
+          <p>Saved a study set locally?</p>
+          <label for="importLocalInput"><button onclick="buttons.importOptions.fileSelect();">Open file</button></label>
           <input id="inputImportLocalFile" class="invisible" type="file" />
-          <p>Import from other apps</p>
-          <button onclick="">Coming Soon</button>
-          <p>Other import options</p>
-          <button onclick="">Coming Soon</button>
         </div>
         <!--
         Action section
