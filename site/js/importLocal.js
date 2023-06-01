@@ -7,9 +7,9 @@ https://src.ehan.dev/quizfreely/LICENSE.txt
 
 var importLocal = {
     init: function () {
-        elements.inputs.importLocal.file.onchange = function () {
+        elements.inputs.importLocal.file.addEventListener("change", function () {
             importLocal.input();
-        };
+        })
     },
     input: function () {
         var fileReader = new FileReader();
