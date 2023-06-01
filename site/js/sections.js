@@ -6,21 +6,13 @@ https://src.ehan.dev/quizfreely/LICENSE.txt
 */
 
 var sections = {
-    init: function () {
-        elements.sections.load.style.display = "block";
-        elements.sections.importOptions.style.display = "none";
-        elements.sections.actionOptions.style.display = "none";
-        elements.sections.edit.style.display = "none";
-        elements.sections.exportOptions.style.display = "none";
-        elements.sections.flashcards.style.display = "none";
-    },
     changeTo: function (section) {
-        elements.sections.load.style.display = "none";
-        elements.sections.importOptions.style.display = "none";
-        elements.sections.actionOptions.style.display = "none";
-        elements.sections.edit.style.display = "none";
-        elements.sections.exportOptions.style.display = "none";
-        elements.sections.flashcards.style.display = "none";
-        elements.sections[section].style.display = "block";
+        elements.sections.load.classList.add("hide");
+        elements.sections.importOptions.classList.add("hide");
+        elements.sections.actionOptions.classList.add("hide");
+        elements.sections.edit.classList.add("hide");
+        elements.sections.exportOptions.classList.add("hide");
+        elements.sections.flashcards.classList.add("hide");
+        elements.sections[section].classList.remove("hide");
     }
 }
