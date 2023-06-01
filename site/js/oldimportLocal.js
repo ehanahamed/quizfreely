@@ -5,12 +5,11 @@ Licensed under the UPL-1.0 License
 https://src.ehan.dev/quizfreely/LICENSE.txt
 */
 
+elements.inputs.importLocal.file.addEventListener("change", function () {
+    importLocal.input();
+})
+
 var importLocal = {
-    init: function () {
-        elements.inputs.importLocal.file.addEventListener("change", function () {
-            importLocal.input();
-        })
-    },
     input: function () {
         var fileReader = new FileReader();
         fileReader.onload = function (event) {
