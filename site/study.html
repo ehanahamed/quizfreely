@@ -229,6 +229,7 @@ https://src.ehan.dev/quizfreely/LICENSE.txt
     <br />
     <br />
   </footer>
+  <script src="https://cdn.ehan.dev/design/src/js/header.js"></script>
   <script src="./js/elements.js"></script>
   <script src="./js/sections.js"></script>
   <script src="./js/alerts.js"></script>
@@ -239,29 +240,6 @@ https://src.ehan.dev/quizfreely/LICENSE.txt
   <script src="./js/edit.js"></script>
   <script src="./js/exportLocal.js"></script>
   <script src="./js/flashcards.js"></script>
-  <script>
-    sections.init();
-    alerts.init();
-    importLocal.init();
-
-    document.getElementById("purpleish").addEventListener("change", function (event) {
-            setTheme("purpleish");
-        });
-        document.getElementById("owl").addEventListener("change", function (event) {
-            setTheme("owl");
-        });
-        document.getElementById("vampire").addEventListener("change", function (event) {
-            setTheme("vampire");
-        });
-        function setTheme(theme) {
-            document.documentElement.classList.remove("purpleish", "owl", "vampire");
-            document.documentElement.classList.add(theme);
-        }
-
-        document.getElementById("min").addEventListener("change", function (event) {
-            document.documentElement.classList.toggle("min")
-        });
-  </script>
 </body>
 
 </html>
