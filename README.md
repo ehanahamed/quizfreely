@@ -19,6 +19,7 @@ TODO MARELLA
     - implement [designsys/docs](https://codeberg.org/ehanahamed/designsys/src/branch/main/docs/)
 
 TODO
+ - **camelCase** it
  - header links & menu
  - documentation & help menu
  - make stuff actually work
