@@ -12,16 +12,16 @@ elements.inputs.importLocal.file.addEventListener("change", function () {
 var importLocal = {
     input: function () {
         var fileReader = new FileReader();
-        fileReader.onload = function (event) {
+        fileReader.addEventListener("load", function (event) {
             sessionData.importLocal.fileData = event.target.result;
-            alerts.clear();
+            /*alerts.clear();
             if (studySet.validate(sessionData.importLocal.fileData) === true) {
                 alerts.show("successImport");
                 sections.changeTo("actionOptions");
             } else {
                 alerts.show("errorImport");
-            }
-        };
+            }*/
+        });
         fileReader.readAsText(elements.inputs.importLocal.file.files[0]);
     }
 };
