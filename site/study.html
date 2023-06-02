@@ -164,13 +164,17 @@ https://src.ehan.dev/quizfreely/LICENSE.txt
         Export section
         -->
         <div id="sectionExportOptions" class="hide">
-          <h2>Export study set</h2>
-          <p>Export as a local file</p>
-          <a id="linkExportLocalDownload" class="button">Export & Download File</a>
-          <p>Export to other apps</p>
-          <button onclick="">Coming Soon</button>
-          <p>Other export options</p>
-          <button onclick="">Coming Soon</button>
+          <h2>Save study set</h2>
+          <p>You can save to the cloud, or save and download the study set locally</p>
+          <div class="flex">
+            <a class="button">Save to Cloud</a>
+            <a id="linkExportLocalDownload" class="button alt">Save Locally & Download</a>
+          </div>
+          <p>Need to go back or cancel?</p>
+          <div class="flex">
+            <button onclick="sections.changeTo('edit');">Back to Edit</button>
+            <button onclick="sections.changeTo('edit');" class="red">Delete Draft & Cancel</button>
+          </div>
         </div>
         <!--
         Flashcards
