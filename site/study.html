@@ -182,9 +182,6 @@ https://src.ehan.dev/quizfreely/LICENSE.txt
         -->
         <div id="sectionFlashcards" class="hide">
           <h2>Flashcards</h2>
-          <p class="box center">
-            Use flip button or tap the flashcard to flip.
-          </p>
           <div class="card double" id="flashcardsCard" onclick="buttons.flashcards.flip()">
             <div class="content" id="flashcardsContent">
               <div class="front" id="flashcardsFront">front</div>
@@ -195,8 +192,11 @@ https://src.ehan.dev/quizfreely/LICENSE.txt
             <button id="flashcardsPrev" onclick="buttons.flashcards.prev()">Previous</button>
             <button id="flashcardsNext" onclick="buttons.flashcards.next()">Next</button>
           </div>
-          <div class="flex center">
-            <button onclick="buttons.flashcards.flip()">Flip</button>
+          <div class="box">
+            <p>Use flip button or tap the flashcard to flip.</p>
+            <div class="flex">
+              <button onclick="buttons.flashcards.flip()">Flip</button>
+            </div>
           </div>
         </div>
       </div>
