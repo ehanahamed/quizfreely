@@ -20,6 +20,7 @@ TODO MARELLA
 
 TODO
  - **camelCase** it
+ - **REMOVE `<br />`s**
  - header links & menu
  - documentation & help menu
  - make stuff actually work
