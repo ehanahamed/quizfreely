@@ -1,6 +1,7 @@
 TODO SOSA
  - accounts
  - review games
+    - probably using js P2P
     - multi-select "classic" review game
     - competitive spinoff of "classic" multi-select
         - some type of session-only point system
