@@ -11,25 +11,25 @@ var flashcards = {
         elements.flashcards.back.innerText = sessionData.studySetData.data[sessionData.flashcards.index][1];
     },
     flip: function () {
-        alerts.clear();
+        /*alerts.clear();*/
         elements.flashcards.card.classList.toggle("flip");
     },
     next: function () {
         if (sessionData.flashcards.index < sessionData.studySetData.data.length - 1) {
-            alerts.clear();
+            /*alerts.clear();*/
             sessionData.flashcards.index += 1
             flashcards.load(sessionData.flashcards.index);
-        } else {
+        }/* else {
             alerts.show("flashcardsEnd");
-        }
+        }*/
     },
     prev: function () {
         if (sessionData.flashcards.index >= 1) {
-            alerts.clear();
+            /*alerts.clear();*/
             sessionData.flashcards.index -= 1
             flashcards.load(sessionData.flashcards.index);
-        } else {
+        }/* else {
             alerts.show("flashcardsEnd");
-        }
+        }*/
     }
 }
