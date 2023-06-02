@@ -2,12 +2,11 @@ TODO SOSA
  - accounts
  - review games
     - probably using js P2P
-        - each player only needs 1 "shared" variable, their points/score
+        - each player only needs about 2 "shared" variables, their points/score & their username
         - the host will somehow connect to all the other players to sort points/score 
     - multi-select "classic" review game
     - competitive spinoff of "classic" multi-select
         - some type of session-only point system
-        - make a complex js script so i can be OP lmao
  - docs & help menu
 
 TODO MARELLA
