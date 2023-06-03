@@ -1,9 +1,7 @@
 TODO SOSA
  - accounts
  - review games
-    - probably using js P2P
-        - each player only needs about 2 "shared" variables, their points/score & their username
-        - the host will somehow connect to all the other players to sort points/score 
+    - probably using ~~js P2P~~ or mabye supabase's "realtime" thingy
     - multi-select "classic" review game
     - competitive spinoff of "classic" multi-select
         - some type of session-only point system
