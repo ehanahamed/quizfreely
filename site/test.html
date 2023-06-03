@@ -121,13 +121,13 @@ https://src.ehan.dev/quizfreely/LICENSE.txt
     <div class="grid main">
       <div class="content">
         <div>
-          <input type="text" placeholder="Email" />
+          <input type="text" id="mainEmailinput" placeholder="Email" />
         </div>
         <div>
-          <input type="password" placeholder="Password" />
+          <input type="password" id="mainPasswordinput" placeholder="Password" />
         </div>
         <div>
-          <button>Sign Up</button>
+          <button id="mainSignupbutton">Sign Up</button>
         </div>
       </div>
     </div>
@@ -146,6 +146,12 @@ https://src.ehan.dev/quizfreely/LICENSE.txt
       "https://okejqkisolxqgkgwwlbz.supabase.co",
       "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9rZWpxa2lzb2x4cWdrZ3d3bGJ6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE2ODU3NDE1MTgsImV4cCI6MjAwMTMxNzUxOH0.T8f_3fPAYnWdzguPonQZCAFmbAN-mTLQB3_EW9pjkis"
     );
+    document.getElementById("mainSignupbutton").addEventListener("click", function () {
+      console.log(supabaseClient.auth.signUp({
+        email: document.getElementById("mainEmailinput").value,
+        password: document.getElementById("mainPasswordinput").value
+      }))
+    });
   </script>
 </body>
 
