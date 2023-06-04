@@ -85,18 +85,28 @@ https://src.ehan.dev/quizfreely/LICENSE.txt
   <main>
     <div class="grid main">
       <div class="content">
+        <div id="mainSignupdiv">
         <h2>Sign Up</h2>
-        <p id="mainErrortext" class="red hide">Error</p>
+        <p id="mainSignupErrortext" class="red hide">Error</p>
         <div>
-          <input type="text" id="mainEmailinput" placeholder="Email" />
+          <input type="text" id="mainSignupEmailinput" placeholder="Email" />
         </div>
         <div>
-          <input type="password" id="mainPasswordinput" placeholder="Password" />
+          <input type="password" id="mainSignupPasswordinput" placeholder="Password" />
         </div>
         <div>
-          <button id="mainSignupbutton">Sign Up</button>
+          <button id="mainSignupSignupbutton">Sign Up</button>
         </div>
         <p>Already have an account? <a href="./signin.html">Sign In</a></p>
+        </div>
+        <div id="mainUserdiv" class="hide">
+          <h2>You are signed in!</h2>
+          <p>Accounts are optional. With an account, you can save study sets to the cloud.</p>
+          <div class="flex">
+            <a class="button" href="./dashboard.html">Dashboard</a>
+            <a class="button alt" href="./settings.html">Settings</a>
+          </div>
+        </div>
       </div>
     </div>
   </main>
@@ -114,17 +124,25 @@ https://src.ehan.dev/quizfreely/LICENSE.txt
       "https://okejqkisolxqgkgwwlbz.supabase.co",
       "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9rZWpxa2lzb2x4cWdrZ3d3bGJ6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE2ODU3NDE1MTgsImV4cCI6MjAwMTMxNzUxOH0.T8f_3fPAYnWdzguPonQZCAFmbAN-mTLQB3_EW9pjkis"
     );
-    document.getElementById("mainSignupbutton").addEventListener("click", function () {
+    supabaseClient.auth.getSession().then(
+      function (result) {
+        if (result.data.session !== null) {
+          document.getElementById("mainSignupdiv").classList.add("hide");
+          document.getElementById("mainUserdiv").classList.remove("hide");
+        }
+      }
+    )
+    document.getElementById("mainSignupSignupbutton").addEventListener("click", function () {
       supabaseClient.auth.signUp({
-        email: document.getElementById("mainEmailinput").value,
-        password: document.getElementById("mainPasswordinput").value
+        email: document.getElementById("mainSignupEmailinput").value,
+        password: document.getElementById("mainSignupPasswordinput").value
       }).then(
         function (result) {
           if (result.error !== null) {
-            document.getElementById("mainErrortext").classList.remove("hide");
-            document.getElementById("mainErrortext").innerText = "Error, " + result.error.message;
+            document.getElementById("mainSignupErrortext").classList.remove("hide");
+            document.getElementById("mainSignupErrortext").innerText = "Error, " + result.error.message;
           } else if (result.error === null) {
-            document.getElementById("mainErrortext").classList.add("hide");
+            document.getElementById("mainSignupErrortext").classList.add("hide");
           }
         }
       );
