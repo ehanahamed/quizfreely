@@ -122,7 +122,7 @@ https://src.ehan.dev/quizfreely/LICENSE.txt
         function (result) {
           if (result.error !== null) {
             document.getElementById("mainErrortext").classList.remove("hide");
-            document.getElementById("mainErrortext").innerText = "Error," + result.error.message;
+            document.getElementById("mainErrortext").innerText = "Error, " + result.error.message;
           } else if (result.error === null) {
             document.getElementById("mainErrortext").classList.add("hide");
           }
