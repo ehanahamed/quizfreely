@@ -86,6 +86,7 @@ https://src.ehan.dev/quizfreely/LICENSE.txt
     <div class="grid main">
       <div class="content">
         <h2>Sign In</h2>
+        <p id="mainErrortext" class="red hide">Error</p>
         <div>
           <input type="text" id="mainEmailinput" placeholder="Email" />
         </div>
@@ -117,7 +118,16 @@ https://src.ehan.dev/quizfreely/LICENSE.txt
       supabaseClient.auth.signInWithPassword({
         email: document.getElementById("mainEmailinput").value,
         password: document.getElementById("mainPasswordinput").value
-      });
+      }).then(
+        function (result) {
+          if (result.error !== null) {
+            document.getElementById("mainErrortext").classList.remove("hide");
+            document.getElementById("mainErrortext").innerText = "Error, " + result.error.message;
+          } else if (result.error === null) {
+            document.getElementById("mainErrortext").classList.add("hide");
+          }
+        }
+      );
     });
   </script>
 </body>
