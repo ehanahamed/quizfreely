@@ -11,9 +11,6 @@ var buttons = {
             edit.make();
             sections.changeTo("edit");
         },
-        importOptions: function () {
-            sections.changeTo("importOptions")
-        }
     },
     actionOptions: {
         edit: function () {
