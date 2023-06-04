@@ -118,11 +118,8 @@ https://src.ehan.dev/quizfreely/LICENSE.txt
         email: document.getElementById("mainEmailinput").value,
         password: document.getElementById("mainPasswordinput").value
       }).then(
-        function (data) {
-          console.log("datainquotes")
-        },
-        function (error) {
-          console.log("errorimquotes")
+        function (result) {
+          console.log(result)
         }
       );
     });
