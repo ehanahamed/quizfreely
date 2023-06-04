@@ -117,7 +117,14 @@ https://src.ehan.dev/quizfreely/LICENSE.txt
       supabaseClient.auth.signUp({
         email: document.getElementById("mainEmailinput").value,
         password: document.getElementById("mainPasswordinput").value
-      }).then(console.log("e"));
+      }).then(
+        function (data) {
+          console.log("datainquotes")
+        },
+        function (error) {
+          console.log("errorimquotes")
+        }
+      );
     });
   </script>
 </body>
