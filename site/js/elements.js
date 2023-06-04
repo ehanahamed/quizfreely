@@ -8,7 +8,6 @@ https://src.ehan.dev/quizfreely/LICENSE.txt
 var elements = {
     sections: {
         load: document.getElementById("sectionLoad"),
-        importOptions: document.getElementById("sectionImportOptions"),
         actionOptions: document.getElementById("sectionActionOptions"),
         edit: document.getElementById("sectionEdit"),
         exportOptions: document.getElementById("sectionExportOptions"),
