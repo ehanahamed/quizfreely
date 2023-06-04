@@ -133,15 +133,15 @@ https://src.ehan.dev/quizfreely/LICENSE.txt
     )
     document.getElementById("mainSigninSigninbutton").addEventListener("click", function () {
       supabaseClient.auth.signInWithPassword({
-        email: document.getElementById("mainEmailinput").value,
-        password: document.getElementById("mainPasswordinput").value
+        email: document.getElementById("mainSigninEmailinput").value,
+        password: document.getElementById("mainSigninPasswordinput").value
       }).then(
         function (result) {
           if (result.error !== null) {
-            document.getElementById("mainErrortext").classList.remove("hide");
-            document.getElementById("mainErrortext").innerText = "Error, " + result.error.message;
+            document.getElementById("mainSigninErrortext").classList.remove("hide");
+            document.getElementById("mainSigninErrortext").innerText = "Error, " + result.error.message;
           } else if (result.error === null) {
-            document.getElementById("mainErrortext").classList.add("hide");
+            document.getElementById("mainSigninErrortext").classList.add("hide");
           }
         }
       );
