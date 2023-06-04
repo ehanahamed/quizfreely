@@ -87,7 +87,7 @@ https://src.ehan.dev/quizfreely/LICENSE.txt
         <!--
         Starting point ig
         -->
-        <div id="sectionLoad">
+        <div id="mainDashboarddiv">
           <h2>Dashboard</h2>
           <p>You can create a new study set, or you can open a locally saved study set file.</p>
           <div class="flex">
@@ -95,7 +95,7 @@ https://src.ehan.dev/quizfreely/LICENSE.txt
             <label for="inputImportLocalFile" class="button alt">Open file</label>
             <input id="inputImportLocalFile" class="invisible" type="file" />
           </div>
-          <div id="mainSectionloadUserdiv" class="hide">
+          <div id="mainDashboardUserdiv" class="hide">
             <p>With your account, you have the ability to save study sets to the cloud.</p>
           </div>
         </div>
@@ -212,7 +212,7 @@ https://src.ehan.dev/quizfreely/LICENSE.txt
     supabaseClient.auth.getSession().then(
       function (result) {
         if (result.data.session !== null) {
-          document.getElementById("mainSectionloadUserdiv").classList.remove("hide");
+          document.getElementById("mainDashboardUserdiv").classList.remove("hide");
         }
       }
     )
