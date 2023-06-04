@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<!--
+Quizfreely (quizfreely.ehan.dev)
+Copyright (c) 2022-present Ehan Ahamed and contributors
+Licensed under the UPL-1.0 License
+https://src.ehan.dev/quizfreely/LICENSE.txt
+-->
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Quizfreely</title>
+  <link rel="stylesheet" href="https://cdn.ehan.dev/design/src/css/colors.css" />
+  <link rel="stylesheet" href="https://cdn.ehan.dev/design/src/css/components.css" />
+  <link rel="stylesheet" href="https://cdn.ehan.dev/design/src/css/layouts.css" />
+  <link rel="stylesheet" href="https://cdn.ehan.dev/design/src/css/utils.css" />
+  <link rel="stylesheet" href="https://www.nerdfonts.com/assets/css/webfont.css" />
+</head>
+
+<body>
+  <header>
+        <div class="menu">
+            <button id="headerMenuMenubutton">
+                <i class="nf nf-md-menu"></i>
+                Menu
+            </button>
+            <div id="headerMenuMenudiv" class="hide">
+                <ul>
+                    <li><a href="./index.html" class="bg1 mark markPrimary">Home</a></li>
+                    <li><a href="./dashboard.html">Dashboard</a></li>
+                    <li><a href="./docs.html">Help & Docs</a></li>
+                    <li><a href="./settings.html">Settings</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="options">
+            <div class="flex center">
+                <button id="headerOptionsLangbutton">
+                    <i class="nf nf-md-translate"></i>
+                    Language
+                </button>
+                <button id="headerOptionsThemebutton">
+                    <i class="nf nf-cod-symbol_color"></i>
+                    Theme
+                </button>
+                <button id="headerOptionsOptionsbutton">
+                    <i class="nf nf-cod-settings"></i>
+                    Options
+                </button>
+            </div>
+            <div id="headerOptionsLangdiv" class="hide">
+                <div class="radio">
+                  <input type="radio" name="lang" id="headerOptionsLangdivEn" checked/>
+                  <label for="headerOptionsLangdivEn">English</label>
+                </div>
+                <div class="radio">
+                  <input type="radio" name="lang" id="headerOptionsLangdivDe" />
+                  <label for="headerOptionsLangdivDe">Deutsch</label>
+                </div>
+                <div class="radio">
+                  <input type="radio" name="lang" id="headerOptionsLangdivGz" />
+                  <label for="headerOptionsLangdivGz">中文</label>
+                </div>
+            </div>
+            <div id="headerOptionsThemediv" class="hide">
+                <div class="radio">
+                  <input type="radio" name="theme" id="headerOptionsThemedivPurpleish" checked/>
+                  <label for="headerOptionsThemedivPurpleish">Purpleish</label>
+                </div>
+                <div class="radio">
+                  <input type="radio" name="theme" id="headerOptionsThemedivOwl" />
+                  <label for="headerOptionsThemedivOwl">Owl</label>
+                </div>
+            </div>
+            <div id="headerOptionsOptionsdiv" class="hide">
+                <div class="checkbox">
+                  <input type="checkbox" name="options" id="headerOptionsOptionsdivMin" />
+                  <label for="headerOptionsOptionsdivMin">Disable Animations</label>
+                </div>
+            </div>
+        </div>
+    </header>
+  <main>
+    <div class="grid main">
+      <div class="content">
+        <h2>Privacy policy</h2>
+        <p>
+          This website, Quizfreely, does <b>NOT</b> store personal information about any of it's users. Users have the choice to create an account. If a user chooses to create an account, the email address they enter is stored to allow them to log in. The email addresses are <b>NOT</b> used for marketing purposes and are <b>NOT</b> sold to or shared with any third parties or other companies. Users also have the choice to store their user-made content, called "study sets", in "the cloud". When a user chooses to store a "study set" in "the cloud", their user-made content is stored by Quizfreely.
+        </p>
+      </div>
+    </div>
+  </main>
+  <footer>
+    <h2>Quizfreely</h2>
+    <p>Copyright © 2022-present Ehan Ahamed and contributors</p>
+    <p>Licensed under the UPL-1.0 License</p>
+    <a href="https://src.ehan.dev/quizfreely/LICENSE.txt">See license file</a>
+  </footer>
+  <script src="https://cdn.ehan.dev/design/src/js/header.js"></script>
+</body>
+
+</html>
