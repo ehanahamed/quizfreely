@@ -86,7 +86,7 @@ https://src.ehan.dev/quizfreely/LICENSE.txt
     <div class="grid main">
       <div class="content">
         <h2>Sign Up</h2>
-        <p class="red hide">Error</p>
+        <p id="mainErrortext" class="red hide">Error</p>
         <div>
           <input type="text" id="mainEmailinput" placeholder="Email" />
         </div>
@@ -124,7 +124,7 @@ https://src.ehan.dev/quizfreely/LICENSE.txt
             document.getElementById("mainErrordiv").classList.remove("hide");
             document.getElementById("mainErrordiv").innerText = "Error," + result.error.message;
           } else if (result.error === null) {
-            document.getElementById("mainErrordiv").classList.add("hide");
+            document.getElementById("mainErrortext").classList.add("hide");
           }
         }
       );
