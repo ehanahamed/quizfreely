@@ -95,6 +95,7 @@ https://src.ehan.dev/quizfreely/LICENSE.txt
         <div>
           <button id="mainSigninbutton">Sign In</button>
         </div>
+        <p>Don't have an account? <a href="./signin.html">Sign Up</a></p>
       </div>
     </div>
   </main>
@@ -113,7 +114,7 @@ https://src.ehan.dev/quizfreely/LICENSE.txt
       "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9rZWpxa2lzb2x4cWdrZ3d3bGJ6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE2ODU3NDE1MTgsImV4cCI6MjAwMTMxNzUxOH0.T8f_3fPAYnWdzguPonQZCAFmbAN-mTLQB3_EW9pjkis"
     );
     document.getElementById("mainSigninbutton").addEventListener("click", function () {
-      var { data, error } = await supabaseClient.auth.signInWithPassword({
+      supabaseClient.auth.signInWithPassword({
         email: document.getElementById("mainEmailinput").value,
         password: document.getElementById("mainPasswordinput").value
       });
