@@ -88,21 +88,14 @@ https://src.ehan.dev/quizfreely/LICENSE.txt
         Starting point ig
         -->
         <div id="sectionLoad">
-          <!--
-          Work in Progress alert
-          --> <!--
-          <div id="alertWorkInProgress">
-            <div class="box center">
-              <i class="nf nf-oct-alert"></i>
-              <p>This website is under development...</p>
-            </div>
-          </div>
-          -->
-          <h2>Create or open a study set</h2>
-          <p>Create a new study set, or open an existing study set to review or edit.</p>
+          <h2>Dashboard</h2>
+          <p>You can create a new study set, or you can open a locally saved study set file.</p>
           <div class="flex">
             <button id="buttonMake" onclick="buttons.load.make();">Create new</button>
             <button id="buttonImportOptions" class="alt" onclick="buttons.load.importOptions();">Open existing</button>
+          </div>
+          <div id="mainSectionloadUserdiv" class="hide">
+            <p>With your account, you have the ability to save study sets to the cloud.</p>
           </div>
         </div>
 
@@ -219,6 +212,21 @@ https://src.ehan.dev/quizfreely/LICENSE.txt
   <script src="./js/edit.js"></script>
   <script src="./js/exportLocal.js"></script>
   <script src="./js/flashcards.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    const { createClient } = supabase;
+    const supabaseClient = createClient(
+      "https://okejqkisolxqgkgwwlbz.supabase.co",
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9rZWpxa2lzb2x4cWdrZ3d3bGJ6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE2ODU3NDE1MTgsImV4cCI6MjAwMTMxNzUxOH0.T8f_3fPAYnWdzguPonQZCAFmbAN-mTLQB3_EW9pjkis"
+    );
+    supabaseClient.auth.getSession().then(
+      function (result) {
+        if (result.data.session !== null) {
+          document.getElementById("mainSectionloadUserdiv").classList.remove("hide");
+        }
+      }
+    )
+  </script>
 </body>
 
 </html>
