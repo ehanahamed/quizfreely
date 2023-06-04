@@ -8,7 +8,6 @@ https://src.ehan.dev/quizfreely/LICENSE.txt
 var sections = {
     changeTo: function (section) {
         elements.sections.load.classList.add("hide");
-        elements.sections.importOptions.classList.add("hide");
         elements.sections.actionOptions.classList.add("hide");
         elements.sections.edit.classList.add("hide");
         elements.sections.exportOptions.classList.add("hide");
