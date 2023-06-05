@@ -91,8 +91,14 @@ https://src.ehan.dev/quizfreely/LICENSE.txt
           <h2>Dashboard</h2>
           <p>You can create a new study set, or you can open a locally saved study set file.</p>
           <div class="flex">
-            <button id="buttonMake" onclick="buttons.load.make();">Create new</button>
-            <label for="inputImportLocalFile" class="button alt">Open file</label>
+            <button id="buttonMake" onclick="buttons.load.make();">
+              <i class="nf nf-cod-add"></i>
+              Create new
+            </button>
+            <label for="inputImportLocalFile" class="button alt">
+              <i class="nf nf-md-import"></i>
+              Open file
+            </label>
             <input id="inputImportLocalFile" class="invisible" type="file" />
           </div>
           <div id="mainDashboardUserdiv" class="hide">
