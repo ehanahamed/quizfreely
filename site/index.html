@@ -130,8 +130,7 @@ https://src.ehan.dev/quizfreely/LICENSE.txt
   </footer>
   <script src="https://cdn.ehan.dev/design/src/js/header.js"></script>
   <script>
-    var urlParams = new URLSearchParams(window.location.search);
-    if (urlParams.get("type") === "signup") {
+    if (window.location.href.includes("type=signup")) {
       document.getElementById("mainEmaildiv").classList.remove("hide");
     }
   </script>
