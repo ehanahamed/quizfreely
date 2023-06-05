@@ -87,7 +87,6 @@ https://src.ehan.dev/quizfreely/LICENSE.txt
       <div class="content">
         <div id="mainSignupdiv">
         <h2>Sign Up</h2>
-        <p id="mainSignupErrortext" class="red hide">Error</p>
         <div>
           <input type="text" id="mainSignupEmailinput" placeholder="Email" />
         </div>
@@ -98,8 +97,13 @@ https://src.ehan.dev/quizfreely/LICENSE.txt
           <button id="mainSignupSignupbutton">Sign Up</button>
         </div>
         <p>Already have an account? <a href="./signin.html">Sign In</a></p>
+        <p id="mainSignupErrortext" class="box red hide">Error</p>
         </div>
-        
+        <div id="mainEmaildiv" class="box green hide">
+          <h2>Your account has been created!</h2>
+          <p>Check for a confirmation email from <code>quizfreely@ehan.dev</code>. You can <a href="./signin.html">sign in</a> without confirming your email address, but your account will not be permanent unless you confirm your email at some point.</p>
+          <p>You do not need to keep this tab open while confirming your email or signing in.</p>
+        </div>
         <div id="mainUserdiv" class="hide">
           <h2>You are signed in!</h2>
           <p>With your account, you have the ability to save study sets to the cloud.</p>
@@ -129,7 +133,6 @@ https://src.ehan.dev/quizfreely/LICENSE.txt
       function (result) {
         if (result.data.session !== null) {
           document.getElementById("mainSignupdiv").classList.add("hide");
-          document.getElementById("mainEmaildiv").classList.add("hide");
           document.getElementById("mainUserdiv").classList.remove("hide");
         }
       }
