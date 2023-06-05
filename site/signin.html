@@ -86,7 +86,6 @@ https://src.ehan.dev/quizfreely/LICENSE.txt
       <div class="content">
         <div id="mainSignindiv">
           <h2>Sign In</h2>
-          <p id="mainSigninErrortext" class="red hide">Error</p>
           <div>
             <input type="text" id="mainSigninEmailinput" placeholder="Email" />
           </div>
@@ -97,10 +96,11 @@ https://src.ehan.dev/quizfreely/LICENSE.txt
             <button id="mainSigninSigninbutton">Sign In</button>
           </div>
           <p>Don't have an account? <a href="./signup.html">Sign Up</a></p>
+          <p id="mainSigninErrortext" class="box red hide">Error</p>
         </div>
         <div id="mainUserdiv" class="hide">
           <h2>You are signed in!</h2>
-          <p>With your account, you have the ability to save study sets to the cloud.</p>
+          <p>Go to the dashboard to create, edit, or review a study set.</p>
           <div class="flex">
             <a class="button" href="./dashboard.html">Dashboard</a>
             <a class="button alt" href="./settings.html">Settings</a>
@@ -139,7 +139,7 @@ https://src.ehan.dev/quizfreely/LICENSE.txt
         function (result) {
           if (result.error !== null) {
             document.getElementById("mainSigninErrortext").classList.remove("hide");
-            document.getElementById("mainSigninErrortext").innerText = "Error, " + result.error.message;
+            document.getElementById("mainSigninErrortext").innerText = "Error: " + result.error.message;
           } else if (result.error === null) {
             document.getElementById("mainSigninErrortext").classList.add("hide");
             document.getElementById("mainSignindiv").classList.add("hide");
