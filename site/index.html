@@ -115,6 +115,10 @@ https://src.ehan.dev/quizfreely/LICENSE.txt
     </div>
     <div class="grid main">
       <div class="content">
+        <div id="mainEmaildiv" class="box green hide">
+          <p>Thank you for confirming your email!</p>
+          <p>You can now <a href="./signin.html">sign in</a>.</p>
+        </div>
       </div>
     </div>
   </main>
@@ -125,6 +129,12 @@ https://src.ehan.dev/quizfreely/LICENSE.txt
     <a href="https://src.ehan.dev/quizfreely/LICENSE.txt">See license file</a>
   </footer>
   <script src="https://cdn.ehan.dev/design/src/js/header.js"></script>
+  <script>
+    var urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get("type") === "signup") {
+      document.getElementById("mainEmaildiv").classList.remove("hide");
+    }
+  </script>
 </body>
 
 </html>
