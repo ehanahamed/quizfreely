@@ -99,6 +99,7 @@ https://src.ehan.dev/quizfreely/LICENSE.txt
         </div>
         <p>Already have an account? <a href="./signin.html">Sign In</a></p>
         </div>
+        
         <div id="mainUserdiv" class="hide">
           <h2>You are signed in!</h2>
           <p>With your account, you have the ability to save study sets to the cloud.</p>
@@ -128,6 +129,7 @@ https://src.ehan.dev/quizfreely/LICENSE.txt
       function (result) {
         if (result.data.session !== null) {
           document.getElementById("mainSignupdiv").classList.add("hide");
+          document.getElementById("mainEmaildiv").classList.add("hide");
           document.getElementById("mainUserdiv").classList.remove("hide");
         }
       }
@@ -143,6 +145,7 @@ https://src.ehan.dev/quizfreely/LICENSE.txt
             document.getElementById("mainSignupErrortext").innerText = "Error, " + result.error.message;
           } else if (result.error === null) {
             document.getElementById("mainSignupErrortext").classList.add("hide");
+
           }
         }
       );
