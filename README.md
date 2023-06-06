@@ -1,3 +1,7 @@
+TODO WORDING
+ - change "local" and "cloud" to "download" and "save to account"
+ - change "import" and "export" to "open" and "save"
+
 current "save point" incase everything breaks: https://codeberg.org/ehanahamed/quizfreely/commit/90baa8467626ac7c7723a471c00c13edb42e074d
 
 TODO SOSA
@@ -29,4 +33,3 @@ TODO
  - sign in & sign up page
    - check if username is incorrect or if password is incorrect
       - extra error-ing/validation-ing by searching auth table for usernames
-
