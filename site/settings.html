@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <!--
@@ -28,8 +27,8 @@ https://src.ehan.dev/quizfreely/LICENSE.txt
             </button>
             <div id="headerMenuMenudiv" class="hide">
                 <ul>
-                    <li><a href="./index.html" class="bg1 mark markPrimary">Home</a></li>
-                    <li><a href="./dashboard.html">Dashboard</a></li>
+                    <li><a href="./index.html">Home</a></li>
+                    <li><a href="./dashboard.html" class="bg1 mark markPrimary">Dashboard</a></li>
                     <li><a href="./docs.html">Help & Docs</a></li>
                     <li><a href="./settings.html">Settings</a></li>
                 </ul>
@@ -85,35 +84,29 @@ https://src.ehan.dev/quizfreely/LICENSE.txt
   <main>
     <div class="grid main">
       <div class="content">
-        <div id="mainSignupdiv">
-        <h2>Sign Up</h2>
-        <div>
-          <input type="text" id="mainSignupEmailinput" placeholder="Email" />
+        <h2>Settings</h2>
+        <h3>Appearance</h3>
+        <p>Use the bar at the top of the screen.</p>
+        <div class="flex">
+          <button id="buttonMake" onclick="buttons.load.make();">
+            <i class="nf nf-oct-plus"></i>
+            Create new
+          </button>
+          <label for="inputImportLocalFile" class="button alt">
+            <i class="nf nf-md-import"></i>
+            Open file
+          </label>
+          <input id="inputImportLocalFile" class="invisible" type="file" />
         </div>
-        <div>
-          <input type="password" id="mainSignupPasswordinput" placeholder="Password" />
-        </div>
-        <div>
-          <button id="mainSignupSignupbutton">Sign Up</button>
-        </div>
-        <p>Already have an account? <a href="./signin.html">Sign In</a></p>
-        <p id="mainSignupErrortext" class="box red hide">Error</p>
-        </div>
-        <div id="mainEmaildiv" class="box green hide">
-          <p>Check for a confirmation email from <code class="fg">quizfreely@ehan.dev</code>, after confirming your email address through the email, you can <a href="./signin.html">sign in</a>.</p>
-          <p>You do not need to keep this tab open while confirming your email or signing in!</p>
-        </div>
-        <div id="mainUserdiv" class="hide">
-          <h2>You are signed in!</h2>
-          <p>Go to the dashboard to create, edit, or review a study set.</p>
-          <div class="flex">
-            <a class="button" href="./dashboard.html">Dashboard</a>
-            <a class="button alt" href="./settings.html">Settings</a>
-          </div>
+        <div id="mainDashboardUserdiv" class="hide">
+          <p>You are signed in to your account. Study sets you saved to the cloud are shown below.</p>
         </div>
       </div>
     </div>
   </main>
+  <!--
+  Footer, copyright, & license
+  -->
   <footer>
     <h2>Quizfreely</h2>
     <p>Copyright © 2022-present Ehan Ahamed and contributors</p>
@@ -131,30 +124,10 @@ https://src.ehan.dev/quizfreely/LICENSE.txt
     supabaseClient.auth.getSession().then(
       function (result) {
         if (result.data.session !== null) {
-          document.getElementById("mainSignupdiv").classList.add("hide");
-          document.getElementById("mainUserdiv").classList.remove("hide");
+          document.getElementById("mainDashboardUserdiv").classList.remove("hide");
         }
       }
     )
-    document.getElementById("mainSignupSignupbutton").addEventListener("click", function () {
-      supabaseClient.auth.signUp({
-        email: document.getElementById("mainSignupEmailinput").value,
-        password: document.getElementById("mainSignupPasswordinput").value,
-        options: {
-          emailRedirectTo: "https://quizfreely.ehan.dev/confirmemail"
-        }
-      }).then(
-        function (result) {
-          if (result.error !== null) {
-            document.getElementById("mainSignupErrortext").classList.remove("hide");
-            document.getElementById("mainSignupErrortext").innerText = "Error: " + result.error.message;
-          } else if (result.error === null) {
-            document.getElementById("mainSignupErrortext").classList.add("hide");
-            document.getElementById("mainEmaildiv").classList.remove("hide");
-          }
-        }
-      );
-    });
   </script>
 </body>
 
