@@ -34,6 +34,8 @@ TODO
       - extra error-ing/validation-ing by searching auth table for usernames
 
 TODO EXTRA
- - autofil/autocomplete colors
- - enter key to focus next form element
+ - make sure tab works on file inputs (designsys)
+ - make fanc betterthantab keyboard shortcut system (designsys)
+ - autofil/autocomplete colors (designsys)
+ - enter key to focus next form element (designsys)
    - and to submit signin/signup when keyboard focus is on password input
