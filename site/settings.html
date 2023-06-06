@@ -134,6 +134,12 @@ https://src.ehan.dev/quizfreely/LICENSE.txt
         }
       }
     )
+    document.getElementById("mainUserSignoutbutton").addEventListener("click", function () {
+      supabaseClient.auth.signOut().then(function (result) {
+        document.getElementById("mainNewuserdiv").classList.remove("hide");
+        document.getElementById("mainUserdiv").classList.add("hide");
+      });
+    })
   </script>
 </body>
 
