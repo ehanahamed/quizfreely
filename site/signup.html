@@ -147,6 +147,7 @@ https://src.ehan.dev/quizfreely/LICENSE.txt
         function (result) {
           if (result.error !== null) {
             document.getElementById("mainSignupErrortext").classList.remove("hide");
+            document.getElementById("mainEmaildiv").classList.add("hide");
             document.getElementById("mainSignupErrortext").innerText = "Error: " + result.error.message;
           } else if (result.error === null) {
             document.getElementById("mainSignupErrortext").classList.add("hide");
