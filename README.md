@@ -1,9 +1,7 @@
 TODO NOW
  - change "local" and "cloud" to "download" and "save to account"
- - change "import" and "export" to "open" and "save"
  - License & stuff
  - settings & signout
- - languages (hide all that dont exist lol)
 
 current "save point" incase everything breaks: https://codeberg.org/ehanahamed/quizfreely/commit/90baa8467626ac7c7723a471c00c13edb42e074d
 
