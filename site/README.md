@@ -11,5 +11,10 @@ supabaseClient.auth.getUser()
 
 
 // returns "result.data.session" as equal to "null" when NOT logged in
-supabaseClient.auth.getSession().then(console.log(result));
+supabaseClient.auth.getSession().then(function (result) { console.log(result) } );
+```
+
+```javascript
+// multiple child functions apperently work just fine?
+supabaseClient.from("table").select("*").then(function (result) { console.log(result) } )
 ```

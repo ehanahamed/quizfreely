@@ -15,7 +15,6 @@ TODO SOSA
 TODO MARELLA
  - homepage styling
     - fancy intro & "plz use this" & about page
- - accounts
  - documentation
  - code quality
     - implement [designsys/docs](https://codeberg.org/ehanahamed/designsys/src/branch/main/docs/)
