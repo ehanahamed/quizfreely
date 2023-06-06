@@ -1,7 +1,10 @@
 TODO NOW
- - change "local" and "cloud" to "download" and "save to account"
  - License & stuff
- - settings & signout
+ - settings
+   - signout
+   - reset password (forgot password)
+   - update password (change password)
+   - change email
 
 current "save point" incase everything breaks: https://codeberg.org/ehanahamed/quizfreely/commit/90baa8467626ac7c7723a471c00c13edb42e074d
 
