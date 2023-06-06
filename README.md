@@ -1,6 +1,7 @@
-TODO WORDING
+TODO NOW
  - change "local" and "cloud" to "download" and "save to account"
  - change "import" and "export" to "open" and "save"
+ - License & stuff
 
 current "save point" incase everything breaks: https://codeberg.org/ehanahamed/quizfreely/commit/90baa8467626ac7c7723a471c00c13edb42e074d
 
@@ -33,3 +34,8 @@ TODO
  - sign in & sign up page
    - check if username is incorrect or if password is incorrect
       - extra error-ing/validation-ing by searching auth table for usernames
+
+TODO EXTRA
+ - autofil/autocomplete colors
+ - enter key to focus next form element
+   - and to submit signin/signup when keyboard focus is on password input
