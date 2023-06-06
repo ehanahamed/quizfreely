@@ -91,11 +91,11 @@ https://src.ehan.dev/quizfreely/LICENSE.txt
         </div>
         <h3>Account</h3>
         <div id="mainNewuserdiv" class="box">
-          <p>You are not signed in to an account. <a href="./start.html">Get started?</a></p>
+          <p>You are not signed in to an account, <a href="./start.html">get started?</a></p>
           <p>Forgot your password? <a href="./forgotpassword.html">Reset Password</a></p>
         </div>
         <div id="mainUserdiv" class="box hide">
-          <p>You are signed as <code>email@email.email</code></p>
+          <p>You are signed as <code id="mainUserEmail">email@email.email</code></p>
           <div class="flex">
             <button id="mainUserSignoutbutton" class="red">Sign Out</button>
             <a id="mainUserSignoutbutton" class="button red alt" href="./resetpassword.html">Reset Password</a>
@@ -124,7 +124,13 @@ https://src.ehan.dev/quizfreely/LICENSE.txt
     supabaseClient.auth.getSession().then(
       function (result) {
         if (result.data.session !== null) {
-          document.getElementById("mainDashboardUserdiv").classList.remove("hide");
+          document.getElementById("mainNewuserdiv").classList.add("hide");
+          document.getElementById("mainUserdiv").classList.remove("hide");
+          supabaseClient.auth.getUser().then(
+            function (result) {
+              document.getElementById("mainUserEmail").innerText = result.data.user.email;
+            }
+          )
         }
       }
     )
