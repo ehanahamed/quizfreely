@@ -14,13 +14,11 @@ var buttons = {
     },
     actionOptions: {
         edit: function () {
-            studySet.load(sessionData.importLocal.fileData);
             edit.load();
             sections.changeTo("edit");
             alerts.clear();
         },
         flashcards: function () {
-            studySet.load(sessionData.importLocal.fileData);
             sessionData.flashcards.index = 0;
             flashcards.load(sessionData.flashcards.index);
             sections.changeTo("flashcards");
