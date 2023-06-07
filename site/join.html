@@ -84,31 +84,12 @@ https://src.ehan.dev/quizfreely/LICENSE.txt
   <main>
     <div class="grid main">
       <div class="content">
-        <div id="mainSignupdiv">
-        <h2>Sign Up</h2>
+        <h2>Join a review game</h2>
         <div>
-          <input type="text" id="mainSignupEmailinput" placeholder="Email" />
-        </div>
-        <div>
-          <input type="password" id="mainSignupPasswordinput" placeholder="Password" />
+          <input type="text" id="mainJoininput" placeholder="Code" />
         </div>
         <div>
-          <button id="mainSignupSignupbutton">Sign Up</button>
-        </div>
-        <p>Already have an account? <a href="./signin.html">Sign In</a></p>
-        <p id="mainSignupErrortext" class="box red hide">Error</p>
-        </div>
-        <div id="mainEmaildiv" class="box green hide">
-          <p>Check for a confirmation email from <code class="fg">quizfreely@ehan.dev</code>, after confirming your account through the email, you can <a href="./signin.html">sign in</a>.</p>
-          <p>You do not need to keep this tab open while confirming your account or signing in!</p>
-        </div>
-        <div id="mainUserdiv" class="hide">
-          <h2>You are signed in!</h2>
-          <p>Go to the dashboard to create, edit, or review a study set.</p>
-          <div class="flex">
-            <a class="button" href="./dashboard.html">Dashboard</a>
-            <a class="button alt" href="./settings.html">Settings</a>
-          </div>
+          <a href="./reviewgame.html" id="mainJoinbutton" class="button">Join</a>
         </div>
       </div>
     </div>
@@ -120,13 +101,10 @@ https://src.ehan.dev/quizfreely/LICENSE.txt
     <a href="./license.html">See License</a>
   </footer>
   <script src="https://cdn.ehan.dev/design/src/js/header.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
-    const { createClient } = supabase;
-    const supabaseClient = createClient(
-      "https://okejqkisolxqgkgwwlbz.supabase.co",
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9rZWpxa2lzb2x4cWdrZ3d3bGJ6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE2ODU3NDE1MTgsImV4cCI6MjAwMTMxNzUxOH0.T8f_3fPAYnWdzguPonQZCAFmbAN-mTLQB3_EW9pjkis"
-    );
+    document.getElementById("mainJoininput").addEventListener("input", function (event) {
+      localStorage.setItem("reviewgameCode", event.target.value);
+    })
   </script>
 </body>
 
