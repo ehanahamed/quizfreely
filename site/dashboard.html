@@ -237,26 +237,36 @@ https://src.ehan.dev/quizfreely/LICENSE.txt
           supabaseClient.from("studyset").select().then(
             function (result) {
               studysetlist = result.data
-              for (var i = 0; i < studysetlist.length; i++) {
+              if (studysetlist.length === 0) {
                 var box = document.createElement("div");
-                box.setAttribute("class", "box");
-                box.setAttribute("id", "mainDashboardUserStudysetlist" + i.toString());
-                document.getElementById("mainDashboardUserStudysetlistdiv").appendChild(box);
-                document.getElementById(
-                  "mainDashboardUserStudysetlist" + i.toString()
-                ).innerHTML = "<p>" + studysetlist[i].name + "</p> <div class='flex'> <button id='mainDashboardUserStudysetlist" + i.toString() + "Openbutton'> Open </button> <button id='mainDashboardUserStudysetlist" + i.toString() + "Deletebutton' class='red alt'> Delete </button>";
-                document.getElementById("mainDashboardUserStudysetlist" + i.toString() + "Openbutton").addEventListener("click", function (event) {
-                  sessionData.studySetData = studysetlist[event.target.id.replace("mainDashboardUserStudysetlist", "").replace("Openbutton", "")].json;
-                  sections.changeTo("actionOptions");
-                })
-                document.getElementById("mainDashboardUserStudysetlist" + i.toString() + "Deletebutton").addEventListener("click", function (event) {
-                  supabaseClient.from("studyset").delete().eq(
-                    "id",
-                    studysetlist[event.target.id.replace("mainDashboardUserStudysetlist", "").replace("Deletebutton", "")].id
-                  ).then(function (result) {
-                    document.getElementById("mainDashboardUserStudysetdeletediv").classList.remove("hide");
-                  });
-                })
+                  box.setAttribute("class", "box");
+                  box.setAttribute("id", "mainDashboardUserStudysetlistEmpty");
+                  document.getElementById("mainDashboardUserStudysetlistdiv").appendChild(box);
+                  document.getElementById(
+                    "mainDashboardUserStudysetlistEmpty"
+                  ).innerHTML = "<p>No study sets are saved to your account.</p>";
+              } else {
+                for (var i = 0; i < studysetlist.length; i++) {
+                  var box = document.createElement("div");
+                  box.setAttribute("class", "box");
+                  box.setAttribute("id", "mainDashboardUserStudysetlist" + i.toString());
+                  document.getElementById("mainDashboardUserStudysetlistdiv").appendChild(box);
+                  document.getElementById(
+                    "mainDashboardUserStudysetlist" + i.toString()
+                  ).innerHTML = "<p>" + studysetlist[i].name + "</p> <div class='flex'> <button id='mainDashboardUserStudysetlist" + i.toString() + "Openbutton'> Open </button> <button id='mainDashboardUserStudysetlist" + i.toString() + "Deletebutton' class='red alt'> Delete </button>";
+                  document.getElementById("mainDashboardUserStudysetlist" + i.toString() + "Openbutton").addEventListener("click", function (event) {
+                    sessionData.studySetData = studysetlist[event.target.id.replace("mainDashboardUserStudysetlist", "").replace("Openbutton", "")].json;
+                    sections.changeTo("actionOptions");
+                  })
+                  document.getElementById("mainDashboardUserStudysetlist" + i.toString() + "Deletebutton").addEventListener("click", function (event) {
+                    supabaseClient.from("studyset").delete().eq(
+                      "id",
+                      studysetlist[event.target.id.replace("mainDashboardUserStudysetlist", "").replace("Deletebutton", "")].id
+                    ).then(function (result) {
+                      document.getElementById("mainDashboardUserStudysetdeletediv").classList.remove("hide");
+                    });
+                  })
+                }
               }
             }
           )
