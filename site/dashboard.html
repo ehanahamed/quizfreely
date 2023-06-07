@@ -248,7 +248,12 @@ https://src.ehan.dev/quizfreely/LICENSE.txt
                   sections.changeTo("actionOptions");
                 })
                 document.getElementById("mainDashboardUserStudysetlist" + i.toString() + "Deletebutton").addEventListener("click", function (event) {
-                  alert("shouldhavedeleted"+studysetlist[event.target.id.replace("mainDashboardUserStudysetlist", "").replace("Deletebutton", "")].name);
+                  supabaseClient.from("studyset").delete().eq(
+                    "id",
+                    studysetlist[event.target.id.replace("mainDashboardUserStudysetlist", "").replace("Deletebutton", "")].id
+                  ).then(function (result) {
+                    console.log(result);
+                  });
                 })
               }
             }
