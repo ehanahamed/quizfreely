@@ -103,7 +103,7 @@ https://src.ehan.dev/quizfreely/LICENSE.txt
           </div>
           <div id="mainDashboardUserdiv" class="hide">
             <p>You are signed in. Study sets you saved to your account are shown below.</p>
-            <div id="mainDashboardUserStudysetsdiv" class="grid list"></div>
+            <div id="mainDashboardUserStudysetlistdiv" class="grid list"></div>
           </div>
         </div>
 
@@ -234,20 +234,21 @@ https://src.ehan.dev/quizfreely/LICENSE.txt
           // study set list (read/select)
           supabaseClient.from("studyset").select().then(
             function (result) {
-              for (var i = 0; i < result.data.length; i++) {
+              studysetlist = result.data
+              for (var i = 0; i < studysetlist.length; i++) {
                 var box = document.createElement("div");
                 box.setAttribute("class", "box");
-                box.setAttribute("id", "mainDashboardUserStudyset" + result.data[i].id.toString());
-                document.getElementById("mainDashboardUserStudysetsdiv").appendChild(box);
+                box.setAttribute("id", "mainDashboardUserStudysetlist" + studysetlist[i].id.toString());
+                document.getElementById("mainDashboardUserStudysetlistdiv").appendChild(box);
                 document.getElementById(
-                  "mainDashboardUserStudyset" + result.data[i].id.toString()
-                ).innerHTML = "<p>" + result.data[i].name + "</p> <div class='flex'> <button id='mainDashboardUserStudyset" + result.data[i].id.toString() + "Openbutton'> Open </button> <button id='mainDashboardUserStudyset" + result.data[i].id.toString() + "Deletebutton' class='red alt'> Delete </button>";
-                document.getElementById("mainDashboardUserStudyset" + result.data[i].id.toString() + "Openbutton").addEventListener("click", function () {
-                  sessionData.importLocal.fileData = result.data[i].json;
+                  "mainDashboardUserStudysetlist" + studysetlist[i].id.toString()
+                ).innerHTML = "<p>" + studysetlist[i].name + "</p> <div class='flex'> <button id='mainDashboardUserStudysetlist" + studysetlist[i].id.toString() + "Openbutton'> Open </button> <button id='mainDashboardUserStudysetlist" + studysetlist[i].id.toString() + "Deletebutton' class='red alt'> Delete </button>";
+                document.getElementById("mainDashboardUserStudysetlist" + studysetlist[i].id.toString() + "Openbutton").addEventListener("click", function () {
+                  sessionData.importLocal.fileData = studysetlist[i].json;
                   sections.changeTo("actionOptions");
                 })
-                document.getElementById("mainDashboardUserStudyset" + result.data[i].id.toString() + "Deletebutton").addEventListener("click", function () {
-                  console.log("shouldhavedeleted"+result.data[i].name);
+                document.getElementById("mainDashboardUserStudysetlist" + studysetlist[i].id.toString() + "Deletebutton").addEventListener("click", function () {
+                  console.log("shouldhavedeleted"+studysetlist[i].name);
                 })
               }
             }
