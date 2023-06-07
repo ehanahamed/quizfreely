@@ -238,18 +238,17 @@ https://src.ehan.dev/quizfreely/LICENSE.txt
               for (var i = 0; i < studysetlist.length; i++) {
                 var box = document.createElement("div");
                 box.setAttribute("class", "box");
-                box.setAttribute("id", "mainDashboardUserStudysetlist" + studysetlist[i].id.toString());
+                box.setAttribute("id", "mainDashboardUserStudysetlist" + i.toString());
                 document.getElementById("mainDashboardUserStudysetlistdiv").appendChild(box);
                 document.getElementById(
-                  "mainDashboardUserStudysetlist" + studysetlist[i].id.toString()
-                ).innerHTML = "<p>" + studysetlist[i].name + "</p> <div class='flex'> <button id='mainDashboardUserStudysetlist" + studysetlist[i].id.toString() + "Openbutton'> Open </button> <button id='mainDashboardUserStudysetlist" + studysetlist[i].id.toString() + "Deletebutton' class='red alt'> Delete </button>";
-                document.getElementById("mainDashboardUserStudysetlist" + studysetlist[i].id.toString() + "Openbutton").addEventListener("click", function (event) {
-                  alert(event.target.id.replace("mainDashboardUserStudysetlist", "").replace("Openbutton", ""));
-                  //sessionData.importLocal.fileData = studysetlist[event.target.id.replace("mainDashboardUserStudysetlist", "").replace("Openbutton", "")].json;
-                  //sections.changeTo("actionOptions");
+                  "mainDashboardUserStudysetlist" + i.toString()
+                ).innerHTML = "<p>" + studysetlist[i].name + "</p> <div class='flex'> <button id='mainDashboardUserStudysetlist" + i.toString() + "Openbutton'> Open </button> <button id='mainDashboardUserStudysetlist" + i.toString() + "Deletebutton' class='red alt'> Delete </button>";
+                document.getElementById("mainDashboardUserStudysetlist" + i.toString() + "Openbutton").addEventListener("click", function (event) {
+                  sessionData.importLocal.fileData = studysetlist[event.target.id.replace("mainDashboardUserStudysetlist", "").replace("Openbutton", "")].json;
+                  sections.changeTo("actionOptions");
                 })
-                document.getElementById("mainDashboardUserStudysetlist" + studysetlist[i].id.toString() + "Deletebutton").addEventListener("click", function (event) {
-                  //console.log("shouldhavedeleted"+studysetlist[event.target.id.replace("mainDashboardUserStudysetlist", "").replace("Deletebutton", "")].name);
+                document.getElementById("mainDashboardUserStudysetlist" + i.toString() + "Deletebutton").addEventListener("click", function (event) {
+                  alert("shouldhavedeleted"+studysetlist[event.target.id.replace("mainDashboardUserStudysetlist", "").replace("Deletebutton", "")].name);
                 })
               }
             }
