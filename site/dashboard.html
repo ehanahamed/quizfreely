@@ -234,7 +234,6 @@ https://src.ehan.dev/quizfreely/LICENSE.txt
     supabaseClient.auth.getSession().then(
       function (result) {
         if (result.data.session !== null) {
-          // study set list (read/select)
           supabaseClient.from("studyset").select().then(
             function (result) {
               studysetlist = result.data
@@ -261,8 +260,6 @@ https://src.ehan.dev/quizfreely/LICENSE.txt
               }
             }
           )
-          
-          // study set save (write/insert)
           supabaseClient.auth.getUser().then(function (result) {
             userId = result.data.user.id;
           })
