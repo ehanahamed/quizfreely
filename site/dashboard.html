@@ -104,6 +104,9 @@ https://src.ehan.dev/quizfreely/LICENSE.txt
           <div id="mainDashboardUserdiv" class="hide">
             <p>You are signed in. Study sets you saved to your account are shown below.</p>
             <div id="mainDashboardUserStudysetlistdiv" class="grid list"></div>
+            <div id="mainDashboardUserStudysetdeletediv" class="box green hide">
+              <p>Study set deleted. <a href="./dashboard.html">Refresh</a> to see updated dashboard?</p>
+            </div>
           </div>
         </div>
 
@@ -252,7 +255,7 @@ https://src.ehan.dev/quizfreely/LICENSE.txt
                     "id",
                     studysetlist[event.target.id.replace("mainDashboardUserStudysetlist", "").replace("Deletebutton", "")].id
                   ).then(function (result) {
-                    console.log(result);
+                    document.getElementById("mainDashboardUserStudysetdeletediv").classList.remove("hide");
                   });
                 })
               }
