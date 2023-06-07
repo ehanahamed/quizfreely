@@ -33,6 +33,7 @@ TODO
       - extra error-ing/validation-ing by searching auth table for usernames
 
 TODO EXTRA
+ - confirmation for deleting stuff
  - make sure tab works on file inputs (designsys)
  - make fanc betterthantab keyboard shortcut system (designsys)
  - autofil/autocomplete colors (designsys)

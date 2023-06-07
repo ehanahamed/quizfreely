@@ -103,6 +103,7 @@ https://src.ehan.dev/quizfreely/LICENSE.txt
           </div>
           <div id="mainDashboardUserdiv" class="hide">
             <p>You are signed in. Study sets you saved to your account are shown below.</p>
+            <div id="mainDashboardUserStudysetsdiv" class="grid list"></div>
           </div>
         </div>
 
@@ -230,6 +231,23 @@ https://src.ehan.dev/quizfreely/LICENSE.txt
     supabaseClient.auth.getSession().then(
       function (result) {
         if (result.data.session !== null) {
+          // study set list (read/select)
+          supabaseClient.from("studyset").select().then(
+            function (result) {
+              workinprogressStudysets = result.data;
+            }
+          )
+          for (var i = 0; i < workinprogressStudysets.length; i++) {
+            var box = document.createElement(div);
+            box.setAttribute("class", "box");
+            box.setAttribute("id", "mainDashboardUserStudyset" + workinprogressStudysets[i].id.toString());
+            document.getElementById("mainDashboardUserStudysetsdiv").appendChild(box);
+            document.getElementById(
+              "mainDashboardUserStudyset" + workinprogressStudysets[i].id.toString()
+            ).innerHTML = "<p>" + workinprogressStudysets[i].name + "</p> <div class='flex'> <button> Open </button> <button class='red alt'> Delete </button>";
+          }
+
+          // study set save (write/insert)
           supabaseClient.auth.getUser().then(function (result) {
             userId = result.data.user.id;
           })
