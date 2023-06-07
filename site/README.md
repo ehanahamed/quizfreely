@@ -16,5 +16,7 @@ supabaseClient.auth.getSession().then(function (result) { console.log(result) } 
 
 ```javascript
 // multiple child functions apperently work just fine?
-supabaseClient.from("table").select("*").then(function (result) { console.log(result) } )
+supabaseClient.from("table").select().then(function (result) { console.log(result) } )
 ```
+
+NOTETOSELF: I have confirmed that using `.select()` will only show data with the users id. (what i made my RLS policy do)
