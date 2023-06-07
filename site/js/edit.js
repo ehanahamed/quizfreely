@@ -12,6 +12,7 @@ var edit = {
     },
     load: function () {
         edit.makeTableFromArray(sessionData.studySetData.data, elements.inputs.edit.table);
+        elements.inputs.edit.name.value = sessionData.studySetData.name;
     },
     insert: function(index) {
         var newRow = elements.inputs.edit.table.insertRow(index);
