@@ -235,7 +235,7 @@ https://src.ehan.dev/quizfreely/LICENSE.txt
           supabaseClient.from("studyset").select().then(
             function (result) {
               for (var i = 0; i < result.data.length; i++) {
-                var box = document.createElement(div);
+                var box = document.createElement("div");
                 box.setAttribute("class", "box");
                 box.setAttribute("id", "mainDashboardUserStudyset" + result.data[i].id.toString());
                 document.getElementById("mainDashboardUserStudysetsdiv").appendChild(box);
