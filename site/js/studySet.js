@@ -18,7 +18,6 @@ var studySet = {
   },
   load: function (importContent) {
     sessionData.studySetData = JSON.parse(importContent);
-    elements.inputs.edit.name.value = sessionData.studySetData.name;
   },
   validate: function (importContent) {
     function isJson(string) {
