@@ -1,5 +1,12 @@
 fix `404.html` AFTER everything in `index.html` is done
 
+TODO JS
+ - make `studySet.load(...` run ONLY on importLocal
+    - if it runs on cloud import or inside of actionoptions (actionoptions includes cloud & local) then it breaks cloud import
+ - make sure all edit-related stuff is ONLY in editjs
+ - make sure all importLocal-related stuff is ONLY in importlocaljs, some of it (like JSON.parse) was in actionoptions and in studySetjs
+ - find JSON.parse-s and make sure they dont break already-parsed JSON from cloud imports/loads 
+
 ## Findings
 
 ```javascript
