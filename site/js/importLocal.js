@@ -17,7 +17,9 @@ var importLocal = {
             /*alerts.clear();
             if (studySet.validate(sessionData.importLocal.fileData) === true) {
                 alerts.show("successImport");*/
-                sections.changeTo("actionOptions");/*
+                studySet.load(sessionData.importLocal.fileData);
+                sections.changeTo("actionOptions");
+            /*
             } else {
                 alerts.show("errorImport");
             }*/
