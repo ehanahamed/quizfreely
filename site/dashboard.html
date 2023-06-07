@@ -241,10 +241,13 @@ https://src.ehan.dev/quizfreely/LICENSE.txt
                 document.getElementById("mainDashboardUserStudysetsdiv").appendChild(box);
                 document.getElementById(
                   "mainDashboardUserStudyset" + result.data[i].id.toString()
-                ).innerHTML = "<p>" + result.data[i].name + "</p> <div class='flex'> <button id='mainDashboardUserStudyset" + result.data[i].id.toString() + "Openbutton'> Open </button> <button class='red alt'> Delete </button>";
+                ).innerHTML = "<p>" + result.data[i].name + "</p> <div class='flex'> <button id='mainDashboardUserStudyset" + result.data[i].id.toString() + "Openbutton'> Open </button> <button id='mainDashboardUserStudyset" + result.data[i].id.toString() + "Deletebutton' class='red alt'> Delete </button>";
                 document.getElementById("mainDashboardUserStudyset" + result.data[i].id.toString() + "Openbutton").addEventListener("click", function () {
                   sessionData.importLocal.fileData = result.data[i].json;
                   sections.changeTo("actionOptions");
+                })
+                document.getElementById("mainDashboardUserStudyset" + result.data[i].id.toString() + "Deletebutton").addEventListener("click", function () {
+                  console.log("shouldhavedeleted"+result.data[i].name);
                 })
               }
             }
