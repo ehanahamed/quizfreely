@@ -155,13 +155,17 @@ https://src.ehan.dev/quizfreely/LICENSE.txt
           <h2>Save study set</h2>
           <p>You can save the study set to your account, or download it.</p>
           <div class="flex">
-            <a class="button">Save to account</a>
+            <a class="button" id="mainWorkinprogressSavetoaccountbutton">Save to account</a>
             <a id="linkExportLocalDownload" class="button alt">Download</a>
           </div>
           <p>Need to go back or cancel?</p>
           <div class="flex">
             <button onclick="sections.changeTo('edit');">Back to Edit</button>
             <a href="./dashboard.html" class="button alt red">Delete Draft & Cancel</a>
+          </div>
+          <div id="mainWorkinprogressError" class="box red hide">
+            <p>You are not signed in. You can use Quizfreely without an account. However, you must download study sets to save them because you cannot save them to an account if you do not have one.</p>
+            <p><b>Right now, you can download your study set to save it.</b> Later on, you can choose to <a href="./signup">sign up</a> or <a href="./signin.html">sign in</a> and save your downloaded study set to your account, or continue using Quizfreely without an account.</p>
           </div>
         </div>
         <!--
@@ -218,7 +222,21 @@ https://src.ehan.dev/quizfreely/LICENSE.txt
     supabaseClient.auth.getSession().then(
       function (result) {
         if (result.data.session !== null) {
+          supabaseClient.auth.getUser().then(function (result) {
+            userId = result.data.user.id;
+          })
           document.getElementById("mainDashboardUserdiv").classList.remove("hide");
+          document.getElementById("mainWorkinprogressSavetoaccountbutton").addEventListener("click", function () {
+            supabaseClient.from("studyset").insert({
+              user_id: userId,
+              name: sessionData.studySetData.name,
+              json: sessionData.studySetData
+            })
+          })
+        } else if (result.data.session === null) {
+          document.getElementById("mainWorkinprogressSavetoaccountbutton").addEventListener("click", function () {
+            document.getElementById("mainWorkinprogressError").classList.remove("hide");
+          })
         }
       }
     )
