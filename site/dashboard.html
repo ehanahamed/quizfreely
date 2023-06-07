@@ -89,7 +89,7 @@ https://src.ehan.dev/quizfreely/LICENSE.txt
         -->
         <div id="mainDashboarddiv">
           <h2>Dashboard</h2>
-          <p>You can create a new study set, or open a study set file you downloaded.</p>
+          <p>Create a new study set or open a study set file you downloaded.</p>
           <div class="flex">
             <button id="buttonMake" onclick="buttons.load.make();">
               <i class="nf nf-oct-plus"></i>
@@ -244,12 +244,12 @@ https://src.ehan.dev/quizfreely/LICENSE.txt
                   "mainDashboardUserStudysetlist" + studysetlist[i].id.toString()
                 ).innerHTML = "<p>" + studysetlist[i].name + "</p> <div class='flex'> <button id='mainDashboardUserStudysetlist" + studysetlist[i].id.toString() + "Openbutton'> Open </button> <button id='mainDashboardUserStudysetlist" + studysetlist[i].id.toString() + "Deletebutton' class='red alt'> Delete </button>";
                 document.getElementById("mainDashboardUserStudysetlist" + studysetlist[i].id.toString() + "Openbutton").addEventListener("click", function (event) {
-                  alert(event.target.id.replace("mainDashboardUserStudysetlist","").replace("Openbutton"));
+                  alert(event.target.id.replace("mainDashboardUserStudysetlist","").replace("Openbutton",""));
                   //sessionData.importLocal.fileData = studysetlist[event.target.id.replace("mainDashboardUserStudysetlist","").replace("Openbutton")].json;
                   //sections.changeTo("actionOptions");
                 })
                 document.getElementById("mainDashboardUserStudysetlist" + studysetlist[i].id.toString() + "Deletebutton").addEventListener("click", function (event) {
-                  alert(event.target.id.replace("mainDashboardUserStudysetlist","").replace("Deletebutton"));
+                  alert(event.target.id.replace("mainDashboardUserStudysetlist","").replace("Deletebutton",""));
                   //console.log("shouldhavedeleted"+studysetlist[event.target.id.replace("mainDashboardUserStudysetlist","").replace("Deletebutton")].name);
                 })
               }
