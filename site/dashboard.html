@@ -163,7 +163,15 @@ https://src.ehan.dev/quizfreely/LICENSE.txt
             <button onclick="sections.changeTo('edit');">Back to Edit</button>
             <a href="./dashboard.html" class="button alt red">Delete Draft & Cancel</a>
           </div>
-          <div id="mainWorkinprogressError" class="box red hide">
+          <div id="mainWorkinprogressYay" class="box green hide">
+            <p>Your study set has been saved to your account.</p>
+            <p>Go back to your <a href="./dashboard.html">dashboard</a>?</p>
+          </div>
+          <div id="mainWorkinprogressNay" class="box red hide">
+            <p>There was a network error preventing the study set from saving. Please try again.</p>
+            <p>If you have tried multiple times and are still unable to save, download your study set and try to save it to your account later.</p>
+          </div>
+          <div id="mainWorkinprogressNewuser" class="box red hide">
             <p>You are not signed in. You can use Quizfreely without an account. However, you must download study sets to save them because you cannot save them to an account if you do not have one.</p>
             <p class="fg"><b>Right now, you can download your study set to save it.</b> Later on, you can choose to <a href="./signup">sign up</a> or <a href="./signin.html">sign in</a> and save your downloaded study set to your account, or continue using Quizfreely without an account.</p>
           </div>
@@ -231,11 +239,21 @@ https://src.ehan.dev/quizfreely/LICENSE.txt
               user_id: userId,
               name: sessionData.studySetData.name,
               json: sessionData.studySetData
-            })
+            }).then(
+              function (result) {
+                if (result.status === 201) {
+                  document.getElementById("mainWorkinprogressYay").classList.remove("hide");
+                  document.getElementById("mainWorkinprogressNay").classList.add("hide");
+                } else if (result.status !== 201) {
+                  document.getElementById("mainWorkinprogressYay").classList.add("hide");
+                  document.getElementById("mainWorkinprogressNay").classList.remove("hide");
+                }
+              }
+            )
           })
         } else if (result.data.session === null) {
           document.getElementById("mainWorkinprogressSavetoaccountbutton").addEventListener("click", function () {
-            document.getElementById("mainWorkinprogressError").classList.remove("hide");
+            document.getElementById("mainWorkinprogressNewuser").classList.remove("hide");
           })
         }
       }
