@@ -14,7 +14,7 @@ var buttons = {
     },
     actionOptions: {
         edit: function () {
-            studySet.load(sessionData.importLocal.fileData)
+            studySet.load(sessionData.importLocal.fileData);
             edit.load();
             sections.changeTo("edit");
             alerts.clear();
