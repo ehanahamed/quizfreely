@@ -259,6 +259,7 @@ https://src.ehan.dev/quizfreely/LICENSE.txt
                   ).innerHTML = "<p>" + studysetlist[i].name + "</p> <div class='flex'> <button id='mainDashboardUserStudysetlist" + i.toString() + "Openbutton'> Open </button> <button id='mainDashboardUserStudysetlist" + i.toString() + "Deletebutton' class='red alt'> Delete </button>";
                   document.getElementById("mainDashboardUserStudysetlist" + i.toString() + "Openbutton").addEventListener("click", function (event) {
                     sessionData.studySetData = studysetlist[event.target.id.replace("mainDashboardUserStudysetlist", "").replace("Openbutton", "")].json;
+                    localStorage.set("currentStudyset", sessionData.studySetData)
                     sections.changeTo("actionOptions");
                   })
                   document.getElementById("mainDashboardUserStudysetlist" + i.toString() + "Deletebutton").addEventListener("click", function (event) {
