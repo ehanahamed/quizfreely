@@ -18,7 +18,7 @@ var importLocal = {
             if (studySet.validate(sessionData.importLocal.fileData) === true) {
                 alerts.show("successImport");*/
                 studySet.load(sessionData.importLocal.fileData);
-                localStorage.set("currentStudyset", sessionData.studySetData);
+                localStorage.setItem("currentStudyset", sessionData.studySetData);
                 sections.changeTo("actionOptions");
             /*
             } else {
