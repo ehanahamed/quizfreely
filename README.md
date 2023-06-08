@@ -1,12 +1,11 @@
 current "save point" incase everything breaks: https://codeberg.org/ehanahamed/quizfreely/commit/90baa8467626ac7c7723a471c00c13edb42e074d
 
+TODO
+ - favicon
+
 TODO SOSA
- - accounts
  - review games
-    - probably using ~~js P2P~~ or mabye supabase's "realtime" thingy
-    - multi-select "classic" review game
-    - competitive spinoff of "classic" multi-select
-        - some type of session-only point system
+    - using supabase realtime
  - docs & help menu
 
 TODO MARELLA
