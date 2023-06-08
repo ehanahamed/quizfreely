@@ -6,6 +6,8 @@ TODO JS
  - make sure all edit-related stuff is ONLY in editjs
  - make sure all importLocal-related stuff is ONLY in importlocaljs, some of it (like JSON.parse) was in actionoptions and in studySetjs
  - find JSON.parse-s and make sure they dont break already-parsed JSON from cloud imports/loads 
+ - make the cloud load and local load organized
+    - they both use `sessionData.studySetData = ...`, `localStorage.set("currentStudyset", sessionData.studySetData);`, and `sections.changeTo("actionOptions");`
 
 ## Findings
 
