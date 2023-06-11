@@ -1,5 +1,3 @@
-current "save point" incase everything breaks: https://codeberg.org/ehanahamed/quizfreely/commit/90baa8467626ac7c7723a471c00c13edb42e074d
-
 TODO
  - favicon
 
