@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="screen">
 <!--
 Quizfreely (quizfreely.ehan.dev)
 Copyright (c) 2022-present Ehan Ahamed and contributors
@@ -85,41 +85,33 @@ https://src.ehan.dev/quizfreely/LICENSE.txt
             </div>
         </div>
     </header>
-  <main>
-    <div class="grid page">
-      <div class="content">
-        <div id="mainSignindiv">
-          <h2>Sign In</h2>
-          <div>
-            <input type="text" id="mainSigninEmailinput" placeholder="Email" />
-          </div>
-          <div>
-            <input type="password" id="mainSigninPasswordinput" placeholder="Password" />
-          </div>
-          <div>
-            <button id="mainSigninSigninbutton">Sign In</button>
-          </div>
-          <p>Don't have an account? <a href="./signup.html">Sign Up</a></p>
-          <p>Forgot your password? <a href="./forgotpassword.html">Reset Password</a></p>
-          <p id="mainSigninErrortext" class="box red hide">Error</p>
+  <main class="grid screen">
+    <div class="content">
+      <div id="mainSignindiv">
+        <h2>Sign In</h2>
+        <div>
+          <input type="text" id="mainSigninEmailinput" placeholder="Email" />
         </div>
-        <div id="mainUserdiv" class="hide">
-          <h2>You are signed in!</h2>
-          <p>Go to the dashboard to create, edit, or review a study set.</p>
-          <div class="flex">
-            <a class="button" href="./dashboard.html">Dashboard</a>
-            <a class="button alt" href="./settings.html">Settings</a>
-          </div>
+        <div>
+          <input type="password" id="mainSigninPasswordinput" placeholder="Password" />
+        </div>
+        <div>
+          <button id="mainSigninSigninbutton">Sign In</button>
+        </div>
+        <p>Don't have an account? <a href="./signup.html">Sign Up</a></p>
+        <p>Forgot your password? <a href="./forgotpassword.html">Reset Password</a></p>
+        <p id="mainSigninErrortext" class="box red hide">Error</p>
+      </div>
+      <div id="mainUserdiv" class="hide">
+        <h2>You are signed in!</h2>
+        <p>Go to the dashboard to create, edit, or review a study set.</p>
+        <div class="flex">
+          <a class="button" href="./dashboard.html">Dashboard</a>
+          <a class="button alt" href="./settings.html">Settings</a>
         </div>
       </div>
     </div>
   </main>
-  <footer>
-    <h2>Quizfreely</h2>
-    <p>Copyright © 2022-present Ehan Ahamed and contributors</p>
-    <p>Licensed under the UPL-1.0 License</p>
-    <a href="./license.html">See License</a>
-  </footer>
   <script src="https://cdn.ehan.dev/design/src/js/header.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>

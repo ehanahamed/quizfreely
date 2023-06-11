@@ -4,6 +4,10 @@ This folder (`docs/contrib`) contains the current **work in progress** documenta
 
 As of right now, all the contributor documentation is in one file (this one, `README.md`)
 
+## Random notes
+
+the reset password page is the same for both un-signed-in users and signed-in users, supabase's API doesn't need to tell the difference, because un-signed-in users get signed-in when they click on the forgot passsword email link.
+
 ## Basic Concepts
 
 ### User expirence & UI "flow"
