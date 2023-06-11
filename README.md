@@ -1,6 +1,3 @@
-TODO
- - favicon
-
 TODO SOSA
  - review games
     - using supabase realtime
