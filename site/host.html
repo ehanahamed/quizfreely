@@ -135,9 +135,9 @@ https://src.ehan.dev/quizfreely/LICENSE.txt
         //  }
         //}
       )
-      channel.on('presence', { event: 'sync' }, () => {
-        console.log('Online users: ', channel.presenceState())
-      })
+      //channel.on('presence', { event: 'sync' }, () => {
+      //  console.log('Online users: ', channel.presenceState())
+      //})
       /*channel.on('presence', { event: 'join' }, ({ newPresences }) => {
         console.log('New users have joined: ', newPresences)
       })
@@ -151,6 +151,7 @@ https://src.ehan.dev/quizfreely/LICENSE.txt
           console.log(status)
         }
       })
+      console.log(channel.presenceState());
     });
   </script>
 </body>
