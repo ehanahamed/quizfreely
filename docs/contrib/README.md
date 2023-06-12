@@ -8,8 +8,6 @@ As of right now, all the contributor documentation is in one file (this one, `RE
 
 the reset password page is the same for both un-signed-in users and signed-in users, supabase's API doesn't need to tell the difference, because un-signed-in users get signed-in when they click on the forgot passsword email link.
 
-for review game notes see [`reviewgames.md`](./reviewgames.md)
-
 ## Basic Concepts
 
 ### User expirence & UI "flow"

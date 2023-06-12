@@ -2,8 +2,7 @@ TODO
  - fix `site.webmanifest`
 
 TODO SOSA
- - review games
-    - using supabase realtime
+ - ability to share study sets
  - docs & help menu
 
 TODO MARELLA
@@ -28,8 +27,6 @@ TODO
 
 TODO EXTRA
  - confirmation for deleting stuff
- - ability for host to kick players
-   - host will broadcast a "kick" event, and the kicked player will listen to the event and disconnect when the event is runned/ran
  - make sure tab works on file inputs (designsys)
  - make fanc betterthantab keyboard shortcut system (designsys)
  - autofil/autocomplete colors (designsys)
