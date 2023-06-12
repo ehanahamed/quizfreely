@@ -138,12 +138,12 @@ https://src.ehan.dev/quizfreely/LICENSE.txt
       channel.on('presence', { event: 'sync' }, () => {
         console.log('Online users: ', channel.presenceState())
       })
-      channel.on('presence', { event: 'join' }, ({ newPresences }) => {
+      /*channel.on('presence', { event: 'join' }, ({ newPresences }) => {
         console.log('New users have joined: ', newPresences)
       })
       channel.on('presence', { event: 'leave' }, ({ leftPresences }) => {
         console.log('Users have left: ', leftPresences)
-      })
+      })*/
       channel.subscribe(async (status) => {
         if (status === 'SUBSCRIBED') {
           const status = await channel.track({ online_at: new Date().toISOString() })
