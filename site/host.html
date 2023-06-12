@@ -131,6 +131,8 @@ https://src.ehan.dev/quizfreely/LICENSE.txt
         channel.track({ host: "host" }).then(function () {
           if (Object.entries(channel.presenceState()).length === 0) {
             document.getElementById("mainSetupErroridexists").classList.add("hide");
+            document.getElementById("mainSetupdiv").classList.add("hide");
+            document.getElementById("mainJoindiv").classList.remove("hide");
           } else if (Object.entries(channel.presenceState()).length > 0) {
             document.getElementById("mainSetupErroridexists").classList.remove("hide");
           }
