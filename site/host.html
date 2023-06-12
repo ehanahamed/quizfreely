@@ -148,7 +148,11 @@ https://src.ehan.dev/quizfreely/LICENSE.txt
       channel.subscribe(async (status) => {
         if (status === 'SUBSCRIBED') {
           channel.track({ host: "host" }).then(function () {
-            console.log(channel.presenceState());
+            if (Object.entries(channel.presenceState()).length === 1) {
+              alert("amonlyone")
+            } else if (Object.entries(channel.presenceState()).length > 1) {
+              document.getElementById("mainSetupErroridexists").classList.remove("hide");
+            }
           })
         }
       })
