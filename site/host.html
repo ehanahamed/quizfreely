@@ -149,9 +149,9 @@ https://src.ehan.dev/quizfreely/LICENSE.txt
         if (status === 'SUBSCRIBED') {
           const status = await channel.track({ host: "host" })
           console.log(status)
+          console.log(channel.presenceState());
         }
       })
-      console.log(channel.presenceState());
     });
   </script>
 </body>
