@@ -88,7 +88,7 @@ https://src.ehan.dev/quizfreely/LICENSE.txt
   <main>
     <div class="grid page">
       <div class="content">
-        <div id="mainSetup">
+        <div id="mainSetupdiv">
           <h2>Host a review game</h2>
           <p>Choose the ID for your review game. You can create an ID with letters and numbers, or you can just smash your keyboard to create a random ID.</p>
           <div>
@@ -97,10 +97,14 @@ https://src.ehan.dev/quizfreely/LICENSE.txt
           <div>
             <button id="mainSetupStartbutton">Start</button>
           </div>
+          <div id="mainSetupErroridexists" class="box red hide">
+            <p>A review game with that ID already exists!</p>
+            <p>Choose a different ID and try again.</p>
+          </div>
         </div>
-        <div id="mainJoin">
-          <p class="h2">Go to <a href="https://quizfreely.ehan.dev/play" class="h2">quizfreely.ehan.dev/play</a></p>
-          <p class="h2">ID: <code id="mainJoinId" class="h1">ID</code></p>
+        <div id="mainJoindiv" class="hide">
+          <p class="h3">Go to <a href="https://quizfreely.ehan.dev/play" class="h3">quizfreely.ehan.dev/play</a></p>
+          <p class="h3">ID: <code id="mainJoinId" class="h1">ID</code></p>
         </div>
       </div>
     </div>
@@ -120,6 +124,16 @@ https://src.ehan.dev/quizfreely/LICENSE.txt
       "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9rZWpxa2lzb2x4cWdrZ3d3bGJ6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE2ODU3NDE1MTgsImV4cCI6MjAwMTMxNzUxOH0.T8f_3fPAYnWdzguPonQZCAFmbAN-mTLQB3_EW9pjkis"
     );
     //alert(localStorage.getItem("currentStudyset"));
+    document.getElementById("mainSetupStartbutton").addEventListener("click", function () {
+      var channel = supabaseClient.channel(
+        document.getElementById("mainSetupIdinput").value
+      );
+      if (Object.entries(channel.presenseState()).length === 0) {
+        alert("its empty!");
+      } else {
+        document.getElementById("mainSetupErroridexists").classList.remove("hide");
+      }
+    });
   </script>
 </body>
 
