@@ -144,19 +144,16 @@ https://src.ehan.dev/quizfreely/LICENSE.txt
       channel.on('presence', { event: 'leave' }, ({ leftPresences }) => {
         console.log('Users have left: ', leftPresences)
       })*/
-
-      channel.subscribe(async (status) => {
-        if (status === 'SUBSCRIBED') {
-          channel.track({ host: "host" }).then(function () {
-            if (Object.entries(channel.presenceState()).length === 1) {
-              alert("amonlyone")
-            } else if (Object.entries(channel.presenceState()).length > 1) {
-              document.getElementById("mainSetupErroridexists").classList.remove("hide");
-            } else {
-              console.log(Object.entries(channel.presenceState()));
-            }
-          })
-        }
+      channel.subscribe(function (status) {
+        channel.track({ host: "host" }).then(function () {
+          if (Object.entries(channel.presenceState()).length === 0) {
+            alert("amonlyone")
+          } else if (Object.entries(channel.presenceState()).length > 0) {
+            document.getElementById("mainSetupErroridexists").classList.remove("hide");
+          } else {
+            console.log(Object.entries(channel.presenceState()));
+          }
+        })
       })
     });
   </script>
