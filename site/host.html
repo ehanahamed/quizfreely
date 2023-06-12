@@ -125,7 +125,7 @@ https://src.ehan.dev/quizfreely/LICENSE.txt
     );
     //alert(localStorage.getItem("currentStudyset"));
     document.getElementById("mainSetupStartbutton").addEventListener("click", function () {
-      const channel = supabase.channel('online-users', {
+      const channel = supabaseClient.channel('online-users', {
         config: {
           presence: {
             key: document.getElementById("mainSetupIdinput").value,
