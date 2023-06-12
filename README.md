@@ -1,3 +1,6 @@
+TODO
+ - fix `site.webmanifest`
+
 TODO SOSA
  - review games
     - using supabase realtime
