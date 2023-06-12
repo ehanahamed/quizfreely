@@ -123,31 +123,14 @@ https://src.ehan.dev/quizfreely/LICENSE.txt
       "https://okejqkisolxqgkgwwlbz.supabase.co",
       "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9rZWpxa2lzb2x4cWdrZ3d3bGJ6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE2ODU3NDE1MTgsImV4cCI6MjAwMTMxNzUxOH0.T8f_3fPAYnWdzguPonQZCAFmbAN-mTLQB3_EW9pjkis"
     );
-    //alert(localStorage.getItem("currentStudyset"));
     document.getElementById("mainSetupStartbutton").addEventListener("click", function () {
-      const channel = supabaseClient.channel(
-        document.getElementById("mainSetupIdinput").value//,
-        //{
-        //  config: {
-        //    presence: {
-        //     key: "host"
-        //    }
-        //  }
-        //}
-      )
-      //channel.on('presence', { event: 'sync' }, () => {
-      //  console.log('Online users: ', channel.presenceState())
-      //})
-      /*channel.on('presence', { event: 'join' }, ({ newPresences }) => {
-        console.log('New users have joined: ', newPresences)
-      })
-      channel.on('presence', { event: 'leave' }, ({ leftPresences }) => {
-        console.log('Users have left: ', leftPresences)
-      })*/
+      var channel = supabaseClient.channel(
+        document.getElementById("mainSetupIdinput").value
+      );
       channel.subscribe(function (status) {
         channel.track({ host: "host" }).then(function () {
           if (Object.entries(channel.presenceState()).length === 0) {
-            alert("amonlyone")
+            document.getElementById("mainSetupErroridexists").classList.add("hide");
           } else if (Object.entries(channel.presenceState()).length > 0) {
             document.getElementById("mainSetupErroridexists").classList.remove("hide");
           }
