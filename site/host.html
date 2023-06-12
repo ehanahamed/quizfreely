@@ -125,7 +125,28 @@ https://src.ehan.dev/quizfreely/LICENSE.txt
     );
     //alert(localStorage.getItem("currentStudyset"));
     document.getElementById("mainSetupStartbutton").addEventListener("click", function () {
-      
+      const channel = supabase.channel('online-users', {
+        config: {
+          presence: {
+            key: document.getElementById("mainSetupIdinput").value,
+          },
+        },
+      })
+      channel.on('presence', { event: 'sync' }, () => {
+        console.log('Online users: ', channel.presenceState())
+      })
+      channel.on('presence', { event: 'join' }, ({ newPresences }) => {
+        console.log('New users have joined: ', newPresences)
+      })
+      channel.on('presence', { event: 'leave' }, ({ leftPresences }) => {
+        console.log('Users have left: ', leftPresences)
+      })
+      channel.subscribe(async (status) => {
+        if (status === 'SUBSCRIBED') {
+          const status = await channel.track({ online_at: new Date().toISOString() })
+          console.log(status)
+        }
+      })
     });
   </script>
 </body>
