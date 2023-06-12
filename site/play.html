@@ -107,6 +107,9 @@ https://src.ehan.dev/quizfreely/LICENSE.txt
           <p>Choose a different username and try again.</p>
         </div>
       </div>
+      <div id="mainWaitdiv">
+        <h2>
+      </div>
     </div>
   </main>
   <script src="https://cdn.ehan.dev/design/src/js/header.js"></script>
@@ -130,11 +133,9 @@ https://src.ehan.dev/quizfreely/LICENSE.txt
             document.getElementById("mainJoinErrorid").classList.remove("hide");
           } else if (Object.hasOwn(channel.presenceState(), username) === true) {
             document.getElementById("mainSetupErrorusername").classList.remove("hide");
-          } else if (Object.hasOwn(channel.presenceState(), username) === true) {
-            document.getElementById("mainSetupErroridexists").classList.add("hide");
-            document.getElementById("mainSetupdiv").classList.add("hide");
-            document.getElementById("mainJoinId").innerText = id;
-            document.getElementById("mainJoindiv").classList.remove("hide");
+          } else if (Object.hasOwn(channel.presenceState(), username) === false) {
+            document.getElementById("mainSetupErrorusername").classList.add("hide");
+            document.getElementById("mainJoindiv").classList.add("hide");
             joinScreen()
           }
         })
