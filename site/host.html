@@ -124,14 +124,16 @@ https://src.ehan.dev/quizfreely/LICENSE.txt
       "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9rZWpxa2lzb2x4cWdrZ3d3bGJ6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE2ODU3NDE1MTgsImV4cCI6MjAwMTMxNzUxOH0.T8f_3fPAYnWdzguPonQZCAFmbAN-mTLQB3_EW9pjkis"
     );
     document.getElementById("mainSetupStartbutton").addEventListener("click", function () {
+      var id = document.getElementById("mainSetupIdinput").value
       var channel = supabaseClient.channel(
-        document.getElementById("mainSetupIdinput").value
+        id
       );
       channel.subscribe(function (status) {
         channel.track({ host: "host" }).then(function () {
           if (Object.entries(channel.presenceState()).length === 0) {
             document.getElementById("mainSetupErroridexists").classList.add("hide");
             document.getElementById("mainSetupdiv").classList.add("hide");
+            document.getElementById("mainJoinId").innerText = id;
             document.getElementById("mainJoindiv").classList.remove("hide");
           } else if (Object.entries(channel.presenceState()).length > 0) {
             document.getElementById("mainSetupErroridexists").classList.remove("hide");
