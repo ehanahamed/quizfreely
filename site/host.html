@@ -125,14 +125,7 @@ https://src.ehan.dev/quizfreely/LICENSE.txt
     );
     //alert(localStorage.getItem("currentStudyset"));
     document.getElementById("mainSetupStartbutton").addEventListener("click", function () {
-      var channel = supabaseClient.channel(
-        document.getElementById("mainSetupIdinput").value
-      );
-      if (Object.entries(channel.presenceState()).length === 0) {
-        alert("its empty!");
-      } else {
-        document.getElementById("mainSetupErroridexists").classList.remove("hide");
-      }
+      
     });
   </script>
 </body>
