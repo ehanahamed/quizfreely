@@ -132,9 +132,9 @@ https://src.ehan.dev/quizfreely/LICENSE.txt
           if (Object.entries(channel.presenceState()).length === 0) {
             document.getElementById("mainJoinErrorid").classList.remove("hide");
           } else if (Object.hasOwn(channel.presenceState(), username) === true) {
-            document.getElementById("mainSetupErrorusername").classList.remove("hide");
+            document.getElementById("mainJoinErrorusername").classList.remove("hide");
           } else if (Object.hasOwn(channel.presenceState(), username) === false) {
-            document.getElementById("mainSetupErrorusername").classList.add("hide");
+            document.getElementById("mainJoinErrorusername").classList.add("hide");
             document.getElementById("mainJoindiv").classList.add("hide");
             joinScreen()
           }
