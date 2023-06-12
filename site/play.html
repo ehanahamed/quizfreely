@@ -87,20 +87,64 @@ https://src.ehan.dev/quizfreely/LICENSE.txt
     </header>
   <main class="grid screen">
     <div class="content">
-      <h2>Join a review game</h2>
-      <div>
-        <input type="text" id="mainJoininput" placeholder="ID" />
-      </div>
-      <div>
-        <button id="mainJoinbutton" class="button">Join</button>
+      <div id="mainJoindiv">
+        <h2>Join a review game</h2>
+        <div>
+          <input type="text" id="mainJoinIdinput" placeholder="ID" />
+        </div>
+        <div>
+          <input type="text" id="mainJoinUsernameinput" placeholder="Username" />
+        </div>
+        <div>
+          <button id="mainJoinbutton" class="button">Join</button>
+        </div>
+        <div id="mainJoinErrorid" class="box red hide">
+          <p>Review game not found!</p>
+          <p>Make sure the ID is correct and try again.</p>
+        </div>
+        <div id="mainJoinErrorusername" class="box red hide">
+          <p>A user with that username already exists!</p>
+          <p>Choose a different username and try again.</p>
+        </div>
       </div>
     </div>
   </main>
   <script src="https://cdn.ehan.dev/design/src/js/header.js"></script>
   <script>
     document.getElementById("mainJoinbutton").addEventListener("click", function () {
-      localStorage.setItem("reviewgameCode", document.getElementById("mainJoininput").value);
+      var id = document.getElementById("mainJoinIdinput").value;
+      var username = document.getElementById("mainJoinUsernameinput").value;
+      var channel = supabaseClient.channel(
+        id,
+        {
+          config: {
+            presence: {
+              key: username
+            }
+          }
+        }
+      );
+      channel.subscribe(function (status) {
+        channel.track({ join: "join" }).then(function () {
+          if (Object.entries(channel.presenceState()).length === 0) {
+            document.getElementById("mainJoinErrorid").classList.remove("hide");
+          } else if (Object.hasOwn(channel.presenceState(), username) === true) {
+            document.getElementById("mainSetupErrorusername").classList.remove("hide");
+          } else if (Object.hasOwn(channel.presenceState(), username) === true) {
+            document.getElementById("mainSetupErroridexists").classList.add("hide");
+            document.getElementById("mainSetupdiv").classList.add("hide");
+            document.getElementById("mainJoinId").innerText = id;
+            document.getElementById("mainJoindiv").classList.remove("hide");
+            joinScreen()
+          }
+        })
+      })
     });
+    function joinScreen() {
+      channel.on('presence', { event: 'sync' }, () => {
+        console.log(channel.presenceState())
+      })
+    }
   </script>
 </body>
 
