@@ -1,6 +1,5 @@
-fix `404.html` AFTER everything in `index.html` is done
-
 TODO JS
+ - make `sessionData.flashcards.index = 0; flashcards.load(sessionData.flashcards.index);` run after all import/open (importLocal AND cloud import thing)
  - make `studySet.load(...` run ONLY on importLocal
     - if it runs on cloud import or inside of actionoptions (actionoptions includes cloud & local) then it breaks cloud import
  - make sure all edit-related stuff is ONLY in editjs
