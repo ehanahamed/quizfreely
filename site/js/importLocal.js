@@ -19,6 +19,8 @@ var importLocal = {
                 alerts.show("successImport");*/
                 studySet.load(sessionData.importLocal.fileData);
                 localStorage.setItem("currentStudyset", JSON.stringify(sessionData.studySetData));
+                sessionData.flashcards.index = 0;
+                flashcards.load(sessionData.flashcards.index);
                 sections.changeTo("actionOptions");
             /*
             } else {

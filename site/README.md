@@ -1,4 +1,8 @@
+TODO REMOVEREVIEWGAME
+ - `localStorage.setItem("currentStudyset", ...` might not be needed anymore (is in cloud & local import thing)
+
 TODO JS
+ - remove button.js stuff for removed elements
  - make `sessionData.flashcards.index = 0; flashcards.load(sessionData.flashcards.index);` run after all import/open (importLocal AND cloud import thing)
  - make `studySet.load(...` run ONLY on importLocal
     - if it runs on cloud import or inside of actionoptions (actionoptions includes cloud & local) then it breaks cloud import
