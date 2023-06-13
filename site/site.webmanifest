@@ -14,5 +14,6 @@
   ],
   "theme_color": "#7A52CC",
   "background_color": "#1E1E32",
-  "display": "standalone"
+  "display": "standalone",
+  "start_url": "https://quizfreely.ehan.dev"
 }
