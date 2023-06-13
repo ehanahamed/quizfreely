@@ -11,7 +11,6 @@ var sections = {
         elements.sections.actionOptions.classList.add("hide");
         elements.sections.edit.classList.add("hide");
         elements.sections.exportOptions.classList.add("hide");
-        elements.sections.flashcards.classList.add("hide");
         elements.sections[section].classList.remove("hide");
     }
 }
