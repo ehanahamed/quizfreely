@@ -118,10 +118,22 @@ https://src.ehan.dev/quizfreely/LICENSE.txt
         Action section
         -->
         <div id="sectionActionOptions" class="hide">
-          <h2>Open study set</h2>
-          <p>You can study using flashcards.</p>
+          <h2 id="mainActionsStudysettitle">Study set</h2>
+          <div class="card double" id="flashcardsCard" onclick="buttons.flashcards.flip()">
+            <div class="content" id="flashcardsContent">
+              <div class="front" id="flashcardsFront">front</div>
+              <div class="back" id="flashcardsBack">back</div>
+            </div>
+          </div>
           <div class="flex">
-            <button onclick="buttons.actionOptions.flashcards()">Flashcards</button>
+            <button id="flashcardsPrev" onclick="buttons.flashcards.prev()">Previous</button>
+            <button id="flashcardsNext" onclick="buttons.flashcards.next()">Next</button>
+          </div>
+          <div class="box">
+            <p>Use flip button or tap the flashcard to flip.</p>
+            <div class="flex">
+              <button onclick="buttons.flashcards.flip()">Flip</button>
+            </div>
           </div>
           <p>Need to make changes or add more?</p>
           <div class="flex">
