@@ -1,6 +1,3 @@
-TODO
- - fix `site.webmanifest`
-
 TODO SOSA
  - ability to share study sets
  - docs & help menu
