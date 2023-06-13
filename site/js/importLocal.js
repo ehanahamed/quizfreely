@@ -22,6 +22,7 @@ var importLocal = {
                 sessionData.flashcards.index = 0;
                 flashcards.load(sessionData.flashcards.index);
                 sections.changeTo("actionOptions");
+                document.getElementById("mainActionsStudysettitle").innerText = sessionData.studySetData.name;
             /*
             } else {
                 alerts.show("errorImport");

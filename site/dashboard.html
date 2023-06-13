@@ -128,12 +128,7 @@ https://src.ehan.dev/quizfreely/LICENSE.txt
           <div class="flex">
             <button id="flashcardsPrev" onclick="buttons.flashcards.prev()">Previous</button>
             <button id="flashcardsNext" onclick="buttons.flashcards.next()">Next</button>
-          </div>
-          <div class="box">
-            <p>Use flip button or tap the flashcard to flip.</p>
-            <div class="flex">
-              <button onclick="buttons.flashcards.flip()">Flip</button>
-            </div>
+            <button onclick="buttons.flashcards.flip()">Flip</button>
           </div>
           <p>Need to make changes or add more?</p>
           <div class="flex">
@@ -193,29 +188,7 @@ https://src.ehan.dev/quizfreely/LICENSE.txt
             <p>You are not signed in. You can use Quizfreely without an account. However, you must download study sets to save them because you cannot save them to an account if you do not have one.</p>
             <p class="fg"><b>Right now, you can download your study set to save it.</b> Later on, you can choose to <a href="./signup">sign up</a> or <a href="./signin.html">sign in</a> and save your downloaded study set to your account, or continue using Quizfreely without an account.</p>
           </div>
-        </div>
-        <!--
-        Flashcards
-        -->
-        <div id="sectionFlashcards" class="hide">
-          <h2>Flashcards</h2>
-          <div class="card double" id="flashcardsCard" onclick="buttons.flashcards.flip()">
-            <div class="content" id="flashcardsContent">
-              <div class="front" id="flashcardsFront">front</div>
-              <div class="back" id="flashcardsBack">back</div>
-            </div>
-          </div>
-          <div class="flex">
-            <button id="flashcardsPrev" onclick="buttons.flashcards.prev()">Previous</button>
-            <button id="flashcardsNext" onclick="buttons.flashcards.next()">Next</button>
-          </div>
-          <div class="box">
-            <p>Use flip button or tap the flashcard to flip.</p>
-            <div class="flex">
-              <button onclick="buttons.flashcards.flip()">Flip</button>
-            </div>
-          </div>
-        </div>
+        </div>      
       </div>
     </div>
   </main>
@@ -274,6 +247,7 @@ https://src.ehan.dev/quizfreely/LICENSE.txt
                     sessionData.flashcards.index = 0;
                     flashcards.load(sessionData.flashcards.index);
                     sections.changeTo("actionOptions");
+                    document.getElementById("mainActionsStudysettitle").innerText = sessionData.studySetData.name;
                   })
                   document.getElementById("mainDashboardUserStudysetlist" + i.toString() + "Deletebutton").addEventListener("click", function (event) {
                     supabaseClient.from("studyset").delete().eq(

@@ -12,6 +12,8 @@ TODO MARELLA
     - implement [designsys/docs](https://codeberg.org/ehanahamed/designsys/src/branch/main/docs/)
 
 TODO
+ - ***create VS make in source code***
+ - ***studyset title vs studyset name in source code***
  - **camelCase** it
  - **REMOVE `<br />`s**
  - header links & menu
