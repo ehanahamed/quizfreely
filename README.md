@@ -1,17 +1,16 @@
-TODO SOSA
+TODO SOSA & MARELLA
  - ability to share study sets
  - docs & help menu
-
-TODO MARELLA
- - documentation
- - code quality
-    - implement [designsys/docs](https://codeberg.org/ehanahamed/designsys/src/branch/main/docs/)
 
 TODO
  - ***create VS make in source code***
  - ***studyset title vs studyset name in source code***
  - **camelCase** it
  - documentation & help menu
+ - code quality
+    - implement [designsys/docs](https://codeberg.org/ehanahamed/designsys/src/branch/main/docs/)
+    - move `<script>...` tags into js files & make js consistent
+    - consistent-ify use of `document.getElement...` vs `elements.abc...`
  - implement [designsys/docs/styleguide.md#html-ids](https://codeberg.org/ehanahamed/designsys/src/branch/main/docs/styleguide.md#html-ids)
  - implement [designsys/docs/wording.md#grammar-and-capitalization](https://codeberg.org/ehanahamed/designsys/src/branch/main/docs/wording.md#grammar-and-capitalization)
 
