@@ -85,6 +85,10 @@ https://src.ehan.dev/quizfreely/LICENSE.txt
             </div>
         </div>
     </header>
+    <div id="noscript" class="box center red">
+      <p>You have JavaScript disabled. This website uses JavaScript to run correctly.</p>
+      <p>Please enable JavaScript in your browser settings, or this website will not work.</p>
+    </div>
   <main class="grid screen">
     <div class="content">
       <div id="mainSignindiv">
@@ -112,6 +116,9 @@ https://src.ehan.dev/quizfreely/LICENSE.txt
       </div>
     </div>
   </main>
+  <script>
+    document.getElementById("noscript").display = "none";
+  </script>
   <script src="https://cdn.ehan.dev/design/src/js/header.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
