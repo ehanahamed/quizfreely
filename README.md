@@ -14,14 +14,11 @@ TODO
  - documentation & help menu
  - implement [designsys/docs/styleguide.md#html-ids](https://codeberg.org/ehanahamed/designsys/src/branch/main/docs/styleguide.md#html-ids)
  - implement [designsys/docs/wording.md#grammar-and-capitalization](https://codeberg.org/ehanahamed/designsys/src/branch/main/docs/wording.md#grammar-and-capitalization)
- - sign in & sign up page
-   - check if username is incorrect or if password is incorrect
-      - extra error-ing/validation-ing by searching auth table for usernames
 
 TODO EXTRA
  - confirmation for deleting stuff
  - make sure tab works on file inputs (designsys)
- - make fanc betterthantab keyboard shortcut system (designsys)
+ - make fancy betterthantab keyboard shortcut system (designsys)
  - autofil/autocomplete colors (designsys)
  - enter key to focus next form element (designsys)
    - and to submit signin/signup when keyboard focus is on password input
