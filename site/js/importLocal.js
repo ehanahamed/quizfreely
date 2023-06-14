@@ -23,6 +23,13 @@ var importLocal = {
                 flashcards.load(sessionData.flashcards.index);
                 sections.changeTo("actionOptions");
                 document.getElementById("mainActionsStudysettitle").innerText = sessionData.studySetData.name;
+                for (var i = 0; i < sessionData.studySetData.data.length; i++) {
+                    var newRow = document.getElementById("mainActionsTable").insertRow(
+                      document.getElementById("mainActionsTable").rows.length - 1
+                    );
+                    newRow.insertCell(0).innerHTML = sessionData.studySetData.data[i][0];
+                    newRow.insertCell(1).innerHTML = sessionData.studySetData.data[i][1];
+                }
             /*
             } else {
                 alerts.show("errorImport");
