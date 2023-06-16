@@ -21,3 +21,4 @@ TODO EXTRA
  - autofil/autocomplete colors (designsys)
  - enter key to focus next form element (designsys)
    - and to submit signin/signup when keyboard focus is on password input
+ - document when to use `i` vs `b` (designsys/styleguide)
