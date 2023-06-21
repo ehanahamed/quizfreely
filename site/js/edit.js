@@ -17,7 +17,7 @@ var edit = {
     insert: function(index) {
         var newRow = elements.inputs.edit.table.insertRow(index);
         newRow.insertCell(0).innerHTML = "<input type='text' placeholder='Term'></input>";
-        newRow.insertCell(1).innerHTML = "<textarea rows='2' placeholder='Definition'></textarea>";
+        newRow.insertCell(1).innerHTML = "<textarea class='vertical' rows='2' placeholder='Definition'></textarea>";
         var actions = newRow.insertCell(2);
         actions.innerHTML = "<div class='flex center'><button> <i class='nf nf-cod-arrow_up'></i> Move Up </button><button> <i class='nf nf-cod-arrow_down'></i> Move Down </button><button class='red'> <i class='nf nf-fa-trash_o'></i> Remove </button></div>";
         actions.children[0].children[0].addEventListener("click", function (event) { edit.move(event.target.parentElement.parentElement.parentElement.rowIndex, event.target.parentElement.parentElement.parentElement.rowIndex - 1)});
