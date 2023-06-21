@@ -160,6 +160,11 @@ https://src.ehan.dev/quizfreely/LICENSE.txt
         }
       );
     });
+    document.getElementById("mainSignupGooglebutton").addEventListener("click", function () {
+      supabaseClient.auth.signInWithOAuth({
+        provider: "google"
+      })
+    });
   </script>
 </body>
 
