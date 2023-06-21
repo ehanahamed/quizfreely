@@ -22,3 +22,5 @@ TODO EXTRA
  - enter key to focus next form element (designsys)
    - and to submit signin/signup when keyboard focus is on password input
  - document when to use `i` vs `b` (designsys/styleguide)
+ - consistant image alt tag (+ designsys)
+   - currently most are `<img ... alt="image" ...`
