@@ -156,7 +156,10 @@ https://src.ehan.dev/quizfreely/LICENSE.txt
     });
     document.getElementById("mainSigninGooglebutton").addEventListener("click", function () {
       supabaseClient.auth.signInWithOAuth({
-        provider: "google"
+        provider: "google",
+        options: {
+          redirectTo: "https://quizfreely.ehan.dev/signin"
+        }
       })
     });
   </script>
