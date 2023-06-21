@@ -3,6 +3,7 @@ TODO SOSA & MARELLA
  - docs & help menu
 
 TODO
+ - remove "change passwd" button for non-email/googleapi accounts
  - ***create VS make in source code***
  - ***studyset title vs studyset name in source code***
  - **camelCase** it
