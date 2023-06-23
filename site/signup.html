@@ -97,7 +97,10 @@ https://src.ehan.dev/quizfreely/LICENSE.txt
           <input type="text" class="fullWidth" id="mainSignupEmailinput" placeholder="Email" />
         </div>
         <div>
-          <input type="password" class="fullWidth" id="mainSignupPasswordinput" placeholder="Password" />
+          <input type="password" class="fullWidth" id="mainSignupPasswordinput" placeholder="Create Password" />
+        </div>
+        <div>
+          <input type="password" class="fullWidth" id="mainSignupRetypepasswordinput" placeholder="Retype Password" />
         </div>
         <div>
           <button id="mainSignupSignupbutton">Sign Up</button>
@@ -146,24 +149,30 @@ https://src.ehan.dev/quizfreely/LICENSE.txt
       }
     )
     document.getElementById("mainSignupSignupbutton").addEventListener("click", function () {
-      supabaseClient.auth.signUp({
-        email: document.getElementById("mainSignupEmailinput").value,
-        password: document.getElementById("mainSignupPasswordinput").value,
-        options: {
-          emailRedirectTo: "https://quizfreely.ehan.dev/confirmemail"
-        }
-      }).then(
-        function (result) {
-          if (result.error !== null) {
-            document.getElementById("mainSignupErrortext").classList.remove("hide");
-            document.getElementById("mainEmaildiv").classList.add("hide");
-            document.getElementById("mainSignupErrortext").innerText = "Error: " + result.error.message;
-          } else if (result.error === null) {
-            document.getElementById("mainSignupErrortext").classList.add("hide");
-            document.getElementById("mainEmaildiv").classList.remove("hide");
+      if (document.getElementById("mainSignupPasswordinput").value === document.getElementById("mainSignupRetypepasswordinput").value) {
+        supabaseClient.auth.signUp({
+          email: document.getElementById("mainSignupEmailinput").value,
+          password: document.getElementById("mainSignupPasswordinput").value,
+          options: {
+            emailRedirectTo: "https://quizfreely.ehan.dev/confirmemail"
           }
-        }
-      );
+        }).then(
+          function (result) {
+            if (result.error !== null) {
+              document.getElementById("mainSignupErrortext").classList.remove("hide");
+              document.getElementById("mainEmaildiv").classList.add("hide");
+              document.getElementById("mainSignupErrortext").innerText = "Error: " + result.error.message;
+            } else if (result.error === null) {
+              document.getElementById("mainSignupErrortext").classList.add("hide");
+              document.getElementById("mainEmaildiv").classList.remove("hide");
+            }
+          }
+        );
+      } else {
+        document.getElementById("mainSignupErrortext").classList.remove("hide");
+        document.getElementById("mainEmaildiv").classList.add("hide");
+        document.getElementById("mainSignupErrortext").innerHTML = "Error: Password does not match,<br /> make sure your new password is typed correctly.";
+      }
     });
     document.getElementById("mainSignupGooglebutton").addEventListener("click", function () {
       supabaseClient.auth.signInWithOAuth({
