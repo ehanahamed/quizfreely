@@ -1,4 +1,6 @@
-TODO SOSA & MARELLA
+TODO NOW
+ - `elements` is a browser-controlled variable on some browsers
+    - chnage `elements` to something else
  - ability to share study sets
  - docs & help menu
 
