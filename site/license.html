@@ -1,64 +1,74 @@
 <!DOCTYPE html>
 <html lang="en">
-<!--
+  <!--
 Quizfreely (quizfreely.ehan.dev)
 Copyright (c) 2022-present Ehan Ahamed and contributors
 Licensed under the UPL-1.0 License
 https://src.ehan.dev/quizfreely/LICENSE.txt
 -->
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Quizfreely</title>
-  <link rel="canonical" href="https://quizfreely.ehan.dev" />
-  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-  <link rel="stylesheet" href="https://design.ehan.dev/css/colors.css" />
-  <link rel="stylesheet" href="https://design.ehan.dev/css/components.css" />
-  <link rel="stylesheet" href="https://design.ehan.dev/css/layouts.css" />
-  <link rel="stylesheet" href="https://design.ehan.dev/css/utils.css" />
-  <link rel="stylesheet" href="https://www.nerdfonts.com/assets/css/webfont.css" />
-</head>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Quizfreely</title>
+    <link rel="canonical" href="https://quizfreely.ehan.dev" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="stylesheet" href="https://design.ehan.dev/css/colors.css" />
+    <link rel="stylesheet" href="https://design.ehan.dev/css/components.css" />
+    <link rel="stylesheet" href="https://design.ehan.dev/css/layouts.css" />
+    <link rel="stylesheet" href="https://design.ehan.dev/css/utils.css" />
+    <link
+      rel="stylesheet"
+      href="https://www.nerdfonts.com/assets/css/webfont.css"
+    />
+  </head>
 
-<body>
-  <header>
-        <div class="menu">
-            <button id="headerMenuMenubutton">
-                <i class="nf nf-md-menu"></i>
-                Menu
-            </button>
-            <div id="headerMenuMenudiv" class="hide">
-                <ul>
-                    <li><a href="./index.html" class="bg1 mark markPrimary">Home</a></li>
-                    <li><a href="./dashboard.html">Dashboard</a></li>
-                    <li><a href="./docs.html">Help & Docs</a></li>
-                    <li><a href="./settings.html">Settings</a></li>
-                </ul>
-            </div>
+  <body>
+    <header>
+      <div class="menu">
+        <button id="headerMenuMenubutton">
+          <i class="nf nf-md-menu"></i>
+          Menu
+        </button>
+        <div id="headerMenuMenudiv" class="hide">
+          <ul>
+            <li>
+              <a href="./index.html" class="bg1 mark markPrimary">Home</a>
+            </li>
+            <li><a href="./dashboard.html">Dashboard</a></li>
+            <li><a href="./docs.html">Help & Docs</a></li>
+            <li><a href="./settings.html">Settings</a></li>
+          </ul>
         </div>
-        <div class="options">
-            <div class="flex center">
-                <button id="headerOptionsLangbutton">
-                    <i class="nf nf-md-translate"></i>
-                    Language
-                </button>
-                <button id="headerOptionsThemebutton">
-                    <i class="nf nf-cod-symbol_color"></i>
-                    Theme
-                </button>
-                <button id="headerOptionsOptionsbutton">
-                    <i class="nf nf-cod-settings"></i>
-                    Options
-                </button>
-            </div>
-            <div id="headerOptionsLangdiv" class="hide">
-                <div class="radio">
-                  <input type="radio" name="lang" id="headerOptionsLangdivEn" checked/>
-                  <label for="headerOptionsLangdivEn">English</label>
-                </div>
-                <!-- <div class="radio">
+      </div>
+      <div class="options">
+        <div class="flex center">
+          <button id="headerOptionsLangbutton">
+            <i class="nf nf-md-translate"></i>
+            Language
+          </button>
+          <button id="headerOptionsThemebutton">
+            <i class="nf nf-cod-symbol_color"></i>
+            Theme
+          </button>
+          <button id="headerOptionsOptionsbutton">
+            <i class="nf nf-cod-settings"></i>
+            Options
+          </button>
+        </div>
+        <div id="headerOptionsLangdiv" class="hide">
+          <div class="radio">
+            <input
+              type="radio"
+              name="lang"
+              id="headerOptionsLangdivEn"
+              checked
+            />
+            <label for="headerOptionsLangdivEn">English</label>
+          </div>
+          <!-- <div class="radio">
                   <input type="radio" name="lang" id="headerOptionsLangdivDe" />
                   <label for="headerOptionsLangdivDe">Deutsch</label>
                 </div>
@@ -66,97 +76,114 @@ https://src.ehan.dev/quizfreely/LICENSE.txt
                   <input type="radio" name="lang" id="headerOptionsLangdivGz" />
                   <label for="headerOptionsLangdivGz">中文</label>
                 </div> -->
-            </div>
-            <div id="headerOptionsThemediv" class="hide">
-                <div class="radio">
-                  <input type="radio" name="theme" id="headerOptionsThemedivPurpleish" checked/>
-                  <label for="headerOptionsThemedivPurpleish">Purpleish <span class="bg3">(dark)</span></label>
-                </div>
-                <div class="radio">
-                  <input type="radio" name="theme" id="headerOptionsThemedivOwl" />
-                  <label for="headerOptionsThemedivOwl">Owl <span class="bg3">(light)</span></label>
-                </div>
-            </div>
-            <div id="headerOptionsOptionsdiv" class="hide">
-                <div class="checkbox">
-                  <input type="checkbox" name="options" id="headerOptionsOptionsdivMin" />
-                  <label for="headerOptionsOptionsdivMin">Disable Animations</label>
-                </div>
-            </div>
         </div>
+        <div id="headerOptionsThemediv" class="hide">
+          <div class="radio">
+            <input
+              type="radio"
+              name="theme"
+              id="headerOptionsThemedivPurpleish"
+              checked
+            />
+            <label for="headerOptionsThemedivPurpleish"
+              >Purpleish <span class="bg3">(dark)</span></label
+            >
+          </div>
+          <div class="radio">
+            <input type="radio" name="theme" id="headerOptionsThemedivOwl" />
+            <label for="headerOptionsThemedivOwl"
+              >Owl <span class="bg3">(light)</span></label
+            >
+          </div>
+        </div>
+        <div id="headerOptionsOptionsdiv" class="hide">
+          <div class="checkbox">
+            <input
+              type="checkbox"
+              name="options"
+              id="headerOptionsOptionsdivMin"
+            />
+            <label for="headerOptionsOptionsdivMin">Disable Animations</label>
+          </div>
+        </div>
+      </div>
     </header>
     <div id="noscript" class="box center red">
-      <p>You have JavaScript disabled. This website uses JavaScript to run correctly.</p>
-      <p>Please enable JavaScript in your browser settings, or this website will not work.</p>
+      <p>
+        You have JavaScript disabled. This website uses JavaScript to run
+        correctly.
+      </p>
+      <p>
+        Please enable JavaScript in your browser settings, or this website will
+        not work.
+      </p>
     </div>
-  <main>
-    <div class="grid page">
-      <div class="content">
-        <h2>License</h2>
-        <p>Quizfreely is completely free and open source software.</p>
-        <p>Quizfreely is licensed under the UPL-1.0 License, which applies to all of Quizfreely's source code.</p>
-        <p>The full license file is included in the source code and can be read below.</p>
-<div class="box pre">
-BEGIN LICENSE TEXT
- 
-Copyright (c) 2022-present Ehan Ahamed and contributors
- 
-The Universal Permissive License (UPL), Version 1.0
- 
-Subject to the condition set forth below, permission is hereby granted to any
-person obtaining a copy of this software, associated documentation and/or data
-(collectively the "Software"), free of charge and under any and all copyright
-rights in the Software, and any and all patent rights owned or freely
-licensable by each licensor hereunder covering either (i) the unmodified
-Software as contributed to or provided by such licensor, or (ii) the Larger
-Works (as defined below), to deal in both
- 
-(a) the Software, and
-(b) any piece of software and/or hardware listed in the lrgrwrks.txt file if
-one is included with the Software (each a “Larger Work” to which the Software
-is contributed by such licensors),
- 
-without restriction, including without limitation the rights to copy, create
-derivative works of, display, perform, and distribute the Software and make,
-use, sell, offer for sale, import, export, have made, and have sold the
-Software and the Larger Work(s), and to sublicense the foregoing rights on
-either these or other terms.
- 
-This license is subject to the following condition:
-The above copyright notice and either this complete permission notice or at
-a minimum a reference to the UPL must be included in all copies or
-substantial portions of the Software.
- 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
- 
-END LICENSE TEXT
-</div>
+    <main>
+      <div class="grid page">
+        <div class="content">
+          <h2>License</h2>
+          <p>Quizfreely is completely free and open source software.</p>
+          <p>
+            Quizfreely is licensed under the UPL-1.0 License, which applies to
+            all of Quizfreely's source code.
+          </p>
+          <p>
+            The full license file is included in the source code and can be read
+            below.
+          </p>
+          <div class="box pre">
+            BEGIN LICENSE TEXT Copyright (c) 2022-present Ehan Ahamed and
+            contributors The Universal Permissive License (UPL), Version 1.0
+            Subject to the condition set forth below, permission is hereby
+            granted to any person obtaining a copy of this software, associated
+            documentation and/or data (collectively the "Software"), free of
+            charge and under any and all copyright rights in the Software, and
+            any and all patent rights owned or freely licensable by each
+            licensor hereunder covering either (i) the unmodified Software as
+            contributed to or provided by such licensor, or (ii) the Larger
+            Works (as defined below), to deal in both (a) the Software, and (b)
+            any piece of software and/or hardware listed in the lrgrwrks.txt
+            file if one is included with the Software (each a “Larger Work” to
+            which the Software is contributed by such licensors), without
+            restriction, including without limitation the rights to copy, create
+            derivative works of, display, perform, and distribute the Software
+            and make, use, sell, offer for sale, import, export, have made, and
+            have sold the Software and the Larger Work(s), and to sublicense the
+            foregoing rights on either these or other terms. This license is
+            subject to the following condition: The above copyright notice and
+            either this complete permission notice or at a minimum a reference
+            to the UPL must be included in all copies or substantial portions of
+            the Software. THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF
+            ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+            WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+            NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS
+            BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+            ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+            CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+            SOFTWARE. END LICENSE TEXT
+          </div>
+        </div>
       </div>
-    </div>
-  </main>
-  <footer>
-    <h2>Quizfreely</h2>
-    <p>Copyright © 2022-present Ehan Ahamed and contributors <br/> Licensed under the UPL-1.0 License</p>
-    <a href="./license.html">See License</a>
-  </footer>
-  <script>
-    document.getElementById("noscript").style.display = "none";
-  </script>
-  <script src="https://design.ehan.dev/js/header.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script>
-    const { createClient } = supabase;
-    const supabaseClient = createClient(
-      "https://okejqkisolxqgkgwwlbz.supabase.co",
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9rZWpxa2lzb2x4cWdrZ3d3bGJ6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE2ODU3NDE1MTgsImV4cCI6MjAwMTMxNzUxOH0.T8f_3fPAYnWdzguPonQZCAFmbAN-mTLQB3_EW9pjkis"
-    );
-  </script>
-</body>
-
+    </main>
+    <footer>
+      <h2>Quizfreely</h2>
+      <p>
+        Copyright © 2022-present Ehan Ahamed and contributors <br />
+        Licensed under the UPL-1.0 License
+      </p>
+      <a href="./license.html">See License</a>
+    </footer>
+    <script>
+      document.getElementById("noscript").style.display = "none";
+    </script>
+    <script src="https://design.ehan.dev/js/header.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+      const { createClient } = supabase;
+      const supabaseClient = createClient(
+        "https://okejqkisolxqgkgwwlbz.supabase.co",
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9rZWpxa2lzb2x4cWdrZ3d3bGJ6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE2ODU3NDE1MTgsImV4cCI6MjAwMTMxNzUxOH0.T8f_3fPAYnWdzguPonQZCAFmbAN-mTLQB3_EW9pjkis"
+      );
+    </script>
+  </body>
 </html>

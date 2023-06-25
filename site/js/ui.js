@@ -6,41 +6,40 @@ https://src.ehan.dev/quizfreely/LICENSE.txt
 */
 
 var ui = {
-    sections: {
-        dashboard: document.getElementById("mainDashboarddiv"),
-        actionOptions: document.getElementById("sectionActionOptions"),
-        edit: document.getElementById("sectionEdit"),
-        exportOptions: document.getElementById("sectionExportOptions"),
-        flashcards: document.getElementById("sectionFlashcards")
+  sections: {
+    dashboard: document.getElementById("mainDashboarddiv"),
+    actionOptions: document.getElementById("sectionActionOptions"),
+    edit: document.getElementById("sectionEdit"),
+    exportOptions: document.getElementById("sectionExportOptions"),
+    flashcards: document.getElementById("sectionFlashcards"),
+  },
+  buttons: {
+    make: document.getElementById("buttonMake"),
+    importOptions: document.getElementById("buttonImportOptions"),
+  },
+  inputs: {
+    importLocal: {
+      file: document.getElementById("inputImportLocalFile"),
     },
-    buttons: {
-        make: document.getElementById("buttonMake"),
-        importOptions: document.getElementById("buttonImportOptions"),
+    edit: {
+      name: document.getElementById("inputEditName"),
+      table: document.getElementById("inputEditTable"),
     },
-    inputs: {
-        importLocal: {
-            file: document.getElementById("inputImportLocalFile")
-        },
-        edit: {
-            name: document.getElementById("inputEditName"),
-            table: document.getElementById("inputEditTable")
-        }
+  },
+  links: {
+    exportLocal: {
+      download: document.getElementById("linkExportLocalDownload"),
     },
-    links: {
-        exportLocal: {
-            download: document.getElementById("linkExportLocalDownload")
-        }
-    },
-    alerts: {
-        successImport: document.getElementById("alertSuccessImport"),
-        errorImport: document.getElementById("alertErrorImport"),
-        flashcardsEnd: document.getElementById("alertFlashcardsEnd")
-
-    },
-    flashcards: {
-        card: document.getElementById("flashcardsCard"),
-        content: document.getElementById("flashcardsContent"),
-        front: document.getElementById("flashcardsFront"),
-        back: document.getElementById("flashcardsBack")
-    }
-}
+  },
+  alerts: {
+    successImport: document.getElementById("alertSuccessImport"),
+    errorImport: document.getElementById("alertErrorImport"),
+    flashcardsEnd: document.getElementById("alertFlashcardsEnd"),
+  },
+  flashcards: {
+    card: document.getElementById("flashcardsCard"),
+    content: document.getElementById("flashcardsContent"),
+    front: document.getElementById("flashcardsFront"),
+    back: document.getElementById("flashcardsBack"),
+  },
+};

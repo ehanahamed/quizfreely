@@ -13,8 +13,8 @@ var studySet = {
       creator: "",
       settings: settings,
       metadata: metadata,
-      data: []
-    }
+      data: [],
+    };
   },
   load: function (importContent) {
     sessionData.studySetData = JSON.parse(importContent);
@@ -28,12 +28,15 @@ var studySet = {
       }
       return true;
     }
-    if (isJson(importContent) === true && (JSON.parse(importContent).quizfreely === "Quizfreely")) {
+    if (
+      isJson(importContent) === true &&
+      JSON.parse(importContent).quizfreely === "Quizfreely"
+    ) {
       return true;
     } else {
       return false;
     }
-  }
+  },
   /*
   Example
 
@@ -52,4 +55,4 @@ var studySet = {
   }
   
   */
-}
+};

@@ -1,64 +1,76 @@
 <!DOCTYPE html>
 <html lang="en">
-<!--
+  <!--
 Quizfreely (quizfreely.ehan.dev)
 Copyright (c) 2022-present Ehan Ahamed and contributors
 Licensed under the UPL-1.0 License
 https://src.ehan.dev/quizfreely/LICENSE.txt
 -->
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Quizfreely</title>
-  <link rel="canonical" href="https://quizfreely.ehan.dev" />
-  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-  <link rel="stylesheet" href="https://design.ehan.dev/css/colors.css" />
-  <link rel="stylesheet" href="https://design.ehan.dev/css/components.css" />
-  <link rel="stylesheet" href="https://design.ehan.dev/css/layouts.css" />
-  <link rel="stylesheet" href="https://design.ehan.dev/css/utils.css" />
-  <link rel="stylesheet" href="https://www.nerdfonts.com/assets/css/webfont.css" />
-</head>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Quizfreely</title>
+    <link rel="canonical" href="https://quizfreely.ehan.dev" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="stylesheet" href="https://design.ehan.dev/css/colors.css" />
+    <link rel="stylesheet" href="https://design.ehan.dev/css/components.css" />
+    <link rel="stylesheet" href="https://design.ehan.dev/css/layouts.css" />
+    <link rel="stylesheet" href="https://design.ehan.dev/css/utils.css" />
+    <link
+      rel="stylesheet"
+      href="https://www.nerdfonts.com/assets/css/webfont.css"
+    />
+  </head>
 
-<body>
-  <header>
-        <div class="menu">
-            <button id="headerMenuMenubutton">
-                <i class="nf nf-md-menu"></i>
-                Menu
-            </button>
-            <div id="headerMenuMenudiv" class="hide">
-                <ul>
-                    <li><a href="./index.html">Home</a></li>
-                    <li><a href="./dashboard.html" class="bg1 mark markPrimary">Dashboard</a></li>
-                    <li><a href="./docs.html">Help & Docs</a></li>
-                    <li><a href="./settings.html">Settings</a></li>
-                </ul>
-            </div>
+  <body>
+    <header>
+      <div class="menu">
+        <button id="headerMenuMenubutton">
+          <i class="nf nf-md-menu"></i>
+          Menu
+        </button>
+        <div id="headerMenuMenudiv" class="hide">
+          <ul>
+            <li><a href="./index.html">Home</a></li>
+            <li>
+              <a href="./dashboard.html" class="bg1 mark markPrimary"
+                >Dashboard</a
+              >
+            </li>
+            <li><a href="./docs.html">Help & Docs</a></li>
+            <li><a href="./settings.html">Settings</a></li>
+          </ul>
         </div>
-        <div class="options">
-            <div class="flex center">
-                <button id="headerOptionsLangbutton">
-                    <i class="nf nf-md-translate"></i>
-                    Language
-                </button>
-                <button id="headerOptionsThemebutton">
-                    <i class="nf nf-cod-symbol_color"></i>
-                    Theme
-                </button>
-                <button id="headerOptionsOptionsbutton">
-                    <i class="nf nf-cod-settings"></i>
-                    Options
-                </button>
-            </div>
-            <div id="headerOptionsLangdiv" class="hide">
-                <div class="radio">
-                  <input type="radio" name="lang" id="headerOptionsLangdivEn" checked/>
-                  <label for="headerOptionsLangdivEn">English</label>
-                </div>
-                <!-- <div class="radio">
+      </div>
+      <div class="options">
+        <div class="flex center">
+          <button id="headerOptionsLangbutton">
+            <i class="nf nf-md-translate"></i>
+            Language
+          </button>
+          <button id="headerOptionsThemebutton">
+            <i class="nf nf-cod-symbol_color"></i>
+            Theme
+          </button>
+          <button id="headerOptionsOptionsbutton">
+            <i class="nf nf-cod-settings"></i>
+            Options
+          </button>
+        </div>
+        <div id="headerOptionsLangdiv" class="hide">
+          <div class="radio">
+            <input
+              type="radio"
+              name="lang"
+              id="headerOptionsLangdivEn"
+              checked
+            />
+            <label for="headerOptionsLangdivEn">English</label>
+          </div>
+          <!-- <div class="radio">
                   <input type="radio" name="lang" id="headerOptionsLangdivDe" />
                   <label for="headerOptionsLangdivDe">Deutsch</label>
                 </div>
@@ -66,262 +78,408 @@ https://src.ehan.dev/quizfreely/LICENSE.txt
                   <input type="radio" name="lang" id="headerOptionsLangdivGz" />
                   <label for="headerOptionsLangdivGz">中文</label>
                 </div> -->
-            </div>
-            <div id="headerOptionsThemediv" class="hide">
-                <div class="radio">
-                  <input type="radio" name="theme" id="headerOptionsThemedivPurpleish" checked/>
-                  <label for="headerOptionsThemedivPurpleish">Purpleish <span class="bg3">(dark)</span></label>
-                </div>
-                <div class="radio">
-                  <input type="radio" name="theme" id="headerOptionsThemedivOwl" />
-                  <label for="headerOptionsThemedivOwl">Owl <span class="bg3">(light)</span></label>
-                </div>
-            </div>
-            <div id="headerOptionsOptionsdiv" class="hide">
-                <div class="checkbox">
-                  <input type="checkbox" name="options" id="headerOptionsOptionsdivMin" />
-                  <label for="headerOptionsOptionsdivMin">Disable Animations</label>
-                </div>
-            </div>
         </div>
+        <div id="headerOptionsThemediv" class="hide">
+          <div class="radio">
+            <input
+              type="radio"
+              name="theme"
+              id="headerOptionsThemedivPurpleish"
+              checked
+            />
+            <label for="headerOptionsThemedivPurpleish"
+              >Purpleish <span class="bg3">(dark)</span></label
+            >
+          </div>
+          <div class="radio">
+            <input type="radio" name="theme" id="headerOptionsThemedivOwl" />
+            <label for="headerOptionsThemedivOwl"
+              >Owl <span class="bg3">(light)</span></label
+            >
+          </div>
+        </div>
+        <div id="headerOptionsOptionsdiv" class="hide">
+          <div class="checkbox">
+            <input
+              type="checkbox"
+              name="options"
+              id="headerOptionsOptionsdivMin"
+            />
+            <label for="headerOptionsOptionsdivMin">Disable Animations</label>
+          </div>
+        </div>
+      </div>
     </header>
     <div id="noscript" class="box center red">
-      <p>You have JavaScript disabled. This website uses JavaScript to run correctly.</p>
-      <p>Please enable JavaScript in your browser settings, or this website will not work.</p>
+      <p>
+        You have JavaScript disabled. This website uses JavaScript to run
+        correctly.
+      </p>
+      <p>
+        Please enable JavaScript in your browser settings, or this website will
+        not work.
+      </p>
     </div>
-  <main>
-    <div class="grid page">
-      <div class="content">
-        <!--
+    <main>
+      <div class="grid page">
+        <div class="content">
+          <!--
         Starting point ig
         -->
-        <div id="mainDashboarddiv">
-          <h2>Dashboard</h2>
-          <p>Create a new study set or open a study set file you downloaded.</p>
-          <div class="flex">
-            <button id="buttonMake" onclick="buttons.load.make();">
-              <i class="nf nf-oct-plus"></i>
-              Create new
-            </button>
-            <label for="inputImportLocalFile" class="button alt">
-              <i class="nf nf-md-import"></i>
-              Open file
-            </label>
-            <input id="inputImportLocalFile" class="invisible" type="file" />
-          </div>
-          <div id="mainDashboardUserdiv" class="hide">
-            <p>You are signed in. Study sets you saved to your account are shown below.</p>
-            <div id="mainDashboardUserStudysetlistdiv" class="grid list"></div>
-            <div id="mainDashboardUserStudysetdeletediv" class="box green hide">
-              <p>Study set deleted. <a href="./dashboard.html">Refresh</a> to see updated dashboard?</p>
+          <div id="mainDashboarddiv">
+            <h2>Dashboard</h2>
+            <p>
+              Create a new study set or open a study set file you downloaded.
+            </p>
+            <div class="flex">
+              <button id="buttonMake" onclick="buttons.load.make();">
+                <i class="nf nf-oct-plus"></i>
+                Create new
+              </button>
+              <label for="inputImportLocalFile" class="button alt">
+                <i class="nf nf-md-import"></i>
+                Open file
+              </label>
+              <input id="inputImportLocalFile" class="invisible" type="file" />
+            </div>
+            <div id="mainDashboardUserdiv" class="hide">
+              <p>
+                You are signed in. Study sets you saved to your account are
+                shown below.
+              </p>
+              <div
+                id="mainDashboardUserStudysetlistdiv"
+                class="grid list"
+              ></div>
+              <div
+                id="mainDashboardUserStudysetdeletediv"
+                class="box green hide"
+              >
+                <p>
+                  Study set deleted. <a href="./dashboard.html">Refresh</a> to
+                  see updated dashboard?
+                </p>
+              </div>
             </div>
           </div>
-        </div>
 
-        <!--
+          <!--
         Action section
         -->
-        <div id="sectionActionOptions" class="hide">
-          <h2 id="mainActionsStudysettitle">Study set</h2>
-          <div class="card double" id="flashcardsCard" onclick="buttons.flashcards.flip()">
-            <div class="content" id="flashcardsContent">
-              <div class="front" id="flashcardsFront">front</div>
-              <div class="back" id="flashcardsBack">back</div>
+          <div id="sectionActionOptions" class="hide">
+            <h2 id="mainActionsStudysettitle">Study set</h2>
+            <div
+              class="card double"
+              id="flashcardsCard"
+              onclick="buttons.flashcards.flip()"
+            >
+              <div class="content" id="flashcardsContent">
+                <div class="front" id="flashcardsFront">front</div>
+                <div class="back" id="flashcardsBack">back</div>
+              </div>
             </div>
-          </div>
-          <div class="caption">
-            <p id="mainActionsFlashcardoptionsIndex">1/1</p>
-            <div class="flex justifyselfcenter">
-              <button id="flashcardsPrev" onclick="buttons.flashcards.prev()"><i class="nf nf-cod-arrow_left"></i></button>
-              <button onclick="buttons.flashcards.flip()">Flip</button>
-              <button id="flashcardsNext" onclick="buttons.flashcards.next()"><i class="nf nf-cod-arrow_right"></i></button>
+            <div class="caption">
+              <p id="mainActionsFlashcardoptionsIndex">1/1</p>
+              <div class="flex justifyselfcenter">
+                <button id="flashcardsPrev" onclick="buttons.flashcards.prev()">
+                  <i class="nf nf-cod-arrow_left"></i>
+                </button>
+                <button onclick="buttons.flashcards.flip()">Flip</button>
+                <button id="flashcardsNext" onclick="buttons.flashcards.next()">
+                  <i class="nf nf-cod-arrow_right"></i>
+                </button>
+              </div>
             </div>
+            <p>Need to make changes or add more?</p>
+            <div class="flex">
+              <button onclick="buttons.actionOptions.edit();">Edit</button>
+            </div>
+            <table id="mainActionsTable">
+              <thead>
+                <tr>
+                  <th>Term</th>
+                  <th>Definition</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    <button onclick="buttons.actionOptions.edit();">
+                      Edit
+                    </button>
+                  </td>
+                  <td></td>
+                </tr>
+              </tbody>
+            </table>
           </div>
-          <p>Need to make changes or add more?</p>
-          <div class="flex">
-            <button onclick="buttons.actionOptions.edit();">Edit</button>
-          </div>
-          <table id="mainActionsTable">
-            <thead>
-              <tr>
-                <th>Term</th>
-                <th>Definition</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>
-                  <button onclick="buttons.actionOptions.edit();">Edit</button>
-                </td>
-                <td></td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <!--
+          <!--
         Edit section
         -->
-        <div id="sectionEdit" class="hide">
-          <h2>Edit</h2>
-          <input id="inputEditName" type="text" placeholder="Title">
-          <table id="inputEditTable">
-            <thead>
-              <tr>
-                <th>Term</th>
-                <th>Definition</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>  
-                  <button onclick="buttons.edit.add();">Add row</button>
-                  <button id="buttonEditDone" class="alt" onclick="buttons.edit.done()">Done</button>
-                </td>
-                <td></td>
-                <td></td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <!--
+          <div id="sectionEdit" class="hide">
+            <h2>Edit</h2>
+            <input id="inputEditName" type="text" placeholder="Title" />
+            <table id="inputEditTable">
+              <thead>
+                <tr>
+                  <th>Term</th>
+                  <th>Definition</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    <button onclick="buttons.edit.add();">Add row</button>
+                    <button
+                      id="buttonEditDone"
+                      class="alt"
+                      onclick="buttons.edit.done()"
+                    >
+                      Done
+                    </button>
+                  </td>
+                  <td></td>
+                  <td></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <!--
         Export section
         -->
-        <div id="sectionExportOptions" class="hide">
-          <h2>Save study set</h2>
-          <p>You can save the study set to your account, or download it.</p>
-          <div class="flex">
-            <a class="button" id="mainWorkinprogressSavetoaccountbutton">Save to account</a>
-            <a id="linkExportLocalDownload" class="button alt">Download</a>
+          <div id="sectionExportOptions" class="hide">
+            <h2>Save study set</h2>
+            <p>You can save the study set to your account, or download it.</p>
+            <div class="flex">
+              <a class="button" id="mainWorkinprogressSavetoaccountbutton"
+                >Save to account</a
+              >
+              <a id="linkExportLocalDownload" class="button alt">Download</a>
+            </div>
+            <p>Need to go back or cancel?</p>
+            <div class="flex">
+              <button onclick="sections.changeTo('edit');">Back to Edit</button>
+              <a href="./dashboard.html" class="button alt red"
+                >Delete Draft & Cancel</a
+              >
+            </div>
+            <div id="mainWorkinprogressYay" class="box green hide">
+              <p>Your study set has been saved to your account.</p>
+              <p>Go back to your <a href="./dashboard.html">dashboard</a>?</p>
+            </div>
+            <div id="mainWorkinprogressNay" class="box red hide">
+              <p>
+                There was a network error preventing the study set from saving.
+                Please try again.
+              </p>
+              <p>
+                If you have tried multiple times and are still unable to save,
+                download your study set and try to save it to your account
+                later.
+              </p>
+            </div>
+            <div id="mainWorkinprogressNewuser" class="box red hide">
+              <p>
+                You are not signed in. You can use Quizfreely without an
+                account. However, you must download study sets to save them
+                because you cannot save them to an account if you do not have
+                one.
+              </p>
+              <p class="fg">
+                <b>Right now, you can download your study set to save it.</b>
+                Later on, you can choose to <a href="./signup">sign up</a> or
+                <a href="./signin.html">sign in</a> and save your downloaded
+                study set to your account, or continue using Quizfreely without
+                an account.
+              </p>
+            </div>
           </div>
-          <p>Need to go back or cancel?</p>
-          <div class="flex">
-            <button onclick="sections.changeTo('edit');">Back to Edit</button>
-            <a href="./dashboard.html" class="button alt red">Delete Draft & Cancel</a>
-          </div>
-          <div id="mainWorkinprogressYay" class="box green hide">
-            <p>Your study set has been saved to your account.</p>
-            <p>Go back to your <a href="./dashboard.html">dashboard</a>?</p>
-          </div>
-          <div id="mainWorkinprogressNay" class="box red hide">
-            <p>There was a network error preventing the study set from saving. Please try again.</p>
-            <p>If you have tried multiple times and are still unable to save, download your study set and try to save it to your account later.</p>
-          </div>
-          <div id="mainWorkinprogressNewuser" class="box red hide">
-            <p>You are not signed in. You can use Quizfreely without an account. However, you must download study sets to save them because you cannot save them to an account if you do not have one.</p>
-            <p class="fg"><b>Right now, you can download your study set to save it.</b> Later on, you can choose to <a href="./signup">sign up</a> or <a href="./signin.html">sign in</a> and save your downloaded study set to your account, or continue using Quizfreely without an account.</p>
-          </div>
-        </div>      
+        </div>
       </div>
-    </div>
-  </main>
-  <!--
+    </main>
+    <!--
   Footer, copyright, & license
   -->
-  <footer>
-    <h2>Quizfreely</h2>
-    <p>Copyright © 2022-present Ehan Ahamed and contributors <br/> Licensed under the UPL-1.0 License</p>
-    <a href="./license.html">See License</a>
-  </footer>
-  <script>
-    document.getElementById("noscript").style.display = "none";
-  </script>
-  <script src="https://design.ehan.dev/js/header.js"></script>
-  <script src="./js/ui.js"></script>
-  <script src="./js/sections.js"></script>
-  <script src="./js/buttons.js"></script>
-  <script src="./js/studySet.js"></script>
-  <script src="./js/sessionData.js"></script>
-  <script src="./js/importLocal.js"></script>
-  <script src="./js/edit.js"></script>
-  <script src="./js/exportLocal.js"></script>
-  <script src="./js/flashcards.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script>
-    const { createClient } = supabase;
-    const supabaseClient = createClient(
-      "https://okejqkisolxqgkgwwlbz.supabase.co",
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9rZWpxa2lzb2x4cWdrZ3d3bGJ6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE2ODU3NDE1MTgsImV4cCI6MjAwMTMxNzUxOH0.T8f_3fPAYnWdzguPonQZCAFmbAN-mTLQB3_EW9pjkis"
-    );
-    supabaseClient.auth.getSession().then(
-      function (result) {
+    <footer>
+      <h2>Quizfreely</h2>
+      <p>
+        Copyright © 2022-present Ehan Ahamed and contributors <br />
+        Licensed under the UPL-1.0 License
+      </p>
+      <a href="./license.html">See License</a>
+    </footer>
+    <script>
+      document.getElementById("noscript").style.display = "none";
+    </script>
+    <script src="https://design.ehan.dev/js/header.js"></script>
+    <script src="./js/ui.js"></script>
+    <script src="./js/sections.js"></script>
+    <script src="./js/buttons.js"></script>
+    <script src="./js/studySet.js"></script>
+    <script src="./js/sessionData.js"></script>
+    <script src="./js/importLocal.js"></script>
+    <script src="./js/edit.js"></script>
+    <script src="./js/exportLocal.js"></script>
+    <script src="./js/flashcards.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+      const { createClient } = supabase;
+      const supabaseClient = createClient(
+        "https://okejqkisolxqgkgwwlbz.supabase.co",
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9rZWpxa2lzb2x4cWdrZ3d3bGJ6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE2ODU3NDE1MTgsImV4cCI6MjAwMTMxNzUxOH0.T8f_3fPAYnWdzguPonQZCAFmbAN-mTLQB3_EW9pjkis"
+      );
+      supabaseClient.auth.getSession().then(function (result) {
         if (result.data.session !== null) {
-          supabaseClient.from("studyset").select().then(
-            function (result) {
-              studysetlist = result.data
+          supabaseClient
+            .from("studyset")
+            .select()
+            .then(function (result) {
+              studysetlist = result.data;
               if (studysetlist.length === 0) {
                 var box = document.createElement("div");
-                  box.setAttribute("class", "box");
-                  box.setAttribute("id", "mainDashboardUserStudysetlistEmpty");
-                  document.getElementById("mainDashboardUserStudysetlistdiv").appendChild(box);
-                  document.getElementById(
-                    "mainDashboardUserStudysetlistEmpty"
-                  ).innerHTML = "<p>No study sets are saved to your account.</p>";
+                box.setAttribute("class", "box");
+                box.setAttribute("id", "mainDashboardUserStudysetlistEmpty");
+                document
+                  .getElementById("mainDashboardUserStudysetlistdiv")
+                  .appendChild(box);
+                document.getElementById(
+                  "mainDashboardUserStudysetlistEmpty"
+                ).innerHTML = "<p>No study sets are saved to your account.</p>";
               } else {
                 for (var i = 0; i < studysetlist.length; i++) {
                   var box = document.createElement("div");
                   box.setAttribute("class", "box");
-                  box.setAttribute("id", "mainDashboardUserStudysetlist" + i.toString());
-                  document.getElementById("mainDashboardUserStudysetlistdiv").appendChild(box);
+                  box.setAttribute(
+                    "id",
+                    "mainDashboardUserStudysetlist" + i.toString()
+                  );
+                  document
+                    .getElementById("mainDashboardUserStudysetlistdiv")
+                    .appendChild(box);
                   document.getElementById(
                     "mainDashboardUserStudysetlist" + i.toString()
-                  ).innerHTML = "<p>" + studysetlist[i].name + "</p> <div class='flex'> <button id='mainDashboardUserStudysetlist" + i.toString() + "Openbutton'> Open </button> <button id='mainDashboardUserStudysetlist" + i.toString() + "Deletebutton' class='red alt'> Delete </button>";
-                  document.getElementById("mainDashboardUserStudysetlist" + i.toString() + "Openbutton").addEventListener("click", function (event) {
-                    sessionData.studySetData = studysetlist[event.target.id.replace("mainDashboardUserStudysetlist", "").replace("Openbutton", "")].json;
-                    localStorage.setItem("currentStudyset", JSON.stringify(sessionData.studySetData));
-                    sessionData.flashcards.index = 0;
-                    flashcards.load(sessionData.flashcards.index);
-                    sections.changeTo("actionOptions");
-                    document.getElementById("mainActionsStudysettitle").innerText = sessionData.studySetData.name;
-                    for (var i = 0; i < sessionData.studySetData.data.length; i++) {
-                      var newRow = document.getElementById("mainActionsTable").insertRow(
-                        document.getElementById("mainActionsTable").rows.length - 1
+                  ).innerHTML =
+                    "<p>" +
+                    studysetlist[i].name +
+                    "</p> <div class='flex'> <button id='mainDashboardUserStudysetlist" +
+                    i.toString() +
+                    "Openbutton'> Open </button> <button id='mainDashboardUserStudysetlist" +
+                    i.toString() +
+                    "Deletebutton' class='red alt'> Delete </button>";
+                  document
+                    .getElementById(
+                      "mainDashboardUserStudysetlist" +
+                        i.toString() +
+                        "Openbutton"
+                    )
+                    .addEventListener("click", function (event) {
+                      sessionData.studySetData =
+                        studysetlist[
+                          event.target.id
+                            .replace("mainDashboardUserStudysetlist", "")
+                            .replace("Openbutton", "")
+                        ].json;
+                      localStorage.setItem(
+                        "currentStudyset",
+                        JSON.stringify(sessionData.studySetData)
                       );
-                      newRow.insertCell(0).innerHTML = sessionData.studySetData.data[i][0];
-                      newRow.insertCell(1).innerHTML = sessionData.studySetData.data[i][1];
-                    }
-                  })
-                  document.getElementById("mainDashboardUserStudysetlist" + i.toString() + "Deletebutton").addEventListener("click", function (event) {
-                    supabaseClient.from("studyset").delete().eq(
-                      "id",
-                      studysetlist[event.target.id.replace("mainDashboardUserStudysetlist", "").replace("Deletebutton", "")].id
-                    ).then(function (result) {
-                      document.getElementById("mainDashboardUserStudysetdeletediv").classList.remove("hide");
+                      sessionData.flashcards.index = 0;
+                      flashcards.load(sessionData.flashcards.index);
+                      sections.changeTo("actionOptions");
+                      document.getElementById(
+                        "mainActionsStudysettitle"
+                      ).innerText = sessionData.studySetData.name;
+                      for (
+                        var i = 0;
+                        i < sessionData.studySetData.data.length;
+                        i++
+                      ) {
+                        var newRow = document
+                          .getElementById("mainActionsTable")
+                          .insertRow(
+                            document.getElementById("mainActionsTable").rows
+                              .length - 1
+                          );
+                        newRow.insertCell(0).innerHTML =
+                          sessionData.studySetData.data[i][0];
+                        newRow.insertCell(1).innerHTML =
+                          sessionData.studySetData.data[i][1];
+                      }
                     });
-                  })
+                  document
+                    .getElementById(
+                      "mainDashboardUserStudysetlist" +
+                        i.toString() +
+                        "Deletebutton"
+                    )
+                    .addEventListener("click", function (event) {
+                      supabaseClient
+                        .from("studyset")
+                        .delete()
+                        .eq(
+                          "id",
+                          studysetlist[
+                            event.target.id
+                              .replace("mainDashboardUserStudysetlist", "")
+                              .replace("Deletebutton", "")
+                          ].id
+                        )
+                        .then(function (result) {
+                          document
+                            .getElementById(
+                              "mainDashboardUserStudysetdeletediv"
+                            )
+                            .classList.remove("hide");
+                        });
+                    });
                 }
               }
-            }
-          )
+            });
           supabaseClient.auth.getUser().then(function (result) {
             userId = result.data.user.id;
-          })
-          document.getElementById("mainDashboardUserdiv").classList.remove("hide");
-          document.getElementById("mainWorkinprogressSavetoaccountbutton").addEventListener("click", function () {
-            supabaseClient.from("studyset").insert({
-              user_id: userId,
-              name: sessionData.studySetData.name,
-              json: sessionData.studySetData
-            }).then(
-              function (result) {
-                if (result.status === 201) {
-                  document.getElementById("mainWorkinprogressYay").classList.remove("hide");
-                  document.getElementById("mainWorkinprogressNay").classList.add("hide");
-                } else if (result.status !== 201) {
-                  document.getElementById("mainWorkinprogressYay").classList.add("hide");
-                  document.getElementById("mainWorkinprogressNay").classList.remove("hide");
-                }
-              }
-            )
-          })
+          });
+          document
+            .getElementById("mainDashboardUserdiv")
+            .classList.remove("hide");
+          document
+            .getElementById("mainWorkinprogressSavetoaccountbutton")
+            .addEventListener("click", function () {
+              supabaseClient
+                .from("studyset")
+                .insert({
+                  user_id: userId,
+                  name: sessionData.studySetData.name,
+                  json: sessionData.studySetData,
+                })
+                .then(function (result) {
+                  if (result.status === 201) {
+                    document
+                      .getElementById("mainWorkinprogressYay")
+                      .classList.remove("hide");
+                    document
+                      .getElementById("mainWorkinprogressNay")
+                      .classList.add("hide");
+                  } else if (result.status !== 201) {
+                    document
+                      .getElementById("mainWorkinprogressYay")
+                      .classList.add("hide");
+                    document
+                      .getElementById("mainWorkinprogressNay")
+                      .classList.remove("hide");
+                  }
+                });
+            });
         } else if (result.data.session === null) {
-          document.getElementById("mainWorkinprogressSavetoaccountbutton").addEventListener("click", function () {
-            document.getElementById("mainWorkinprogressNewuser").classList.remove("hide");
-          })
+          document
+            .getElementById("mainWorkinprogressSavetoaccountbutton")
+            .addEventListener("click", function () {
+              document
+                .getElementById("mainWorkinprogressNewuser")
+                .classList.remove("hide");
+            });
         }
-      }
-    )
-  </script>
-</body>
-
+      });
+    </script>
+  </body>
 </html>

@@ -7,10 +7,14 @@ https://src.ehan.dev/quizfreely/LICENSE.txt
 
 var exportLocal = {
   save: function () {
-    ui.links.exportLocal.download.href = exportLocal.makeBlobUrl(JSON.stringify(sessionData.studySetData), "application/json");
-    ui.links.exportLocal.download.download = sessionData.studySetData.name + ".json"
+    ui.links.exportLocal.download.href = exportLocal.makeBlobUrl(
+      JSON.stringify(sessionData.studySetData),
+      "application/json"
+    );
+    ui.links.exportLocal.download.download =
+      sessionData.studySetData.name + ".json";
   },
   makeBlobUrl: function (content, mimetype) {
     return URL.createObjectURL(new Blob([content], { type: mimetype }));
-  }
-}
+  },
+};

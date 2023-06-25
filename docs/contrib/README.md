@@ -1,6 +1,6 @@
 # Contributor Documentation
 
-This folder (`docs/contrib`) contains the current **work in progress** documentation of the source code of Quizfreely. 
+This folder (`docs/contrib`) contains the current **work in progress** documentation of the source code of Quizfreely.
 
 As of right now, all the contributor documentation is in one file (this one, `README.md`)
 
@@ -33,17 +33,19 @@ When they import their study set, from the initial main page, they are given the
 All javascript code ~~is~~ (should be\*) in the `site/js` folder, and there should be **no** inline js in the html files.
 
 The html files are in `site/`, so far there are
- - `index.html` the main page (obvously)
- - `src.html` page with links to source code repo
- - `about.html` basically answers "why use Quizfreely" **work in progress**
- - `docs.html` user, developer, and contributor documentation **work in progress**
- - `404.html` 404 page **work in progress**
 
- The javascript is linked to the html using standard `<script src="..."></script>` tags.
- - The src attribute should be a relative path
-   - use `js/...`, do **not** use `https://quizfreely.ehan.dev/js/...`
- - Do **not** use javascript modules
-  - **no** `<script ... type="module"></script>`
+- `index.html` the main page (obvously)
+- `src.html` page with links to source code repo
+- `about.html` basically answers "why use Quizfreely" **work in progress**
+- `docs.html` user, developer, and contributor documentation **work in progress**
+- `404.html` 404 page **work in progress**
+
+The javascript is linked to the html using standard `<script src="..."></script>` tags.
+
+- The src attribute should be a relative path
+  - use `js/...`, do **not** use `https://quizfreely.ehan.dev/js/...`
+- Do **not** use javascript modules
+- **no** `<script ... type="module"></script>`
 
 ### Reference
 
@@ -52,4 +54,5 @@ the `site/js/ui.js` file has `document.getElementById("...")`s for (almost) ever
 Other elements use a `onclick="function"` in their html, to directly call the required javascript function (most buttons do this). They do **not** have a selector in `ui.js`.
 
 A list of element ids and stuff is below
- - work in progress
+
+- work in progress
