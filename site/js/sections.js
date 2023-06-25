@@ -7,10 +7,10 @@ https://src.ehan.dev/quizfreely/LICENSE.txt
 
 var sections = {
     changeTo: function (section) {
-        elements.sections.dashboard.classList.add("hide");
-        elements.sections.actionOptions.classList.add("hide");
-        elements.sections.edit.classList.add("hide");
-        elements.sections.exportOptions.classList.add("hide");
-        elements.sections[section].classList.remove("hide");
+        ui.sections.dashboard.classList.add("hide");
+        ui.sections.actionOptions.classList.add("hide");
+        ui.sections.edit.classList.add("hide");
+        ui.sections.exportOptions.classList.add("hide");
+        ui.sections[section].classList.remove("hide");
     }
 }

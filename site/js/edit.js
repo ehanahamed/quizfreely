@@ -11,11 +11,11 @@ var edit = {
         edit.add();
     },
     load: function () {
-        edit.makeTableFromArray(sessionData.studySetData.data, elements.inputs.edit.table);
-        elements.inputs.edit.name.value = sessionData.studySetData.name;
+        edit.makeTableFromArray(sessionData.studySetData.data, ui.inputs.edit.table);
+        ui.inputs.edit.name.value = sessionData.studySetData.name;
     },
     insert: function(index) {
-        var newRow = elements.inputs.edit.table.insertRow(index);
+        var newRow = ui.inputs.edit.table.insertRow(index);
         newRow.insertCell(0).innerHTML = "<input type='text' placeholder='Term'></input>";
         newRow.insertCell(1).innerHTML = "<textarea class='vertical' rows='2' placeholder='Definition'></textarea>";
         var actions = newRow.insertCell(2);
@@ -25,15 +25,15 @@ var edit = {
         actions.children[0].children[2].addEventListener("click", function (event) { edit.remove(event.target.parentElement.parentElement.parentElement.rowIndex) });
     },
     add: function() {
-        edit.insert(elements.inputs.edit.table.rows.length - 1);
+        edit.insert(ui.inputs.edit.table.rows.length - 1);
     },
     save: function () {
-            sessionData.studySetData.name = elements.inputs.edit.name.value;
-            sessionData.studySetData.data = edit.makeArrayFromTable(elements.inputs.edit.table);
+            sessionData.studySetData.name = ui.inputs.edit.name.value;
+            sessionData.studySetData.data = edit.makeArrayFromTable(ui.inputs.edit.table);
             exportLocal.save();
     },
     remove: function (index) {
-        elements.inputs.edit.table.deleteRow(index);
+        ui.inputs.edit.table.deleteRow(index);
     },
     move: function (index, newIndex) {
         /*
@@ -48,7 +48,7 @@ var edit = {
             (
                 (
                     (index < newIndex) &&
-                    (index < elements.inputs.edit.table.rows.length - 2)
+                    (index < ui.inputs.edit.table.rows.length - 2)
                 ) ||
                 (index > newIndex)
             )
@@ -60,8 +60,8 @@ var edit = {
             } else if (index < newIndex) {
                 newOldIndex = index;
             }
-            elements.inputs.edit.table.rows[newIndex].children[0].children[0].value = elements.inputs.edit.table.rows[newOldIndex].children[0].children[0].value;
-            elements.inputs.edit.table.rows[newIndex].children[1].children[0].value = elements.inputs.edit.table.rows[newOldIndex].children[1].children[0].value;
+            ui.inputs.edit.table.rows[newIndex].children[0].children[0].value = ui.inputs.edit.table.rows[newOldIndex].children[0].children[0].value;
+            ui.inputs.edit.table.rows[newIndex].children[1].children[0].value = ui.inputs.edit.table.rows[newOldIndex].children[1].children[0].value;
             edit.remove(newOldIndex);
         }
     },

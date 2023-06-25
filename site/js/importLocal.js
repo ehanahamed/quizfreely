@@ -5,7 +5,7 @@ Licensed under the UPL-1.0 License
 https://src.ehan.dev/quizfreely/LICENSE.txt
 */
 
-elements.inputs.importLocal.file.addEventListener("change", function () {
+ui.inputs.importLocal.file.addEventListener("change", function () {
     importLocal.input();
 })
 
@@ -35,6 +35,6 @@ var importLocal = {
                 alerts.show("errorImport");
             }*/
         });
-        fileReader.readAsText(elements.inputs.importLocal.file.files[0]);
+        fileReader.readAsText(ui.inputs.importLocal.file.files[0]);
     }
 };
