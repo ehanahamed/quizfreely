@@ -1,8 +1,9 @@
 TODO NOW
- - `elements` is a browser-controlled variable on some browsers
-    - chnage `elements` to something else
- - ability to share study sets
- - docs & help menu
+ - CLEAN UP THE GODDAMN CODE
+ - then after that:
+   - ability to share study sets
+   - docs & help menu
+   - confirmation for deleting stuff
 
 TODO
  - remove "change passwd" button for non-email/googleapi accounts
@@ -18,7 +19,6 @@ TODO
  - implement [designsys/docs/wording.md#grammar-and-capitalization](https://codeberg.org/ehanahamed/designsys/src/branch/main/docs/wording.md#grammar-and-capitalization)
 
 TODO EXTRA
- - confirmation for deleting stuff
  - make sure tab works on file inputs (designsys)
  - make fancy betterthantab keyboard shortcut system (designsys)
  - autofil/autocomplete colors (designsys)
