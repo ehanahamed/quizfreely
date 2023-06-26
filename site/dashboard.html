@@ -312,8 +312,47 @@
     <script>
       document.getElementById("noscript").style.display = "none";
     </script>
+    <script>
+      var ui = {
+        sections: {
+          dashboard: document.getElementById("mainDashboarddiv"),
+          actionOptions: document.getElementById("sectionActionOptions"),
+          edit: document.getElementById("sectionEdit"),
+          exportOptions: document.getElementById("sectionExportOptions"),
+          flashcards: document.getElementById("sectionFlashcards"),
+        },
+        buttons: {
+          make: document.getElementById("buttonMake"),
+          importOptions: document.getElementById("buttonImportOptions"),
+        },
+        inputs: {
+          importLocal: {
+            file: document.getElementById("inputImportLocalFile"),
+          },
+          edit: {
+            name: document.getElementById("inputEditName"),
+            table: document.getElementById("inputEditTable"),
+          },
+        },
+        links: {
+          exportLocal: {
+            download: document.getElementById("linkExportLocalDownload"),
+          },
+        },
+        alerts: {
+          successImport: document.getElementById("alertSuccessImport"),
+          errorImport: document.getElementById("alertErrorImport"),
+          flashcardsEnd: document.getElementById("alertFlashcardsEnd"),
+        },
+        flashcards: {
+          card: document.getElementById("flashcardsCard"),
+          content: document.getElementById("flashcardsContent"),
+          front: document.getElementById("flashcardsFront"),
+          back: document.getElementById("flashcardsBack"),
+        },
+      };
+    </script>
     <script src="https://design.ehan.dev/js/header.js"></script>
-    <script src="./js/ui.js"></script>
     <script src="./js/sections.js"></script>
     <script src="./js/buttons.js"></script>
     <script src="./js/studySet.js"></script>

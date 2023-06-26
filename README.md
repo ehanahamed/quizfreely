@@ -1,6 +1,8 @@
 TODO NOW
 
 - CLEAN UP THE GODDAMN CODE
+  - `ui. ...` object/var & `document.getElement ...` function stuff
+    - move js stuff to `ui. ...` because then only ui.js needs to be updated when element structure changes, otherwise `document.getElement ...` references will break
 - then after that:
   - ability to share study sets
   - docs & help menu
