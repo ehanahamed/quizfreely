@@ -30,10 +30,10 @@ var buttons = {
     },
     done: function () {
       edit.save();
-      sections.changeTo("exportOptions");
+      sections.changeTo("save");
     },
   },
-  exportOptions: {},
+  save: {},
   flashcards: {
     flip: function () {
       flashcards.flip();
