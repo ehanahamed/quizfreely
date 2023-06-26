@@ -12,7 +12,7 @@ var buttons = {
       sections.changeTo("edit");
     },
   },
-  actionOptions: {
+  open: {
     edit: function () {
       edit.load();
       sections.changeTo("edit");

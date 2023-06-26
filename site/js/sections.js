@@ -8,7 +8,7 @@ https://src.ehan.dev/quizfreely/LICENSE.txt
 var sections = {
   changeTo: function (section) {
     ui.sections.dashboard.classList.add("hide");
-    ui.sections.actionOptions.classList.add("hide");
+    ui.sections.open.classList.add("hide");
     ui.sections.edit.classList.add("hide");
     ui.sections.exportOptions.classList.add("hide");
     ui.sections[section].classList.remove("hide");

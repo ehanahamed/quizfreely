@@ -168,7 +168,7 @@
           <!--
           Action section
           -->
-          <div id="sectionActionOptions" class="hide">
+          <div id="mainOpendiv" class="hide">
             <h2 id="mainActionsStudysettitle">Study set</h2>
             <div
               class="card double"
@@ -194,7 +194,7 @@
             </div>
             <p>Need to make changes or add more?</p>
             <div class="flex">
-              <button onclick="buttons.actionOptions.edit();">Edit</button>
+              <button onclick="buttons.open.edit();">Edit</button>
             </div>
             <table id="mainActionsTable">
               <thead>
@@ -206,7 +206,7 @@
               <tbody>
                 <tr>
                   <td>
-                    <button onclick="buttons.actionOptions.edit();">
+                    <button onclick="buttons.open.edit();">
                       Edit
                     </button>
                   </td>
@@ -301,8 +301,8 @@
       </div>
     </main>
     <!--
-  Footer, copyright, & license
-  -->
+    Footer, copyright, & license
+    -->
     <footer>
       <h2>Quizfreely</h2>
       <p>
@@ -318,7 +318,7 @@
       var ui = {
         sections: {
           dashboard: document.getElementById("mainDashboarddiv"),
-          actionOptions: document.getElementById("sectionActionOptions"),
+          open: document.getElementById("mainOpendiv"),
           edit: document.getElementById("sectionEdit"),
           exportOptions: document.getElementById("sectionExportOptions"),
           flashcards: document.getElementById("sectionFlashcards"),
@@ -427,7 +427,7 @@
                       );
                       sessionData.flashcards.index = 0;
                       flashcards.load(sessionData.flashcards.index);
-                      sections.changeTo("actionOptions");
+                      sections.changeTo("open");
                       document.getElementById(
                         "mainActionsStudysettitle"
                       ).innerText = sessionData.studySetData.name;

@@ -24,7 +24,7 @@ var importLocal = {
       );
       sessionData.flashcards.index = 0;
       flashcards.load(sessionData.flashcards.index);
-      sections.changeTo("actionOptions");
+      sections.changeTo("open");
       document.getElementById("mainActionsStudysettitle").innerText =
         sessionData.studySetData.name;
       for (var i = 0; i < sessionData.studySetData.data.length; i++) {
