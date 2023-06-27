@@ -4,6 +4,7 @@ TODO NOW
   - `ui. ...` object/var & `document.getElement ...` function stuff
     - move js stuff to `ui. ...` because then only ui.js needs to be updated when element structure changes, otherwise `document.getElement ...` references will break
 - then after that:
+  - seperate-from-open-screen/fullscreen flashcards
   - ability to share study sets
   - docs & help menu
   - confirmation for deleting stuff
