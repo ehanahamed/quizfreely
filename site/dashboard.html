@@ -266,22 +266,22 @@
                 >Delete Draft & Cancel</a
               >
             </div>
-            <div id="mainWorkinprogressYay" class="box green hide">
+            <div id="mainSaveClouddone" class="box green hide">
               <p>Your study set has been saved to your account.</p>
               <p>Go back to your <a href="./dashboard.html">dashboard</a>?</p>
             </div>
-            <div id="mainWorkinprogressNay" class="box red hide">
+            <div id="mainSaveClouderror" class="box red hide">
               <p>
-                There was a network error preventing the study set from saving.
+                There was an error preventing the study set from saving.
                 Please try again.
               </p>
               <p>
                 If you have tried multiple times and are still unable to save,
-                download your study set and try to save it to your account
+                download your study set and try to re-save it to your account
                 later.
               </p>
             </div>
-            <div id="mainWorkinprogressNewuser" class="box red hide">
+            <div id="mainSaveClouderrorNewuser" class="box red hide">
               <p>
                 You are not signed in. You can use Quizfreely without an
                 account. However, you must download study sets to save them
@@ -496,17 +496,17 @@
                 .then(function (result) {
                   if (result.status === 201) {
                     document
-                      .getElementById("mainWorkinprogressYay")
+                      .getElementById("mainSaveClouddone")
                       .classList.remove("hide");
                     document
-                      .getElementById("mainWorkinprogressNay")
+                      .getElementById("mainSaveClouderror")
                       .classList.add("hide");
                   } else if (result.status !== 201) {
                     document
-                      .getElementById("mainWorkinprogressYay")
+                      .getElementById("mainSaveClouddone")
                       .classList.add("hide");
                     document
-                      .getElementById("mainWorkinprogressNay")
+                      .getElementById("mainSaveClouderror")
                       .classList.remove("hide");
                   }
                 });
@@ -516,7 +516,7 @@
             .getElementById("mainWorkinprogressSavetoaccountbutton")
             .addEventListener("click", function () {
               document
-                .getElementById("mainWorkinprogressNewuser")
+                .getElementById("mainSaveClouderrorNewuser")
                 .classList.remove("hide");
             });
         }
