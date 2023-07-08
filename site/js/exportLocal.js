@@ -11,11 +11,7 @@ var exportLocal = {
       JSON.stringify(sessionData.studySetData),
       "application/json"
     );
-    if (sessionData.studySetData.name) {
-      ui.links.exportLocal.download.download = sessionData.studySetData.name + ".json";
-    } else {
-      ui.links.exportLocal.download.download = "studySet.json";
-    }
+    ui.links.exportLocal.download.download = sessionData.studySetData.name + ".json";
   },
   makeBlobUrl: function (content, mimetype) {
     return URL.createObjectURL(new Blob([content], { type: mimetype }));

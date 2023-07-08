@@ -48,7 +48,11 @@ var edit = {
     edit.insert(ui.inputs.edit.table.rows.length - 1);
   },
   save: function () {
-    sessionData.studySetData.name = ui.inputs.edit.name.value;
+    if (ui.inputs.edit.name.value) {
+      sessionData.studySetData.name = ui.inputs.edit.name.value;
+    } else {
+      sessionData.studySetData.name = "Untitled Study Set";
+    }
     sessionData.studySetData.data = edit.makeArrayFromTable(
       ui.inputs.edit.table
     );
