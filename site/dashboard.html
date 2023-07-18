@@ -253,11 +253,8 @@
                 </tr>
               </tbody>
             </table>
-          </div>
-          <!--
-        Export section
-        -->
-          <div id="mainSavediv" class="hide">
+
+          <div id="mainActionsSave" class="hide">
             <h2>Save study set</h2>
             <p>You can save the study set to your account, or download it.</p>
             <div class="flex">
@@ -304,6 +301,7 @@
               </p>
             </div>
             <p>Save your study set, then open it from your dashboard to review with flashcards, practice tests, etc.</p>
+          </div>
           </div>
         </div>
       </div>
@@ -426,6 +424,8 @@
                     )
                     .addEventListener("click", function (event) {
                       sessionData.studySetData =
+                        /* studysetlist.ID.json */
+                        /* to get the selected ID, take event.target.id and remove the extra text like "mainDashboard..." and "Openbutton..." */
                         studysetlist[
                           event.target.id
                             .replace("mainDashboardUserStudysetlist", "")
@@ -457,6 +457,7 @@
                         newRow.insertCell(1).innerHTML =
                           sessionData.studySetData.data[i][1];
                       }
+                      document.getElementById("mainActionsSave").classList.add("hide");
                     });
                   document
                     .getElementById(

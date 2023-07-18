@@ -36,6 +36,7 @@ var importLocal = {
         newRow.insertCell(0).innerHTML = sessionData.studySetData.data[i][0];
         newRow.insertCell(1).innerHTML = sessionData.studySetData.data[i][1];
       }
+      document.getElementById("mainActionsSave").classList.add("hide");
       /*
             } else {
                 alerts.show("errorImport");
