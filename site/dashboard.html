@@ -253,8 +253,59 @@
                 </tr>
               </tbody>
             </table>
-
-          <div id="mainActionsSave" class="hide">
+            <div id="mainActionsSave" class="hide">
+              <h2>Save study set</h2>
+              <p>You can save the study set to your account, or download it.</p>
+              <div class="flex">
+                <a class="button" id="mainWorkinprogressSavetoaccountbutton"
+                  >Save to account</a
+                >
+                <a id="linkExportLocalDownload" class="button alt">Download</a>
+              </div>
+              <p>Need to go back or cancel?</p>
+              <div class="flex">
+                <button onclick="sections.changeTo('edit');">Back to Edit</button>
+                <a href="./dashboard.html" class="button alt red"
+                  >Delete Draft & Cancel</a
+                >
+              </div>
+              <div id="mainSaveClouddone" class="box green hide">
+                <p>Your study set has been saved to your account.</p>
+                <p>Go back to your <a href="./dashboard.html">dashboard</a>?</p>
+              </div>
+              <div id="mainSaveClouderror" class="box red hide">
+                <p>
+                  There was an error preventing the study set from saving.
+                  Please try again.
+                </p>
+                <p>
+                  If you have tried multiple times and are still unable to save,
+                  download your study set and try to re-save it to your account
+                  later.
+                </p>
+              </div>
+              <div id="mainSaveClouderrorNewuser" class="box red hide">
+                <p>
+                  You are not signed in. You can use Quizfreely without an
+                  account. However, you must download study sets to save them
+                  because you cannot save them to an account if you do not have
+                  one.
+                </p>
+                <p class="fg">
+                  <b>Right now, you can download your study set to save it.</b>
+                  Later on, you can choose to <a href="./signup">sign up</a> or
+                  <a href="./signin.html">sign in</a> and save your downloaded
+                  study set to your account, or continue using Quizfreely without
+                  an account.
+                </p>
+              </div>
+              <p>Save your study set, then open it from your dashboard to review with flashcards, practice tests, etc.</p>
+            </div>
+          </div>
+          <!--
+        Export section
+        -->
+          <div id="mainSavediv" class="hide">
             <h2>Save study set</h2>
             <p>You can save the study set to your account, or download it.</p>
             <div class="flex">
@@ -301,7 +352,6 @@
               </p>
             </div>
             <p>Save your study set, then open it from your dashboard to review with flashcards, practice tests, etc.</p>
-          </div>
           </div>
         </div>
       </div>
