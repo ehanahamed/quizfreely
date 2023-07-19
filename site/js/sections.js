@@ -10,7 +10,6 @@ var sections = {
     ui.sections.dashboard.classList.add("hide");
     ui.sections.open.classList.add("hide");
     ui.sections.edit.classList.add("hide");
-    ui.sections.save.classList.add("hide");
     ui.sections[section].classList.remove("hide");
   },
 };
