@@ -30,7 +30,7 @@ var buttons = {
     },
     done: function () {
       edit.save();
-      /* the snippet below usually has sessionData.studySetData = ..., in this case, that line is in edit.js's edit.save() funciton */
+      /* the snippet below usually has sessionData.studySetData = ..., in this case, that line is in edit.js's edit.save() funciton, which is called/ran above */
       sessionData.flashcards.index = 0;
       flashcards.load(sessionData.flashcards.index);
       sections.changeTo("open");
