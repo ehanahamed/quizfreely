@@ -16,7 +16,7 @@ var buttons = {
     edit: function () {
       edit.load();
       sections.changeTo("edit");
-      alerts.clear();
+      //alerts.clear();
     },
     flashcards: function () {
       sessionData.flashcards.index = 0;
