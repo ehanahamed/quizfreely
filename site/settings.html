@@ -206,7 +206,12 @@
       });
       if (localStorage.getItem("theme") === "purpleish") {
         document.getElementById("mainAppearanceThemePurpleish").checked = true;
-      }
+      } else if (localStorage.getItem("theme") === "owl") {
+        document.getElementById("mainAppearanceThemeOwl").checked = true;
+      } else {
+        /* default to purpleish if not set in localstorage */
+        document.getElementById("mainAppearanceThemePurpleish").checked = true;
+      };
     </script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
