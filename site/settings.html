@@ -204,6 +204,9 @@
       document.getElementById("mainAppearanceThemeCat").addEventListener("change", function (event) {
         setTheme("cat");
       });
+      if (localStorage.getItem("theme") === "purpleish") {
+        document.getElementById("mainAppearanceThemePurpleish");
+      }
     </script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
