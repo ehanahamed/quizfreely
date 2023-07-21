@@ -192,6 +192,19 @@
       document.getElementById("noscript").style.display = "none";
     </script>
     <script src="https://design.ehan.dev/js/themes.js"></script>
+    <script>
+      /* this super short script tag is for theme settings */
+      /* setTheme is defined in design.ehan.dev/js/themes.js */
+      document.getElementById("mainAppearanceThemePurpleish").addEventListener("change", function (event) {
+        setTheme("purpleish");
+      });
+      document.getElementById("mainAppearanceThemeOwl").addEventListener("change", function (event) {
+        setTheme("owl");
+      });
+      document.getElementById("mainAppearanceThemeCat").addEventListener("change", function (event) {
+        setTheme("cat");
+      });
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
       const { createClient } = supabase;
