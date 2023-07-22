@@ -142,6 +142,12 @@
                 >
               </div>
               <div class="radio">
+                <input type="radio" name="theme" id="mainAppearanceThemeBlurple" />
+                <label for="mainAppearanceThemeBlurple"
+                  >Blurple <span class="bg3">(dark)</span></label
+                >
+              </div>
+              <div class="radio">
                 <input type="radio" name="theme" id="mainAppearanceThemeCat" />
                 <label for="mainAppearanceThemeCat"
                   >Octocat Dark <span class="bg3">(dark)</span></label
@@ -207,6 +213,9 @@
       document.getElementById("mainAppearanceThemeOwl").addEventListener("change", function (event) {
         setTheme("owl");
       });
+      document.getElementById("mainAppearanceThemeBlurple").addEventListener("change", function (event) {
+        setTheme("blurple");
+      });
       document.getElementById("mainAppearanceThemeCat").addEventListener("change", function (event) {
         setTheme("cat");
       });
@@ -217,6 +226,8 @@
         document.getElementById("mainAppearanceThemePurpleish").checked = true;
       } else if (localStorage.getItem("theme") === "owl") {
         document.getElementById("mainAppearanceThemeOwl").checked = true;
+      } else if (localStorage.getItem("theme") === "blurple") {
+        document.getElementById("mainAppearanceThemeBlurple").checked = true;
       } else if (localStorage.getItem("theme") === "cat") {
         document.getElementById("mainAppearanceThemeCat").checked = true;
       } else if (localStorage.getItem("theme") === "catdim") {
