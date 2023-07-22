@@ -37,6 +37,12 @@ var buttons = {
       document.getElementById(
         "mainActionsStudysettitle"
       ).innerText = sessionData.studySetData.name;
+      /* IMPORTANT: line below clears the old data from table before displaying data in it */
+      document.getElementById("mainActionsTable") = "<thead> <tr> <th>Term</th> <th>Definition</th> </tr> </thead> <tbody> <tr> <td> <button onclick='buttons.open.edit();'> Edit </button> </td> <td></td> </tr> </tbody>"
+      /*
+        IMPORTANT: the string above has the inner html of a table found in dashboard.html
+        if the HTML of the table is updated there, update it here too!
+      */
       for (
         var i = 0;
         i < sessionData.studySetData.data.length;
@@ -64,12 +70,6 @@ var buttons = {
       */
       document.getElementById("inputEditTable").innerHTML = "<thead> <tr> <th>Term</th> <th>Definition</th> <th>Actions</th> </tr> </thead> <tbody> <tr> <td> <div class='flex'> <button onclick='buttons.edit.add();'> <i class='nf nf-oct-plus'></i> Add row </button> <button id='buttonEditDone' class='alt' onclick='buttons.edit.done()' > <i class='nf nf-oct-check'></i> Done </button> </div> </td> <td></td> <td></td> </tr> </tbody>"
       /* IMPORTANT: the string above has the inner html of the table found in dashboard.html */
-      /*
-        the same problem described and fixed above happens in the other table (the view only one under the flashcards),
-        the other table's problem is fixed below
-      */
-      document.getElementById("mainActionsTable") = "<thead> <tr> <th>Term</th> <th>Definition</th> </tr> </thead> <tbody> <tr> <td> <button onclick='buttons.open.edit();'> Edit </button> </td> <td></td> </tr> </tbody>"
-      /* IMPORTANT: the string above has the inner html of the OTHER table found in dashboard.html */
     },
   },
   save: {},
