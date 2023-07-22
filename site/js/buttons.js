@@ -32,7 +32,7 @@ var buttons = {
       /* the snippet below usually has sessionData.studySetData = ..., in this case, that line is in edit.js's edit.save() funciton, which is called/ran below */
       edit.save();
       /* IMPORTANT: line below clears the old data from table before displaying data in it */
-      //document.getElementById("mainActionsTable") = "<thead> <tr> <th>Term</th> <th>Definition</th> </tr> </thead> <tbody> <tr> <td> <button onclick='buttons.open.edit();'> Edit </button> </td> <td></td> </tr> </tbody>";
+      document.getElementById("mainActionsTable").innerHTML = "<thead> <tr> <th>Term</th> <th>Definition</th> </tr> </thead> <tbody> <tr> <td> <button onclick='buttons.open.edit();'> Edit </button> </td> <td></td> </tr> </tbody>";
       /*
         IMPORTANT: the string above has the inner html of a table found in dashboard.html
         if the HTML of the table is updated there, update it here too!
