@@ -354,15 +354,15 @@
     <script src="./js/exportLocal.js"></script>
     <script src="./js/flashcards.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="./js/supabase.js"></script>
     <script>
-      newUserUi.push(
+      var newUserUi = [
         "mainDashboardNewuserdiv"
-      );
-      userUi.push(
+      ];
+      var userUi = [
         "mainDashboardUserdiv"
-      );
+      ];
     </script>
+    <script src="./js/supabase.js"></script>
     <script>
       supabaseClient.auth.getSession().then(function (result) {
         if (result.data.session !== null) {
