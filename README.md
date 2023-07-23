@@ -1,13 +1,16 @@
-TODO NOW
-
-- CLEAN UP THE GODDAMN CODE
-  - `ui. ...` object/var & `document.getElement ...` function stuff
-    - move js stuff to `ui. ...` because then only ui.js needs to be updated when element structure changes, otherwise `document.getElement ...` references will break
-- then after that:
-  - seperate-from-open-screen/fullscreen flashcards
-  - ability to share study sets
-  - docs & help menu
-  - confirmation for deleting stuff
+TODO NOW:
+ - clean up code
+ - homepage/index.html
+   - add "its effective" section explaining how quizfreelys thingies are "backed by science"
+      - this section would be under "its open source" and before the wave-y section
+   - add "the code is public, but your data isn't" section explaining stuff like "ur data isnt used for marketing or sold to ppl" and "the privacy policy is easy to read" and link to the privacy policy
+   - add links/buttons to the grid paragraph section thingies
+      - like under open source there would be view source code and under its free there would be informatino about why accounts etc
+ - then after that:
+   - seperate-from-open-screen/fullscreen flashcards
+   - ability to share study sets
+   - docs & help menu
+   - confirmation for deleting stuff
 
 TODO
 
