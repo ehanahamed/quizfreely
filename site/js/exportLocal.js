@@ -11,7 +11,8 @@ var exportLocal = {
       JSON.stringify(sessionData.studySetData),
       "application/json"
     );
-    ui.links.exportLocal.download.download = sessionData.studySetData.name + ".json";
+    ui.links.exportLocal.download.download =
+      sessionData.studySetData.name + ".json";
   },
   makeBlobUrl: function (content, mimetype) {
     return URL.createObjectURL(new Blob([content], { type: mimetype }));

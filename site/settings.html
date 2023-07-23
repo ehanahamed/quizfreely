@@ -142,7 +142,11 @@
                 >
               </div>
               <div class="radio">
-                <input type="radio" name="theme" id="mainAppearanceThemeBlurple" />
+                <input
+                  type="radio"
+                  name="theme"
+                  id="mainAppearanceThemeBlurple"
+                />
                 <label for="mainAppearanceThemeBlurple"
                   >Blurple <span class="bg3">(dark)</span></label
                 >
@@ -154,7 +158,11 @@
                 >
               </div>
               <div class="radio">
-                <input type="radio" name="theme" id="mainAppearanceThemeCatdim" />
+                <input
+                  type="radio"
+                  name="theme"
+                  id="mainAppearanceThemeCatdim"
+                />
                 <label for="mainAppearanceThemeCatdim"
                   >Octocat Dimmed <span class="bg3">(dark)</span></label
                 >
@@ -207,21 +215,31 @@
     <script>
       /* this super short script tag is for theme settings */
       /* setTheme is defined in design.ehan.dev/js/themes.js */
-      document.getElementById("mainAppearanceThemePurpleish").addEventListener("change", function (event) {
-        setTheme("purpleish");
-      });
-      document.getElementById("mainAppearanceThemeOwl").addEventListener("change", function (event) {
-        setTheme("owl");
-      });
-      document.getElementById("mainAppearanceThemeBlurple").addEventListener("change", function (event) {
-        setTheme("blurple");
-      });
-      document.getElementById("mainAppearanceThemeCat").addEventListener("change", function (event) {
-        setTheme("cat");
-      });
-      document.getElementById("mainAppearanceThemeCatdim").addEventListener("change", function (event) {
-        setTheme("catdim");
-      });
+      document
+        .getElementById("mainAppearanceThemePurpleish")
+        .addEventListener("change", function (event) {
+          setTheme("purpleish");
+        });
+      document
+        .getElementById("mainAppearanceThemeOwl")
+        .addEventListener("change", function (event) {
+          setTheme("owl");
+        });
+      document
+        .getElementById("mainAppearanceThemeBlurple")
+        .addEventListener("change", function (event) {
+          setTheme("blurple");
+        });
+      document
+        .getElementById("mainAppearanceThemeCat")
+        .addEventListener("change", function (event) {
+          setTheme("cat");
+        });
+      document
+        .getElementById("mainAppearanceThemeCatdim")
+        .addEventListener("change", function (event) {
+          setTheme("catdim");
+        });
       if (localStorage.getItem("theme") === "purpleish") {
         document.getElementById("mainAppearanceThemePurpleish").checked = true;
       } else if (localStorage.getItem("theme") === "owl") {
@@ -235,7 +253,7 @@
       } else {
         /* default to purpleish if not set in localstorage */
         document.getElementById("mainAppearanceThemePurpleish").checked = true;
-      };
+      }
     </script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>

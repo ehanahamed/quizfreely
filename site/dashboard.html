@@ -138,6 +138,9 @@
               </label>
               <input id="inputImportLocalFile" class="invisible" type="file" />
             </div>
+            <div id="mainDashboardNewuserdiv">
+              You are not signed in. <br /> You can use Quizfreely without an account, but having an account will let you save study sets in your account.
+            </div>
             <div id="mainDashboardUserdiv" class="hide">
               <p>
                 You are signed in. Study sets you saved to your account are
@@ -180,12 +183,14 @@
               </div>
               <div id="mainSaveClouderror" class="box red hide">
                 <p>
-                  An unknown error prevented the study set from saving. Sorry ¯\_(ツ)_/¯
+                  An unknown error prevented the study set from saving. Sorry
+                  ¯\_(ツ)_/¯
                 </p>
               </div>
               <div id="mainSaveClouderrorNewuser" class="box red hide">
                 <p>
-                  You are not signed in. You can't save to an account that you don't have. ¯\_(ツ)_/¯
+                  You are not signed in. You can't save to an account that you
+                  don't have. ¯\_(ツ)_/¯
                 </p>
               </div>
             </div>
@@ -231,9 +236,7 @@
               <tbody>
                 <tr>
                   <td>
-                    <button onclick="buttons.open.edit();">
-                      Edit
-                    </button>
+                    <button onclick="buttons.open.edit();">Edit</button>
                   </td>
                   <td></td>
                 </tr>
@@ -307,7 +310,7 @@
         sections: {
           dashboard: document.getElementById("mainDashboarddiv"),
           open: document.getElementById("mainOpendiv"),
-          edit: document.getElementById("sectionEdit")
+          edit: document.getElementById("sectionEdit"),
           /* flashcards: document.getElementById("sectionFlashcards"), */
         },
         buttons: {
@@ -351,12 +354,16 @@
     <script src="./js/exportLocal.js"></script>
     <script src="./js/flashcards.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="./js/supabase.js"></script>
     <script>
-      const { createClient } = supabase;
-      const supabaseClient = createClient(
-        "https://okejqkisolxqgkgwwlbz.supabase.co",
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9rZWpxa2lzb2x4cWdrZ3d3bGJ6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE2ODU3NDE1MTgsImV4cCI6MjAwMTMxNzUxOH0.T8f_3fPAYnWdzguPonQZCAFmbAN-mTLQB3_EW9pjkis"
+      newUserUi.push(
+        "mainDashboardNewuserdiv"
       );
+      userUi.push(
+        "mainDashboardUserdiv"
+      );
+    </script>
+    <script>
       supabaseClient.auth.getSession().then(function (result) {
         if (result.data.session !== null) {
           supabaseClient
@@ -436,7 +443,9 @@
                         newRow.insertCell(1).innerHTML =
                           sessionData.studySetData.data[i][1];
                       }
-                      document.getElementById("mainActionsSave").classList.add("hide");
+                      document
+                        .getElementById("mainActionsSave")
+                        .classList.add("hide");
                     });
                   document
                     .getElementById(
@@ -470,9 +479,9 @@
           supabaseClient.auth.getUser().then(function (result) {
             userId = result.data.user.id;
           });
-          document
+          /*document
             .getElementById("mainDashboardUserdiv")
-            .classList.remove("hide");
+            .classList.remove("hide");*/
           document
             .getElementById("mainWorkinprogressSavetoaccountbutton")
             .addEventListener("click", function () {
