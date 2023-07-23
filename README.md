@@ -9,6 +9,7 @@ TODO NOW:
  - then after that:
    - seperate-from-open-screen/fullscreen flashcards
    - ability to share study sets
+      - add an "explore" tab/page instead of a weird looking searchbar in the navbar
    - docs & help menu
    - confirmation for deleting stuff
 
