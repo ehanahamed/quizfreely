@@ -138,10 +138,16 @@
               <div class="radio">
                 <input type="radio" name="theme" id="mainAppearanceThemeOwl" />
                 <label for="mainAppearanceThemeOwl"
-                  >Green Owl <span class="bg3">(light)</span></label
+                  >Owl Light <span class="bg3">(light)</span></label
                 >
               </div>
               <div class="radio">
+                <input type="radio" name="theme" id="mainAppearanceThemeOwldark" />
+                <label for="mainAppearanceThemeOwldark"
+                  >Owl Dark <span class="bg3">(dark)</span></label
+                >
+              </div>
+              <!--<div class="radio">
                 <input
                   type="radio"
                   name="theme"
@@ -150,7 +156,7 @@
                 <label for="mainAppearanceThemeBlurple"
                   >Blurple <span class="bg3">(dark)</span></label
                 >
-              </div>
+              </div>-->
               <div class="radio">
                 <input type="radio" name="theme" id="mainAppearanceThemeCat" />
                 <label for="mainAppearanceThemeCat"
@@ -226,10 +232,15 @@
           setTheme("owl");
         });
       document
+        .getElementById("mainAppearanceThemeOwl")
+        .addEventListener("change", function (event) {
+          setTheme("owl");
+        });
+      /*document
         .getElementById("mainAppearanceThemeBlurple")
         .addEventListener("change", function (event) {
           setTheme("blurple");
-        });
+        });*/
       document
         .getElementById("mainAppearanceThemeCat")
         .addEventListener("change", function (event) {
@@ -244,8 +255,11 @@
         document.getElementById("mainAppearanceThemePurpleish").checked = true;
       } else if (localStorage.getItem("theme") === "owl") {
         document.getElementById("mainAppearanceThemeOwl").checked = true;
-      } else if (localStorage.getItem("theme") === "blurple") {
+      } else if (localStorage.getItem("theme") === "owldark") {
+        document.getElementById("mainAppearanceThemeOwldark").checked = true;
+      /*} else if (localStorage.getItem("theme") === "blurple") {
         document.getElementById("mainAppearanceThemeBlurple").checked = true;
+      */
       } else if (localStorage.getItem("theme") === "cat") {
         document.getElementById("mainAppearanceThemeCat").checked = true;
       } else if (localStorage.getItem("theme") === "catdim") {
