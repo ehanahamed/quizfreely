@@ -1,0 +1,1078 @@
+<!DOCTYPE html>
+<html lang="en">
+  <!--
+  Quizfreely (quizfreely.ehan.dev)
+  Copyright (c) 2022-present Ehan Ahamed and contributors
+  Licensed under the UPL-1.0 License
+  https://src.ehan.dev/quizfreely/LICENSE.txt
+  -->
+
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Quizfreely</title>
+    <link rel="canonical" href="https://quizfreely.ehan.dev" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="stylesheet" href="https://design.ehan.dev/css/colors.css" />
+    <link rel="stylesheet" href="https://design.ehan.dev/css/components.css" />
+    <link rel="stylesheet" href="https://design.ehan.dev/css/layouts.css" />
+    <link rel="stylesheet" href="https://design.ehan.dev/css/utils.css" />
+    <link rel="stylesheet" href="./fonts/fonts.css" />
+    <link
+      rel="stylesheet"
+      href="https://www.nerdfonts.com/assets/css/webfont.css"
+    />
+  </head>
+
+  <body>
+    <header>
+      <!--<div class="menu">
+        <button id="headerMenuMenubutton">
+          <i class="nf nf-md-menu"></i>
+          Menu
+        </button>
+        <div id="headerMenuMenudiv" class="hide">
+          <ul>
+            <li>
+              <a href="./index.html" class="bg1 mark markPrimary">Home</a>
+            </li>
+            <li><a href="./dashboard.html">Dashboard</a></li>
+            <li><a href="./docs.html">Help & Docs</a></li>
+            <li><a href="./settings.html">Settings</a></li>
+          </ul>
+        </div>
+      </div>-->
+      <div class="menu nav">
+        <div class="current">
+          <a href="./index.html"> <i class="nf nf-fa-home"></i> Home</a>
+        </div>
+        <div>
+          <a href="./dashboard.html"> <i class="nf nf-fa-edit"></i> Dashboard </a>
+        </div>
+        <div>
+          <a href="./explore.html"> <i class="nf nf-fa-search"></i> Explore </a>
+        </div>
+        <div>
+          <a href="./settings.html"> <i class="nf nf-fa-cog"></i> Settings</a>
+        </div>
+      </div>
+      <!--<div class="options">
+        <div class="flex center">
+          <button id="headerOptionsLangbutton">
+            <i class="nf nf-md-translate"></i>
+            Language
+          </button>
+          <button id="headerOptionsThemebutton">
+            <i class="nf nf-cod-symbol_color"></i>
+            Theme
+          </button>
+        </div>
+        <div id="headerOptionsLangdiv" class="hide">
+          <div class="radio">
+            <input
+              type="radio"
+              name="lang"
+              id="headerOptionsLangdivEn"
+              checked
+            />
+            <label for="headerOptionsLangdivEn">English</label>
+          </div>
+          <div class="radio">
+                  <input type="radio" name="lang" id="headerOptionsLangdivDe" />
+                  <label for="headerOptionsLangdivDe">Deutsch</label>
+                </div>
+                <div class="radio">
+                  <input type="radio" name="lang" id="headerOptionsLangdivGz" />
+                  <label for="headerOptionsLangdivGz">中文</label>
+                </div>
+        </div>
+        <div id="headerOptionsThemediv" class="hide">
+          <div class="radio">
+            <input
+              type="radio"
+              name="theme"
+              id="headerOptionsThemedivPurpleish"
+              checked
+            />
+            <label for="headerOptionsThemedivPurpleish"
+              >Purpleish <span class="bg3">(dark)</span></label
+            >
+          </div>
+          <div class="radio">
+            <input type="radio" name="theme" id="headerOptionsThemedivOwl" />
+            <label for="headerOptionsThemedivOwl"
+              >Owl <span class="bg3">(light)</span></label
+            >
+          </div>
+        </div>
+      </div>-->
+    </header>
+    <div id="noscript" class="box center red">
+      <p>
+        You have JavaScript disabled. This website uses JavaScript to run
+        correctly.
+      </p>
+      <p>
+        Please enable JavaScript in your browser settings, or this website will
+        not work.
+      </p>
+    </div>
+    <main>
+      <div class="grid hero">
+        <div class="content">
+          <h1>Quizfreely</h1>
+          <p>A free & open source studying tool</p>
+          <div id="mainHeroContentNewuserdiv" class="flex center">
+            <a href="./start.html" class="button">Get Started</a>
+            <a href="./about.html" class="button alt">About</a>
+          </div>
+          <div id="mainHeroContentUserdiv" class="flex center hide">
+            <a href="./dashboard.html" class="button">Dashboard</a>
+            <a href="./explore.html" class="button alt">Explore</a>
+          </div>
+        </div>
+        <div class="logo">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="200"
+            height="200"
+            viewBox="0 0 200 200"
+          >
+            <path
+              fill="var(--bg2)"
+              d="M33.761 54.735h-9.656L10 39.973l9.656-9.66 9.657 9.66L48.517 20l10.416 10.312Zm45.136-20.732H190v14.111H78.897Zm0 41.574H190v14.002H78.897ZM190 117.802H78.897v13.351H190ZM78.897 159.267H190v14.112H78.897ZM24.105 96.31h9.656l25.172-24.532-10.416-9.552-19.204 19.213-9.657-9.66L10 82.197Zm9.656 42.226h-9.656L10 123.664l9.656-9.553 9.657 9.552 19.204-19.972 10.416 9.66zM24.105 180h9.656l25.172-24.423-10.416-9.661-19.204 19.321-9.657-9.66-9.656 9.66Z"
+              font-size="200"
+              font-weight="700"
+            />
+            <path
+              fill="var(--primary)"
+              d="M100 20c-42.678 0-70 32.604-70 76.88 0 44.277 27.322 76.881 70 76.881 14.957 0 26.125-3.019 37.692-10.063L154.843 180 170 163.698l-15.954-15.295C163.818 136.327 170 116.2 170 96.478 170 53.408 143.276 20 100 20zm17.151 93.182-15.157 16.302 15.356 14.692C112.764 146.591 106.182 148 99.8 148c-23.931 0-39.885-20.327-39.885-51.12 0-30.792 15.954-51.119 40.085-51.119 24.33 0 40.086 20.126 40.086 51.32 0 12.076-2.194 22.944-6.582 31.8z"
+              font-size="200.342"
+              font-weight="700"
+            />
+          </svg>
+        </div>
+      </div>
+      <div class="grid page">
+        <div class="content">
+          <div class="grid paragraph">
+            <div class="content">
+              <h2>A studying tool that's <span class="extra">free</span>!</h2>
+              <p>
+                Unlike other studying tools, Quizfreely has no ads, limits,
+                pop-ups, free trails, or paid features. It's completely free,
+                open source, and it doesn't even require an account!
+              </p>
+            </div>
+            <div class="image">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400">
+                <g transform="rotate(-10 -284.6 -186.12)">
+                  <rect
+                    width="200"
+                    height="340"
+                    x="147.96"
+                    y="131.873"
+                    fill="var(--bg2)"
+                    rx="17.354"
+                    ry="22.011"
+                  />
+                  <rect
+                    width="180"
+                    height="320"
+                    x="157.96"
+                    y="141.873"
+                    fill="#dbdfff"
+                    rx="15.619"
+                    ry="20.716"
+                  />
+                  <path fill="#fff" d="M157.96 161.873h180v280h-180z" />
+                  <g
+                    fill="#2e3856"
+                    aria-label="$$$"
+                    font-size="80"
+                    font-weight="700"
+                  >
+                    <path
+                      d="M184.76 269.393q-5.2-.16-9.28-.96-4.08-.88-7.44-2.4v-10.32q3.28 1.6 7.92 2.96 4.64 1.28 8.8 1.52v-12.08q-6.16-2.4-9.92-4.64-3.68-2.32-5.28-5.12-1.6-2.8-1.6-6.72 0-6 4.64-9.52 4.72-3.6 12.16-4.24v-6h5.36v5.84q8.88.32 16.16 3.6l-3.68 9.12q-3.2-1.36-6.48-2.08-3.2-.72-6-.96v11.52q4.32 1.6 8.24 3.52 3.92 1.84 6.32 4.72 2.48 2.88 2.48 7.6 0 5.84-4.24 9.76t-12.8 4.72v8h-5.36zm0-41.84q-5.04.72-5.04 4.08 0 1.68 1.2 2.8 1.2 1.12 3.84 2.32zm5.36 32.4q5.28-.96 5.28-4.64 0-1.6-1.36-2.72-1.28-1.2-3.92-2.4zM230.52 269.393q-5.2-.16-9.28-.96-4.08-.88-7.44-2.4v-10.32q3.28 1.6 7.92 2.96 4.64 1.28 8.8 1.52v-12.08q-6.16-2.4-9.92-4.64-3.68-2.32-5.28-5.12-1.6-2.8-1.6-6.72 0-6 4.64-9.52 4.72-3.6 12.16-4.24v-6h5.36v5.84q8.88.32 16.16 3.6l-3.68 9.12q-3.2-1.36-6.48-2.08-3.2-.72-6-.96v11.52q4.32 1.6 8.24 3.52 3.92 1.84 6.32 4.72 2.48 2.88 2.48 7.6 0 5.84-4.24 9.76t-12.8 4.72v8h-5.36zm0-41.84q-5.04.72-5.04 4.08 0 1.68 1.2 2.8 1.2 1.12 3.84 2.32zm5.36 32.4q5.28-.96 5.28-4.64 0-1.6-1.36-2.72-1.28-1.2-3.92-2.4zM276.28 269.393q-5.2-.16-9.28-.96-4.08-.88-7.44-2.4v-10.32q3.28 1.6 7.92 2.96 4.64 1.28 8.8 1.52v-12.08q-6.16-2.4-9.92-4.64-3.68-2.32-5.28-5.12-1.6-2.8-1.6-6.72 0-6 4.64-9.52 4.72-3.6 12.16-4.24v-6h5.36v5.84q8.88.32 16.16 3.6l-3.68 9.12q-3.2-1.36-6.48-2.08-3.2-.72-6-.96v11.52q4.32 1.6 8.24 3.52 3.92 1.84 6.32 4.72 2.48 2.88 2.48 7.6 0 5.84-4.24 9.76t-12.8 4.72v8h-5.36zm0-41.84q-5.04.72-5.04 4.08 0 1.68 1.2 2.8 1.2 1.12 3.84 2.32zm5.36 32.4q5.28-.96 5.28-4.64 0-1.6-1.36-2.72-1.28-1.2-3.92-2.4z"
+                    />
+                  </g>
+                  <rect
+                    width="80"
+                    height="30"
+                    x="167.96"
+                    y="381.873"
+                    fill="#4255ff"
+                    rx="10"
+                    ry="10"
+                  />
+                  <rect
+                    width="50"
+                    height="20"
+                    x="277.96"
+                    y="171.873"
+                    fill="#ffdc62"
+                    rx="6"
+                    ry="6"
+                  />
+                  <circle cx="177.96" cy="181.873" r="10" fill="#4255ff" />
+                  <rect
+                    width="160"
+                    height="20"
+                    x="167.96"
+                    y="291.873"
+                    fill="#586380"
+                    rx="6"
+                    ry="6"
+                  />
+                  <rect
+                    width="160"
+                    height="20"
+                    x="167.96"
+                    y="321.873"
+                    fill="#586380"
+                    rx="6"
+                    ry="6"
+                  />
+                  <rect
+                    width="160"
+                    height="20"
+                    x="167.96"
+                    y="351.873"
+                    fill="#586380"
+                    rx="6"
+                    ry="6"
+                  />
+                </g>
+                <path
+                  fill="var(--red)"
+                  d="M178.004 161.58q0-7.813 5.469-13.282 5.468-5.468 13.28-5.468 7.813 0 13.282 5.468l20.117 20.118 40.235 40.234 20.117 20.117 80.469-80.469q5.664-6.054 13.672-6.054 6.64 0 11.523 4.101 5.078 3.906 6.64 10.156.587 2.344.587 4.688 0 8.008-5.86 13.672l-80.469 80.469 80.47 80.468q6.054 5.664 6.054 13.672 0 6.64-4.102 11.719-3.906 4.883-10.156 6.445-2.344.586-4.687.586-8.008 0-13.672-5.86l-80.47-80.468-80.468 80.469q-5.469 5.078-12.89 5.078-7.618 0-13.282-5.469-5.468-5.664-5.468-13.281 0-7.422 5.078-12.89l20.117-20.118 40.234-40.234 20.117-20.117-80.468-80.47q-5.47-5.468-5.47-13.28z"
+                  aria-label=""
+                  font-size="400"
+                  font-weight="700"
+                  transform="rotate(-10)"
+                />
+                <g transform="rotate(10 477.054 -464.282)">
+                  <rect
+                    width="200"
+                    height="340"
+                    x="500"
+                    y="20"
+                    fill="var(--bg3)"
+                    rx="21.245"
+                    ry="22.112"
+                  />
+                  <rect
+                    width="180"
+                    height="320"
+                    x="510"
+                    y="30"
+                    fill="var(--bg2)"
+                    rx="19.121"
+                    ry="20.811"
+                  />
+                  <path fill="var(--bg1)" d="M510 50h180v280H510z" />
+                  <rect
+                    width="80"
+                    height="30"
+                    x="522.248"
+                    y="249.856"
+                    fill="var(--primary)"
+                    rx="10"
+                    ry="10"
+                  />
+                  <g
+                    fill="var(--extra)"
+                    aria-label="FREE"
+                    font-size="60"
+                    font-weight="700"
+                  >
+                    <path
+                      d="M528.94 142.84H520V100h24.54v7.44h-15.6v11.04h14.52v7.44h-14.52zM565.42 100q8.76 0 12.9 3.18 4.2 3.18 4.2 9.66 0 2.94-1.14 5.16-1.08 2.16-2.94 3.72-1.8 1.5-3.9 2.46l12.6 18.66h-10.08l-10.2-16.44H562v16.44h-9.06V100Zm-.66 7.44H562v11.58h2.94q4.5 0 6.42-1.5 1.98-1.5 1.98-4.44 0-3.06-2.1-4.32-2.04-1.32-6.48-1.32zM617.2 142.84h-24.66V100h24.66v7.44h-15.6v9.42h14.52v7.44H601.6v11.04h15.6zM650.8 142.84h-24.66V100h24.66v7.44h-15.6v9.42h14.52v7.44H635.2v11.04h15.6z"
+                    />
+                  </g>
+                  <rect
+                    width="160"
+                    height="20"
+                    x="520"
+                    y="160"
+                    fill="var(--fg)"
+                    rx="6"
+                    ry="6"
+                  />
+                  <rect
+                    width="160"
+                    height="20"
+                    x="520"
+                    y="190"
+                    fill="var(--fg)"
+                    rx="6"
+                    ry="6"
+                  />
+                  <rect
+                    width="160"
+                    height="20"
+                    x="520"
+                    y="220"
+                    fill="var(--fg)"
+                    rx="6"
+                    ry="6"
+                  />
+                </g>
+                <path
+                  fill="var(--green)"
+                  d="M629.486 187.931q3.907 0 6.64 2.735 2.735 2.734 2.735 6.64 0 3.907-2.734 6.64l-90.625 90.626q-2.734 2.734-6.64 2.734-3.907 0-6.641-2.734l-10.157-10.156-20.312-20.313-10.156-10.156q-2.54-2.734-2.54-6.445 0-3.809 2.735-6.543 2.832-2.832 6.64-2.832 3.712 0 6.446 2.539l8.496 8.496 16.992 16.992 8.496 8.496 83.985-83.984q2.734-2.735 6.64-2.735z"
+                  aria-label=""
+                  font-size="200"
+                  font-weight="700"
+                  transform="rotate(10)"
+                />
+              </svg>
+            </div>
+          </div>
+          <div class="grid paragraph alt">
+            <div class="content">
+              <h2>It's <span class="extra">open source</span>!</h2>
+              <p>
+                Quizfreely is open source. That means it's publicly developed,
+                so everyone can view and contribute to its source code.
+                Quizfreely isn't owned by any company either, so it doesn't make
+                money off of its users.
+              </p>
+              <!--<a class="button" href="./start.html">Get Started</a>-->
+            </div>
+            <div class="image">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                xmlns:xlink="http://www.w3.org/1999/xlink"
+                xml:space="preserve"
+                id="SVGRoot"
+                version="1.1"
+                viewBox="0 0 800 400"
+              >
+                <defs id="defs2176">
+                  <linearGradient
+                    xlink:href="#linearGradient6924-6"
+                    id="linearGradient6918-3"
+                    x1="42519.285"
+                    x2="42575.336"
+                    y1="-7078.789"
+                    y2="-6966.931"
+                    gradientUnits="userSpaceOnUse"
+                  />
+                  <linearGradient id="linearGradient6924-6">
+                    <stop
+                      id="stop6920-7"
+                      offset="0"
+                      stop-color="#2185d0"
+                      stop-opacity="0"
+                    />
+                    <stop
+                      id="stop6926-5"
+                      offset=".495"
+                      stop-color="#2185d0"
+                      stop-opacity=".3"
+                    />
+                    <stop
+                      id="stop6922-3"
+                      offset="1"
+                      stop-color="#2185d0"
+                      stop-opacity=".3"
+                    />
+                  </linearGradient>
+                </defs>
+                <g id="layer1">
+                  <g
+                    id="text2768"
+                    fill="var(--fg)"
+                    aria-label=""
+                    font-size="60"
+                    font-weight="700"
+                    transform="matrix(1.11256 0 0 1.02564 -270.024 -90.256)"
+                  >
+                    <path
+                      id="path3195"
+                      d="M408.379 414.092q0-2.871 1.113-5.479 1.113-2.607 2.988-4.482 1.905-1.904 4.512-3.018Q419.6 400 422.471 400q2.87 0 5.478 1.113 2.608 1.114 4.483 3.018 1.904 1.875 3.017 4.482 1.114 2.608 1.114 5.479 0 3.603-1.7 6.68-1.67 3.076-4.54 5.01 6.24 2.343 10.253 7.792 4.043 5.42 4.365 12.246v.118q0 1.142-.79 1.933-.762.82-1.876.879h-39.609q-1.113-.059-1.904-.879-.762-.82-.762-1.933v-.118q.322-6.826 4.336-12.246 4.043-5.449 10.283-7.793-2.871-1.933-4.57-5.01-1.67-3.076-1.67-6.68z"
+                    />
+                  </g>
+                  <g
+                    id="text2768-3"
+                    fill="var(--fg)"
+                    aria-label=""
+                    font-size="60"
+                    font-weight="700"
+                    transform="matrix(1.11256 0 0 1.02564 -420.024 -90.256)"
+                  >
+                    <path
+                      id="path3195-6"
+                      d="M408.379 414.092q0-2.871 1.113-5.479 1.113-2.607 2.988-4.482 1.905-1.904 4.512-3.018Q419.6 400 422.471 400q2.87 0 5.478 1.113 2.608 1.114 4.483 3.018 1.904 1.875 3.017 4.482 1.114 2.608 1.114 5.479 0 3.603-1.7 6.68-1.67 3.076-4.54 5.01 6.24 2.343 10.253 7.792 4.043 5.42 4.365 12.246v.118q0 1.142-.79 1.933-.762.82-1.876.879h-39.609q-1.113-.059-1.904-.879-.762-.82-.762-1.933v-.118q.322-6.826 4.336-12.246 4.043-5.449 10.283-7.793-2.871-1.933-4.57-5.01-1.67-3.076-1.67-6.68z"
+                    />
+                  </g>
+                  <g
+                    id="text2768-5"
+                    fill="var(--fg)"
+                    aria-label=""
+                    font-size="60"
+                    font-weight="700"
+                    transform="matrix(1.11256 0 0 1.02564 -120.024 -90.256)"
+                  >
+                    <path
+                      id="path3195-0"
+                      d="M408.379 414.092q0-2.871 1.113-5.479 1.113-2.607 2.988-4.482 1.905-1.904 4.512-3.018Q419.6 400 422.471 400q2.87 0 5.478 1.113 2.608 1.114 4.483 3.018 1.904 1.875 3.017 4.482 1.114 2.608 1.114 5.479 0 3.603-1.7 6.68-1.67 3.076-4.54 5.01 6.24 2.343 10.253 7.792 4.043 5.42 4.365 12.246v.118q0 1.142-.79 1.933-.762.82-1.876.879h-39.609q-1.113-.059-1.904-.879-.762-.82-.762-1.933v-.118q.322-6.826 4.336-12.246 4.043-5.449 10.283-7.793-2.871-1.933-4.57-5.01-1.67-3.076-1.67-6.68z"
+                    />
+                  </g>
+                  <g
+                    id="text2776"
+                    fill="var(--yellow)"
+                    aria-label="$"
+                    font-size="100"
+                    font-weight="700"
+                    transform="matrix(1.0204 0 0 .9792 -208.272 2.289)"
+                  >
+                    <path
+                      id="path3371"
+                      d="M396.607 192.113q-6.5-.2-11.6-1.2-5.1-1.1-9.3-3v-12.9q4.1 2 9.9 3.7 5.8 1.6 11 1.9v-15.1q-7.7-3-12.4-5.8-4.6-2.9-6.6-6.4-2-3.5-2-8.4 0-7.5 5.8-11.9 5.9-4.5 15.2-5.3v-7.5h6.7v7.3q11.1.4 20.2 4.5l-4.6 11.4q-4-1.7-8.1-2.6-4-.9-7.5-1.2v14.4q5.4 2 10.3 4.4 4.9 2.3 7.9 5.9 3.1 3.6 3.1 9.5 0 7.3-5.3 12.2-5.3 4.9-16 5.9v10h-6.7zm0-52.3q-6.3.9-6.3 5.1 0 2.1 1.5 3.5t4.8 2.9zm6.7 40.5q6.6-1.2 6.6-5.8 0-2-1.7-3.4-1.6-1.5-4.9-3z"
+                    />
+                  </g>
+                  <g
+                    id="text2780"
+                    fill="var(--fg)"
+                    aria-label=""
+                    display="inline"
+                    font-size="100"
+                    font-weight="700"
+                    transform="matrix(.66754 0 0 .61538 114.453 34.305)"
+                  >
+                    <path
+                      id="path3368"
+                      d="M104.667 35.991q0-4.785 1.855-9.13 1.856-4.346 4.98-7.471 3.175-3.174 7.52-5.03 4.346-1.855 9.131-1.855t9.131 1.855q4.346 1.856 7.47 5.03 3.175 3.125 5.03 7.47 1.856 4.346 1.856 9.131 0 6.006-2.832 11.133-2.784 5.127-7.569 8.35 10.4 3.906 17.09 12.988 6.738 9.033 7.275 20.41v.195q0 1.905-1.318 3.223-1.27 1.367-3.125 1.465H95.145q-1.855-.098-3.173-1.465-1.27-1.367-1.27-3.223v-.195q.537-11.377 7.227-20.41 6.738-9.082 17.138-12.988-4.785-3.223-7.617-8.35-2.783-5.127-2.783-11.133z"
+                    />
+                  </g>
+                  <path
+                    id="rect3142"
+                    fill="var(--bg3)"
+                    stroke-width=".934"
+                    d="M348 258h4v60h-4z"
+                  />
+                  <path
+                    id="rect3142-1"
+                    fill="var(--bg3)"
+                    stroke-width=".934"
+                    d="M198 258h4v60h-4z"
+                  />
+                  <path
+                    id="rect3144"
+                    fill="var(--bg3)"
+                    stroke-width="2"
+                    d="M260 258h90v4h-90z"
+                  />
+                  <path
+                    id="rect3146-8"
+                    fill="var(--bg3)"
+                    stroke-width=".655"
+                    d="M198 205h4v15h-4z"
+                  />
+                  <path
+                    id="rect3146-4"
+                    fill="var(--bg3)"
+                    stroke-width=".757"
+                    d="M198 95h4v20h-4z"
+                    display="inline"
+                  />
+                  <g id="g3138" transform="translate(-60 20)">
+                    <rect
+                      id="rect2860"
+                      width="120"
+                      height="80"
+                      x="200"
+                      y="200"
+                      fill="#3d3d66"
+                      rx="6"
+                      ry="6"
+                    />
+                    <rect
+                      id="rect2862"
+                      width="50"
+                      height="4"
+                      x="210"
+                      y="226"
+                      fill="#f96"
+                      stroke-width="1.052"
+                      rx="2"
+                      ry="2"
+                    />
+                    <rect
+                      id="rect2862-8"
+                      width="50"
+                      height="4"
+                      x="220"
+                      y="234"
+                      fill="#cc52a3"
+                      stroke-width="1.052"
+                      rx="2"
+                      ry="2"
+                    />
+                    <rect
+                      id="rect2862-9"
+                      width="30"
+                      height="4"
+                      x="274"
+                      y="242"
+                      fill="#5252cc"
+                      stroke-width=".815"
+                      rx="2"
+                      ry="2"
+                    />
+                    <rect
+                      id="rect2862-7"
+                      width="60"
+                      height="4"
+                      x="210"
+                      y="250"
+                      fill="#52cca3"
+                      stroke-width="1.153"
+                      rx="2"
+                      ry="2"
+                    />
+                    <rect
+                      id="rect2862-3"
+                      width="50"
+                      height="4"
+                      x="264"
+                      y="258"
+                      fill="#cc52a3"
+                      stroke-width="1.052"
+                      rx="2"
+                      ry="2"
+                    />
+                    <rect
+                      id="rect2862-6"
+                      width="40"
+                      height="4"
+                      x="210"
+                      y="266"
+                      fill="#5252cc"
+                      stroke-width=".941"
+                      rx="2"
+                      ry="2"
+                    />
+                    <rect
+                      id="rect2862-2"
+                      width="60"
+                      height="4"
+                      x="210"
+                      y="210"
+                      fill="#a3a3cc"
+                      stroke-width="1.153"
+                      rx="2"
+                      ry="2"
+                    />
+                    <rect
+                      id="rect2862-2-2"
+                      width="40"
+                      height="4"
+                      x="220"
+                      y="218"
+                      fill="#5252cc"
+                      stroke-width=".941"
+                      rx="2"
+                      ry="2"
+                    />
+                    <rect
+                      id="rect2862-2-2-3"
+                      width="20"
+                      height="4"
+                      x="264"
+                      y="218"
+                      fill="#52cca3"
+                      stroke-width=".665"
+                      rx="2"
+                      ry="2"
+                    />
+                    <rect
+                      id="rect2862-2-2-1"
+                      width="40"
+                      height="4"
+                      x="230"
+                      y="242"
+                      fill="#a3a3cc"
+                      stroke-width=".941"
+                      rx="2"
+                      ry="2"
+                    />
+                    <rect
+                      id="rect2862-2-2-9"
+                      width="20"
+                      height="4"
+                      x="288"
+                      y="266"
+                      fill="#f96"
+                      stroke-width=".665"
+                      rx="2"
+                      ry="2"
+                    />
+                    <rect
+                      id="rect2862-2-2-4"
+                      width="30"
+                      height="4"
+                      x="254"
+                      y="266"
+                      fill="#52cca3"
+                      stroke-width=".815"
+                      rx="2"
+                      ry="2"
+                    />
+                    <rect
+                      id="rect2862-2-2-7"
+                      width="40"
+                      height="4"
+                      x="220"
+                      y="258"
+                      fill="#a3a3cc"
+                      stroke-width=".941"
+                      rx="2"
+                      ry="2"
+                    />
+                  </g>
+                  <path
+                    id="rect3148"
+                    fill="var(--bg3)"
+                    stroke-width="1.104"
+                    d="M50 258h90v4H50z"
+                  />
+                  <path
+                    id="rect3142-6"
+                    fill="var(--bg3)"
+                    stroke-width=".934"
+                    d="M48 258h4v60h-4z"
+                  />
+                  <g
+                    id="text2768-2"
+                    fill="var(--fg)"
+                    aria-label=""
+                    font-size="60"
+                    font-weight="700"
+                    transform="matrix(1.11256 0 0 1.02564 134.976 -90.256)"
+                  >
+                    <path
+                      id="path3195-06"
+                      d="M408.379 414.092q0-2.871 1.113-5.479 1.113-2.607 2.988-4.482 1.905-1.904 4.512-3.018Q419.6 400 422.471 400q2.87 0 5.478 1.113 2.608 1.114 4.483 3.018 1.904 1.875 3.017 4.482 1.114 2.608 1.114 5.479 0 3.603-1.7 6.68-1.67 3.076-4.54 5.01 6.24 2.343 10.253 7.792 4.043 5.42 4.365 12.246v.118q0 1.142-.79 1.933-.762.82-1.876.879h-39.609q-1.113-.059-1.904-.879-.762-.82-.762-1.933v-.118q.322-6.826 4.336-12.246 4.043-5.449 10.283-7.793-2.871-1.933-4.57-5.01-1.67-3.076-1.67-6.68z"
+                    />
+                  </g>
+                  <g
+                    id="text2768-3-1"
+                    fill="var(--fg)"
+                    aria-label=""
+                    font-size="60"
+                    font-weight="700"
+                    transform="matrix(1.11256 0 0 1.02564 -15.024 -90.256)"
+                  >
+                    <path
+                      id="path3195-6-5"
+                      d="M408.379 414.092q0-2.871 1.113-5.479 1.113-2.607 2.988-4.482 1.905-1.904 4.512-3.018Q419.6 400 422.471 400q2.87 0 5.478 1.113 2.608 1.114 4.483 3.018 1.904 1.875 3.017 4.482 1.114 2.608 1.114 5.479 0 3.603-1.7 6.68-1.67 3.076-4.54 5.01 6.24 2.343 10.253 7.792 4.043 5.42 4.365 12.246v.118q0 1.142-.79 1.933-.762.82-1.876.879h-39.609q-1.113-.059-1.904-.879-.762-.82-.762-1.933v-.118q.322-6.826 4.336-12.246 4.043-5.449 10.283-7.793-2.871-1.933-4.57-5.01-1.67-3.076-1.67-6.68z"
+                    />
+                  </g>
+                  <g
+                    id="text2768-5-5"
+                    fill="var(--fg)"
+                    aria-label=""
+                    font-size="60"
+                    font-weight="700"
+                    transform="matrix(1.11256 0 0 1.02564 284.976 -90.256)"
+                  >
+                    <path
+                      id="path3195-0-4"
+                      d="M408.379 414.092q0-2.871 1.113-5.479 1.113-2.607 2.988-4.482 1.905-1.904 4.512-3.018Q419.6 400 422.471 400q2.87 0 5.478 1.113 2.608 1.114 4.483 3.018 1.904 1.875 3.017 4.482 1.114 2.608 1.114 5.479 0 3.603-1.7 6.68-1.67 3.076-4.54 5.01 6.24 2.343 10.253 7.792 4.043 5.42 4.365 12.246v.118q0 1.142-.79 1.933-.762.82-1.876.879h-39.609q-1.113-.059-1.904-.879-.762-.82-.762-1.933v-.118q.322-6.826 4.336-12.246 4.043-5.449 10.283-7.793-2.871-1.933-4.57-5.01-1.67-3.076-1.67-6.68z"
+                    />
+                  </g>
+                  <path
+                    id="rect3142-7"
+                    fill="var(--bg3)"
+                    stroke-width=".934"
+                    d="M753 258h4v60h-4z"
+                  />
+                  <path
+                    id="rect3142-1-6"
+                    fill="var(--bg3)"
+                    stroke-width=".934"
+                    d="M603 258h4v60h-4z"
+                  />
+                  <path
+                    id="rect3144-5"
+                    fill="var(--bg3)"
+                    stroke-width="2"
+                    d="M665 258h90v4h-90z"
+                  />
+                  <g id="g3138-6" transform="translate(345 20)">
+                    <rect
+                      id="rect2860-9"
+                      width="120"
+                      height="80"
+                      x="200"
+                      y="200"
+                      fill="#3d3d66"
+                      rx="6"
+                      ry="6"
+                    />
+                    <rect
+                      id="rect2862-37"
+                      width="50"
+                      height="4"
+                      x="210"
+                      y="226"
+                      fill="#f96"
+                      stroke-width="1.052"
+                      rx="2"
+                      ry="2"
+                    />
+                    <rect
+                      id="rect2862-8-4"
+                      width="50"
+                      height="4"
+                      x="220"
+                      y="234"
+                      fill="#cc52a3"
+                      stroke-width="1.052"
+                      rx="2"
+                      ry="2"
+                    />
+                    <rect
+                      id="rect2862-9-5"
+                      width="30"
+                      height="4"
+                      x="274"
+                      y="242"
+                      fill="#5252CC"
+                      stroke-width=".815"
+                      rx="2"
+                      ry="2"
+                    />
+                    <rect
+                      id="rect2862-7-2"
+                      width="60"
+                      height="4"
+                      x="210"
+                      y="250"
+                      fill="#52cca3"
+                      stroke-width="1.153"
+                      rx="2"
+                      ry="2"
+                    />
+                    <rect
+                      id="rect2862-3-5"
+                      width="50"
+                      height="4"
+                      x="264"
+                      y="258"
+                      fill="#cc52a3"
+                      stroke-width="1.052"
+                      rx="2"
+                      ry="2"
+                    />
+                    <rect
+                      id="rect2862-6-4"
+                      width="40"
+                      height="4"
+                      x="210"
+                      y="266"
+                      fill="#5252cc"
+                      stroke-width=".941"
+                      rx="2"
+                      ry="2"
+                    />
+                    <rect
+                      id="rect2862-2-7"
+                      width="60"
+                      height="4"
+                      x="210"
+                      y="210"
+                      fill="#a3a3cc"
+                      stroke-width="1.153"
+                      rx="2"
+                      ry="2"
+                    />
+                    <rect
+                      id="rect2862-2-2-44"
+                      width="40"
+                      height="4"
+                      x="220"
+                      y="218"
+                      fill="#5252cc"
+                      stroke-width=".941"
+                      rx="2"
+                      ry="2"
+                    />
+                    <rect
+                      id="rect2862-2-2-3-3"
+                      width="20"
+                      height="4"
+                      x="264"
+                      y="218"
+                      fill="#52cca3"
+                      stroke-width=".665"
+                      rx="2"
+                      ry="2"
+                    />
+                    <rect
+                      id="rect2862-2-2-1-0"
+                      width="40"
+                      height="4"
+                      x="230"
+                      y="242"
+                      fill="#a3a3cc"
+                      stroke-width=".941"
+                      rx="2"
+                      ry="2"
+                    />
+                    <rect
+                      id="rect2862-2-2-9-7"
+                      width="20"
+                      height="4"
+                      x="288"
+                      y="266"
+                      fill="#f96"
+                      stroke-width=".665"
+                      rx="2"
+                      ry="2"
+                    />
+                    <rect
+                      id="rect2862-2-2-4-8"
+                      width="30"
+                      height="4"
+                      x="254"
+                      y="266"
+                      fill="#52cca3"
+                      stroke-width=".815"
+                      rx="2"
+                      ry="2"
+                    />
+                    <rect
+                      id="rect2862-2-2-7-6"
+                      width="40"
+                      height="4"
+                      x="220"
+                      y="258"
+                      fill="#a3a3cc"
+                      stroke-width=".941"
+                      rx="2"
+                      ry="2"
+                    />
+                  </g>
+                  <path
+                    id="rect3148-8"
+                    fill="var(--bg3)"
+                    stroke-width="1.104"
+                    d="M455 258h90v4h-90z"
+                  />
+                  <path
+                    id="rect3142-6-8"
+                    fill="var(--bg3)"
+                    stroke-width=".934"
+                    d="M453 258h4v60h-4z"
+                  />
+                  <g
+                    id="text3430"
+                    fill="var(--red)"
+                    aria-label=""
+                    display="inline"
+                    font-size="100"
+                    font-weight="700"
+                    transform="matrix(9.04312 0 0 9.02748 -3005.81 -986.005)"
+                  >
+                    <rect
+                      id="rect3435"
+                      width="52.833"
+                      height="1.057"
+                      x="-184.879"
+                      y="-343.843"
+                      fill="var(--red)"
+                      stroke-width=".106"
+                      rx=".634"
+                      ry=".634"
+                      transform="rotate(134.95)"
+                    />
+                    <rect
+                      id="rect3435-3"
+                      width="52.833"
+                      height="1.057"
+                      x="316.898"
+                      y="-158.991"
+                      fill="var(--red)"
+                      stroke-width=".106"
+                      font-size="100"
+                      font-weight="700"
+                      rx=".634"
+                      ry=".634"
+                      transform="rotate(45.05)"
+                    />
+                  </g>
+                  <rect
+                    id="rect3510"
+                    width="35"
+                    height="4"
+                    x="182.5"
+                    y="43"
+                    fill="var(--fg)"
+                    rx="2"
+                    ry="2"
+                  />
+                  <rect
+                    id="rect3512"
+                    width="25"
+                    height="18"
+                    x="187.5"
+                    y="28"
+                    fill="var(--fg)"
+                    stroke-width="1.139"
+                    rx="2"
+                    ry="1.8"
+                  />
+                  <g
+                    id="g370484"
+                    transform="matrix(.37142 0 0 .3714 627.376 72.906)"
+                  >
+                    <g
+                      id="g4389"
+                      transform="matrix(2.5 0 0 2.5 -508.764 27.209)"
+                    >
+                      <circle
+                        id="path4382"
+                        cx="624"
+                        cy="153"
+                        r="8"
+                        fill="#fff"
+                        stroke-width="1.026"
+                        transform="matrix(4.03856 0 0 4.03856 -2453.731 -561.909)"
+                      />
+                      <path
+                        id="path6733-5"
+                        fill="url(#linearGradient6918-3)"
+                        fill-opacity="1"
+                        stroke="none"
+                        stroke-dasharray="none"
+                        stroke-dashoffset="0"
+                        stroke-linecap="butt"
+                        stroke-linejoin="miter"
+                        stroke-miterlimit="2"
+                        stroke-opacity="1"
+                        stroke-width="3.678"
+                        d="M42519.285-7078.79a.76.568 0 0 0-.738.675l33.586 125.888a87.182 87.182 0 0 0 39.381-33.763l-71.565-92.52a.76.568 0 0 0-.664-.28z"
+                        opacity="1"
+                        paint-order="stroke markers fill"
+                        stop-color="#000"
+                        stop-opacity="1"
+                        style="font-variation-settings: normal"
+                        transform="matrix(.37058 0 0 .37058 -15690.065 2662.053)"
+                        vector-effect="none"
+                      />
+                      <path
+                        id="path360787"
+                        fill="#2185d0"
+                        fill-opacity="1"
+                        stroke-width="17.006"
+                        d="M11249.461-1883.696c-12.74 0-23.067 10.327-23.067 23.067 0 4.333 1.22 8.58 3.522 12.251l19.232-24.863c.138-.18.486-.18.624 0l19.233 24.864a23.068 23.068 0 0 0 3.523-12.252c0-12.74-10.327-23.067-23.067-23.067z"
+                        opacity="1"
+                        paint-order="markers fill stroke"
+                        stop-color="#000"
+                        transform="matrix(1.40064 0 0 1.40064 -15690.065 2662.053)"
+                      />
+                    </g>
+                  </g>
+                  <path
+                    id="shape"
+                    fill="#3da638"
+                    stroke="#1c511c"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2.016"
+                    d="M708.468 146.054c4.148-1.603 6.313-4.688 6.313-9.998s-4.302-9.99-9.678-10c-5.673-.008-9.953 4.67-9.884 10 .068 5.33 2.512 8.875 6.423 10.157l-6.929 17.73c-9.273-2.497-18.705-13.876-18.705-27.887 0-16.595 12.82-30.048 28.889-30.048 16.07 0 29.095 13.453 29.095 30.048 0 14.229-9.342 25.45-18.814 27.936zm0 0"
+                  />
+                  <path
+                    id="path4731"
+                    fill="#f05133"
+                    stroke-width=".653"
+                    d="m633.868 127.327-26.196-26.195a3.864 3.864 0 0 0-5.465 0l-5.439 5.44 6.9 6.9a4.59 4.59 0 0 1 5.81 5.85l6.652 6.652a4.589 4.589 0 0 1 4.75 1.09 4.598 4.598 0 1 1-7.504 1.503l-6.203-6.203v16.323a4.599 4.599 0 1 1-3.78-.134v-16.475a4.598 4.598 0 0 1-2.496-6.03l-6.802-6.804-17.963 17.962a3.866 3.866 0 0 0 0 5.466l26.197 26.196a3.864 3.864 0 0 0 5.465 0l26.074-26.075a3.866 3.866 0 0 0 0-5.466z"
+                  />
+                </g>
+                <style id="style4768" type="text/css">
+                  .st0 {
+                    fill: #3fa648;
+                    stroke: #23552a;
+                    stroke-width: 19.2122;
+                    stroke-linecap: round;
+                    stroke-linejoin: round;
+                  }
+                  .st1 {
+                    fill: #010101;
+                  }
+                  .st2 {
+                    fill: none;
+                    stroke: #010101;
+                    stroke-width: 7.5241;
+                    stroke-linecap: round;
+                    stroke-linejoin: round;
+                  }
+                </style>
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div style="margin-top: 1rem; margin-bottom: 0px">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          display="block"
+          style="width: 100%; height: 100%"
+          viewBox="0 0 1000 200"
+        >
+          <path
+            fill="var(--bgExtra)"
+            d="M0 100s250.096-101.786 566.869 6.735C861.491 207.668 1000 60 1000 60v140H0Z"
+          />
+        </svg>
+      </div>
+      <div class="grid page extra">
+        <div class="content">
+          <h2 class="extra">Try it yourself, it's free!</h2>
+          <div class="flex">
+            <a class="button extra" href="./start.html">Get Started</a>
+          </div>
+        </div>
+      </div>
+      <div style="margin-top: 0px; margin-bottom: 1rem">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          display="block"
+          style="width: 100%; height: 100%"
+          viewBox="0 0 1000 200"
+        >
+          <path
+            fill="var(--bgExtra)"
+            d="M0 100s250.096-101.786 566.869 6.735C861.491 207.668 1000 60 1000 60V0H0Z"
+          />
+        </svg>
+      </div>
+    </main>
+    <footer>
+      <h2>Quizfreely</h2>
+      <p>
+        Copyright © 2022-present Ehan Ahamed and contributors <br />
+        Licensed under the UPL-1.0 License
+      </p>
+      <a href="./license.html">See License</a>
+      <br />
+      <a href="./privacypolicy.html">See Privacy Policy</a>
+    </footer>
+    <script>
+      document.getElementById("noscript").style.display = "none";
+    </script>
+    <script src="https://design.ehan.dev/js/themes.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.26.0"></script>
+    <script>
+      var newUserUi = ["mainHeroContentNewuserdiv"];
+      var userUi = ["mainHeroContentUserdiv"];
+    </script>
+    <script src="./js/supabase.js"></script>
+  </body>
+</html>
