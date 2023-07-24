@@ -173,7 +173,16 @@
           <div id="mainOpendiv" class="hide">
             <div id="mainActionsSave" class="box hide">
               <p>Save changes?</p>
-              <div class="flex">
+              <div id="mainOpenActionsSaveNewuserdiv">
+                <div class="flex">
+                  <a id="linkExportLocalDownload" class="button alt">Download</a>
+                  <a href="./dashboard.html" class="button alt red"
+                    >Delete Draft & Cancel</a
+                  >
+                </div>
+                <span class="bg3">You are not signed in. <br /> If you want to save study sets to an account instead of downloading them, <a href="./start.html">sign in or sign up</a>.</span>
+              </div>
+              <div id="mainOpenActionsSaveUserdiv" class="flex hide">
                 <a class="button" id="mainWorkinprogressSavetoaccountbutton"
                   >Save to account</a
                 >
@@ -360,8 +369,8 @@
     <script src="./js/flashcards.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
-      var newUserUi = ["mainDashboardNewuserdiv"];
-      var userUi = ["mainDashboardUserdiv"];
+      var newUserUi = ["mainDashboardNewuserdiv","mainOpenActionsSaveNewuserdiv"];
+      var userUi = ["mainDashboardUserdiv","mainOpenActionsSaveUserdiv"];
     </script>
     <script src="./js/supabase.js"></script>
     <script>
