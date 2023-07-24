@@ -196,7 +196,7 @@
       document.getElementById("noscript").style.display = "none";
     </script>
     <script src="https://design.ehan.dev/js/themes.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.26.0"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.29.0"></script>
     <script>
       const { createClient } = supabase;
       const supabaseClient = createClient(
@@ -222,7 +222,7 @@
                 password: document.getElementById("mainSignupPasswordinput")
                   .value,
                 options: {
-                  emailRedirectTo: "https://quizfreely.ehan.dev/confirmemail",
+                  emailRedirectTo: "https://quizfreely.ehan.dev/dev/confirmemail",
                 },
               })
               .then(function (result) {
@@ -257,7 +257,7 @@
           supabaseClient.auth.signInWithOAuth({
             provider: "google",
             options: {
-              redirectTo: "https://quizfreely.ehan.dev/signin",
+              redirectTo: "https://quizfreely.ehan.dev/dev/signin",
             },
           });
         });
