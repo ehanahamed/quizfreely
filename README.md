@@ -1,6 +1,3 @@
-# TODO URGENT
-find un-broken supabase version, download it to this repo and call it from this repo instead of a cdn
-
 TODO NOW:
 
 - clean up code
