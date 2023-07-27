@@ -272,23 +272,39 @@
         document.getElementById("mainAppearanceThemePurpleish").checked = true;
       }
     </script>
+    <script src="./js/states.js"></script>
+    <script>
+      var ui = {
+        elements: {
+          states: {
+            newUser: [
+              document.getElementById("mainNewuserdiv"),
+            ],
+            user: [
+              document.getElementById("mainUserdiv"),
+            ]
+          },
+        },
+        states: {
+          newUser: function (isNewUser) {
+            if (isNewUser === true) {
+              supabaseClient.auth.getUser().then(function (result) {
+              document.getElementById("mainUserEmail").innerText =
+                result.data.user.email;
+              });
+            }
+          }
+        }
+      }
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.29.0"></script>
+    <script src="./js/supabase.js"></script>
     <script>
       const { createClient } = supabase;
       const supabaseClient = createClient(
         "https://okejqkisolxqgkgwwlbz.supabase.co",
         "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9rZWpxa2lzb2x4cWdrZ3d3bGJ6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE2ODU3NDE1MTgsImV4cCI6MjAwMTMxNzUxOH0.T8f_3fPAYnWdzguPonQZCAFmbAN-mTLQB3_EW9pjkis"
       );
-      supabaseClient.auth.getSession().then(function (result) {
-        if (result.data.session !== null) {
-          document.getElementById("mainNewuserdiv").classList.add("hide");
-          document.getElementById("mainUserdiv").classList.remove("hide");
-          supabaseClient.auth.getUser().then(function (result) {
-            document.getElementById("mainUserEmail").innerText =
-              result.data.user.email;
-          });
-        }
-      });
       document
         .getElementById("mainUserSignoutbutton")
         .addEventListener("click", function () {

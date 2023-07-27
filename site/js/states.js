@@ -1,5 +1,8 @@
 var states = {
     newUser: function (isNewUser) {
+      /* run page specific functions */
+      ui.states.newUser(isNewUser);
+      /* hide and show depending on state (all pages) */
       if (isNewUser === true) {
         for (var i = 0; i < ui.elements.states.newUser.length; i++) {
           ui.elements.states.newUser[i].classList.remove("hide");
@@ -17,4 +20,3 @@ var states = {
       }
     }
   }
-  

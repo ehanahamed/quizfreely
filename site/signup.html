@@ -196,6 +196,21 @@
       document.getElementById("noscript").style.display = "none";
     </script>
     <script src="https://design.ehan.dev/js/themes.js"></script>
+    <script src="./js/states.js"></script>
+    <script>
+      var ui = {
+        elements: {
+          states: {
+            newUser: [
+              document.getElementById("mainSignupdiv"),
+            ],
+            user: [
+              document.getElementById("mainUserdiv"),
+            ]
+          },
+        },
+      }
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.29.0"></script>
     <script>
       const { createClient } = supabase;
@@ -203,12 +218,6 @@
         "https://okejqkisolxqgkgwwlbz.supabase.co",
         "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9rZWpxa2lzb2x4cWdrZ3d3bGJ6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE2ODU3NDE1MTgsImV4cCI6MjAwMTMxNzUxOH0.T8f_3fPAYnWdzguPonQZCAFmbAN-mTLQB3_EW9pjkis"
       );
-      supabaseClient.auth.getSession().then(function (result) {
-        if (result.data.session !== null) {
-          document.getElementById("mainSignupdiv").classList.add("hide");
-          document.getElementById("mainUserdiv").classList.remove("hide");
-        }
-      });
       document
         .getElementById("mainSignupSignupbutton")
         .addEventListener("click", function () {

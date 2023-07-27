@@ -6,8 +6,8 @@ const supabaseClient = createClient(
 
 supabaseClient.auth.getSession().then(function (result) {
   if (result.data.session === null) {
-    ui.states.newUser(true);
+    states.newUser(true);
   } else if (result.data.session !== null) {
-    ui.states.newUser(false);
+    states.newUser(false);
   }
 });
