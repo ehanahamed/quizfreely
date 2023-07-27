@@ -146,11 +146,22 @@
       document.getElementById("noscript").style.display = "none";
     </script>
     <script src="https://design.ehan.dev/js/themes.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.29.0"></script>
+    <script src="./js/states.js"></script>
     <script>
-      var newUserUi = ["mainNewuserdiv"];
-      var userUi = ["mainUserdiv"];
+      var ui = {
+        elements: {
+          states: {
+            newUser: [
+              document.getElementById("mainNewuserdiv"),
+            ],
+            user: [
+              document.getElementById("mainUserdiv"),
+            ]
+          },
+        },
+      }
     </script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.29.0"></script>
     <script src="./js/supabase.js"></script>
   </body>
 </html>
