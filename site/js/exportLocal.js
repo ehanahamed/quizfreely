@@ -7,11 +7,11 @@ https://src.ehan.dev/quizfreely/LICENSE.txt
 
 var exportLocal = {
   save: function () {
-    ui.links.exportLocal.download.href = exportLocal.makeBlobUrl(
+    ui.elements.links.exportLocal.download.href = exportLocal.makeBlobUrl(
       JSON.stringify(sessionData.studySetData),
       "application/json"
     );
-    ui.links.exportLocal.download.download =
+    ui.elements.links.exportLocal.download.download =
       sessionData.studySetData.name + ".json";
   },
   makeBlobUrl: function (content, mimetype) {

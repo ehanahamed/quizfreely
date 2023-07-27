@@ -7,16 +7,16 @@ https://src.ehan.dev/quizfreely/LICENSE.txt
 
 var flashcards = {
   load: function (index) {
-    ui.flashcards.front.innerText =
+    ui.elements.flashcards.front.innerText =
       sessionData.studySetData.data[sessionData.flashcards.index][0];
-    ui.flashcards.back.innerText =
+    ui.elements.flashcards.back.innerText =
       sessionData.studySetData.data[sessionData.flashcards.index][1];
     document.getElementById("mainActionsFlashcardoptionsIndex").innerText =
       "1/" + sessionData.studySetData.data.length.toString();
   },
   flip: function () {
     /*alerts.clear();*/
-    ui.flashcards.card.classList.toggle("flip");
+    ui.elements.flashcards.card.classList.toggle("flip");
   },
   next: function () {
     if (

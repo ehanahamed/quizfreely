@@ -13,12 +13,12 @@ var edit = {
   load: function () {
     edit.makeTableFromArray(
       sessionData.studySetData.data,
-      ui.inputs.edit.table
+      ui.elements.inputs.edit.table
     );
-    ui.inputs.edit.name.value = sessionData.studySetData.name;
+    ui.elements.inputs.edit.name.value = sessionData.studySetData.name;
   },
   insert: function (index) {
-    var newRow = ui.inputs.edit.table.insertRow(index);
+    var newRow = ui.elements.inputs.edit.table.insertRow(index);
     newRow.insertCell(0).innerHTML =
       "<input type='text' placeholder='Term'></input>";
     newRow.insertCell(1).innerHTML =
@@ -45,21 +45,21 @@ var edit = {
     });
   },
   add: function () {
-    edit.insert(ui.inputs.edit.table.rows.length - 1);
+    edit.insert(ui.elements.inputs.edit.table.rows.length - 1);
   },
   save: function () {
-    if (ui.inputs.edit.name.value) {
-      sessionData.studySetData.name = ui.inputs.edit.name.value;
+    if (ui.elements.inputs.edit.name.value) {
+      sessionData.studySetData.name = ui.elements.inputs.edit.name.value;
     } else {
       sessionData.studySetData.name = "Untitled Study Set";
     }
     sessionData.studySetData.data = edit.makeArrayFromTable(
-      ui.inputs.edit.table
+      ui.elements.inputs.edit.table
     );
     exportLocal.save();
   },
   remove: function (index) {
-    ui.inputs.edit.table.deleteRow(index);
+    ui.elements.inputs.edit.table.deleteRow(index);
   },
   move: function (index, newIndex) {
     /*
@@ -68,7 +68,7 @@ var edit = {
     if (
       index !== newIndex &&
       ((index > newIndex && index !== 1) || index < newIndex) &&
-      ((index < newIndex && index < ui.inputs.edit.table.rows.length - 2) ||
+      ((index < newIndex && index < ui.elements.inputs.edit.table.rows.length - 2) ||
         index > newIndex)
     ) {
       edit.insert(newIndex);
@@ -78,10 +78,10 @@ var edit = {
       } else if (index < newIndex) {
         newOldIndex = index;
       }
-      ui.inputs.edit.table.rows[newIndex].children[0].children[0].value =
-        ui.inputs.edit.table.rows[newOldIndex].children[0].children[0].value;
-      ui.inputs.edit.table.rows[newIndex].children[1].children[0].value =
-        ui.inputs.edit.table.rows[newOldIndex].children[1].children[0].value;
+      ui.elements.inputs.edit.table.rows[newIndex].children[0].children[0].value =
+        ui.elements.inputs.edit.table.rows[newOldIndex].children[0].children[0].value;
+      ui.elements.inputs.edit.table.rows[newIndex].children[1].children[0].value =
+        ui.elements.inputs.edit.table.rows[newOldIndex].children[1].children[0].value;
       edit.remove(newOldIndex);
     }
   },

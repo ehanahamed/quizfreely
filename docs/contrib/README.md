@@ -49,10 +49,8 @@ The javascript is linked to the html using standard `<script src="..."></script>
 
 ### Reference
 
-the `site/js/ui.js` file has `document.getElementById("...")`s for (almost) every element with specific javascript function using an element selector (section elements, flashcards, etc do this).
+~~the `site/js/ui.elements.js` file has `document.getElementById("...")`s for (almost) every element with specific javascript function using an element selector (section elements, flashcards, etc do this).~~
 
-Other elements use a `onclick="function"` in their html, to directly call the required javascript function (most buttons do this). They do **not** have a selector in `ui.js`.
+~~Other elements use a `onclick="function"` in their html, to directly call the required javascript function (most buttons do this). They do **not** have a selector in `ui.elements.js`.~~
 
-A list of element ids and stuff is below
-
-- work in progress
+outdated info above, will update

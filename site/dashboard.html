@@ -315,41 +315,43 @@
     </script>
     <script>
       var ui = {
-        sections: {
-          dashboard: document.getElementById("mainDashboarddiv"),
-          open: document.getElementById("mainOpendiv"),
-          edit: document.getElementById("sectionEdit"),
-          /* flashcards: document.getElementById("sectionFlashcards"), */
-        },
-        buttons: {
-          make: document.getElementById("buttonMake"),
-          importOptions: document.getElementById("buttonImportOptions"),
-        },
-        inputs: {
-          importLocal: {
-            file: document.getElementById("inputImportLocalFile"),
+        elements: {
+          sections: {
+            dashboard: document.getElementById("mainDashboarddiv"),
+            open: document.getElementById("mainOpendiv"),
+            edit: document.getElementById("sectionEdit"),
+            /* flashcards: document.getElementById("sectionFlashcards"), */
           },
-          edit: {
-            name: document.getElementById("inputEditName"),
-            table: document.getElementById("inputEditTable"),
+          buttons: {
+            make: document.getElementById("buttonMake"),
+            importOptions: document.getElementById("buttonImportOptions"),
           },
-        },
-        links: {
-          exportLocal: {
-            download: document.getElementById("linkExportLocalDownload"),
+          inputs: {
+            importLocal: {
+              file: document.getElementById("inputImportLocalFile"),
+            },
+            edit: {
+              name: document.getElementById("inputEditName"),
+              table: document.getElementById("inputEditTable"),
+            },
           },
-        },
-        alerts: {
-          successImport: document.getElementById("alertSuccessImport"),
-          errorImport: document.getElementById("alertErrorImport"),
-          flashcardsEnd: document.getElementById("alertFlashcardsEnd"),
-        },
-        flashcards: {
-          card: document.getElementById("flashcardsCard"),
-          content: document.getElementById("flashcardsContent"),
-          front: document.getElementById("flashcardsFront"),
-          back: document.getElementById("flashcardsBack"),
-        },
+          links: {
+            exportLocal: {
+              download: document.getElementById("linkExportLocalDownload"),
+            },
+          },
+          alerts: {
+            successImport: document.getElementById("alertSuccessImport"),
+            errorImport: document.getElementById("alertErrorImport"),
+            flashcardsEnd: document.getElementById("alertFlashcardsEnd"),
+          },
+          flashcards: {
+            card: document.getElementById("flashcardsCard"),
+            content: document.getElementById("flashcardsContent"),
+            front: document.getElementById("flashcardsFront"),
+            back: document.getElementById("flashcardsBack"),
+          },
+        }
       };
     </script>
     <script src="https://design.ehan.dev/js/themes.js"></script>
