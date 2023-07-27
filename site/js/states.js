@@ -1,7 +1,5 @@
 var states = {
     newUser: function (isNewUser) {
-      /* run page specific functions */
-      ui.states.newUser(isNewUser);
       /* hide and show depending on state (all pages) */
       if (isNewUser === true) {
         for (var i = 0; i < ui.elements.states.newUser.length; i++) {
@@ -17,6 +15,11 @@ var states = {
         for (var i4 = 0; i4 < ui.elements.states.user.length; i4++) {
           ui.elements.states.user[i4].classList.remove("hide");
         }
+      }
+      if (ui.states) {
+        /* first check if page-specific functions exist */
+        /* then run page specific functions */
+        ui.states.newUser(isNewUser);
       }
     }
   }
