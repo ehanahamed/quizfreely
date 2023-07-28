@@ -68,7 +68,8 @@ var edit = {
     if (
       index !== newIndex &&
       ((index > newIndex && index !== 1) || index < newIndex) &&
-      ((index < newIndex && index < ui.elements.inputs.edit.table.rows.length - 2) ||
+      ((index < newIndex &&
+        index < ui.elements.inputs.edit.table.rows.length - 2) ||
         index > newIndex)
     ) {
       edit.insert(newIndex);
@@ -78,10 +79,18 @@ var edit = {
       } else if (index < newIndex) {
         newOldIndex = index;
       }
-      ui.elements.inputs.edit.table.rows[newIndex].children[0].children[0].value =
-        ui.elements.inputs.edit.table.rows[newOldIndex].children[0].children[0].value;
-      ui.elements.inputs.edit.table.rows[newIndex].children[1].children[0].value =
-        ui.elements.inputs.edit.table.rows[newOldIndex].children[1].children[0].value;
+      ui.elements.inputs.edit.table.rows[
+        newIndex
+      ].children[0].children[0].value =
+        ui.elements.inputs.edit.table.rows[
+          newOldIndex
+        ].children[0].children[0].value;
+      ui.elements.inputs.edit.table.rows[
+        newIndex
+      ].children[1].children[0].value =
+        ui.elements.inputs.edit.table.rows[
+          newOldIndex
+        ].children[1].children[0].value;
       edit.remove(newOldIndex);
     }
   },

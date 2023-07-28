@@ -49,7 +49,9 @@
           <a href="./index.html"> <i class="nf nf-fa-home"></i> Home</a>
         </div>
         <div>
-          <a href="./dashboard.html"> <i class="nf nf-fa-edit"></i> Dashboard </a>
+          <a href="./dashboard.html">
+            <i class="nf nf-fa-edit"></i> Dashboard
+          </a>
         </div>
         <div>
           <a href="./explore.html"> <i class="nf nf-fa-search"></i> Explore </a>
@@ -145,7 +147,11 @@
                 >
               </div>
               <div class="radio">
-                <input type="radio" name="theme" id="mainAppearanceThemeOwldark" />
+                <input
+                  type="radio"
+                  name="theme"
+                  id="mainAppearanceThemeOwldark"
+                />
                 <label for="mainAppearanceThemeOwldark"
                   >Owl Dark <span class="bg3">(dark)</span></label
                 >
@@ -260,7 +266,7 @@
         document.getElementById("mainAppearanceThemeOwl").checked = true;
       } else if (localStorage.getItem("theme") === "owldark") {
         document.getElementById("mainAppearanceThemeOwldark").checked = true;
-      /*} else if (localStorage.getItem("theme") === "blurple") {
+        /*} else if (localStorage.getItem("theme") === "blurple") {
         document.getElementById("mainAppearanceThemeBlurple").checked = true;
       */
       } else if (localStorage.getItem("theme") === "cat") {
@@ -277,25 +283,21 @@
       var ui = {
         elements: {
           states: {
-            newUser: [
-              document.getElementById("mainNewuserdiv"),
-            ],
-            user: [
-              document.getElementById("mainUserdiv"),
-            ]
+            newUser: [document.getElementById("mainNewuserdiv")],
+            user: [document.getElementById("mainUserdiv")],
           },
         },
         states: {
           newUser: function (isNewUser) {
             if (isNewUser === false) {
               supabaseClient.auth.getUser().then(function (result) {
-              document.getElementById("mainUserEmail").innerText =
-                result.data.user.email;
+                document.getElementById("mainUserEmail").innerText =
+                  result.data.user.email;
               });
             }
-          }
-        }
-      }
+          },
+        },
+      };
     </script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.29.0"></script>
     <script src="./js/supabase.js"></script>

@@ -49,7 +49,9 @@
           <a href="./index.html"> <i class="nf nf-fa-home"></i> Home</a>
         </div>
         <div class="current">
-          <a href="./dashboard.html"> <i class="nf nf-fa-edit"></i> Dashboard </a>
+          <a href="./dashboard.html">
+            <i class="nf nf-fa-edit"></i> Dashboard
+          </a>
         </div>
         <div>
           <a href="./explore.html"> <i class="nf nf-fa-search"></i> Explore </a>
@@ -170,7 +172,9 @@
               <p>Save changes?</p>
               <div id="mainOpenActionsSaveNewuserdiv">
                 <div class="flex">
-                  <a id="linkExportLocalDownload" class="button alt">Download</a>
+                  <a id="linkExportLocalDownload" class="button alt"
+                    >Download</a
+                  >
                   <a href="./dashboard.html" class="button alt red"
                     >Delete Draft & Cancel</a
                   >
@@ -391,9 +395,7 @@
                       )
                       .then(function (result) {
                         document
-                          .getElementById(
-                            "mainDashboardUserStudysetdeletediv"
-                          )
+                          .getElementById("mainDashboardUserStudysetdeletediv")
                           .classList.remove("hide");
                       });
                   });
@@ -434,7 +436,7 @@
                 }
               });
           });
-        }
+      }
     </script>
     <script src="./js/states.js"></script>
     <script>
@@ -476,22 +478,20 @@
             back: document.getElementById("flashcardsBack"),
           },
           states: {
-            newUser: [
-              document.getElementById("mainOpenActionsSaveNewuserdiv"), 
-            ],
+            newUser: [document.getElementById("mainOpenActionsSaveNewuserdiv")],
             user: [
               document.getElementById("mainDashboardUserdiv"),
               document.getElementById("mainOpenActionsSaveUserdiv"),
-            ]
-          }
+            ],
+          },
         },
         states: {
           newUser: function (isNewUser) {
             if (isNewUser === false) {
               loadDashboard();
             }
-          }
-        }
+          },
+        },
       };
     </script>
     <script src="https://design.ehan.dev/js/themes.js"></script>
