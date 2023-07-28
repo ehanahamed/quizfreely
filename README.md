@@ -1,6 +1,7 @@
 TODO NOW:
 
 - clean up code
+  - decide order of script tags
 - homepage/index.html
   - add "its effective" section explaining how quizfreelys thingies are "backed by science"
     - this section would be under "its open source" and before the wave-y section
