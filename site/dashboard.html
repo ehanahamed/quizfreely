@@ -168,42 +168,45 @@
           Action section
           -->
           <div id="mainOpendiv" class="hide">
-            <div id="mainActionsSave" class="box hide">
-              <p>Save changes?</p>
-              <div id="mainOpenActionsSaveNewuserdiv">
-                <div class="flex">
-                  <a id="linkExportLocalDownload" class="button alt"
-                    >Download</a
+            <div id="mainActionsSave" class="hide">
+              <div class="modal filter"
+              <div class="modal content box">
+                <h2>Save changes?</h2>
+                <div id="mainOpenActionsSaveNewuserdiv">
+                  <div class="flex">
+                    <a id="linkExportLocalDownload" class="button alt"
+                      >Download</a
+                    >
+                    <a href="./dashboard.html" class="button alt red"
+                      >Delete Draft & Cancel</a
+                    >
+                  </div>
+                </div>
+                <div id="mainOpenActionsSaveUserdiv" class="flex hide">
+                  <a class="button" id="mainWorkinprogressSavetoaccountbutton"
+                    >Save to account</a
                   >
+                  <a id="linkExportLocalDownload" class="button alt">Download</a>
                   <a href="./dashboard.html" class="button alt red"
                     >Delete Draft & Cancel</a
                   >
                 </div>
-              </div>
-              <div id="mainOpenActionsSaveUserdiv" class="flex hide">
-                <a class="button" id="mainWorkinprogressSavetoaccountbutton"
-                  >Save to account</a
-                >
-                <a id="linkExportLocalDownload" class="button alt">Download</a>
-                <a href="./dashboard.html" class="button alt red"
-                  >Delete Draft & Cancel</a
-                >
-              </div>
-              <div id="mainSaveClouddone" class="box green hide">
-                <p>Your study set has been saved to your account.</p>
-                <p>Go back to your <a href="./dashboard.html">dashboard</a>?</p>
-              </div>
-              <div id="mainSaveClouderror" class="box red hide">
-                <p>
-                  An unknown error prevented the study set from saving. Sorry
-                  ¯\_(ツ)_/¯
-                </p>
-              </div>
-              <div id="mainSaveClouderrorNewuser" class="box red hide">
-                <p>
-                  You are not signed in. You can't save to an account that you
-                  don't have. ¯\_(ツ)_/¯
-                </p>
+                <div id="mainSaveClouddone" class="box green hide">
+                  <p>Your study set has been saved to your account.</p>
+                  <p>Go back to your <a href="./dashboard.html">dashboard</a>?</p>
+                </div>
+                <div id="mainSaveClouderror" class="box red hide">
+                  <p>
+                    An unknown error prevented the study set from saving. Sorry
+                    ¯\_(ツ)_/¯
+                  </p>
+                </div>
+                <div id="mainSaveClouderrorNewuser" class="box red hide">
+                  <p>
+                    You are not signed in. You can't save to an account that you
+                    don't have. ¯\_(ツ)_/¯
+                  </p>
+                </div>
               </div>
             </div>
             <h2 id="mainActionsStudysettitle">Study set</h2>
