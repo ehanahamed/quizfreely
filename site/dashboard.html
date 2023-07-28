@@ -313,6 +313,129 @@
     <script>
       document.getElementById("noscript").style.display = "none";
     </script>
+    <script>
+      function loadDashboard() {
+        supabaseClient
+          .from("studyset")
+          .select()
+          .then(function (result) {
+            studysetlist = result.data;
+            if (studysetlist.length === 0) {
+              var box = document.createElement("div");
+              box.setAttribute("class", "box");
+              box.setAttribute("id", "mainDashboardUserStudysetlistEmpty");
+              document
+                .getElementById("mainDashboardUserStudysetlistdiv")
+                .appendChild(box);
+              document.getElementById(
+                "mainDashboardUserStudysetlistEmpty"
+              ).innerHTML = "<p>No study sets are saved to your account.</p>";
+            } else {
+              for (var i = 0; i < studysetlist.length; i++) {
+                var box = document.createElement("div");
+                box.setAttribute("class", "box");
+                box.setAttribute(
+                  "id",
+                  "mainDashboardUserStudysetlist" + i.toString()
+                );
+                document
+                  .getElementById("mainDashboardUserStudysetlistdiv")
+                  .appendChild(box);
+                document.getElementById(
+                  "mainDashboardUserStudysetlist" + i.toString()
+                ).innerHTML =
+                  "<p>" +
+                  studysetlist[i].name +
+                  "</p> <div class='flex'> <button id='mainDashboardUserStudysetlist" +
+                  i.toString() +
+                  "Openbutton'> Open </button> <button id='mainDashboardUserStudysetlist" +
+                  i.toString() +
+                  "Deletebutton' class='red alt'> Delete </button>";
+                document
+                  .getElementById(
+                    "mainDashboardUserStudysetlist" +
+                      i.toString() +
+                      "Openbutton"
+                  )
+                  .addEventListener("click", function (event) {
+                    sessionData.studySetData =
+                      /* studysetlist.ID.json */
+                      /* to get the selected ID, take event.target.id and remove the extra text like "mainDashboard..." and "Openbutton..." */
+                      studysetlist[
+                        event.target.id
+                          .replace("mainDashboardUserStudysetlist", "")
+                          .replace("Openbutton", "")
+                      ].json;
+                    studySet.open();
+                    document
+                      .getElementById("mainActionsSave")
+                      .classList.add("hide");
+                  });
+                document
+                  .getElementById(
+                    "mainDashboardUserStudysetlist" +
+                      i.toString() +
+                      "Deletebutton"
+                  )
+                  .addEventListener("click", function (event) {
+                    supabaseClient
+                      .from("studyset")
+                      .delete()
+                      .eq(
+                        "id",
+                        studysetlist[
+                          event.target.id
+                            .replace("mainDashboardUserStudysetlist", "")
+                            .replace("Deletebutton", "")
+                        ].id
+                      )
+                      .then(function (result) {
+                        document
+                          .getElementById(
+                            "mainDashboardUserStudysetdeletediv"
+                          )
+                          .classList.remove("hide");
+                      });
+                  });
+              }
+            }
+          });
+        supabaseClient.auth.getUser().then(function (result) {
+          userId = result.data.user.id;
+        });
+        /*document
+          .getElementById("mainDashboardUserdiv")
+          .classList.remove("hide");*/
+        document
+          .getElementById("mainWorkinprogressSavetoaccountbutton")
+          .addEventListener("click", function () {
+            supabaseClient
+              .from("studyset")
+              .insert({
+                user_id: userId,
+                name: sessionData.studySetData.name,
+                json: sessionData.studySetData,
+              })
+              .then(function (result) {
+                if (result.status === 201) {
+                  document
+                    .getElementById("mainSaveClouddone")
+                    .classList.remove("hide");
+                  document
+                    .getElementById("mainSaveClouderror")
+                    .classList.add("hide");
+                } else if (result.status !== 201) {
+                  document
+                    .getElementById("mainSaveClouddone")
+                    .classList.add("hide");
+                  document
+                    .getElementById("mainSaveClouderror")
+                    .classList.remove("hide");
+                }
+              });
+          });
+        }
+    </script>
     <script src="./js/states.js"></script>
     <script>
       var ui = {
@@ -382,128 +505,5 @@
     <script src="./js/flashcards.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.29.0"></script>
     <script src="./js/supabase.js"></script>
-    <script>
-    function loadDashboard() {
-      supabaseClient
-        .from("studyset")
-        .select()
-        .then(function (result) {
-          studysetlist = result.data;
-          if (studysetlist.length === 0) {
-            var box = document.createElement("div");
-            box.setAttribute("class", "box");
-            box.setAttribute("id", "mainDashboardUserStudysetlistEmpty");
-            document
-              .getElementById("mainDashboardUserStudysetlistdiv")
-              .appendChild(box);
-            document.getElementById(
-              "mainDashboardUserStudysetlistEmpty"
-            ).innerHTML = "<p>No study sets are saved to your account.</p>";
-          } else {
-            for (var i = 0; i < studysetlist.length; i++) {
-              var box = document.createElement("div");
-              box.setAttribute("class", "box");
-              box.setAttribute(
-                "id",
-                "mainDashboardUserStudysetlist" + i.toString()
-              );
-              document
-                .getElementById("mainDashboardUserStudysetlistdiv")
-                .appendChild(box);
-              document.getElementById(
-                "mainDashboardUserStudysetlist" + i.toString()
-              ).innerHTML =
-                "<p>" +
-                studysetlist[i].name +
-                "</p> <div class='flex'> <button id='mainDashboardUserStudysetlist" +
-                i.toString() +
-                "Openbutton'> Open </button> <button id='mainDashboardUserStudysetlist" +
-                i.toString() +
-                "Deletebutton' class='red alt'> Delete </button>";
-              document
-                .getElementById(
-                  "mainDashboardUserStudysetlist" +
-                    i.toString() +
-                    "Openbutton"
-                )
-                .addEventListener("click", function (event) {
-                  sessionData.studySetData =
-                    /* studysetlist.ID.json */
-                    /* to get the selected ID, take event.target.id and remove the extra text like "mainDashboard..." and "Openbutton..." */
-                    studysetlist[
-                      event.target.id
-                        .replace("mainDashboardUserStudysetlist", "")
-                        .replace("Openbutton", "")
-                    ].json;
-                  studySet.open();
-                  document
-                    .getElementById("mainActionsSave")
-                    .classList.add("hide");
-                });
-              document
-                .getElementById(
-                  "mainDashboardUserStudysetlist" +
-                    i.toString() +
-                    "Deletebutton"
-                )
-                .addEventListener("click", function (event) {
-                  supabaseClient
-                    .from("studyset")
-                    .delete()
-                    .eq(
-                      "id",
-                      studysetlist[
-                        event.target.id
-                          .replace("mainDashboardUserStudysetlist", "")
-                          .replace("Deletebutton", "")
-                      ].id
-                    )
-                    .then(function (result) {
-                      document
-                        .getElementById(
-                          "mainDashboardUserStudysetdeletediv"
-                        )
-                        .classList.remove("hide");
-                    });
-                });
-            }
-          }
-        });
-      supabaseClient.auth.getUser().then(function (result) {
-        userId = result.data.user.id;
-      });
-      /*document
-        .getElementById("mainDashboardUserdiv")
-        .classList.remove("hide");*/
-      document
-        .getElementById("mainWorkinprogressSavetoaccountbutton")
-        .addEventListener("click", function () {
-          supabaseClient
-            .from("studyset")
-            .insert({
-              user_id: userId,
-              name: sessionData.studySetData.name,
-              json: sessionData.studySetData,
-            })
-            .then(function (result) {
-              if (result.status === 201) {
-                document
-                  .getElementById("mainSaveClouddone")
-                  .classList.remove("hide");
-                document
-                  .getElementById("mainSaveClouderror")
-                  .classList.add("hide");
-              } else if (result.status !== 201) {
-                document
-                  .getElementById("mainSaveClouddone")
-                  .classList.add("hide");
-                document
-                  .getElementById("mainSaveClouderror")
-                  .classList.remove("hide");
-              }
-            });
-        });
-      }
-    </script>
   </body>
 </html>
