@@ -31,12 +31,12 @@ var states = {
   },
   newToThemes: function (isNewToThemes) {
     if (isNewToThemes === true) {
-      for (var i5 = 0; i < ui.elements.states.newToThemes.length; i++) {
-        ui.elements.states.newToThemes[i].classList.remove("hide");
+      for (var i5 = 0; i5 < ui.elements.states.newToThemes.length; i5++) {
+        ui.elements.states.newToThemes[i5].classList.remove("hide");
       }
     } else if (isNewToThemes === false) {
-      for (var i6 = 0; i < ui.elements.states.newToThemes.length; i++) {
-        ui.elements.states.newToThemes[i].classList.add("hide");
+      for (var i6 = 0; i6 < ui.elements.states.newToThemes.length; i6++) {
+        ui.elements.states.newToThemes[i6].classList.add("hide");
       }
     }
   }
