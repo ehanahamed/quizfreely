@@ -111,15 +111,25 @@
         </div>
       </div>-->
     </header>
-    <div id="noscript" class="box center red">
-      <p>
-        You have JavaScript disabled. This website uses JavaScript to run
-        correctly.
-      </p>
-      <p>
-        Please enable JavaScript in your browser settings, or this website will
-        not work.
-      </p>
+    <div id="themepop" class="flex pop hide">
+      <div class="box center">
+        Your browser is not in dark theme, but Quizfreely is. You can change Quizfreely's theme in <a href="./settings.html">settings</a>.
+        <div class="flex">
+          <button id="themepopButton">Ok</button>
+        </div>
+      </div>
+    </div>
+    <div id="noscript" class="flex pop">
+      <div class="box center red">
+        <p>
+          You have JavaScript disabled. This website uses JavaScript to run
+          correctly.
+        </p>
+        <p>
+          Please enable JavaScript in your browser settings, or this website will
+          not work.
+        </p>
+      </div>
     </div>
     <main>
       <div class="grid hero">
@@ -1084,11 +1094,28 @@
           states: {
             newUser: [document.getElementById("mainHeroContentNewuserdiv")],
             user: [document.getElementById("mainHeroContentUserdiv")],
+            newToThemes: [document.getElementById("lightmode")],
           },
         },
       };
     </script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.31.0"></script>
     <script src="./js/supabase.js"></script>
+    <script>
+      if (
+        window.matchMedia &&
+        window.matchMedia("(prefers-color-scheme: light)").matches &&
+        Array.from(document.documentElement.classList).includes("purpleish") &&
+        ( localStorage.getItem("themePop") === null )
+      ) {
+        states.newToThemes(true);
+      } else {
+        states.newToThemes(false);
+      }
+      document.getElementById("themepopButton").addEventListener("click", function () {
+        states.newToThemes(false);
+        localStorage.setItem("themePop", "false");
+      })
+    </script>
   </body>
 </html>

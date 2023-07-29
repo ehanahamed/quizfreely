@@ -29,4 +29,15 @@ var states = {
       ui.states.newUser(isNewUser);
     }
   },
+  newToThemes: function (isNewToThemes) {
+    if (isNewToThemes === true) {
+      for (var i5 = 0; i < ui.elements.states.newToThemes.length; i++) {
+        ui.elements.states.newToThemes[i].classList.remove("hide");
+      }
+    } else if (isNewToThemes === false) {
+      for (var i6 = 0; i < ui.elements.states.newToThemes.length; i++) {
+        ui.elements.states.newToThemes[i].classList.add("hide");
+      }
+    }
+  }
 };
