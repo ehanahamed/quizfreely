@@ -83,7 +83,7 @@ var studySet = {
       to prevent this,
       the code below clears/resets the table
     */
-    document.getElementById("inputEditTable").innerHTML =
+    ui.elements.edit.table.innerHTML =
       "<thead> <tr> <th>Term</th> <th>Definition</th> <th>Actions</th> </tr> </thead> <tbody> <tr> <td> <div class='flex'> <button onclick='buttons.edit.add();'> <i class='nf nf-oct-plus'></i> Add row </button> <button id='buttonEditDone' class='alt' onclick='buttons.edit.done()' > <i class='nf nf-oct-check'></i> Done </button> </div> </td> <td></td> <td></td> </tr> </tbody>";
     /* IMPORTANT: the string above has the inner html of the table found in dashboard.html */
   },

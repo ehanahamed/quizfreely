@@ -133,7 +133,7 @@
               Create a new study set or open a study set file you downloaded.
             </p>
             <div class="flex">
-              <button id="buttonMake" onclick="buttons.load.make();">
+              <button id="mainDashboardCreate" onclick="buttons.load.make();">
                 <i class="nf nf-oct-plus"></i>
                 Create new
               </button>
@@ -261,13 +261,10 @@
               </tbody>
             </table>
           </div>
-          <!--
-        Edit section
-        -->
-          <div id="sectionEdit" class="hide">
+          <div id="mainEditdiv" class="hide">
             <h2>Edit</h2>
-            <input id="inputEditName" type="text" placeholder="Title" />
-            <table id="inputEditTable">
+            <input id="mainEditName" type="text" placeholder="Title" />
+            <table id="mainEditTable">
               <!--
                 IMPORTANT:
                 the html below is also used in buttons.js, (its copied into a string)
@@ -451,11 +448,11 @@
           sections: {
             dashboard: document.getElementById("mainDashboarddiv"),
             open: document.getElementById("mainOpendiv"),
-            edit: document.getElementById("sectionEdit"),
+            edit: document.getElementById("mainEditdiv"),
             /* flashcards: document.getElementById("sectionFlashcards"), */
           },
           buttons: {
-            make: document.getElementById("buttonMake"),
+            create: document.getElementById("mainDashboardCreate"),
             importOptions: document.getElementById("buttonImportOptions"),
           },
           inputs: {
@@ -463,8 +460,8 @@
               file: document.getElementById("inputImportLocalFile"),
             },
             edit: {
-              name: document.getElementById("inputEditName"),
-              table: document.getElementById("inputEditTable"),
+              name: document.getElementById("mainEditName"),
+              table: document.getElementById("mainEditTable"),
             },
           },
           links: {
