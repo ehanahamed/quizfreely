@@ -56,6 +56,8 @@ var studySet = {
   
   */
   open: function () {
+    /* reset/rehide "i am saved" popup */
+    ui.elements.open.saveDone.classList.add("hide");
     /* IMPORTANT: line below clears the old data from table before displaying data in it */
     document.getElementById("mainActionsTable").innerHTML =
       "<thead> <tr> <th>Term</th> <th>Definition</th> </tr> </thead> <tbody> <tr> <td> <button onclick='buttons.open.edit();'> Edit </button> </td> <td></td> </tr> </tbody>";

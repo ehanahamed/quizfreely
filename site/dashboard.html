@@ -192,47 +192,40 @@
                     >Delete Draft & Cancel</a
                   >
                 </div>
-                <div id="mainSaveClouddone" class="box green hide">
-                  <p>Your study set has been saved to your account.</p>
-                  <p>
-                    Go back to your <a href="./dashboard.html">dashboard</a>?
-                  </p>
-                </div>
                 <div id="mainSaveClouderror" class="box red hide">
                   <p>
                     An unknown error prevented the study set from saving. Sorry
                     ¯\_(ツ)_/¯
                   </p>
                 </div>
-                <div id="mainSaveClouderrorNewuser" class="box red hide">
-                  <p>
-                    You are not signed in. You can't save to an account that you
-                    don't have. ¯\_(ツ)_/¯
-                  </p>
-                </div>
               </div>
             </div>
             <h2 id="mainActionsStudysettitle">Study set</h2>
-            <div
-              class="card double"
-              id="flashcardsCard"
-              onclick="buttons.flashcards.flip()"
-            >
-              <div class="content" id="flashcardsContent">
-                <div class="front" id="flashcardsFront">front</div>
-                <div class="back" id="flashcardsBack">back</div>
+            <p id="mainOpenSavedone" class="bg3 hide">
+              All changes saved
+            </p>
+            <div id="mainOpenFlashcarddiv">
+              <div
+                class="card double"
+                id="flashcardsCard"
+                onclick="buttons.flashcards.flip()"
+              >
+                <div class="content" id="flashcardsContent">
+                  <div class="front" id="flashcardsFront">front</div>
+                  <div class="back" id="flashcardsBack">back</div>
+                </div>
               </div>
-            </div>
-            <div class="caption">
-              <p id="mainActionsFlashcardoptionsIndex">1/1</p>
-              <div class="flex justifyselfcenter">
-                <button id="flashcardsPrev" onclick="buttons.flashcards.prev()">
-                  <i class="nf nf-cod-arrow_left"></i>
-                </button>
-                <button onclick="buttons.flashcards.flip()">Flip</button>
-                <button id="flashcardsNext" onclick="buttons.flashcards.next()">
-                  <i class="nf nf-cod-arrow_right"></i>
-                </button>
+              <div class="caption">
+                <p id="mainActionsFlashcardoptionsIndex">1/1</p>
+                <div class="flex justifyselfcenter">
+                  <button id="flashcardsPrev" onclick="buttons.flashcards.prev()">
+                    <i class="nf nf-cod-arrow_left"></i>
+                  </button>
+                  <button onclick="buttons.flashcards.flip()">Flip</button>
+                  <button id="flashcardsNext" onclick="buttons.flashcards.next()">
+                    <i class="nf nf-cod-arrow_right"></i>
+                  </button>
+                </div>
               </div>
             </div>
             <p>Need to make changes or add more?</p>
@@ -423,16 +416,13 @@
               })
               .then(function (result) {
                 if (result.status === 201) {
-                  document
-                    .getElementById("mainSaveClouddone")
-                    .classList.remove("hide");
+                  ui.elements.open.saveDone.classList.remove("hide");
+                  ui.elements.open.save.classList.add("hide");
                   document
                     .getElementById("mainSaveClouderror")
                     .classList.add("hide");
                 } else if (result.status !== 201) {
-                  document
-                    .getElementById("mainSaveClouddone")
-                    .classList.add("hide");
+                  ui.elements.open.saveDone.classList.add("hide");
                   document
                     .getElementById("mainSaveClouderror")
                     .classList.remove("hide");
@@ -473,6 +463,10 @@
             successImport: document.getElementById("alertSuccessImport"),
             errorImport: document.getElementById("alertErrorImport"),
             flashcardsEnd: document.getElementById("alertFlashcardsEnd"),
+          },
+          open: {
+            save: document.getElementById("mainActionsSave"),
+            saveDone: document.getElementById("mainOpenSavedone")
           },
           edit: {
             table: document.getElementById("mainEditTable")
