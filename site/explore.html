@@ -1,34 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
-  <!--
+<!--
   Quizfreely (quizfreely.ehan.dev)
   Copyright (c) 2022-present Ehan Ahamed and contributors
   Licensed under the UPL-1.0 License
   https://quizfreely.ehan.dev/license
   -->
 
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Quizfreely</title>
-    <link rel="canonical" href="https://quizfreely.ehan.dev" />
-    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
-    <link rel="stylesheet" href="https://design.ehan.dev/css/colors.css" />
-    <link rel="stylesheet" href="https://design.ehan.dev/css/components.css" />
-    <link rel="stylesheet" href="https://design.ehan.dev/css/layouts.css" />
-    <link rel="stylesheet" href="https://design.ehan.dev/css/utils.css" />
-    <link rel="stylesheet" href="./fonts/fonts.css" />
-    <link
-      rel="stylesheet"
-      href="https://www.nerdfonts.com/assets/css/webfont.css"
-    />
-  </head>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Quizfreely</title>
+  <link rel="canonical" href="https://quizfreely.ehan.dev" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+  <link rel="stylesheet" href="https://design.ehan.dev/css/colors.css" />
+  <link rel="stylesheet" href="https://design.ehan.dev/css/components.css" />
+  <link rel="stylesheet" href="https://design.ehan.dev/css/layouts.css" />
+  <link rel="stylesheet" href="https://design.ehan.dev/css/utils.css" />
+  <link rel="stylesheet" href="./fonts/fonts.css" />
+  <link rel="stylesheet" href="https://www.nerdfonts.com/assets/css/webfont.css" />
+</head>
 
-  <body>
-    <header>
-      <!--<div class="menu">
+<body>
+  <header>
+    <!--<div class="menu">
         <button id="headerMenuMenubutton">
           <i class="nf nf-md-menu"></i>
           Menu
@@ -44,23 +41,23 @@
           </ul>
         </div>
       </div>-->
-      <div class="menu nav">
-        <div>
-          <a href="./index.html"> <i class="nf nf-fa-home"></i> Home</a>
-        </div>
-        <div>
-          <a href="./dashboard.html">
-            <i class="nf nf-fa-edit"></i> Dashboard
-          </a>
-        </div>
-        <div class="current">
-          <a href="./explore.html"> <i class="nf nf-fa-search"></i> Explore </a>
-        </div>
-        <div>
-          <a href="./settings.html"> <i class="nf nf-fa-cog"></i> Settings</a>
-        </div>
+    <div class="menu nav">
+      <div>
+        <a href="./index.html"> <i class="nf nf-fa-home"></i> Home</a>
       </div>
-      <!--<div class="options">
+      <div>
+        <a href="./dashboard.html">
+          <i class="nf nf-fa-edit"></i> Dashboard
+        </a>
+      </div>
+      <div class="current">
+        <a href="./explore.html"> <i class="nf nf-fa-search"></i> Explore </a>
+      </div>
+      <div>
+        <a href="./settings.html"> <i class="nf nf-fa-cog"></i> Settings</a>
+      </div>
+    </div>
+    <!--<div class="options">
         <div class="flex center">
           <button id="headerOptionsLangbutton">
             <i class="nf nf-md-translate"></i>
@@ -110,98 +107,176 @@
           </div>
         </div>
       </div>-->
-    </header>
-    <div id="noscript" class="box center red">
-      <p>
-        You have JavaScript disabled. This website uses JavaScript to run
-        correctly.
-      </p>
-      <p>
-        Please enable JavaScript in your browser settings, or this website will
-        not work.
-      </p>
-    </div>
-    <main>
-      <div class="grid page">
-        <div class="content">
-          <h2>Explore</h2>
-          <input type="text" placeholder="Search" />
-          <details>
-            <summary>
-              Filter results
-            </summary>
-            <div class="grid list">
-              <div>
-                <div class="checkbox">
-                  <input type="checkbox" name="checkbox" id="checkbox0" />
-                  <label for="checkbox0">Checkbox 0</label>
-                </div>
-                <div class="checkbox">
-                  <input type="checkbox" name="checkbox" id="checkbox1" />
-                  <label for="checkbox1">Checkbox 1</label>
-                </div>
-                <div class="checkbox">
-                  <input type="checkbox" name="checkbox" id="checkbox2" />
-                  <label for="checkbox2">Checkbox 2</label>
-                </div>
+  </header>
+  <div id="noscript" class="box center red">
+    <p>
+      You have JavaScript disabled. This website uses JavaScript to run
+      correctly.
+    </p>
+    <p>
+      Please enable JavaScript in your browser settings, or this website will
+      not work.
+    </p>
+  </div>
+  <main>
+    <div class="grid page">
+      <div class="content">
+        <h2>Explore</h2>
+        <input type="text" placeholder="Search" />
+        <details>
+          <summary>
+            Filter results
+          </summary>
+          <div class="grid list">
+            <div>
+              <div class="checkbox">
+                <input type="checkbox" name="checkbox" id="checkbox0" />
+                <label for="checkbox0">Checkbox 0</label>
               </div>
-              <div>
-                <div class="checkbox">
-                  <input type="checkbox" name="1checkbox" id="1checkbox0" />
-                  <label for="1checkbox0">Checkbox 0</label>
-                </div>
-                <div class="checkbox">
-                  <input type="checkbox" name="1checkbox" id="1checkbox1" />
-                  <label for="1checkbox1">Checkbox 1</label>
-                </div>
-                <div class="checkbox">
-                  <input type="checkbox" name="1checkbox" id="1checkbox2" />
-                  <label for="1checkbox2">Checkbox 2</label>
-                </div>
+              <div class="checkbox">
+                <input type="checkbox" name="checkbox" id="checkbox1" />
+                <label for="checkbox1">Checkbox 1</label>
               </div>
-              <div>
-                <div class="checkbox">
-                  <input type="checkbox" name="2checkbox" id="2checkbox0" />
-                  <label for="2checkbox0">Checkbox 0</label>
-                </div>
-                <div class="checkbox">
-                  <input type="checkbox" name="2checkbox" id="2checkbox1" />
-                  <label for="2checkbox1">Checkbox 1</label>
-                </div>
-                <div class="checkbox">
-                  <input type="checkbox" name="2checkbox" id="2checkbox2" />
-                  <label for="2checkbox2">Checkbox 2</label>
-                </div>
+              <div class="checkbox">
+                <input type="checkbox" name="checkbox" id="checkbox2" />
+                <label for="checkbox2">Checkbox 2</label>
               </div>
             </div>
-          </details>
-          <div class="grid list">
-            <div class="box">Result</div>
-            <div class="box">result</div>
-            <div class="box">result</div>
-            <div class="box">resasdfjk</div>
+            <div>
+              <div class="checkbox">
+                <input type="checkbox" name="1checkbox" id="1checkbox0" />
+                <label for="1checkbox0">Checkbox 0</label>
+              </div>
+              <div class="checkbox">
+                <input type="checkbox" name="1checkbox" id="1checkbox1" />
+                <label for="1checkbox1">Checkbox 1</label>
+              </div>
+              <div class="checkbox">
+                <input type="checkbox" name="1checkbox" id="1checkbox2" />
+                <label for="1checkbox2">Checkbox 2</label>
+              </div>
+            </div>
+            <div>
+              <div class="checkbox">
+                <input type="checkbox" name="2checkbox" id="2checkbox0" />
+                <label for="2checkbox0">Checkbox 0</label>
+              </div>
+              <div class="checkbox">
+                <input type="checkbox" name="2checkbox" id="2checkbox1" />
+                <label for="2checkbox1">Checkbox 1</label>
+              </div>
+              <div class="checkbox">
+                <input type="checkbox" name="2checkbox" id="2checkbox2" />
+                <label for="2checkbox2">Checkbox 2</label>
+              </div>
+            </div>
           </div>
+        </details>
+        <div id="mainExploreListdiv" class="grid list">
+
         </div>
       </div>
-    </main>
-    <footer>
-      <h2>Quizfreely</h2>
-      <p>
-        Copyright © 2022-present Ehan Ahamed and contributors <br />
+    </div>
+  </main>
+  <footer>
+    <h2>Quizfreely</h2>
+    <p>
+      Copyright © 2022-present Ehan Ahamed and contributors <br />
         Licensed under the UPL-1.0 License
-      </p>
-      <a href="./license.html">See License</a>
-      <br />
-      <a href="./privacypolicy.html">See Privacy Policy</a>
-    </footer>
-    <script>
-      document.getElementById("noscript").style.display = "none";
-    </script>
-    <script src="https://design.ehan.dev/js/themes.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.29.0"></script>
-    <script src="./js/supabase.js"></script>
-    <script>
+    </p>
+    <a href="./license.html">See License</a>
+    <br />
+    <a href="./privacypolicy.html">See Privacy Policy</a>
+  </footer>
+  <script>
+    document.getElementById("noscript").style.display = "none";
+  </script>
+  <script src="https://design.ehan.dev/js/themes.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.29.0"></script>
+  <script src="./js/supabase.js"></script>
+  <script>
+    supabaseClient
+      .from("explore")
+      .select()
+      .then(function (result) {
+        studysetlist = result.data;
+        if (studysetlist.length === 0) {
+          var box = document.createElement("div");
+          box.setAttribute("class", "box");
+          box.setAttribute("id", "mainDashboardUserStudysetlistEmpty");
+          document
+            .getElementById("mainExploreListdiv")
+            .appendChild(box);
+          document.getElementById(
+            "mainDashboardUserStudysetlistEmpty"
+          ).innerHTML = "<p>No study sets are saved to your account.</p>";
+        } else {
+          for (var i = 0; i < studysetlist.length; i++) {
+            var box = document.createElement("div");
+            box.setAttribute("class", "box");
+            box.setAttribute(
+              "id",
+              "mainDashboardUserStudysetlist" + i.toString()
+            );
+            document
+              .getElementById("mainExploreListdiv")
+              .appendChild(box);
+            document.getElementById(
+              "mainDashboardUserStudysetlist" + i.toString()
+            ).innerHTML =
+              "<p>" +
+              studysetlist[i].name +
+              "</p> <div class='flex'> <button id='mainDashboardUserStudysetlist" +
+              i.toString() +
+              "Openbutton'> Open </button> <button id='mainDashboardUserStudysetlist" +
+              i.toString() +
+              "Deletebutton' class='red alt'> Delete </button>";
+            document
+              .getElementById(
+                "mainDashboardUserStudysetlist" +
+                  i.toString() +
+                  "Openbutton"
+              )
+              .addEventListener("click", function (event) {
+                sessionData.studySetData =
+                  /* studysetlist.ID.json */
+                  /* to get the selected ID, take event.target.id and remove the extra text like "mainDashboard..." and "Openbutton..." */
+                  studysetlist[
+                    event.target.id
+                      .replace("mainDashboardUserStudysetlist", "")
+                      .replace("Openbutton", "")
+                  ].json;
+                studySet.open();
+                document
+                  .getElementById("mainActionsSave")
+                  .classList.add("hide");
+              });
+              document
+                  .getElementById(
+                    "mainDashboardUserStudysetlist" +
+                      i.toString() +
+                      "Deletebutton"
+                  )
+                  .addEventListener("click", function (event) {
+                    supabaseClient
+                      .from("studyset")
+                      .delete()
+                      .eq(
+                        "id",
+                        studysetlist[
+                          event.target.id
+                            .replace("mainDashboardUserStudysetlist", "")
+                            .replace("Deletebutton", "")
+                        ].id
+                      )
+                      .then(function (result) {
+                        location.reload();
+                      });
+                  });
+              }
+            }
+          });
+  </script>
+</body>
 
-    </script>
-  </body>
 </html>
