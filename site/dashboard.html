@@ -152,15 +152,6 @@
                 id="mainDashboardUserStudysetlistdiv"
                 class="grid list"
               ></div>
-              <div
-                id="mainDashboardUserStudysetdeletediv"
-                class="box green hide"
-              >
-                <p>
-                  Study set deleted. <a href="./dashboard.html">Refresh</a> to
-                  see updated dashboard?
-                </p>
-              </div>
             </div>
           </div>
 
@@ -391,9 +382,7 @@
                         ].id
                       )
                       .then(function (result) {
-                        document
-                          .getElementById("mainDashboardUserStudysetdeletediv")
-                          .classList.remove("hide");
+                        location.reload();
                       });
                   });
               }
