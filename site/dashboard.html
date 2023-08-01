@@ -202,6 +202,7 @@
             </div>
             <h2 id="mainActionsStudysettitle">Study set</h2>
             <p id="mainOpenSavedone" class="bg3 hide">
+              <i class="nf nf-oct-check"></i>
               All changes saved
             </p>
             <div id="mainOpenFlashcarddiv">
@@ -505,5 +506,13 @@
     <script src="./js/flashcards.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.29.0"></script>
     <script src="./js/supabase.js"></script>
+    <script>
+      /*
+      Make download button also hide the modal when clicked (just like save to acc button)
+      */
+      ui.elements.links.exportLocal.download.addEventListener("onclick", function () {
+        ui.elements.open.save.classList.add("hide");
+      })
+    </script>
   </body>
 </html>
