@@ -290,8 +290,12 @@
         .addEventListener("change", function (event) {
           setTheme("catdim");
         });
-      if (localStorage.getItem("theme") === "purpleish") {
+      if (localStorage.getItem("theme") === "auto") {
+        document.getElementById("mainAppearanceThemeAuto").checked = true;
+      } else if (localStorage.getItem("theme") === "purpleish") {
         document.getElementById("mainAppearanceThemePurpleish").checked = true;
+      } else if (localStorage.getItem("theme") === "snow") {
+        document.getElementById("mainAppearanceThemeSnow").checked = true;
       } else if (localStorage.getItem("theme") === "owl") {
         document.getElementById("mainAppearanceThemeOwl").checked = true;
       } else if (localStorage.getItem("theme") === "owldark") {
@@ -303,9 +307,6 @@
         document.getElementById("mainAppearanceThemeCat").checked = true;
       } else if (localStorage.getItem("theme") === "catdim") {
         document.getElementById("mainAppearanceThemeCatdim").checked = true;
-      } else {
-        /* default to purpleish if not set in localstorage */
-        document.getElementById("mainAppearanceThemePurpleish").checked = true;
       }
     </script>
     <script src="./js/states.js"></script>
