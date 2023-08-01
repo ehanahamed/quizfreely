@@ -133,11 +133,31 @@
                 <input
                   type="radio"
                   name="theme"
-                  id="mainAppearanceThemePurpleish"
+                  id="mainAppearanceThemeAuto"
                   checked
                 />
+                <label for="mainAppearanceThemeAuto"
+                  >Auto <span class="bg3">(default)</span></label
+                >
+              </div>
+              <div class="radio">
+                <input
+                  type="radio"
+                  name="theme"
+                  id="mainAppearanceThemePurpleish"
+                />
                 <label for="mainAppearanceThemePurpleish"
-                  >Purpleish <span class="bg3">(dark)</span></label
+                  >Purpleish <span class="bg3">(dark default)</span></label
+                >
+              </div>
+              <div class="radio">
+                <input
+                  type="radio"
+                  name="theme"
+                  id="mainAppearanceThemeSnow"
+                />
+                <label for="mainAppearanceThemeSnow"
+                  >Snow <span class="bg3">(light default)</span></label
                 >
               </div>
               <div class="radio">
@@ -231,9 +251,19 @@
       /* this super short script tag is for theme settings */
       /* setTheme is defined in design.ehan.dev/js/themes.js */
       document
+        .getElementById("mainAppearanceThemeAuto")
+        .addEventListener("change", function (event) {
+          setTheme("auto");
+        });
+      document
         .getElementById("mainAppearanceThemePurpleish")
         .addEventListener("change", function (event) {
           setTheme("purpleish");
+        });
+      document
+        .getElementById("mainAppearanceThemeSnow")
+        .addEventListener("change", function (event) {
+          setTheme("snow");
         });
       document
         .getElementById("mainAppearanceThemeOwl")
