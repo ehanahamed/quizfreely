@@ -173,7 +173,7 @@
                 <h2>Save changes?</h2>
                 <div id="mainOpenActionsSaveNewuserdiv">
                   <div class="flex">
-                    <a id="linkExportLocalDownload" class="button alt"
+                    <a id="mainOpenActionsSaveNewuserExportLocalDownload" class="button alt"
                       >Download</a
                     >
                     <a href="./dashboard.html" class="button alt red"
@@ -185,7 +185,7 @@
                   <a class="button" id="mainWorkinprogressSavetoaccountbutton"
                     >Save to account</a
                   >
-                  <a id="linkExportLocalDownload" class="button alt"
+                  <a id="mainOpenActionsSaveUserExportLocalDownload" class="button alt"
                     >Download</a
                   >
                   <a href="./dashboard.html" class="button alt red"
@@ -457,7 +457,8 @@
           },
           links: {
             exportLocal: {
-              download: document.getElementById("linkExportLocalDownload"),
+              newUserDownload: document.getElementById("mainOpenActionsSaveNewuserExportLocalDownload"),
+              userDownload: document.getElementById("mainOpenActionsSaveUserExportLocalDownload")
             },
           },
           alerts: {
@@ -506,5 +507,16 @@
     <script src="./js/flashcards.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.29.0"></script>
     <script src="./js/supabase.js"></script>
+    <script>
+      /*
+      Make download button also hide the modal when clicked (just like save to acc button)
+      */
+      ui.elements.links.exportLocal.newUserDownload.addEventListener("onclick", function () {
+        ui.elements.open.save.classList.add("hide");
+      })
+      ui.elements.links.exportLocal.userDownload.addEventListener("onclick", function () {
+        ui.elements.open.save.classList.add("hide");
+      })
+    </script>
   </body>
 </html>
