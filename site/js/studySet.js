@@ -6,13 +6,14 @@
 */
 
 var studySet = {
-  make: function (settings, metadata) {
+  make: function () {
     return {
       quizfreely: "Quizfreely",
       name: "",
       creator: "",
-      settings: settings,
-      metadata: metadata,
+      settings: {
+        public: false
+      },
       data: [],
     };
   },
