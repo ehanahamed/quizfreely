@@ -74,8 +74,8 @@ var studySet = {
       var newRow = document
         .getElementById("mainActionsTable")
         .insertRow(document.getElementById("mainActionsTable").rows.length - 1);
-      newRow.insertCell(0).innerHTML = sessionData.studySetData.data[i][0];
-      newRow.insertCell(1).innerHTML = sessionData.studySetData.data[i][1];
+      newRow.insertCell(0).innerText = sessionData.studySetData.data[i][0];
+      newRow.insertCell(1).innerText = sessionData.studySetData.data[i][1];
     }
     /* IMPORTANT:
       after the screen switches to sections.changeTo("open") and ...mainActionsSave").classList.remove("hide") (the code above),
