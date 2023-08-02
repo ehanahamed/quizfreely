@@ -54,18 +54,12 @@ Prompt user to create username if username is null
 supabaseClient.auth.getSession().then(
   function (result) {
     if (result.data.session !== null) {
-      if (result.data.session.user.hasOwnProperty("data") === true) {
-        if (result.data.session.user.data.hasOwnProperty("username") === false) {
-          var newDiv = document.createElement("div");
-          newDiv.id = "setUsername";
-          newDiv.innerHTML = "<div class='modal'><div class='content'><h2>Create a Username</h2><p>Finish setting up your account by creating a username!</p><a href='./setusername.html' class='button'>Set Username</button></div></div>"
-          document.body.appendChild(newDiv);
-        }
-      } else if (result.data.session.user.hasOwnProperty("data") === false) {
+      if (result.data.session.user.user_metadata.hasOwnProperty("username") === false) {
         var newDiv = document.createElement("div");
         newDiv.id = "setUsername";
         newDiv.innerHTML = "<div class='modal'><div class='content'><h2>Create a Username</h2><p>Finish setting up your account by creating a username!</p><a href='./setusername.html' class='button'>Set Username</button></div></div>"
         document.body.appendChild(newDiv);
       }
+    }
   }
-});
+);
