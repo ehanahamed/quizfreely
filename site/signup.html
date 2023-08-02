@@ -212,7 +212,7 @@
             document.getElementById("mainSignupPasswordinput").value ===
             document.getElementById("mainSignupRetypepasswordinput").value
           ) {
-            if (document.getElementById("mainSignupUsernameinput").includes("@") === false) {
+            if (document.getElementById("mainSignupUsernameinput").value.includes("@") === false) {
               supabaseClient.auth
                 .signUp({
                   email: "quizfreelyuser" + document.getElementById("mainSignupUsernameinput").value + "@ehan.dev",
@@ -236,7 +236,7 @@
                       .classList.remove("hide");
                   }
                 });
-            } else if (document.getElementById("mainSignupUsernameinput").includes("@") === true) {
+            } else if (document.getElementById("mainSignupUsernameinput").value.includes("@") === true) {
               document
                 .getElementById("mainSignupErrortext")
                 .classList.remove("hide");
