@@ -56,7 +56,6 @@ supabaseClient.auth.getSession().then(
     if (result.data.session !== null) {
       if (result.data.session.user.data.username === null) {
         var newDiv = document.createElement("div");
-        newDiv.id = "supabaseCreateUsername";
         newDiv.innerHTML = "<div class='modal'><div class='content'><h2>Create a Username</h2><p>Finish setting up your account by creating a username!</p><a href='./setusername.html' class='button'>Set Username</button></div></div>"
         document.body.appendChild(newDiv);
       }
