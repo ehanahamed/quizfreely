@@ -53,9 +53,9 @@ function getNickname(returnFunction) {
     if (result.data.session.user.user_metadata.hasOwnProperty("quizfreelyNickname") === true) {
       returnFunction(result.data.session.user.user_metadata.quizfreelyNickname);
     } else if (result.data.session.user.app_metadata.provider === "email") {
-      returnFunction(result.data.user.email.replace("quizfreelyuser", "").replace("@ehan.dev", ""));
+      returnFunction(result.data.session.user.email.replace("quizfreelyuser", "").replace("@ehan.dev", ""));
     } else if (result.data.session.user.user_metadata.hasOwnProperty("name") === true) {
-      returnFunction(result.data.user.user_metadata.name);
+      returnFunction(result.data.session.user.user_metadata.name);
     }
   });
 }
