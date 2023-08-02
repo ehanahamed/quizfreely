@@ -213,7 +213,7 @@
             document.getElementById("mainSignupRetypepasswordinput").value
           ) {
             if (
-              /^[a-zA-Z0-9._-]+$/.test(document.getElementById("mainSignupUsernameinput").value) === true
+              /^[a-z0-9._-]+$/.test(document.getElementById("mainSignupUsernameinput").value) === true
             ) {
               supabaseClient.auth
                 .signUp({
@@ -251,9 +251,9 @@
                 .classList.remove("hide");
               document.getElementById("mainDonediv").classList.add("hide");
               document.getElementById("mainSignupErrortext").innerHTML =
-                "Error: Usernames can only have:" +
+                "Usernames can only have:" +
                 "<ul>" +
-                  "<li>letters (uppercase and lowercase)</li>" +
+                  "<li>lowercase letters</li>" +
                   "<li>numbers</li>" +
                   "<li>dots (<code>.</code>)</li>" +
                   "<li>underscores (<code>_</code>)</li>" +
