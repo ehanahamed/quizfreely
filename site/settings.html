@@ -286,7 +286,7 @@
             if (isNewUser === false) {
               supabaseClient.auth.getUser().then(function (result) {
                 document.getElementById("mainUserUsername").innerText =
-                  result.data.user.user_metadata.username;
+                  result.data.user.email.replace("quizfreelyuser", "").replace("@ehan.dev", "");
               });
             }
           },
