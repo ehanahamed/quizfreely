@@ -203,7 +203,7 @@
     supabaseClient
       .from("explore")
       .select()
-      .textSearch("name", text)
+      .textSearch("name", `'${text}'`)
       .then(function (result) {
         studysetlist = result.data;
         if (studysetlist.length === 0) {
