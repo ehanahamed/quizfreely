@@ -247,6 +247,14 @@
             </table>
           </div>
           <div id="mainEditdiv" class="hide">
+            <div id="mainEditStudySetIsCopy" class="modal hide">
+              <h2>¯\_(ツ)_/¯</h2>
+              <p>A study set with this name already exists in your account. <br/> You can update/overwrite the existing copy or go back and rename this copy.</p>
+              <div class="flex">
+                <button id="mainEditStudySetIsCopyUpdate">Update existing</button>
+                <button id="mainEditStudySetIsCopyBack">Go back</button>
+              </div>
+            </div>
             <h2>Edit</h2>
             <input id="mainEditName" type="text" placeholder="Title" />
             <table id="mainEditTable">
@@ -460,7 +468,12 @@
             saveDone: document.getElementById("mainOpenSavedone")
           },
           edit: {
-            table: document.getElementById("mainEditTable")
+            table: document.getElementById("mainEditTable"),
+            studySetIsCopy: document.getElementById("mainEditStudySetIsCopy"),
+            studySetIsCopyButtons: {
+              update: document.getElementById("mainEditStudySetIsCopyUpdate"),
+              back: document.getElementById("mainEditStudySetIsCopyBack")
+            }
           },
           flashcards: {
             card: document.getElementById("flashcardsCard"),

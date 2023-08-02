@@ -20,3 +20,30 @@ if (typeof states !== "undefined") {
     }
   });
 }
+
+function isStudySetCopy(studySetName, returnFunction) {
+  supabaseClient.auth.getSession().then(function (result) {
+    if (result.data.session === null) {
+      returnFunction(false);
+    } else if (result.data.session !== null) {
+      supabaseClient.from("studyset").select().eq("name", studySetName).then(
+        function (result) {
+          if (result.data.length === 0) {
+            returnFunction(false);
+          } else if (result.data.length > 0) {
+            returnFunction(true);
+          }
+        }
+      )
+    }
+  });
+}
+
+function updateStudySet() {
+  supabaseClient.from("studyset").update({ json: sessionData.studySetData }).eq("name", sessionData.studySetData.name).then(
+    function (result) {
+      console.log("ran update() on " + sessionData.studySetData.name + "with result:")
+      console.log(result);
+    }
+  )
+}
