@@ -122,7 +122,7 @@
     <div class="grid page">
       <div class="content">
         <h2>Explore</h2>
-        <input type="text" placeholder="Search" />
+        <input id="mainSearchinput" type="text" placeholder="Search" />
         <br />
         <br />
         <!--
@@ -199,9 +199,11 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.29.0"></script>
   <script src="./js/supabase.js"></script>
   <script>
+  function search(text) {
     supabaseClient
       .from("explore")
       .select()
+      .textSearch("name", text)
       .then(function (result) {
         studysetlist = result.data;
         if (studysetlist.length === 0) {
@@ -280,6 +282,12 @@
               }
             }
           });
+  }
+  document.getElementById("mainSearchinput").addEventListener("change",
+    function (event) {
+      search(event.target.value);
+    }
+  )
   </script>
 </body>
 
