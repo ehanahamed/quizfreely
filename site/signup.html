@@ -212,12 +212,19 @@
             document.getElementById("mainSignupPasswordinput").value ===
             document.getElementById("mainSignupRetypepasswordinput").value
           ) {
-            if (document.getElementById("mainSignupUsernameinput").value.includes("@") === false) {
+            if (
+              /^[a-zA-Z0-9._-]+$/.test(document.getElementById("mainSignupUsernameinput").value) === true
+            ) {
               supabaseClient.auth
                 .signUp({
                   email: "quizfreelyuser" + document.getElementById("mainSignupUsernameinput").value + "@ehan.dev",
                   password: document.getElementById("mainSignupPasswordinput")
-                    .value
+                    .value,
+                  options: {
+                    data: {
+                      username: document.getElementById("mainSignupUsernameinput").value,
+                    }
+                  }
                 })
                 .then(function (result) {
                   if (result.error !== null) {
@@ -236,13 +243,22 @@
                       .classList.remove("hide");
                   }
                 });
-            } else if (document.getElementById("mainSignupUsernameinput").value.includes("@") === true) {
+            } else if (
+              /^[a-zA-Z0-9._-]+$/.test(document.getElementById("mainSignupUsernameinput").value) === false
+            ) {
               document
                 .getElementById("mainSignupErrortext")
                 .classList.remove("hide");
               document.getElementById("mainDonediv").classList.add("hide");
               document.getElementById("mainSignupErrortext").innerHTML =
-                "Error: Username cannot contain <code>@</code>.";
+                "Error: Usernames can only have:" +
+                "<ul>" +
+                  "<li>letters (uppercase and lowercase)</li>" +
+                  "<li>numbers</li>" +
+                  "<li>dots (<code>.</code>)</li>" +
+                  "<li>underscores (<code>_</code>)</li>" +
+                  "<li>hyphens (<code>-</code>)</li>" +
+                "</ul>";
             }
           } else {
             document

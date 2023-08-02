@@ -281,10 +281,9 @@
         states: {
           newUser: function (isNewUser) {
             if (isNewUser === false) {
-              supabaseClient.auth.getUser().then(function (result) {
-                document.getElementById("mainUserUsername").innerText =
-                  result.data.user.email.replace("quizfreelyuser", "").replace("@ehan.dev", "");
-              });
+              getNickname(function (nickname) {
+                document.getElementById("mainUserUsername").innerText = nickname;
+              })
             }
           },
         },
