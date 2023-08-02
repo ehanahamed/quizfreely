@@ -142,6 +142,8 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.29.0"></script>
     <script src="./js/supabase.js"></script>
     <script>
+      document.getElementById("setUsername").classList.add("hide");
+      /* line above hides popup that leads to this page to prevent ui loop */
       document
         .getElementById("mainSetusernamebutton")
         .addEventListener("click", function () {
