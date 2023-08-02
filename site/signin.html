@@ -129,8 +129,8 @@
             <input
               type="text"
               class="fullWidth"
-              id="mainSigninEmailinput"
-              placeholder="Email"
+              id="mainSigninUsernameinput"
+              placeholder="Username"
             />
           </div>
           <div>
@@ -143,7 +143,6 @@
           </div>
           <div class="flex spaceBetween">
             <button id="mainSigninSigninbutton">Sign In</button>
-            <a href="./forgotpassword.html">Forgot Password?</a>
           </div>
           <div class="separator">or</div>
           <div>
@@ -198,7 +197,7 @@
         .addEventListener("click", function () {
           supabaseClient.auth
             .signInWithPassword({
-              email: document.getElementById("mainSigninEmailinput").value,
+              email: "quizfreelyuser" + document.getElementById("mainSigninUsernameinput").value + "@ehan.dev",
               password: document.getElementById("mainSigninPasswordinput")
                 .value,
             })

@@ -17,7 +17,7 @@ TODO NOW:
 
 TODO
 
-- remove "change passwd" button for non-email/googleapi accounts
+- ~~remove "change passwd" button for non-email/googleapi accounts~~ outdated, Quizfreely does not use email-sign-in anymore
 - **_create VS make in source code_**
 - **_studyset title vs studyset name in source code_**
 - **camelCase** it

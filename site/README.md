@@ -20,7 +20,7 @@ TODO JS
 ```javascript
 // re-logs-in the user
 supabaseClient.auth.getSession();
-// returns user data with email and metadata,
+// returns user data with username and metadata,
 // only after logging in or re-logging in
 supabaseClient.auth.getUser();
 

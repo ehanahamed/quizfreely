@@ -190,14 +190,9 @@
               You are not signed in to an account,
               <a href="./start.html">get started?</a>
             </p>
-            <p>
-              Forgot your password?
-              <a href="./forgotpassword.html">Reset Password</a>
-            </p>
           </div>
           <div id="mainUserdiv" class="box hide">
             <p>Username: <code id="mainUserUsername">username</code></p>
-            <p>Email: <code id="mainUserEmail">email</code></p>
             <div class="flex">
               <a class="button" href="./setusername.html">Change Username</a>
               <a
@@ -290,8 +285,6 @@
           newUser: function (isNewUser) {
             if (isNewUser === false) {
               supabaseClient.auth.getUser().then(function (result) {
-                document.getElementById("mainUserEmail").innerText =
-                  result.data.user.email;
                 document.getElementById("mainUserUsername").innerText =
                   result.data.user.user_metadata.username;
               });

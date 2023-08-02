@@ -6,7 +6,7 @@ As of right now, all the contributor documentation is in one file (this one, `RE
 
 ## Random notes
 
-the reset password page is the same for both un-signed-in users and signed-in users, supabase's API doesn't need to tell the difference, because un-signed-in users get signed-in when they click on the forgot passsword email link.
+~~the reset password page is the same for both un-signed-in users and signed-in users, supabase's API doesn't need to tell the difference, because un-signed-in users get signed-in when they click on the forgot passsword email link.~~ outdated info, Quizfreely no longer uses email-sign-ins
 
 ## Basic Concepts
 
