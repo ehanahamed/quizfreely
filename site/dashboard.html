@@ -222,8 +222,26 @@
             </p>
             <details>
               <summary>Study set options</summary>
-              <div class="flex">
-                <button onclick="buttons.open.edit();">Edit</button>
+              <div>
+                <p>Actions</p>
+                <div class="flex">
+                  <button onclick="buttons.open.edit();">Edit</button>
+                  <button onclick="ui.elements.open.save.classList.remove('hide');">Save copy or download</button>
+                </div>
+                <p>Settings</p>
+                <div>
+                  <div class="radio">
+                    <input type="radio" name="public" id="publicFalse" checked="true"/>
+                    <label for="publicFalse">Private - Only visible to my account</label>
+                  </div>
+                  <div class="radio">
+                    <input type="radio" name="public" id="publicTrue" />
+                    <label for="publicTrue">Public - Visible to Everyone</label>
+                  </div>
+                </div>
+                <div class="flex">
+                  <button>Save settings</button>
+                </div>
               </div>
             </details>
             <table id="mainActionsTable">
