@@ -122,7 +122,10 @@
     <div class="grid page">
       <div class="content">
         <h2>Explore</h2>
-        <input id="mainSearchinput" type="text" placeholder="Search" />
+        <div class="flex">
+          <input id="mainSearchinput" type="text" placeholder="Search" />
+          <button id="mainSearchbutton">Search</button>
+        </div>
         <br />
         <br />
         <!--
@@ -208,8 +211,8 @@
         studysetlist = result.data;
         if (studysetlist.length === 0) {
           var box = document.createElement("div");
-          box.setAttribute("class", "box");
           box.setAttribute("id", "mainDashboardUserStudysetlistEmpty");
+          box.setAttribute("class", "box");
           document
             .getElementById("mainExploreListdiv")
             .appendChild(box);
@@ -283,9 +286,9 @@
             }
           });
   }
-  document.getElementById("mainSearchinput").addEventListener("change",
+  document.getElementById("mainSearchbutton").addEventListener("click",
     function (event) {
-      search(event.target.value);
+      search(document.getElementById("mainSearchinput"));
     }
   )
   </script>
