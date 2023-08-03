@@ -192,10 +192,6 @@
               </div>
             </div>
             <h2 id="mainActionsStudysettitle">Study set</h2>
-            <p id="mainOpenSavedone" class="bg3 hide">
-              <i class="nf nf-oct-check"></i>
-              Saved to account
-            </p>
             <div id="mainOpenFlashcarddiv">
               <div
                 class="card double"
@@ -220,10 +216,16 @@
                 </div>
               </div>
             </div>
-            <p>Need to make changes or add more?</p>
-            <div class="flex">
-              <button onclick="buttons.open.edit();">Edit</button>
-            </div>
+            <p id="mainOpenSavedone" class="bg3 hide">
+              <i class="nf nf-oct-check"></i>
+              Saved to account
+            </p>
+            <details>
+              <summary>Study set options</summary>
+              <div class="flex">
+                <button onclick="buttons.open.edit();">Edit</button>
+              </div>
+            </details>
             <table id="mainActionsTable">
               <!--
                 IMPORTANT:
