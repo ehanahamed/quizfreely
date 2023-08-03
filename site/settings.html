@@ -197,8 +197,8 @@
               <p>Username: <code id="mainUserUsername">username</code></p>
             </div>
             <div id="mainUserGoogle" class="hide">
-              <p>Signed in with Google</p>
               <p>Google account: <code id="mainUserGoogleemail">email</code></p>
+              <p class="bg3">Signed in with Google</p>
             </div>
             <div class="flex">
               <a
@@ -297,14 +297,16 @@
                 document.getElementById("mainUserNickname").innerText = nickname;
               })
               supabaseClient.auth.getSession().then(function (result) {
-                document.getElementById("mainUserUsername").innerText =
-                  result.data.session.user.email.replace("quizfreelyuser", "").replace("@ehan.dev", "")
                 if (result.data.session.user.app_metadata.provider === "email") {
                   document.getElementById("mainUserEmailless").classList.remove("hide");
                   document.getElementById("mainUserGoogle").classList.add("hide");
+                  document.getElementById("mainUserUsername").innerText =
+                    result.data.session.user.email.replace("quizfreelyuser", "").replace("@ehan.dev", "");
                 } else if (result.data.session.user.app_metadata.provider === "google") {
                   document.getElementById("mainUserEmailless").classList.add("hide");
                   document.getElementById("mainUserGoogle").classList.remove("hide");
+                  document.getElementById("mainUserGoogleemail").innerText =
+                    result.data.session.user.email;
                 }
               });
             }
