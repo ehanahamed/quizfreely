@@ -14,6 +14,7 @@ TODO NOW:
     - add an "explore" tab/page instead of a weird looking searchbar in the navbar
   - docs & help menu
   - confirmation for deleting stuff
+  - transparent background for favicon and google sign in
 
 TODO
 
