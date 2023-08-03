@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="screen">
   <!--
   Quizfreely (quizfreely.ehan.dev)
   Copyright (c) 2022-present Ehan Ahamed and contributors
@@ -121,30 +121,61 @@
         not work.
       </p>
     </div>
-    <main>
-      <div class="grid page">
-        <div class="content">
-          <h2>Finish signing up</h2>
+    <main class="grid screen">
+      <div class="content">
+        <h2>Change display name</h2>
+        <div>
+          <input
+            type="text"
+            id="mainNicknameinput"
+            placeholder="Display name"
+          />
+        </div>
+        <div>
+          <button id="mainChangenicknamebutton">Change display name</button>
+        </div>
+        <p id="mainErrortext" class="box red hide">Error</p>
+        <div id="mainDonediv" class="box green hide">
           <p>
-            You have confirmed your account. You can now
-            <a href="./signin.html">sign in</a>.
+            Your display name has been changed. Go to <a href="./settings.html">settings</a>?
           </p>
         </div>
       </div>
     </main>
-    <footer>
-      <h2>Quizfreely</h2>
-      <p>
-        Copyright © 2022-present Ehan Ahamed and contributors <br />
-        Licensed under the UPL-1.0 License
-      </p>
-      <a href="./license.html">See License</a>
-      <br />
-      <a href="./privacypolicy.html">See Privacy Policy</a>
-    </footer>
     <script>
       document.getElementById("noscript").style.display = "none";
     </script>
     <script src="https://design.ehan.dev/js/themes.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.29.0"></script>
+    <script src="./js/supabase.js"></script>
+    <script>
+      document
+        .getElementById("mainChangenicknamebutton")
+        .addEventListener("click", function () {
+          supabaseClient.auth
+            .updateUser({
+              options: {
+                data: {
+                  quizfreelyNickname: document.getElementById("mainNicknameinput").value
+                }
+              }
+            })
+            .then(function (result) {
+              if (result.error !== null) {
+                document
+                  .getElementById("mainErrortext")
+                  .classList.remove("hide");
+                document.getElementById("mainDonediv").classList.add("hide");
+                document.getElementById("mainErrortext").innerText =
+                  "Error: " + result.error.message;
+              } else if (result.error === null) {
+                document.getElementById("mainErrortext").classList.add("hide");
+                document
+                  .getElementById("mainDonediv")
+                  .classList.remove("hide");
+              }
+            });
+        });
+    </script>
   </body>
 </html>
