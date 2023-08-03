@@ -192,14 +192,26 @@
             </p>
           </div>
           <div id="mainUserdiv" class="box hide">
-            <p>Signed in as <code id="mainUserUsername">username</code></p>
+            <p>Display name: <code id="mainUserNickname">nickname</code></p>
+            <div id="mainUserEmailless">
+              <p>Username: <code id="mainUserUsername">username</code></p>
+            </div>
+            <div id="mainUserGoogle">
+              <p>Signed in with Google</p>
+              <p>Google account: <code id="mainUserGoogleemail">email</code></p>
+            </div>
             <div class="flex">
-              <button id="mainUserSignoutbutton" class="red">Sign Out</button>
               <a
-                class="button red alt"
-                href="./changepassword.html"
-                >Change Password</a
+                class="button"
+                href="./setdisplayname.html"
+                >Set display name</a
               >
+              <a
+                class="button alt"
+                href="./changepassword.html"
+                >Change password</a
+              >
+              <button id="mainUserSignoutbutton" class="red alt">Sign out</button>
             </div>
           </div>
         </div>
@@ -282,8 +294,19 @@
           newUser: function (isNewUser) {
             if (isNewUser === false) {
               getNickname(function (nickname) {
-                document.getElementById("mainUserUsername").innerText = nickname;
+                document.getElementById("mainUserNickname").innerText = nickname;
               })
+              supabaseClient.auth.getSession().then(function (result) {
+                document.getElementById("mainUserUsername").innerText =
+                  result.data.session.user.email.replace("quizfreelyuser", "").replace("@ehan.dev", "")
+                if (result.data.session.user.app_metadata.provider === "email") {
+                  document.getElementById("mainUserEmailless").classList.remove("hide");
+                  document.getElementById("mainUserGoogle").classList.add("hide");
+                } else if (result.data.session.user.app_metadata.provider === "google") {
+                  document.getElementById("mainUserEmailless").classList.add("hide");
+                  document.getElementById("mainUserGoogle").classList.remove("hide");
+                }
+              });
             }
           },
         },
