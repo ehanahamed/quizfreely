@@ -154,10 +154,8 @@
         .addEventListener("click", function () {
           supabaseClient.auth
             .updateUser({
-              options: {
-                data: {
-                  quizfreelyNickname: document.getElementById("mainNicknameinput").value
-                }
+              data: {
+                quizfreelyNickname: document.getElementById("mainNicknameinput").value
               }
             })
             .then(function (result) {
