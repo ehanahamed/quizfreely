@@ -200,7 +200,7 @@
               <a class="button" href="./setdisplayname.html"
                 >Set display name</a
               >
-              <a class="button alt" href="./changepassword.html"
+              <a class="button hide" id="mainAccountChangepassword" href="./changepassword.html"
                 >Change password</a
               >
             </div>
@@ -299,6 +299,7 @@
                   document
                     .getElementById("mainUserEmailless")
                     .classList.remove("hide");
+                  document.getElementById("mainAccountChangepassword").add("hide")
                   document
                     .getElementById("mainUserGoogle")
                     .classList.add("hide");
@@ -312,6 +313,7 @@
                   document
                     .getElementById("mainUserEmailless")
                     .classList.add("hide");
+                  document.getElementById("mainAccountChangepassword").remove("hide")
                   document
                     .getElementById("mainUserGoogle")
                     .classList.remove("hide");
