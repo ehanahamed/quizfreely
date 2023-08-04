@@ -446,6 +446,15 @@
                             .eq("name", thisName)
                             .then(
                               function () {
+                                /*
+                                  here we delete from studyset table
+                                  AFTER we delete from explore
+                                  (which is why this is in a .then())
+                                  
+                                  because we need to get the name from studyset table
+                                  to be able to delete from explore table
+                                  if we delete from studyset first, we cant delete from explore anymore
+                                */
                                 supabaseClient
                                   .from("studyset")
                                   .delete()
