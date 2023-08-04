@@ -595,6 +595,23 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.29.0"></script>
     <script src="./js/supabase.js"></script>
     <script>
+      /* functionality of studySetIsCopy buttons below */
+      ui.elements.edit.studySetIsCopyButtons.update.addEventListener(
+        "click",
+        function () {
+          /* code here is also (1) */
+          /* updateStudySet() & isStudySetCopy() are in js/supabase.js */
+          updateStudySet();
+          studySet.open();
+          ui.elements.edit.studySetIsCopy.classList.add("hide");
+        }
+      );
+      ui.elements.edit.studySetIsCopyButtons.back.addEventListener(
+        "click",
+        function () {
+          ui.elements.edit.studySetIsCopy.classList.add("hide");
+        }
+      );
       /*
       Make download button also hide the modal when clicked (just like save to acc button)
       */

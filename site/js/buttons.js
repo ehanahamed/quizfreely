@@ -36,22 +36,6 @@ var buttons = {
       isStudySetCopy(sessionData.studySetData.name, function (isStudySetCopy) {
         if (isStudySetCopy === true) {
           ui.elements.edit.studySetIsCopy.classList.remove("hide");
-          ui.elements.edit.studySetIsCopyButtons.update.addEventListener(
-            "click",
-            function () {
-              /* code here is also (1) */
-              /* updateStudySet() & isStudySetCopy() are in js/supabase.js */
-              updateStudySet();
-              studySet.open();
-              ui.elements.edit.studySetIsCopy.classList.add("hide");
-            }
-          );
-          ui.elements.edit.studySetIsCopyButtons.back.addEventListener(
-            "click",
-            function () {
-              ui.elements.edit.studySetIsCopy.classList.add("hide");
-            }
-          );
         } else if (isStudySetCopy === false) {
           /* is also here (1) */
           studySet.open();
