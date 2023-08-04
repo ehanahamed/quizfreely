@@ -43,6 +43,7 @@ var buttons = {
               /* updateStudySet() & isStudySetCopy() are in js/supabase.js */
               updateStudySet();
               studySet.open();
+              ui.elements.edit.studySetIsCopy.classList.add("hide");
             }
           );
           ui.elements.edit.studySetIsCopyButtons.back.addEventListener(
