@@ -53,16 +53,45 @@ function updateStudySet() {
       console.log(result);
     });
   if (sessionData.studySetData.settings.public === true) {
+    supabaseClient.auth.getUser().then(function (result) {
+      userId = result.data.user.id;
+    });
+
     supabaseClient
       .from("explore")
-      .update({ json: sessionData.studySetData })
+      .select()
+      .eq("user_id", userId)
       .eq("name", sessionData.studySetData.name)
-      .then(function (result) {
-        console.log(
-          "ran update() to explore on " + sessionData.studySetData.name + " with result:"
-        );
-        console.log(result);
-      });
+      .then(
+        function (result) {
+          if (result.data.length === 0) {
+            supabaseClient
+              .from("explore")
+              .insert({
+                user_id: userId,
+                name: sessionData.studySetData.name,
+                json: sessionData.studySetData,
+              })
+              .then(function (result) {
+                console.log(
+                  "ran insert() to explore table on " + sessionData.studySetData.name + " with result:"
+                );
+                console.log(result);
+              });
+          } else {
+            supabaseClient
+              .from("explore")
+              .update({ json: sessionData.studySetData })
+              .eq("name", sessionData.studySetData.name)
+              .then(function (result) {
+                console.log(
+                  "ran update() to explore on " + sessionData.studySetData.name + " with result:"
+                );
+                console.log(result);
+              });
+          }
+        }
+      )
   } else {
     /* if its not public in settings, but the set is in explore from a previous save, delete it from explore */
     supabaseClient
