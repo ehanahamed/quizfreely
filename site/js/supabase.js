@@ -63,6 +63,19 @@ function updateStudySet() {
         );
         console.log(result);
       });
+  } else {
+    /* if its not public in settings, but the set is in explore from a previous save, delete it from explore */
+    supabaseClient
+      .from("explore")
+      .delete()
+      .eq("user_id", userId)
+      .eq("name", sessionData.studySetData.name)
+      .then(function (result) {
+        console.log(
+          "study set settings changed to private so, ran delete() to explore table on " + sessionData.studySetData.name + " with result:"
+        );
+        console.log(result);
+      });
   }
 }
 
