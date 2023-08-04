@@ -436,10 +436,7 @@
                       .from("studyset")
                       .delete()
                       .eq("id", thisId)
-                      .then(function (result) {
-                        console.log("ran delete() to studyset table with result:")
-                        console.log(result);
-                      });
+                      .then();
                     supabaseClient
                       .from("studyset")
                       .select()
@@ -495,12 +492,7 @@
                   name: sessionData.studySetData.name,
                   json: sessionData.studySetData,
                 })
-                .then(function (result) {
-                  console.log(
-                    "ran insert() to explore table on " + sessionData.studySetData.name + " with result:"
-                  );
-                  console.log(result);
-                });
+                .then();
               } else {
                 /* if its not public in settings, but the set is in explore from a previous save, delete it from explore */
                 supabaseClient
@@ -508,12 +500,7 @@
                   .delete()
                   .eq("user_id", userId)
                   .eq("name", sessionData.studySetData.name)
-                  .then(function (result) {
-                    console.log(
-                      "study set settings changed to private so, ran delete() to explore table on " + sessionData.studySetData.name + " with result:"
-                    );
-                    console.log(result);
-                  });
+                  .then();
               }
           });
       }

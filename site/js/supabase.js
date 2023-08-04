@@ -42,17 +42,11 @@ function isStudySetCopy(studySetName, returnFunction) {
 }
 
 function updateStudySet() {
-  console.log("updateStudySet() was ran");
   supabaseClient
     .from("studyset")
     .update({ json: sessionData.studySetData })
     .eq("name", sessionData.studySetData.name)
-    .then(function (result) {
-      console.log(
-        "ran update() to studyset on " + sessionData.studySetData.name + " with result:"
-      );
-      console.log(result);
-    });
+    .then();
   if (sessionData.studySetData.settings.public === true) {
     supabaseClient.auth.getUser().then(function (result) {
       userId = result.data.user.id;
@@ -73,23 +67,13 @@ function updateStudySet() {
                 name: sessionData.studySetData.name,
                 json: sessionData.studySetData,
               })
-              .then(function (result) {
-                console.log(
-                  "ran insert() to explore table on " + sessionData.studySetData.name + " with result:"
-                );
-                console.log(result);
-              });
+              .then();
           } else {
             supabaseClient
               .from("explore")
               .update({ json: sessionData.studySetData })
               .eq("name", sessionData.studySetData.name)
-              .then(function (result) {
-                console.log(
-                  "ran update() to explore on " + sessionData.studySetData.name + " with result:"
-                );
-                console.log(result);
-              });
+              .then();
           }
         }
       )
@@ -100,12 +84,7 @@ function updateStudySet() {
       .delete()
       .eq("user_id", userId)
       .eq("name", sessionData.studySetData.name)
-      .then(function (result) {
-        console.log(
-          "study set settings changed to private so, ran delete() to explore table on " + sessionData.studySetData.name + " with result:"
-        );
-        console.log(result);
-      });
+      .then();
   }
 }
 
