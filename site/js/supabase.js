@@ -48,10 +48,22 @@ function updateStudySet() {
     .eq("name", sessionData.studySetData.name)
     .then(function (result) {
       console.log(
-        "ran update() on " + sessionData.studySetData.name + "with result:"
+        "ran update() to studyset on " + sessionData.studySetData.name + " with result:"
       );
       console.log(result);
     });
+  if (sessionData.studySetData.settings.public === true) {
+    supabaseClient
+      .from("explore")
+      .update({ json: sessionData.studySetData })
+      .eq("name", sessionData.studySetData.name)
+      .then(function (result) {
+        console.log(
+          "ran update() to explore on " + sessionData.studySetData.name + " with result:"
+        );
+        console.log(result);
+      });
+  }
 }
 
 function getNickname(returnFunction) {

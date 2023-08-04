@@ -309,29 +309,31 @@
                 </tr>
               </tbody>
             </table>
-            <div class="radio">
-              <input
-                type="radio"
-                name="public"
-                id="publicFalse"
-                checked="true"
-              />
-              <label for="publicFalse"
-                >Private
-                <span class="bg3"
-                  >(Visible to you and anyone you give the downloadable file
-                  to)</span
-                ></label
-              >
-            </div>
-            <div class="radio">
-              <input type="radio" name="public" id="publicTrue" />
-              <label for="publicTrue"
-                >Public
-                <span class="bg3"
-                  >(Visible to everyone, can only be edited by you)</span
-                ></label
-              >
+            <div id="mainEditSettingsPublic">
+              <div class="radio">
+                <input
+                  type="radio"
+                  name="public"
+                  id="publicFalse"
+                  checked="true"
+                />
+                <label for="publicFalse"
+                  >Private
+                  <span class="bg3"
+                    >(Visible to you and anyone you give the downloadable file
+                    to)</span
+                  ></label
+                >
+              </div>
+              <div class="radio">
+                <input type="radio" name="public" id="publicTrue" />
+                <label for="publicTrue"
+                  >Public
+                  <span class="bg3"
+                    >(Visible to everyone, can only be edited by you)</span
+                  ></label
+                >
+              </div>
             </div>
             <button id="buttonEditDone" onclick="buttons.edit.done()">
               <i class="nf nf-oct-check"></i>
@@ -470,6 +472,21 @@
                     .classList.remove("hide");
                 }
               });
+              if (sessionData.studySetData.settings.public === true) {
+                supabaseClient
+                .from("explore")
+                .insert({
+                  user_id: userId,
+                  name: sessionData.studySetData.name,
+                  json: sessionData.studySetData,
+                })
+                .then(function (result) {
+                  console.log(
+                    "ran insert() to explore table on " + sessionData.studySetData.name + " with result:"
+                  );
+                  console.log(result);
+                });
+              }
           });
       }
     </script>
@@ -540,6 +557,7 @@
             user: [
               document.getElementById("mainDashboardUserdiv"),
               document.getElementById("mainOpenActionsSaveUserdiv"),
+              document.getElementById("mainEditSettingsPublic")
             ],
           },
         },
