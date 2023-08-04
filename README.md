@@ -1,6 +1,6 @@
 TODO NOW:
 
-- make dashboard's delete button also delete from explore table
+- make dashboard's delete button NOT reload, reset some other way
 - clean up code
   - make sure eventListners are not created multiple times
   - decide order of script tags
