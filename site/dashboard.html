@@ -434,11 +434,6 @@
                       ].id
                     supabaseClient
                       .from("studyset")
-                      .delete()
-                      .eq("id", thisId)
-                      .then();
-                    supabaseClient
-                      .from("studyset")
                       .select()
                       .eq("id", thisId)
                       .then(
@@ -450,8 +445,16 @@
                             .eq("user_id", userId)
                             .eq("name", thisName)
                             .then(
-                              function (result) {
-                                location.reload();
+                              function () {
+                                supabaseClient
+                                  .from("studyset")
+                                  .delete()
+                                  .eq("id", thisId)
+                                  .then(
+                                    function () {
+                                      location.reload();
+                                    }
+                                  );
                               }
                             )
                         }
