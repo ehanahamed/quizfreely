@@ -33,14 +33,17 @@ var buttons = {
       edit.save();
       /* line below saves settings into the json after edit.save() updates the json */
       sessionData.studySetData.settings = studySet.getSettings();
-      isStudySetCopy(sessionData.studySetData.name, function (isStudySetCopy) {
+      isStudySetCopy(sessionData.studySetData.name, function (isStudySetCopy, isStudySetChanged) {
         if (isStudySetCopy === true) {
-          ui.elements.edit.studySetIsCopy.classList.remove("hide");
+          if (isStudySetChanged === true) {
+            ui.elements.edit.studySetIsCopy.classList.remove("hide");
+          } else if (isStudySetChanged === false) {
+            studySet.open();
+            document.getElementById("mainActionsSave").classList.add("hide");
+          }
         } else if (isStudySetCopy === false) {
-          /* is also here (1) */
-          studySet.open();
-          /* NOT including next line (1) */
-          document.getElementById("mainActionsSave").classList.remove("hide");
+            studySet.open();
+            document.getElementById("mainActionsSave").classList.remove("hide");
         }
       });
     },

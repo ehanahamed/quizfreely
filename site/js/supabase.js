@@ -21,7 +21,10 @@ if (typeof states !== "undefined") {
   });
 }
 
-function isStudySetCopy(studySetName, returnFunction) {
+function isStudySetCopy(studySetName, studySetData, returnFunction) {
+  /*
+    returnFunction(isStudySetCopy, isStudySetChanged)
+  */
   supabaseClient.auth.getSession().then(function (result) {
     if (result.data.session === null) {
       returnFunction(false);
@@ -33,8 +36,12 @@ function isStudySetCopy(studySetName, returnFunction) {
         .then(function (result) {
           if (result.data.length === 0) {
             returnFunction(false);
-          } else if (result.data.length > 0) {
-            returnFunction(true);
+          } else {
+            if (JSON.stringify(result.data[0].json) == JSON.stringify(studySetData)) {
+              returnFunction(true, false);
+            } else {
+              returnFunction(true, true);
+            }
           }
         });
     }
