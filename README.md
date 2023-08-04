@@ -1,6 +1,8 @@
 TODO NOW:
 
+- make dashboard's delete button also delete from explore table
 - clean up code
+  - make sure eventListners are not created multiple times
   - decide order of script tags
 - homepage/index.html
   - add "its effective" section explaining how quizfreelys thingies are "backed by science"
@@ -18,7 +20,7 @@ TODO NOW:
 
 TODO
 
-- ~~remove "change passwd" button for non-email/googleapi accounts~~ outdated, Quizfreely does not use email-sign-in anymore
+- remove "change passwd" button for non-email/googleapi accounts
 - **_create VS make in source code_**
 - **_studyset title vs studyset name in source code_**
 - **camelCase** it
