@@ -260,16 +260,6 @@
             </div>
             <h2>Edit</h2>
             <input id="mainEditName" type="text" placeholder="Title" />
-            <div class="box">
-              <div class="radio">
-                <input type="radio" name="public" id="publicFalse" checked="true"/>
-                <label for="publicFalse">Private <span class="bg3">(Visible to you and anyone you give the downloadable file to)</span></label>
-              </div>
-              <div class="radio">
-                <input type="radio" name="public" id="publicTrue" />
-                <label for="publicTrue">Public <span class="bg3">(Visible to everyone, can only be edited by you)</span></label>
-              </div>
-            </div>
             <table id="mainEditTable">
               <!--
                 IMPORTANT:
@@ -291,14 +281,6 @@
                         <i class="nf nf-oct-plus"></i>
                         Add row
                       </button>
-                      <button
-                        id="buttonEditDone"
-                        class="alt"
-                        onclick="buttons.edit.done()"
-                      >
-                        <i class="nf nf-oct-check"></i>
-                        Done
-                      </button>
                     </div>
                   </td>
                   <td></td>
@@ -306,6 +288,21 @@
                 </tr>
               </tbody>
             </table>
+            <div class="radio">
+              <input type="radio" name="public" id="publicFalse" checked="true"/>
+              <label for="publicFalse">Private <span class="bg3">(Visible to you and anyone you give the downloadable file to)</span></label>
+            </div>
+            <div class="radio">
+              <input type="radio" name="public" id="publicTrue" />
+              <label for="publicTrue">Public <span class="bg3">(Visible to everyone, can only be edited by you)</span></label>
+            </div>
+            <button
+                        id="buttonEditDone"
+                        onclick="buttons.edit.done()"
+                      >
+                        <i class="nf nf-oct-check"></i>
+                        Done
+                      </button>
           </div>
         </div>
       </div>
