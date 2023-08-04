@@ -42,6 +42,7 @@ function isStudySetCopy(studySetName, returnFunction) {
 }
 
 function updateStudySet() {
+  console.log("updateStudySet() was ran");
   supabaseClient
     .from("studyset")
     .update({ json: sessionData.studySetData })
