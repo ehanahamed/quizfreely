@@ -90,4 +90,9 @@ var studySet = {
       "<thead> <tr> <th class='center'>Term</th> <th class='center'>Definition</th> <th class='center'>Actions</th> </tr> </thead> <tbody> <tr> <td> <div class='flex'> <button onclick='buttons.edit.add();'> <i class='nf nf-oct-plus'></i> Add row </button> </div> </td> <td></td> <td></td> </tr> </tbody>";
     /* IMPORTANT: the string above has the inner html of the table found in dashboard.html */
   },
+  getSettings: function () {
+    return {
+      public: (document.querySelector('input[name="public"]:checked').id === "publicTrue")
+    };
+  }
 };

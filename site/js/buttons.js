@@ -31,6 +31,8 @@ var buttons = {
     done: function () {
       /* the snippet below usually has sessionData.studySetData = ..., in this case, that line is in edit.js's edit.save() funciton, which is called/ran below */
       edit.save();
+      /* line below saves settings into the json after edit.save() updates the json */
+      sessionData.studySetData.settings = studySet.getSettings();
       isStudySetCopy(sessionData.studySetData.name, function (isStudySetCopy) {
         if (isStudySetCopy === true) {
           ui.elements.edit.studySetIsCopy.classList.remove("hide");
