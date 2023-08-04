@@ -213,25 +213,34 @@
             document.getElementById("mainSignupRetypepasswordinput").value
           ) {
             if (
-              /^[a-z0-9._-]+$/.test(document.getElementById("mainSignupUsernameinput").value) === true
+              /^[a-z0-9._-]+$/.test(
+                document.getElementById("mainSignupUsernameinput").value
+              ) === true
             ) {
               supabaseClient.auth
                 .signUp({
-                  email: "quizfreelyuser" + document.getElementById("mainSignupUsernameinput").value + "@ehan.dev",
+                  email:
+                    "quizfreelyuser" +
+                    document.getElementById("mainSignupUsernameinput").value +
+                    "@ehan.dev",
                   password: document.getElementById("mainSignupPasswordinput")
                     .value,
                   options: {
                     data: {
-                      quizfreelyNickname: document.getElementById("mainSignupUsernameinput").value,
-                    }
-                  }
+                      quizfreelyNickname: document.getElementById(
+                        "mainSignupUsernameinput"
+                      ).value,
+                    },
+                  },
                 })
                 .then(function (result) {
                   if (result.error !== null) {
                     document
                       .getElementById("mainSignupErrortext")
                       .classList.remove("hide");
-                    document.getElementById("mainDonediv").classList.add("hide");
+                    document
+                      .getElementById("mainDonediv")
+                      .classList.add("hide");
                     document.getElementById("mainSignupErrortext").innerText =
                       "Error: " + result.error.message;
                   } else if (result.error === null) {
@@ -244,7 +253,9 @@
                   }
                 });
             } else if (
-              /^[a-zA-Z0-9._-]+$/.test(document.getElementById("mainSignupUsernameinput").value) === false
+              /^[a-zA-Z0-9._-]+$/.test(
+                document.getElementById("mainSignupUsernameinput").value
+              ) === false
             ) {
               document
                 .getElementById("mainSignupErrortext")
@@ -253,11 +264,11 @@
               document.getElementById("mainSignupErrortext").innerHTML =
                 "Usernames can only have:" +
                 "<ul>" +
-                  "<li>lowercase letters</li>" +
-                  "<li>numbers</li>" +
-                  "<li>dots (<code>.</code>)</li>" +
-                  "<li>underscores (<code>_</code>)</li>" +
-                  "<li>hyphens (<code>-</code>)</li>" +
+                "<li>lowercase letters</li>" +
+                "<li>numbers</li>" +
+                "<li>dots (<code>.</code>)</li>" +
+                "<li>underscores (<code>_</code>)</li>" +
+                "<li>hyphens (<code>-</code>)</li>" +
                 "</ul>";
             }
           } else {

@@ -26,35 +26,51 @@ function isStudySetCopy(studySetName, returnFunction) {
     if (result.data.session === null) {
       returnFunction(false);
     } else if (result.data.session !== null) {
-      supabaseClient.from("studyset").select().eq("name", studySetName).then(
-        function (result) {
+      supabaseClient
+        .from("studyset")
+        .select()
+        .eq("name", studySetName)
+        .then(function (result) {
           if (result.data.length === 0) {
             returnFunction(false);
           } else if (result.data.length > 0) {
             returnFunction(true);
           }
-        }
-      )
+        });
     }
   });
 }
 
 function updateStudySet() {
-  supabaseClient.from("studyset").update({ json: sessionData.studySetData }).eq("name", sessionData.studySetData.name).then(
-    function (result) {
-      console.log("ran update() on " + sessionData.studySetData.name + "with result:")
+  supabaseClient
+    .from("studyset")
+    .update({ json: sessionData.studySetData })
+    .eq("name", sessionData.studySetData.name)
+    .then(function (result) {
+      console.log(
+        "ran update() on " + sessionData.studySetData.name + "with result:"
+      );
       console.log(result);
-    }
-  )
+    });
 }
 
 function getNickname(returnFunction) {
   supabaseClient.auth.getSession().then(function (result) {
-    if (result.data.session.user.user_metadata.hasOwnProperty("quizfreelyNickname") === true) {
+    if (
+      result.data.session.user.user_metadata.hasOwnProperty(
+        "quizfreelyNickname"
+      ) === true
+    ) {
       returnFunction(result.data.session.user.user_metadata.quizfreelyNickname);
     } else if (result.data.session.user.app_metadata.provider === "email") {
-      returnFunction(result.data.session.user.email.replace("quizfreelyuser", "").replace("@ehan.dev", ""));
-    } else if (result.data.session.user.user_metadata.hasOwnProperty("name") === true) {
+      returnFunction(
+        result.data.session.user.email
+          .replace("quizfreelyuser", "")
+          .replace("@ehan.dev", "")
+      );
+    } else if (
+      result.data.session.user.user_metadata.hasOwnProperty("name") === true
+    ) {
       returnFunction(result.data.session.user.user_metadata.name);
     }
   });

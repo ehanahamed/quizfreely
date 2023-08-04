@@ -28,5 +28,5 @@ var states = {
       /* then run page specific functions */
       ui.states.newUser(isNewUser);
     }
-  }
+  },
 };

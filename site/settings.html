@@ -151,11 +151,7 @@
                 >
               </div>
               <div class="radio">
-                <input
-                  type="radio"
-                  name="theme"
-                  id="mainAppearanceThemeSnow"
-                />
+                <input type="radio" name="theme" id="mainAppearanceThemeSnow" />
                 <label for="mainAppearanceThemeSnow"
                   >Snow <span class="bg3">(default light)</span></label
                 >
@@ -201,14 +197,10 @@
               <p class="bg3">Signed in with Google</p>
             </div>
             <div class="flex">
-              <a
-                class="button"
-                href="./setdisplayname.html"
+              <a class="button" href="./setdisplayname.html"
                 >Set display name</a
               >
-              <a
-                class="button alt"
-                href="./changepassword.html"
+              <a class="button alt" href="./changepassword.html"
                 >Change password</a
               >
             </div>
@@ -296,17 +288,32 @@
           newUser: function (isNewUser) {
             if (isNewUser === false) {
               getNickname(function (nickname) {
-                document.getElementById("mainUserNickname").innerText = nickname;
-              })
+                document.getElementById("mainUserNickname").innerText =
+                  nickname;
+              });
               supabaseClient.auth.getSession().then(function (result) {
-                if (result.data.session.user.app_metadata.provider === "email") {
-                  document.getElementById("mainUserEmailless").classList.remove("hide");
-                  document.getElementById("mainUserGoogle").classList.add("hide");
+                if (
+                  result.data.session.user.app_metadata.provider === "email"
+                ) {
+                  document
+                    .getElementById("mainUserEmailless")
+                    .classList.remove("hide");
+                  document
+                    .getElementById("mainUserGoogle")
+                    .classList.add("hide");
                   document.getElementById("mainUserUsername").innerText =
-                    result.data.session.user.email.replace("quizfreelyuser", "").replace("@ehan.dev", "");
-                } else if (result.data.session.user.app_metadata.provider === "google") {
-                  document.getElementById("mainUserEmailless").classList.add("hide");
-                  document.getElementById("mainUserGoogle").classList.remove("hide");
+                    result.data.session.user.email
+                      .replace("quizfreelyuser", "")
+                      .replace("@ehan.dev", "");
+                } else if (
+                  result.data.session.user.app_metadata.provider === "google"
+                ) {
+                  document
+                    .getElementById("mainUserEmailless")
+                    .classList.add("hide");
+                  document
+                    .getElementById("mainUserGoogle")
+                    .classList.remove("hide");
                   document.getElementById("mainUserGoogleemail").innerText =
                     result.data.session.user.email;
                 }

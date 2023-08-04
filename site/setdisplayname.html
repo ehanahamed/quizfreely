@@ -137,7 +137,8 @@
         <p id="mainErrortext" class="box red hide">Error</p>
         <div id="mainDonediv" class="box green hide">
           <p>
-            Your display name has been changed. Go to <a href="./settings.html">settings</a>?
+            Your display name has been changed. Go to
+            <a href="./settings.html">settings</a>?
           </p>
         </div>
       </div>
@@ -155,8 +156,9 @@
           supabaseClient.auth
             .updateUser({
               data: {
-                quizfreelyNickname: document.getElementById("mainNicknameinput").value
-              }
+                quizfreelyNickname:
+                  document.getElementById("mainNicknameinput").value,
+              },
             })
             .then(function (result) {
               if (result.error !== null) {
@@ -168,9 +170,7 @@
                   "Error: " + result.error.message;
               } else if (result.error === null) {
                 document.getElementById("mainErrortext").classList.add("hide");
-                document
-                  .getElementById("mainDonediv")
-                  .classList.remove("hide");
+                document.getElementById("mainDonediv").classList.remove("hide");
               }
             });
         });

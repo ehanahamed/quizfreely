@@ -197,7 +197,10 @@
         .addEventListener("click", function () {
           supabaseClient.auth
             .signInWithPassword({
-              email: "quizfreelyuser" + document.getElementById("mainSigninUsernameinput").value + "@ehan.dev",
+              email:
+                "quizfreelyuser" +
+                document.getElementById("mainSigninUsernameinput").value +
+                "@ehan.dev",
               password: document.getElementById("mainSigninPasswordinput")
                 .value,
             })

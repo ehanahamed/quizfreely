@@ -12,7 +12,7 @@ var studySet = {
       name: "",
       creator: "",
       settings: {
-        public: false
+        public: false,
       },
       data: [],
     };
@@ -92,7 +92,9 @@ var studySet = {
   },
   getSettings: function () {
     return {
-      public: (document.querySelector('input[name="public"]:checked').id === "publicTrue")
+      public:
+        document.querySelector('input[name="public"]:checked').id ===
+        "publicTrue",
     };
-  }
+  },
 };

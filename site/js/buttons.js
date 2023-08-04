@@ -50,7 +50,7 @@ var buttons = {
             function () {
               ui.elements.edit.studySetIsCopy.classList.add("hide");
             }
-          )
+          );
         } else if (isStudySetCopy === false) {
           /* is also here (1) */
           studySet.open();

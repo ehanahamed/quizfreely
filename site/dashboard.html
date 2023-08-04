@@ -164,7 +164,9 @@
                 <h2>Save changes?</h2>
                 <div id="mainOpenActionsSaveNewuserdiv">
                   <div class="flex">
-                    <a id="mainOpenActionsSaveNewuserExportLocalDownload" class="button alt"
+                    <a
+                      id="mainOpenActionsSaveNewuserExportLocalDownload"
+                      class="button alt"
                       >Download</a
                     >
                     <a href="./dashboard.html" class="button alt red"
@@ -176,7 +178,9 @@
                   <a class="button" id="mainWorkinprogressSavetoaccountbutton"
                     >Save to account</a
                   >
-                  <a id="mainOpenActionsSaveUserExportLocalDownload" class="button alt"
+                  <a
+                    id="mainOpenActionsSaveUserExportLocalDownload"
+                    class="button alt"
                     >Download</a
                   >
                   <a href="./dashboard.html" class="button alt red"
@@ -206,11 +210,17 @@
               <div class="caption">
                 <p id="mainActionsFlashcardoptionsIndex">1/1</p>
                 <div class="flex justifyselfcenter">
-                  <button id="flashcardsPrev" onclick="buttons.flashcards.prev()">
+                  <button
+                    id="flashcardsPrev"
+                    onclick="buttons.flashcards.prev()"
+                  >
                     <i class="nf nf-cod-arrow_left"></i>
                   </button>
                   <button onclick="buttons.flashcards.flip()">Flip</button>
-                  <button id="flashcardsNext" onclick="buttons.flashcards.next()">
+                  <button
+                    id="flashcardsNext"
+                    onclick="buttons.flashcards.next()"
+                  >
                     <i class="nf nf-cod-arrow_right"></i>
                   </button>
                 </div>
@@ -223,7 +233,11 @@
             <!-- Add "this study set is private/public..." thingy here too -->
             <div class="flex">
               <button onclick="buttons.open.edit();">Edit</button>
-              <button onclick="exportLocal.save();ui.elements.open.save.classList.remove('hide');">Save a copy or download</button>
+              <button
+                onclick="exportLocal.save();ui.elements.open.save.classList.remove('hide');"
+              >
+                Save a copy or download
+              </button>
             </div>
             <table class="outer" id="mainActionsTable">
               <!--
@@ -251,9 +265,16 @@
             <div id="mainEditStudySetIsCopy" class="modal hide">
               <div class="content">
                 <h2>¯\_(ツ)_/¯</h2>
-                <p>A study set with this name already exists in your account. <br/> You can update/overwrite the existing copy or go back and rename this copy.</p>
+                <p>
+                  A study set with this name already exists in your account.
+                  <br />
+                  You can update/overwrite the existing copy or go back and
+                  rename this copy.
+                </p>
                 <div class="flex">
-                  <button id="mainEditStudySetIsCopyUpdate">Update existing</button>
+                  <button id="mainEditStudySetIsCopyUpdate">
+                    Update existing
+                  </button>
                   <button id="mainEditStudySetIsCopyBack">Go back</button>
                 </div>
               </div>
@@ -289,20 +310,33 @@
               </tbody>
             </table>
             <div class="radio">
-              <input type="radio" name="public" id="publicFalse" checked="true"/>
-              <label for="publicFalse">Private <span class="bg3">(Visible to you and anyone you give the downloadable file to)</span></label>
+              <input
+                type="radio"
+                name="public"
+                id="publicFalse"
+                checked="true"
+              />
+              <label for="publicFalse"
+                >Private
+                <span class="bg3"
+                  >(Visible to you and anyone you give the downloadable file
+                  to)</span
+                ></label
+              >
             </div>
             <div class="radio">
               <input type="radio" name="public" id="publicTrue" />
-              <label for="publicTrue">Public <span class="bg3">(Visible to everyone, can only be edited by you)</span></label>
+              <label for="publicTrue"
+                >Public
+                <span class="bg3"
+                  >(Visible to everyone, can only be edited by you)</span
+                ></label
+              >
             </div>
-            <button
-                        id="buttonEditDone"
-                        onclick="buttons.edit.done()"
-                      >
-                        <i class="nf nf-oct-check"></i>
-                        Done
-                      </button>
+            <button id="buttonEditDone" onclick="buttons.edit.done()">
+              <i class="nf nf-oct-check"></i>
+              Done
+            </button>
           </div>
         </div>
       </div>
@@ -464,8 +498,12 @@
           },
           links: {
             exportLocal: {
-              newUserDownload: document.getElementById("mainOpenActionsSaveNewuserExportLocalDownload"),
-              userDownload: document.getElementById("mainOpenActionsSaveUserExportLocalDownload")
+              newUserDownload: document.getElementById(
+                "mainOpenActionsSaveNewuserExportLocalDownload"
+              ),
+              userDownload: document.getElementById(
+                "mainOpenActionsSaveUserExportLocalDownload"
+              ),
             },
           },
           alerts: {
@@ -475,15 +513,15 @@
           },
           open: {
             save: document.getElementById("mainActionsSave"),
-            saveDone: document.getElementById("mainOpenSavedone")
+            saveDone: document.getElementById("mainOpenSavedone"),
           },
           edit: {
             table: document.getElementById("mainEditTable"),
             studySetIsCopy: document.getElementById("mainEditStudySetIsCopy"),
             studySetIsCopyButtons: {
               update: document.getElementById("mainEditStudySetIsCopyUpdate"),
-              back: document.getElementById("mainEditStudySetIsCopyBack")
-            }
+              back: document.getElementById("mainEditStudySetIsCopyBack"),
+            },
           },
           flashcards: {
             card: document.getElementById("flashcardsCard"),
@@ -523,12 +561,18 @@
       /*
       Make download button also hide the modal when clicked (just like save to acc button)
       */
-      ui.elements.links.exportLocal.newUserDownload.addEventListener("click", function () {
-        ui.elements.open.save.classList.add("hide");
-      })
-      ui.elements.links.exportLocal.userDownload.addEventListener("click", function () {
-        ui.elements.open.save.classList.add("hide");
-      })
+      ui.elements.links.exportLocal.newUserDownload.addEventListener(
+        "click",
+        function () {
+          ui.elements.open.save.classList.add("hide");
+        }
+      );
+      ui.elements.links.exportLocal.userDownload.addEventListener(
+        "click",
+        function () {
+          ui.elements.open.save.classList.add("hide");
+        }
+      );
     </script>
   </body>
 </html>
