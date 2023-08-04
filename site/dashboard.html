@@ -361,6 +361,9 @@
     </script>
     <script>
       function loadDashboard() {
+        supabaseClient.auth.getUser().then(function (result) {
+          userId = result.data.user.id;
+        });
         supabaseClient
           .from("studyset")
           .select()
@@ -424,30 +427,42 @@
                       "Deletebutton"
                   )
                   .addEventListener("click", function (event) {
+                    var thisId = studysetlist[
+                        event.target.id
+                          .replace("mainDashboardUserStudysetlist", "")
+                          .replace("Deletebutton", "")
+                      ].id
                     supabaseClient
                       .from("studyset")
                       .delete()
-                      .eq(
-                        "id",
-                        studysetlist[
-                          event.target.id
-                            .replace("mainDashboardUserStudysetlist", "")
-                            .replace("Deletebutton", "")
-                        ].id
-                      )
+                      .eq("id", thisId)
                       .then(function (result) {
-                        location.reload();
+                        console.log("ran delete() to studyset table with result:")
+                        console.log(result);
                       });
+                    supabaseClient
+                      .from("studyset")
+                      .select()
+                      .eq("id", thisId)
+                      .then(
+                        function (result) {
+                          var thisName = result.data[0].name;
+                          supabaseClient
+                            .from("explore")
+                            .delete()
+                            .eq("user_id", userId)
+                            .eq("name", thisName)
+                            .then(
+                              function (result) {
+                                location.reload();
+                              }
+                            )
+                        }
+                      )
                   });
               }
             }
           });
-        supabaseClient.auth.getUser().then(function (result) {
-          userId = result.data.user.id;
-        });
-        /*document
-          .getElementById("mainDashboardUserdiv")
-          .classList.remove("hide");*/
         document
           .getElementById("mainWorkinprogressSavetoaccountbutton")
           .addEventListener("click", function () {
