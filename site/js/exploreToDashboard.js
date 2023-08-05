@@ -5,7 +5,7 @@
   https://quizfreely.ehan.dev/license
 */
 
-if (location.pathname.includes("explore") === true) {
+if (location.pathname.includes("studyset") === true) {
   let urlParams = new URLSearchParams(document.location.search);
   let id = urlParams.get("id");
   supabaseClient
