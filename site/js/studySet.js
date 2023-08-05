@@ -58,10 +58,10 @@ var studySet = {
   */
   open: function () {
     /* reset/rehide "i am saved" popup */
-    ui.elements.open.saveDone.classList.add("hide");
+    document.getElementById(ui.elements.open.saveDone).classList.add("hide");
     /* IMPORTANT: line below clears the old data from table before displaying data in it */
     document.getElementById("mainActionsTable").innerHTML =
-      "<thead> <tr> <th>Term</th> <th>Definition</th> </tr> </thead> <tbody> <tr> <td> <button id='mainOpenTableEditbutton' onclick='buttons.open.edit();'>Edit</button> <button id='mainOpenTableCopybutton' onclick='exportLocal.save();ui.elements.open.save.classList.remove('hide');'> Save or download a copy </button> </td> <td></td> </tr> </tbody>";
+      "<thead> <tr> <th>Term</th> <th>Definition</th> </tr> </thead> <tbody> <tr> <td> <button id='mainOpenTableEditbutton' onclick='buttons.open.edit();'>Edit</button> <button id='mainOpenTableCopybutton' onclick='exportLocal.save();document.getElementById(ui.elements.open.save).classList.remove('hide');'> Save or download a copy </button> </td> <td></td> </tr> </tbody>";
     /*
       IMPORTANT: the string above has the inner html of a table found in dashboard.html
       if the HTML of the table is updated there, update it here too!
@@ -86,10 +86,10 @@ var studySet = {
       to prevent this,
       the code below clears/resets the table
     */
-    ui.elements.edit.table.innerHTML =
+      document.getElementById(ui.elements.edit.table).innerHTML =
       "<thead> <tr> <th class='center'>Term</th> <th class='center'>Definition</th> <th class='center'>Actions</th> </tr> </thead> <tbody> <tr> <td> <div class='flex'> <button onclick='buttons.edit.add();'> <i class='nf nf-oct-plus'></i> Add row </button> </div> </td> <td></td> <td></td> </tr> </tbody>";
     /* IMPORTANT: the string above has the inner html of the table found in dashboard.html */
-    ui.elements.edit.settings.public.true.checked =
+    document.getElementById(ui.elements.edit.settings.public.true).checked =
       sessionData.studySetData.settings.public;
     /* HTMLs were changed/reset above, so make sure states are applied to them */
     states.newUser(states.current.isNewUser);
@@ -97,7 +97,7 @@ var studySet = {
   },
   getSettings: function () {
     return {
-      public: ui.elements.edit.settings.public.true.checked === true,
+      public: document.getElementById(ui.elements.edit.settings.public.true).checked === true,
     };
   },
 };

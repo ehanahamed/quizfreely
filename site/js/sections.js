@@ -7,9 +7,9 @@
 
 var sections = {
   changeTo: function (section) {
-    ui.elements.sections.dashboard.classList.add("hide");
-    ui.elements.sections.open.classList.add("hide");
-    ui.elements.sections.edit.classList.add("hide");
-    ui.elements.sections[section].classList.remove("hide");
+    document.getElementById(ui.elements.sections.dashboard).classList.add("hide");
+    document.getElementById(ui.elements.sections.open).classList.add("hide");
+    document.getElementById(ui.elements.sections.edit).classList.add("hide");
+    document.getElementById(ui.elements.sections[section]).classList.remove("hide");
   },
 };

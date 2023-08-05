@@ -239,7 +239,7 @@
                 Edit
               </button>
               <button
-                onclick="exportLocal.save();ui.elements.open.save.classList.remove('hide');"
+                onclick="exportLocal.save();document.getElementById(ui.elements.open.save).classList.remove('hide');"
               >
                 Save or download a copy
               </button>
@@ -260,7 +260,7 @@
                 <tr>
                   <td>
                     <button id="mainOpenTableEditbutton" onclick="buttons.open.edit();">Edit</button>
-                    <button id="mainOpenTableCopybutton" onclick="exportLocal.save();ui.elements.open.save.classList.remove('hide');">
+                    <button id="mainOpenTableCopybutton" onclick="exportLocal.save();document.getElementById(ui.elements.open.save).classList.remove('hide');">
                       Save or download a copy
                     </button>
                   </td>
@@ -488,13 +488,13 @@
               })
               .then(function (result) {
                 if (result.status === 201) {
-                  ui.elements.open.saveDone.classList.remove("hide");
-                  ui.elements.open.save.classList.add("hide");
+                  document.getElementById(ui.elements.open.saveDone).classList.remove("hide");
+                  document.getElementById(ui.elements.open.save).classList.add("hide");
                   document
                     .getElementById("mainSaveClouderror")
                     .classList.add("hide");
                 } else if (result.status !== 201) {
-                  ui.elements.open.saveDone.classList.add("hide");
+                  document.getElementById(ui.elements.open.saveDone).classList.add("hide");
                   document
                     .getElementById("mainSaveClouderror")
                     .classList.remove("hide");
@@ -526,76 +526,74 @@
       var ui = {
         elements: {
           sections: {
-            dashboard: document.getElementById("mainDashboarddiv"),
-            open: document.getElementById("mainOpendiv"),
-            edit: document.getElementById("mainEditdiv"),
+            dashboard: "mainDashboarddiv",
+            open: "mainOpendiv",
+            edit: "mainEditdiv",
             /* flashcards: document.getElementById("sectionFlashcards"), */
           },
           buttons: {
-            create: document.getElementById("mainDashboardCreate"),
-            importOptions: document.getElementById("buttonImportOptions"),
+            create: "mainDashboardCreate",
+            importOptions: "buttonImportOptions",
           },
           inputs: {
             importLocal: {
-              file: document.getElementById("inputImportLocalFile"),
+              file: "inputImportLocalFile",
             },
             edit: {
-              name: document.getElementById("mainEditName"),
-              table: document.getElementById("mainEditTable"),
+              name: "mainEditName",
+              table: "mainEditTable",
             },
           },
           links: {
             exportLocal: {
-              newUserDownload: document.getElementById(
-                "mainOpenActionsSaveNewuserExportLocalDownload"
-              ),
-              userDownload: document.getElementById(
+              newUserDownload: "mainOpenActionsSaveNewuserExportLocalDownload",
+              userDownload: 
                 "mainOpenActionsSaveUserExportLocalDownload"
-              ),
+              ,
             },
           },
           alerts: {
-            successImport: document.getElementById("alertSuccessImport"),
-            errorImport: document.getElementById("alertErrorImport"),
-            flashcardsEnd: document.getElementById("alertFlashcardsEnd"),
+            successImport: "alertSuccessImport",
+            errorImport: "alertErrorImport",
+            flashcardsEnd: "alertFlashcardsEnd",
           },
           open: {
-            save: document.getElementById("mainActionsSave"),
-            saveDone: document.getElementById("mainOpenSavedone"),
+            save: "mainActionsSave",
+            saveDone: "mainOpenSavedone",
           },
           edit: {
-            table: document.getElementById("mainEditTable"),
+            table: "mainEditTable",
             settings: {
               public: {
-                true: document.getElementById("publicTrue"),
-                false: document.getElementById("publicFalse"),
+                true: "publicTrue",
+                false: "publicFalse",
               },
             },
-            studySetIsCopy: document.getElementById("mainEditStudySetIsCopy"),
+            studySetIsCopy: "mainEditStudySetIsCopy",
             studySetIsCopyButtons: {
-              update: document.getElementById("mainEditStudySetIsCopyUpdate"),
-              back: document.getElementById("mainEditStudySetIsCopyBack"),
+              update: "mainEditStudySetIsCopyUpdate",
+              back: "mainEditStudySetIsCopyBack",
             },
           },
           flashcards: {
-            card: document.getElementById("flashcardsCard"),
-            content: document.getElementById("flashcardsContent"),
-            front: document.getElementById("flashcardsFront"),
-            back: document.getElementById("flashcardsBack"),
+            card: "flashcardsCard",
+            content: "flashcardsContent",
+            front: "flashcardsFront",
+            back: "flashcardsBack",
           },
           states: {
-            newUser: [document.getElementById("mainOpenActionsSaveNewuserdiv")],
+            newUser: ["mainOpenActionsSaveNewuserdiv"],
             user: [
-              document.getElementById("mainDashboardUserdiv"),
-              document.getElementById("mainOpenActionsSaveUserdiv"),
-              document.getElementById("mainEditSettingsPublic"),
+              "mainDashboardUserdiv",
+              "mainOpenActionsSaveUserdiv",
+              "mainEditSettingsPublic",
             ],
             setIsMine: [
-              document.getElementById("mainOpenEditbutton"),
-              document.getElementById("mainOpenTableEditbutton")
+              "mainOpenEditbutton",
+              "mainOpenTableEditbutton"
             ],
             setIsNotMine: [
-              document.getElementById("mainOpenTableCopybutton")
+              "mainOpenTableCopybutton"
             ]
           },
         },
@@ -622,34 +620,34 @@
     <script src="./js/exploreToDashboard.js"></script>
     <script>
       /* functionality of studySetIsCopy buttons below */
-      ui.elements.edit.studySetIsCopyButtons.update.addEventListener(
+      document.getElementById(ui.elements.edit.studySetIsCopyButtons.update).addEventListener(
         "click",
         function () {
           /* updateStudySet() & isStudySetCopy() are in js/supabase.js */
           updateStudySet();
           studySet.open();
-          ui.elements.edit.studySetIsCopy.classList.add("hide");
+          document.getElementById(ui.elements.edit.studySetIsCopy).classList.add("hide");
         }
       );
-      ui.elements.edit.studySetIsCopyButtons.back.addEventListener(
+      document.getElementById(ui.elements.edit.studySetIsCopyButtons.back).addEventListener(
         "click",
         function () {
-          ui.elements.edit.studySetIsCopy.classList.add("hide");
+          document.getElementById(ui.elements.edit.studySetIsCopy).classList.add("hide");
         }
       );
       /*
       Make download button also hide the modal when clicked (just like save to acc button)
       */
-      ui.elements.links.exportLocal.newUserDownload.addEventListener(
+      document.getElementById(ui.elements.links.exportLocal.newUserDownload).addEventListener(
         "click",
         function () {
-          ui.elements.open.save.classList.add("hide");
+          document.getElementById(ui.elements.open.save).classList.add("hide");
         }
       );
-      ui.elements.links.exportLocal.userDownload.addEventListener(
+      document.getElementById(ui.elements.links.exportLocal.userDownload).addEventListener(
         "click",
         function () {
-          ui.elements.open.save.classList.add("hide");
+          document.getElementById(ui.elements.open.save).classList.add("hide");
         }
       );
     </script>
