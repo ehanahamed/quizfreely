@@ -61,7 +61,7 @@ var studySet = {
     ui.elements.open.saveDone.classList.add("hide");
     /* IMPORTANT: line below clears the old data from table before displaying data in it */
     document.getElementById("mainActionsTable").innerHTML =
-      "<thead> <tr> <th>Term</th> <th>Definition</th> </tr> </thead> <tbody> <tr> <td> <button onclick='buttons.open.edit();'> Edit </button> </td> <td></td> </tr> </tbody>";
+      "<thead> <tr> <th>Term</th> <th>Definition</th> </tr> </thead> <tbody> <tr> <td> <button id='mainOpenTableEditbutton' onclick='buttons.open.edit();'>Edit</button> <button id='mainOpenTableCopybutton' onclick='exportLocal.save();ui.elements.open.save.classList.remove('hide');'> Save or download a copy </button> </td> <td></td> </tr> </tbody>";
     /*
       IMPORTANT: the string above has the inner html of a table found in dashboard.html
       if the HTML of the table is updated there, update it here too!

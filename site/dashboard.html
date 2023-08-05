@@ -238,10 +238,10 @@
               <button id="mainOpenEditbutton" onclick="buttons.open.edit();">
                 Edit
               </button>
-              <button id="mainOpenCopybutton"
+              <button
                 onclick="exportLocal.save();ui.elements.open.save.classList.remove('hide');"
               >
-                Save a copy or download
+                Save or download a copy
               </button>
             </div>
             <table class="outer" id="mainActionsTable">
@@ -592,7 +592,6 @@
             ],
             setIsMine: [
               document.getElementById("mainOpenEditbutton"),
-              document.getElementById("mainOpenCopybutton"),
               document.getElementById("mainOpenTableEditbutton")
             ],
             setIsNotMine: [
