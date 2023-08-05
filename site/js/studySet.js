@@ -74,7 +74,7 @@ var studySet = {
     for (var i = 0; i < sessionData.studySetData.data.length; i++) {
       var newRow = document
         .getElementById("mainActionsTable")
-        .insertRow(document.getElementById("mainActionsTable").rows.length - 1);
+        .insertRow();
       newRow.insertCell(0).innerText = sessionData.studySetData.data[i][0];
       newRow.insertCell(1).innerText = sessionData.studySetData.data[i][1];
     }
