@@ -235,7 +235,9 @@
             </p>
             <!-- Add "this study set is private/public..." thingy here too -->
             <div class="flex">
-              <button id="mainOpenEditbutton" onclick="buttons.open.edit();">Edit</button>
+              <button id="mainOpenEditbutton" onclick="buttons.open.edit();">
+                Edit
+              </button>
               <button
                 onclick="exportLocal.save();ui.elements.open.save.classList.remove('hide');"
               >
@@ -587,8 +589,8 @@
             ],
             setIsMine: [
               document.getElementById("mainOpenEditbutton"),
-              document.getElementById("mainOpenTableEditbutton")
-            ]
+              document.getElementById("mainOpenTableEditbutton"),
+            ],
           },
         },
         states: {
