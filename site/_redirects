@@ -1,2 +1,3 @@
-/home  /     200
-/*     /404  404
+/home       /           200
+/explore/*  /dashboard  200
+/*          /404        404
