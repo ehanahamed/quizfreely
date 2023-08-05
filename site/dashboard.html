@@ -9,7 +9,10 @@
 
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=10, user-scalable=1" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=10, user-scalable=1"
+    />
     <title>Quizfreely</title>
     <link rel="canonical" href="https://quizfreely.ehan.dev" />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
@@ -145,8 +148,8 @@
             </div>
             <div id="mainDashboardUserdiv" class="hide">
               <p>
-                You are signed in. Study sets saved to your account are
-                shown below.
+                You are signed in. Study sets saved to your account are shown
+                below.
               </p>
               <div
                 id="mainDashboardUserStudysetlistdiv"
@@ -428,26 +431,25 @@
                       "Deletebutton"
                   )
                   .addEventListener("click", function (event) {
-                    var thisId = studysetlist[
+                    var thisId =
+                      studysetlist[
                         event.target.id
                           .replace("mainDashboardUserStudysetlist", "")
                           .replace("Deletebutton", "")
-                      ].id
+                      ].id;
                     supabaseClient
                       .from("studyset")
                       .select()
                       .eq("id", thisId)
-                      .then(
-                        function (result) {
-                          var thisName = result.data[0].name;
-                          supabaseClient
-                            .from("explore")
-                            .delete()
-                            .eq("user_id", userId)
-                            .eq("name", thisName)
-                            .then(
-                              function () {
-                                /*
+                      .then(function (result) {
+                        var thisName = result.data[0].name;
+                        supabaseClient
+                          .from("explore")
+                          .delete()
+                          .eq("user_id", userId)
+                          .eq("name", thisName)
+                          .then(function () {
+                            /*
                                   here we delete from studyset table
                                   AFTER we delete from explore
                                   (which is why this is in a .then())
@@ -456,19 +458,15 @@
                                   to be able to delete from explore table
                                   if we delete from studyset first, we cant delete from explore anymore
                                 */
-                                supabaseClient
-                                  .from("studyset")
-                                  .delete()
-                                  .eq("id", thisId)
-                                  .then(
-                                    function () {
-                                      location.reload();
-                                    }
-                                  );
-                              }
-                            )
-                        }
-                      )
+                            supabaseClient
+                              .from("studyset")
+                              .delete()
+                              .eq("id", thisId)
+                              .then(function () {
+                                location.reload();
+                              });
+                          });
+                      });
                   });
               }
             }
@@ -497,8 +495,8 @@
                     .classList.remove("hide");
                 }
               });
-              if (sessionData.studySetData.settings.public === true) {
-                supabaseClient
+            if (sessionData.studySetData.settings.public === true) {
+              supabaseClient
                 .from("explore")
                 .insert({
                   user_id: userId,
@@ -506,15 +504,15 @@
                   json: sessionData.studySetData,
                 })
                 .then();
-              } else {
-                /* if its not public in settings, but the set is in explore from a previous save, delete it from explore */
-                supabaseClient
-                  .from("explore")
-                  .delete()
-                  .eq("user_id", userId)
-                  .eq("name", sessionData.studySetData.name)
-                  .then();
-              }
+            } else {
+              /* if its not public in settings, but the set is in explore from a previous save, delete it from explore */
+              supabaseClient
+                .from("explore")
+                .delete()
+                .eq("user_id", userId)
+                .eq("name", sessionData.studySetData.name)
+                .then();
+            }
           });
       }
     </script>
@@ -565,8 +563,8 @@
             settings: {
               public: {
                 true: document.getElementById("publicTrue"),
-                false: document.getElementById("publicFalse")
-              }
+                false: document.getElementById("publicFalse"),
+              },
             },
             studySetIsCopy: document.getElementById("mainEditStudySetIsCopy"),
             studySetIsCopyButtons: {
@@ -585,7 +583,7 @@
             user: [
               document.getElementById("mainDashboardUserdiv"),
               document.getElementById("mainOpenActionsSaveUserdiv"),
-              document.getElementById("mainEditSettingsPublic")
+              document.getElementById("mainEditSettingsPublic"),
             ],
           },
         },

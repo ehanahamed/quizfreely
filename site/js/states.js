@@ -12,21 +12,38 @@ var states = {
       for (var i = 0; i < ui.elements.states.newUser.length; i++) {
         ui.elements.states.newUser[i].classList.remove("hide");
       }
-      for (var i2 = 0; i2 < ui.elements.states.user.length; i2++) {
-        ui.elements.states.user[i2].classList.add("hide");
+      for (var i = 0; i < ui.elements.states.user.length; i++) {
+        ui.elements.states.user[i].classList.add("hide");
       }
     } else if (isNewUser === false) {
-      for (var i3 = 0; i3 < ui.elements.states.newUser.length; i3++) {
-        ui.elements.states.newUser[i3].classList.add("hide");
+      for (var i = 0; i < ui.elements.states.newUser.length; i++) {
+        ui.elements.states.newUser[i].classList.add("hide");
       }
-      for (var i4 = 0; i4 < ui.elements.states.user.length; i4++) {
-        ui.elements.states.user[i4].classList.remove("hide");
+      for (var i = 0; i < ui.elements.states.user.length; i++) {
+        ui.elements.states.user[i].classList.remove("hide");
       }
     }
     if (ui.states) {
       /* first check if page-specific functions exist */
       /* then run page specific functions */
       ui.states.newUser(isNewUser);
+    }
+  },
+  isSetMine: function (isSetMine) {
+    if (isSetMine === true) {
+      for (var i = 0; i < ui.elements.states.setIsMine.length; i++) {
+        ui.elements.states.setIsMine[i].classList.remove("hide");
+      }
+      for (var i = 0; i < ui.elements.states.setIsNotMine.length; i++) {
+        ui.elements.states.setIsNotMine[i].classList.add("hide");
+      }
+    } else if (isSetMine === false) {
+      for (var i = 0; i < ui.elements.states.setIsMine.length; i++) {
+        ui.elements.states.setIsMine[i].classList.add("hide");
+      }
+      for (var i = 0; i < ui.elements.states.setIsNotMine.length; i++) {
+        ui.elements.states.setIsNotMine[i].classList.remove("hide");
+      }
     }
   },
 };

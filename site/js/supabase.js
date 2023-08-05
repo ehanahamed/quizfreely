@@ -37,7 +37,10 @@ function isStudySetCopy(studySetName, studySetData, returnFunction) {
           if (result.data.length === 0) {
             returnFunction(false);
           } else {
-            if (JSON.stringify(result.data[0].json) == JSON.stringify(studySetData)) {
+            if (
+              JSON.stringify(result.data[0].json) ==
+              JSON.stringify(studySetData)
+            ) {
               returnFunction(true, false);
             } else {
               returnFunction(true, true);
@@ -64,26 +67,24 @@ function updateStudySet() {
       .select()
       .eq("user_id", userId)
       .eq("name", sessionData.studySetData.name)
-      .then(
-        function (result) {
-          if (result.data.length === 0) {
-            supabaseClient
-              .from("explore")
-              .insert({
-                user_id: userId,
-                name: sessionData.studySetData.name,
-                json: sessionData.studySetData,
-              })
-              .then();
-          } else {
-            supabaseClient
-              .from("explore")
-              .update({ json: sessionData.studySetData })
-              .eq("name", sessionData.studySetData.name)
-              .then();
-          }
+      .then(function (result) {
+        if (result.data.length === 0) {
+          supabaseClient
+            .from("explore")
+            .insert({
+              user_id: userId,
+              name: sessionData.studySetData.name,
+              json: sessionData.studySetData,
+            })
+            .then();
+        } else {
+          supabaseClient
+            .from("explore")
+            .update({ json: sessionData.studySetData })
+            .eq("name", sessionData.studySetData.name)
+            .then();
         }
-      )
+      });
   } else {
     /* if its not public in settings, but the set is in explore from a previous save, delete it from explore */
     supabaseClient

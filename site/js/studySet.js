@@ -89,11 +89,12 @@ var studySet = {
     ui.elements.edit.table.innerHTML =
       "<thead> <tr> <th class='center'>Term</th> <th class='center'>Definition</th> <th class='center'>Actions</th> </tr> </thead> <tbody> <tr> <td> <div class='flex'> <button onclick='buttons.edit.add();'> <i class='nf nf-oct-plus'></i> Add row </button> </div> </td> <td></td> <td></td> </tr> </tbody>";
     /* IMPORTANT: the string above has the inner html of the table found in dashboard.html */
-    ui.elements.edit.settings.public.true.checked = sessionData.studySetData.settings.public;
+    ui.elements.edit.settings.public.true.checked =
+      sessionData.studySetData.settings.public;
   },
   getSettings: function () {
     return {
-      public: (ui.elements.edit.settings.public.true.checked === true)
+      public: ui.elements.edit.settings.public.true.checked === true,
     };
   },
 };
