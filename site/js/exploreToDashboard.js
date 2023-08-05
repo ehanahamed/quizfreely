@@ -14,7 +14,7 @@ if (location.pathname.includes("studyset") === true) {
     .eq("id", id)
     .then(function (result) {
       var thisStudySet = result.data[0];
-      sessionData.studySetData = thisStudySet;
+      sessionData.studySetData = thisStudySet.json;
       studySet.open();
       document.getElementById("mainActionsSave").classList.add("hide");
       supabaseClient.auth.getSession().then(function (result) {
