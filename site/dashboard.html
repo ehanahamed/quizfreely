@@ -164,7 +164,7 @@
           <div id="mainOpendiv" class="hide">
             <div id="mainActionsSave" class="modal hide">
               <div class="content">
-                <h2>Save changes?</h2>
+                <h2>Save?</h2>
                 <div id="mainOpenActionsSaveNewuserdiv">
                   <div class="flex">
                     <a
@@ -257,17 +257,12 @@
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>
-                    <button id="mainOpenTableEditbutton" onclick="buttons.open.edit();">Edit</button>
-                    <button id="mainOpenTableCopybutton" onclick="exportLocal.save();document.getElementById(ui.elements.open.save).classList.remove('hide');">
-                      Save or download a copy
-                    </button>
-                  </td>
-                  <td></td>
-                </tr>
               </tbody>
             </table>
+            <button id="mainOpenBottomEditbutton" onclick="buttons.open.edit();">Edit</button>
+            <button id="mainOpenBottomCopybutton" onclick="exportLocal.save();document.getElementById(ui.elements.open.save).classList.remove('hide');">
+              Save or download a copy
+            </button>
           </div>
           <div id="mainEditdiv" class="hide">
             <div id="mainEditStudySetIsCopy" class="modal hide">
@@ -590,10 +585,10 @@
             ],
             setIsMine: [
               "mainOpenEditbutton",
-              "mainOpenTableEditbutton"
+              "mainOpenBottomEditbutton"
             ],
             setIsNotMine: [
-              "mainOpenTableCopybutton"
+              "mainOpenBottomCopybutton"
             ]
           },
         },
