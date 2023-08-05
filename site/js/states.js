@@ -7,6 +7,7 @@
 
 var states = {
   newUser: function (isNewUser) {
+    states.current.isNewUser = isNewUser;
     /* hide and show depending on state (all pages) */
     if (isNewUser === true) {
       if (ui.elements.states.newUser) {
@@ -39,6 +40,7 @@ var states = {
     }
   },
   isSetMine: function (isSetMine) {
+    states.current.isSetMine = isSetMine;
     if (isSetMine === true) {
       if (ui.elements.states.setIsMine) {
         for (var i = 0; i < ui.elements.states.setIsMine.length; i++) {
@@ -63,4 +65,5 @@ var states = {
       }
     }
   },
+  current: {}
 };
