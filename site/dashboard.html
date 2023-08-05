@@ -235,7 +235,7 @@
             </p>
             <!-- Add "this study set is private/public..." thingy here too -->
             <div class="flex">
-              <button onclick="buttons.open.edit();">Edit</button>
+              <button id="mainOpenEditbutton" onclick="buttons.open.edit();">Edit</button>
               <button
                 onclick="exportLocal.save();ui.elements.open.save.classList.remove('hide');"
               >
@@ -255,7 +255,7 @@
                 </tr>
               </thead>
               <tbody>
-                <tr>
+                <tr id="mainOpenTableEditbutton">
                   <td>
                     <button onclick="buttons.open.edit();">Edit</button>
                   </td>
@@ -585,6 +585,10 @@
               document.getElementById("mainOpenActionsSaveUserdiv"),
               document.getElementById("mainEditSettingsPublic"),
             ],
+            setIsMine: [
+              document.getElementById("mainOpenEditbutton"),
+              document.getElementById("mainOpenTableEditbutton")
+            ]
           },
         },
         states: {
@@ -607,6 +611,7 @@
     <script src="./js/flashcards.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.29.0"></script>
     <script src="./js/supabase.js"></script>
+    <script src="./js/exploreToDashboard.js"></script>
     <script>
       /* functionality of studySetIsCopy buttons below */
       ui.elements.edit.studySetIsCopyButtons.update.addEventListener(
