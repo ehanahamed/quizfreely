@@ -238,7 +238,7 @@
               <button id="mainOpenEditbutton" onclick="buttons.open.edit();">
                 Edit
               </button>
-              <button
+              <button id="mainOpenCopybutton"
                 onclick="exportLocal.save();ui.elements.open.save.classList.remove('hide');"
               >
                 Save a copy or download
@@ -592,6 +592,7 @@
             ],
             setIsMine: [
               document.getElementById("mainOpenEditbutton"),
+              document.getElementById("mainOpenCopybutton"),
               document.getElementById("mainOpenTableEditbutton")
             ],
             setIsNotMine: [
