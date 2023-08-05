@@ -23,7 +23,7 @@ if (location.pathname.includes("studyset") === true) {
         } else if (result.data.session !== null) {
           if (thisStudySet.user_id == result.data.session.user.id) {
             states.isSetMine(true);
-          } else {
+          } else if (thisStudySet.user_id != result.data.session.user.id) {
             states.isSetMine(false);
           }
         }
