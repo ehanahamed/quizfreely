@@ -9,18 +9,26 @@ var states = {
   newUser: function (isNewUser) {
     /* hide and show depending on state (all pages) */
     if (isNewUser === true) {
-      for (var i = 0; i < ui.elements.states.newUser.length; i++) {
-        ui.elements.states.newUser[i].classList.remove("hide");
+      if (ui.elements.states.newUser) {
+        for (var i = 0; i < ui.elements.states.newUser.length; i++) {
+          ui.elements.states.newUser[i].classList.remove("hide");
+        }
       }
-      for (var i = 0; i < ui.elements.states.user.length; i++) {
-        ui.elements.states.user[i].classList.add("hide");
-      }
+      if (ui.elements.states.user) {
+        for (var i = 0; i < ui.elements.states.user.length; i++) {
+          ui.elements.states.user[i].classList.add("hide");
+        }
+      }newU
     } else if (isNewUser === false) {
-      for (var i = 0; i < ui.elements.states.newUser.length; i++) {
-        ui.elements.states.newUser[i].classList.add("hide");
+      if (ui.elements.states.newUser) {
+        for (var i = 0; i < ui.elements.states.newUser.length; i++) {
+          ui.elements.states.newUser[i].classList.add("hide");
+        }
       }
-      for (var i = 0; i < ui.elements.states.user.length; i++) {
-        ui.elements.states.user[i].classList.remove("hide");
+      if (ui.elements.states.user) {
+        for (var i = 0; i < ui.elements.states.user.length; i++) {
+          ui.elements.states.user[i].classList.remove("hide");
+        }
       }
     }
     if (ui.states) {
@@ -31,18 +39,26 @@ var states = {
   },
   isSetMine: function (isSetMine) {
     if (isSetMine === true) {
-      for (var i = 0; i < ui.elements.states.setIsMine.length; i++) {
-        ui.elements.states.setIsMine[i].classList.remove("hide");
+      if (ui.elements.states.setIsMine) {
+        for (var i = 0; i < ui.elements.states.setIsMine.length; i++) {
+          ui.elements.states.setIsMine[i].classList.remove("hide");
+        }
       }
-      for (var i = 0; i < ui.elements.states.setIsNotMine.length; i++) {
-        ui.elements.states.setIsNotMine[i].classList.add("hide");
+      if (ui.elements.states.setIsNotMine) {
+        for (var i = 0; i < ui.elements.states.setIsNotMine.length; i++) {
+          ui.elements.states.setIsNotMine[i].classList.add("hide");
+        }
       }
     } else if (isSetMine === false) {
-      for (var i = 0; i < ui.elements.states.setIsMine.length; i++) {
-        ui.elements.states.setIsMine[i].classList.add("hide");
+      if (ui.elements.states.setIsMine) {
+        for (var i = 0; i < ui.elements.states.setIsMine.length; i++) {
+          ui.elements.states.setIsMine[i].classList.add("hide");
+        }
       }
-      for (var i = 0; i < ui.elements.states.setIsNotMine.length; i++) {
-        ui.elements.states.setIsNotMine[i].classList.remove("hide");
+      if (ui.elements.states.setIsNotMine) {
+        for (var i = 0; i < ui.elements.states.setIsNotMine.length; i++) {
+          ui.elements.states.setIsNotMine[i].classList.remove("hide");
+        }
       }
     }
   },
