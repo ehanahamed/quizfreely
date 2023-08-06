@@ -12,15 +12,11 @@ TODO NOW:
     - like under open source there would be view source code and under its free there would be informatino about why accounts etc
 - then after that:
   - seperate-from-open-screen/fullscreen flashcards
-  - ability to share study sets
-    - add an "explore" tab/page instead of a weird looking searchbar in the navbar
   - docs & help menu
   - confirmation for deleting stuff
-  - transparent background for favicon and google sign in
 
 TODO
 
-- remove "change passwd" button for non-email/googleapi accounts
 - **_create VS make in source code_**
 - **_studyset title vs studyset name in source code_**
 - **camelCase** it
