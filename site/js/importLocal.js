@@ -5,9 +5,11 @@
   https://quizfreely.ehan.dev/license
 */
 
-document.getElementById(ui.elements.inputs.importLocal.file).addEventListener("change", function () {
-  importLocal.input();
-});
+document
+  .getElementById(ui.elements.inputs.importLocal.file)
+  .addEventListener("change", function () {
+    importLocal.input();
+  });
 
 var importLocal = {
   input: function () {
@@ -21,6 +23,8 @@ var importLocal = {
       studySet.open();
       document.getElementById("mainActionsSave").classList.add("hide");
     });
-    fileReader.readAsText(document.getElementById(ui.elements.inputs.importLocal.file).files[0]);
+    fileReader.readAsText(
+      document.getElementById(ui.elements.inputs.importLocal.file).files[0]
+    );
   },
 };

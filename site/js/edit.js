@@ -15,10 +15,13 @@ var edit = {
       sessionData.studySetData.data,
       document.getElementById(ui.elements.inputs.edit.table)
     );
-    document.getElementById(ui.elements.inputs.edit.name).value = sessionData.studySetData.name;
+    document.getElementById(ui.elements.inputs.edit.name).value =
+      sessionData.studySetData.name;
   },
   insert: function (index) {
-    var newRow = document.getElementById(ui.elements.inputs.edit.table).insertRow(index);
+    var newRow = document
+      .getElementById(ui.elements.inputs.edit.table)
+      .insertRow(index);
     newRow.insertCell(0).innerHTML =
       "<input type='text' placeholder='Term'></input>";
     newRow.insertCell(1).innerHTML =
@@ -45,11 +48,15 @@ var edit = {
     });
   },
   add: function () {
-    edit.insert(document.getElementById(ui.elements.inputs.edit.table).rows.length - 1);
+    edit.insert(
+      document.getElementById(ui.elements.inputs.edit.table).rows.length - 1
+    );
   },
   save: function () {
     if (document.getElementById(ui.elements.inputs.edit.name).value) {
-      sessionData.studySetData.name = document.getElementById(ui.elements.inputs.edit.name).value;
+      sessionData.studySetData.name = document.getElementById(
+        ui.elements.inputs.edit.name
+      ).value;
     } else {
       sessionData.studySetData.name = "Untitled Study Set";
     }
@@ -69,7 +76,9 @@ var edit = {
       index !== newIndex &&
       ((index > newIndex && index !== 1) || index < newIndex) &&
       ((index < newIndex &&
-        index < document.getElementById(ui.elements.inputs.edit.table).rows.length - 2) ||
+        index <
+          document.getElementById(ui.elements.inputs.edit.table).rows.length -
+            2) ||
         index > newIndex)
     ) {
       edit.insert(newIndex);
@@ -81,16 +90,14 @@ var edit = {
       }
       document.getElementById(ui.elements.inputs.edit.table).rows[
         newIndex
-      ].children[0].children[0].value =
+      ].children[0].children[0].value = document.getElementById(
+        ui.elements.inputs.edit.table
+      ).rows[newOldIndex].children[0].children[0].value;
       document.getElementById(ui.elements.inputs.edit.table).rows[
-          newOldIndex
-        ].children[0].children[0].value;
-        document.getElementById(ui.elements.inputs.edit.table).rows[
         newIndex
-      ].children[1].children[0].value =
-      document.getElementById(ui.elements.inputs.edit.table).rows[
-          newOldIndex
-        ].children[1].children[0].value;
+      ].children[1].children[0].value = document.getElementById(
+        ui.elements.inputs.edit.table
+      ).rows[newOldIndex].children[1].children[0].value;
       edit.remove(newOldIndex);
     }
   },

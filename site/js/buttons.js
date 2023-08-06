@@ -39,7 +39,9 @@ var buttons = {
         function (isStudySetCopy, isStudySetChanged) {
           if (isStudySetCopy === true) {
             if (isStudySetChanged === true) {
-              document.getElementById(ui.elements.edit.studySetIsCopy).classList.remove("hide");
+              document
+                .getElementById(ui.elements.edit.studySetIsCopy)
+                .classList.remove("hide");
             } else if (isStudySetChanged === false) {
               studySet.open();
               document.getElementById("mainActionsSave").classList.add("hide");

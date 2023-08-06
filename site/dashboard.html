@@ -148,7 +148,12 @@
               <input id="inputImportLocalFile" class="invisible" type="file" />
             </div>
             <div id="mainDashboardNewuserdiv" class="hide">
-              <p>You are not signed in. You can continue using Quizfreely without an account, <br /> or you can <a href="./start.html">get started</a> to save study sets to an account instead of manually saving them.</p>
+              <p>
+                You are not signed in. You can continue using Quizfreely without
+                an account, <br />
+                or you can <a href="./start.html">get started</a> to save study
+                sets to an account instead of manually saving them.
+              </p>
             </div>
             <div id="mainDashboardUserdiv" class="hide">
               <p>
@@ -176,9 +181,7 @@
                       class="button alt"
                       >Download</a
                     >
-                    <a href="./dashboard.html" class="button alt red"
-                      >Cancel</a
-                    >
+                    <a href="./dashboard.html" class="button alt red">Cancel</a>
                   </div>
                 </div>
                 <div id="mainOpenActionsSaveUserdiv" class="flex">
@@ -190,9 +193,7 @@
                     class="button alt"
                     >Download</a
                   >
-                  <a href="./dashboard.html" class="button alt red"
-                    >Cancel</a
-                  >
+                  <a href="./dashboard.html" class="button alt red">Cancel</a>
                 </div>
                 <div id="mainSaveClouderror" class="box red hide">
                   <p>
@@ -204,7 +205,12 @@
             </div>
             <h2 id="mainActionsStudysettitle">Study set</h2>
             <div id="mainOpenFlashcarddiv">
-              <button class="exitFullscreen" onclick="document.getElementById('mainOpenFlashcarddiv').classList.remove('fullscreen')">Exit Fullscreen</button>
+              <button
+                class="exitFullscreen"
+                onclick="document.getElementById('mainOpenFlashcarddiv').classList.remove('fullscreen')"
+              >
+                Exit Fullscreen
+              </button>
               <div>
                 <div
                   class="card double"
@@ -238,7 +244,12 @@
             </div>
             <div class="caption activityList">
               <p class="a0 center">Individual Studying</p>
-              <button class="a1" onclick="document.getElementById('mainOpenFlashcarddiv').classList.add('fullscreen')">Fullscreen Flashcards</button>
+              <button
+                class="a1"
+                onclick="document.getElementById('mainOpenFlashcarddiv').classList.add('fullscreen')"
+              >
+                Fullscreen Flashcards
+              </button>
               <button class="a2">Review Game</button>
               <p class="b0 center">Group Activities</p>
               <button class="b1">Host Review Game</button>
@@ -271,12 +282,19 @@
                   <th>Definition</th>
                 </tr>
               </thead>
-              <tbody>
-              </tbody>
+              <tbody></tbody>
             </table>
             <div id="mainOpenBottomdiv">
-              <button id="mainOpenBottomEditbutton" onclick="buttons.open.edit();">Edit</button>
-              <button id="mainOpenBottomCopybutton" onclick="exportLocal.save();document.getElementById(ui.elements.open.save).classList.remove('hide');">
+              <button
+                id="mainOpenBottomEditbutton"
+                onclick="buttons.open.edit();"
+              >
+                Edit
+              </button>
+              <button
+                id="mainOpenBottomCopybutton"
+                onclick="exportLocal.save();document.getElementById(ui.elements.open.save).classList.remove('hide');"
+              >
                 Save or download a copy
               </button>
             </div>
@@ -500,30 +518,36 @@
               })
               .then(function (result) {
                 if (result.status === 201) {
-                  document.getElementById(ui.elements.open.saveDone).classList.remove("hide");
-                  document.getElementById(ui.elements.open.save).classList.add("hide");
+                  document
+                    .getElementById(ui.elements.open.saveDone)
+                    .classList.remove("hide");
+                  document
+                    .getElementById(ui.elements.open.save)
+                    .classList.add("hide");
                   document
                     .getElementById("mainSaveClouderror")
                     .classList.add("hide");
                 } else if (result.status !== 201) {
-                  document.getElementById(ui.elements.open.saveDone).classList.add("hide");
+                  document
+                    .getElementById(ui.elements.open.saveDone)
+                    .classList.add("hide");
                   document
                     .getElementById("mainSaveClouderror")
                     .classList.remove("hide");
                 }
               });
             if (sessionData.studySetData.settings.public === true) {
-              getNickname( function (nickname) {
+              getNickname(function (nickname) {
                 supabaseClient
-                .from("explore")
-                .insert({
-                  user_id: userId,
-                  user_nickname: nickname,
-                  name: sessionData.studySetData.name,
-                  json: sessionData.studySetData,
-                })
-                .then();
-              })
+                  .from("explore")
+                  .insert({
+                    user_id: userId,
+                    user_nickname: nickname,
+                    name: sessionData.studySetData.name,
+                    json: sessionData.studySetData,
+                  })
+                  .then();
+              });
             } else {
               /* if its not public in settings, but the set is in explore from a previous save, delete it from explore */
               supabaseClient
@@ -562,9 +586,7 @@
           links: {
             exportLocal: {
               newUserDownload: "mainOpenActionsSaveNewuserExportLocalDownload",
-              userDownload: 
-                "mainOpenActionsSaveUserExportLocalDownload"
-              ,
+              userDownload: "mainOpenActionsSaveUserExportLocalDownload",
             },
           },
           alerts: {
@@ -597,22 +619,18 @@
             back: "flashcardsBack",
           },
           states: {
-            newUser: ["mainDashboardNewuserdiv", "mainOpenActionsSaveNewuserdiv"],
+            newUser: [
+              "mainDashboardNewuserdiv",
+              "mainOpenActionsSaveNewuserdiv",
+            ],
             user: [
               "mainDashboardUserdiv",
               "mainOpenActionsSaveUserdiv",
               "mainEditSettingsPublic",
             ],
-            setIsMine: [
-              "mainOpenEditbutton",
-              "mainOpenBottomEditbutton"
-            ],
-            setIsNotMine: [
-              "mainOpenBottomCopybutton"
-            ],
-            setIsLarge: [
-              "mainOpenBottomdiv"
-            ]
+            setIsMine: ["mainOpenEditbutton", "mainOpenBottomEditbutton"],
+            setIsNotMine: ["mainOpenBottomCopybutton"],
+            setIsLarge: ["mainOpenBottomdiv"],
           },
         },
         states: {
@@ -638,36 +656,36 @@
     <script src="./js/exploreToDashboard.js"></script>
     <script>
       /* functionality of studySetIsCopy buttons below */
-      document.getElementById(ui.elements.edit.studySetIsCopyButtons.update).addEventListener(
-        "click",
-        function () {
+      document
+        .getElementById(ui.elements.edit.studySetIsCopyButtons.update)
+        .addEventListener("click", function () {
           /* updateStudySet() & isStudySetCopy() are in js/supabase.js */
           updateStudySet();
           studySet.open();
-          document.getElementById(ui.elements.edit.studySetIsCopy).classList.add("hide");
-        }
-      );
-      document.getElementById(ui.elements.edit.studySetIsCopyButtons.back).addEventListener(
-        "click",
-        function () {
-          document.getElementById(ui.elements.edit.studySetIsCopy).classList.add("hide");
-        }
-      );
+          document
+            .getElementById(ui.elements.edit.studySetIsCopy)
+            .classList.add("hide");
+        });
+      document
+        .getElementById(ui.elements.edit.studySetIsCopyButtons.back)
+        .addEventListener("click", function () {
+          document
+            .getElementById(ui.elements.edit.studySetIsCopy)
+            .classList.add("hide");
+        });
       /*
       Make download button also hide the modal when clicked (just like save to acc button)
       */
-      document.getElementById(ui.elements.links.exportLocal.newUserDownload).addEventListener(
-        "click",
-        function () {
+      document
+        .getElementById(ui.elements.links.exportLocal.newUserDownload)
+        .addEventListener("click", function () {
           document.getElementById(ui.elements.open.save).classList.add("hide");
-        }
-      );
-      document.getElementById(ui.elements.links.exportLocal.userDownload).addEventListener(
-        "click",
-        function () {
+        });
+      document
+        .getElementById(ui.elements.links.exportLocal.userDownload)
+        .addEventListener("click", function () {
           document.getElementById(ui.elements.open.save).classList.add("hide");
-        }
-      );
+        });
     </script>
   </body>
 </html>

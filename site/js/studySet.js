@@ -72,11 +72,9 @@ var studySet = {
     document.getElementById("mainActionsStudysettitle").innerText =
       sessionData.studySetData.name;
     /* set large state if study set has more than 20 terms */
-    states.isSetLarge(sessionData.studySetData.data.length > 20)
+    states.isSetLarge(sessionData.studySetData.data.length > 20);
     for (var i = 0; i < sessionData.studySetData.data.length; i++) {
-      var newRow = document
-        .getElementById("mainActionsTable")
-        .insertRow();
+      var newRow = document.getElementById("mainActionsTable").insertRow();
       newRow.insertCell(0).innerText = sessionData.studySetData.data[i][0];
       newRow.insertCell(1).innerText = sessionData.studySetData.data[i][1];
     }
@@ -88,7 +86,7 @@ var studySet = {
       to prevent this,
       the code below clears/resets the table
     */
-      document.getElementById(ui.elements.edit.table).innerHTML =
+    document.getElementById(ui.elements.edit.table).innerHTML =
       "<thead> <tr> <th class='center'>Term</th> <th class='center'>Definition</th> <th class='center'>Actions</th> </tr> </thead> <tbody> <tr> <td> <div class='flex'> <button onclick='buttons.edit.add();'> <i class='nf nf-oct-plus'></i> Add row </button> </div> </td> <td></td> <td></td> </tr> </tbody>";
     /* IMPORTANT: the string above has the inner html of the table found in dashboard.html */
     document.getElementById(ui.elements.edit.settings.public.true).checked =
@@ -96,7 +94,9 @@ var studySet = {
   },
   getSettings: function () {
     return {
-      public: document.getElementById(ui.elements.edit.settings.public.true).checked === true,
+      public:
+        document.getElementById(ui.elements.edit.settings.public.true)
+          .checked === true,
     };
   },
 };

@@ -69,17 +69,17 @@ function updateStudySet() {
       .eq("name", sessionData.studySetData.name)
       .then(function (result) {
         if (result.data.length === 0) {
-          getNickname( function (nickname) {
+          getNickname(function (nickname) {
             supabaseClient
-            .from("explore")
-            .insert({
-              user_id: userId,
-              user_nickname: nickname,
-              name: sessionData.studySetData.name,
-              json: sessionData.studySetData,
-            })
-            .then();
-          })
+              .from("explore")
+              .insert({
+                user_id: userId,
+                user_nickname: nickname,
+                name: sessionData.studySetData.name,
+                json: sessionData.studySetData,
+              })
+              .then();
+          });
         } else {
           supabaseClient
             .from("explore")
