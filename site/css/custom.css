@@ -5,6 +5,7 @@
   grid-template-areas: 
     "a0 a0 b0 b0"
     "a1 a2 b1 b2";
+  margin-bottom: 2rem;
 }
 
 .activityList .a0 {
