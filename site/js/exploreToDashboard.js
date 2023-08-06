@@ -20,11 +20,13 @@ if (location.pathname.includes("studyset") === true) {
       supabaseClient.auth.getSession().then(function (result) {
         if (result.data.session === null) {
           states.isSetMine(false);
+          document.getElementById("mainOpenCreatorNickname").innerText = thisStudySet.user_nickname;
         } else if (result.data.session !== null) {
           if (thisStudySet.user_id == result.data.session.user.id) {
             states.isSetMine(true);
           } else if (thisStudySet.user_id != result.data.session.user.id) {
             states.isSetMine(false);
+            document.getElementById("mainOpenCreatorNickname").innerText = thisStudySet.user_nickname;
           }
         }
       });
