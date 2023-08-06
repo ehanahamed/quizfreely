@@ -216,76 +216,35 @@
           .select()
           .textSearch("name", `'${text}'`)
           .then(function (result) {
-            studysetlist = result.data;
-            if (studysetlist.length === 0) {
+            explorelist = result.data;
+            if (explorelist.length === 0) {
               var box = document.createElement("div");
-              box.setAttribute("id", "mainDashboardUserStudysetlistEmpty");
+              box.setAttribute("id", "mainDashboardUserExplorelistEmpty");
               box.setAttribute("class", "box");
               document.getElementById("mainExploreListdiv").appendChild(box);
               document.getElementById(
-                "mainDashboardUserStudysetlistEmpty"
+                "mainDashboardUserExplorelistEmpty"
               ).innerHTML = "<p>No study sets found.</p>";
             } else {
-              for (var i = 0; i < studysetlist.length; i++) {
+              for (var i = 0; i < explorelist.length; i++) {
                 var box = document.createElement("div");
                 box.setAttribute("class", "box");
                 box.setAttribute(
                   "id",
-                  "mainDashboardUserStudysetlist" + i.toString()
+                  "mainDashboardUserExplorelist" + i.toString()
                 );
                 document.getElementById("mainExploreListdiv").appendChild(box);
                 document.getElementById(
-                  "mainDashboardUserStudysetlist" + i.toString()
+                  "mainDashboardUserExplorelist" + i.toString()
                 ).innerHTML =
                   "<p>" +
-                  studysetlist[i].name +
-                  "</p> <div class='flex'> <button id='mainDashboardUserStudysetlist" +
-                  i.toString() +
-                  "Openbutton'> Open </button> <button id='mainDashboardUserStudysetlist" +
-                  i.toString() +
-                  "Deletebutton' class='red alt'> Delete </button>";
-                document
-                  .getElementById(
-                    "mainDashboardUserStudysetlist" +
-                      i.toString() +
-                      "Openbutton"
-                  )
-                  .addEventListener("click", function (event) {
-                    sessionData.studySetData =
-                      /* studysetlist.ID.json */
-                      /* to get the selected ID, take event.target.id and remove the extra text like "mainDashboard..." and "Openbutton..." */
-                      studysetlist[
-                        event.target.id
-                          .replace("mainDashboardUserStudysetlist", "")
-                          .replace("Openbutton", "")
-                      ].json;
-                    studySet.open();
-                    document
-                      .getElementById("mainActionsSave")
-                      .classList.add("hide");
-                  });
-                document
-                  .getElementById(
-                    "mainDashboardUserStudysetlist" +
-                      i.toString() +
-                      "Deletebutton"
-                  )
-                  .addEventListener("click", function (event) {
-                    supabaseClient
-                      .from("studyset")
-                      .delete()
-                      .eq(
-                        "id",
-                        studysetlist[
-                          event.target.id
-                            .replace("mainDashboardUserStudysetlist", "")
-                            .replace("Deletebutton", "")
-                        ].id
-                      )
-                      .then(function (result) {
-                        location.reload();
-                      });
-                  });
+                    explorelist[i].name +
+                  "</p>" + 
+                  "<div class='flex'>"+
+                    "<a class='button' id='./studyset?id=" +
+                      explorelist[i].id +
+                    "'> Open </a>"+
+                  "</div>";
               }
             }
           });
