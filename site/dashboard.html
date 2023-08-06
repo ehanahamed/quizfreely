@@ -23,6 +23,7 @@
     <link rel="stylesheet" href="https://design.ehan.dev/css/layouts.css" />
     <link rel="stylesheet" href="https://design.ehan.dev/css/utils.css" />
     <link rel="stylesheet" href="./fonts/fonts.css" />
+    <link rel="stylesheet" href="./css/custom.css" />
     <link
       rel="stylesheet"
       href="https://www.nerdfonts.com/assets/css/webfont.css"
@@ -232,15 +233,13 @@
                 </div>
               </div>
             </div>
-            <p>Individual studying</p>
-            <div class="caption evenTwo">
-              <button onclick="document.getElementById('mainOpenFlashcarddiv').classList.add('fullscreen')">Flashcards</button>
-              <button>Review Game</button>
-            </div>
-            <p>Group/class activities</p>
-            <div class="caption evenTwo">
-              <button>Host Review Game</button>
-              <button>Join Review Game</button>
+            <div class="caption activityList">
+              <p class="a0">Individual Studying</p>
+              <button class="a1" onclick="document.getElementById('mainOpenFlashcarddiv').classList.add('fullscreen')">Flashcards</button>
+              <button class="a2">Review Game</button>
+              <p class="b0">Group Activities</p>
+              <button class="b1">Host Review Game</button>
+              <button class="b2">Join Review Game</button>
             </div>
             <p id="mainOpenSavedone" class="bg3 hide">
               <i class="nf nf-oct-check"></i>

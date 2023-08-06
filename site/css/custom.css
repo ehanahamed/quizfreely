@@ -1,0 +1,32 @@
+.activityList {
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-areas: 
+    "a0 a0 b1 b1"
+    "a1 a2 b1 b2";
+}
+
+.activityList .a0 {
+  grid-area: a0;
+}
+
+.activityList .b0 {
+  grid-area: b0;
+}
+
+.activityList .a1 {
+  grid-area: a1;
+}
+
+.activityList .a2 {
+  grid-area: a2;
+}
+
+.activityList .b1 {
+  grid-area: a1;
+}
+
+.activityList .b2 {
+  grid-area: b2;
+}
