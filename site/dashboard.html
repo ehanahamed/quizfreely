@@ -510,14 +510,17 @@
                 }
               });
             if (sessionData.studySetData.settings.public === true) {
-              supabaseClient
+              getNickname( function (nickname) {
+                supabaseClient
                 .from("explore")
                 .insert({
                   user_id: userId,
+                  user_nickname: nickname,
                   name: sessionData.studySetData.name,
                   json: sessionData.studySetData,
                 })
                 .then();
+              })
             } else {
               /* if its not public in settings, but the set is in explore from a previous save, delete it from explore */
               supabaseClient
