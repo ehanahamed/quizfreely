@@ -71,6 +71,8 @@ var studySet = {
     sections.changeTo("open");
     document.getElementById("mainActionsStudysettitle").innerText =
       sessionData.studySetData.name;
+    /* set large state if study set has more than 20 terms */
+    states.isSetLarge(sessionData.studySetData.data.length > 20)
     for (var i = 0; i < sessionData.studySetData.data.length; i++) {
       var newRow = document
         .getElementById("mainActionsTable")
