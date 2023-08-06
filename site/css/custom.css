@@ -3,7 +3,7 @@
   grid-template-rows: 1fr 1fr;
   grid-template-columns: 1fr 1fr 1fr 1fr;
   grid-template-areas: 
-    "a0 a0 b1 b1"
+    "a0 a0 b0 b0"
     "a1 a2 b1 b2";
 }
 
