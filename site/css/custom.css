@@ -30,3 +30,15 @@
 .activityList .b2 {
   grid-area: b2;
 }
+
+@media only screen and (max-width: 800px) {
+  .activityList {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto auto auto;
+    grid-template-areas: 
+      "a0 a0"
+      "a1 a2"
+      "b0 b0"
+      "b1 b2";
+  }
+}
