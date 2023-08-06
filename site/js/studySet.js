@@ -91,9 +91,6 @@ var studySet = {
     /* IMPORTANT: the string above has the inner html of the table found in dashboard.html */
     document.getElementById(ui.elements.edit.settings.public.true).checked =
       sessionData.studySetData.settings.public;
-    /* HTMLs were changed/reset above, so make sure states are applied to them */
-    states.newUser(states.current.isNewUser);
-    states.isSetMine(states.current.isSetMine);
   },
   getSettings: function () {
     return {

@@ -65,5 +65,31 @@ var states = {
       }
     }
   },
+  isSetLarge: function (isSetLarge) {
+    states.current.isSetLarge = isSetLarge;
+    if (isSetLarge) {
+      if (ui.elements.states.setIsLarge) {
+        for (var i = 0; i < ui.elements.states.setIsLarge.length; i++) {
+          document.getElementById(ui.elements.states.setIsLarge[i]).classList.remove("hide");
+        }
+      }
+      if (ui.elements.states.setIsNotLarge) {
+        for (var i = 0; i < ui.elements.states.setIsNotLarge.length; i++) {
+          document.getElementById(ui.elements.states.setIsNotLarge[i]).classList.add("hide");
+        }
+      }
+    } else if (isSetLarge === false) {
+      if (ui.elements.states.setIsLarge) {
+        for (var i = 0; i < ui.elements.states.setIsLarge.length; i++) {
+          document.getElementById(ui.elements.states.setIsLarge[i]).classList.add("hide");
+        }
+      }
+      if (ui.elements.states.setIsNotLarge) {
+        for (var i = 0; i < ui.elements.states.setIsNotLarge.length; i++) {
+          document.getElementById(ui.elements.states.setIsNotLarge[i]).classList.remove("hide");
+        }
+      }
+    }
+  },
   current: {}
 };

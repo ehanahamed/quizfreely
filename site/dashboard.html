@@ -259,10 +259,12 @@
               <tbody>
               </tbody>
             </table>
-            <button id="mainOpenBottomEditbutton" onclick="buttons.open.edit();">Edit</button>
-            <button id="mainOpenBottomCopybutton" onclick="exportLocal.save();document.getElementById(ui.elements.open.save).classList.remove('hide');">
-              Save or download a copy
-            </button>
+            <div id="mainOpenBottomdiv">
+              <button id="mainOpenBottomEditbutton" onclick="buttons.open.edit();">Edit</button>
+              <button id="mainOpenBottomCopybutton" onclick="exportLocal.save();document.getElementById(ui.elements.open.save).classList.remove('hide');">
+                Save or download a copy
+              </button>
+            </div>
           </div>
           <div id="mainEditdiv" class="hide">
             <div id="mainEditStudySetIsCopy" class="modal hide">
@@ -589,6 +591,9 @@
             ],
             setIsNotMine: [
               "mainOpenBottomCopybutton"
+            ],
+            setIsLarge: [
+              "mainOpenBottomdiv"
             ]
           },
         },
