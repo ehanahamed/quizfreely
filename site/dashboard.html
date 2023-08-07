@@ -164,8 +164,9 @@
                 <p>Delimiter/Seperator between rows</p>
                 <input type="text" placeholder="Row delimiter" />
                 <textarea class="fullWidth" rows="10" placeholder="Paste data here"></textarea>
-                <div>
-                  <button>Import</button>
+                <div class="flex">
+                  <button id="mainDashboardImportotherImportbutton">Import</button>
+                  <button class="red" onclick="document.getElementById('mainDashboardImportother').classList.add('hide')">Cancel</button>
                 </div>
               </div>
             </div>
