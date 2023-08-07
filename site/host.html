@@ -147,11 +147,11 @@
               </label>
               <input id="inputImportLocalFile" class="invisible" type="file" />
             </div>
-            <p>
-              You can also import study sets from other apps.
-            </p>
+            <p>You can also import study sets from other apps.</p>
             <div class="flex">
-              <button onclick="document.getElementById('mainDashboardImportother').classList.remove('hide')">
+              <button
+                onclick="document.getElementById('mainDashboardImportother').classList.remove('hide')"
+              >
                 <i class="nf nf-md-content_copy"></i>
                 Import
               </button>
@@ -160,13 +160,36 @@
               <div class="content">
                 <h2>Import from another app</h2>
                 <p>Delimiter/Seperator between term and definition</p>
-                <input type="text" placeholder="Term delimiter" id="mainDashboardImportotherTermdelimiter" />
-                <p>Delimiter/Seperator between rows, <br /> <b>leave blank to use a newline/enter</b></p>
-                <input type="text" placeholder="Row delimiter" id="mainDashboardImportotherRowdelimiter" />
-                <textarea id="mainDashboardImportotherData" class="fullWidth" rows="10" placeholder="Paste data here"></textarea>
+                <input
+                  type="text"
+                  placeholder="Term delimiter"
+                  id="mainDashboardImportotherTermdelimiter"
+                />
+                <p>
+                  Delimiter/Seperator between rows, <br />
+                  <b>leave blank to use a newline/enter</b>
+                </p>
+                <input
+                  type="text"
+                  placeholder="Row delimiter"
+                  id="mainDashboardImportotherRowdelimiter"
+                />
+                <textarea
+                  id="mainDashboardImportotherData"
+                  class="fullWidth"
+                  rows="10"
+                  placeholder="Paste data here"
+                ></textarea>
                 <div class="flex">
-                  <button id="mainDashboardImportotherImportbutton">Import</button>
-                  <button class="red" onclick="document.getElementById('mainDashboardImportother').classList.add('hide')">Cancel</button>
+                  <button id="mainDashboardImportotherImportbutton">
+                    Import
+                  </button>
+                  <button
+                    class="red"
+                    onclick="document.getElementById('mainDashboardImportother').classList.add('hide')"
+                  >
+                    Cancel
+                  </button>
                 </div>
               </div>
             </div>
@@ -227,7 +250,10 @@
               </div>
             </div>
             <h2 id="mainActionsStudysettitle">Untitled Study Set</h2>
-            <p id="mainOpenCreator">Created by <code id="mainOpenCreatorNickname">User</code><p>
+            <p id="mainOpenCreator">
+              Created by <code id="mainOpenCreatorNickname">User</code>
+            </p>
+            <p></p>
             <p id="mainOpenSavedone" class="bg3 hide">
               <i class="nf nf-oct-check"></i>
               Saved to account
@@ -646,7 +672,7 @@
             button: "mainDashboardImportotherImportbutton",
             data: "mainDashboardImportotherData",
             termDelimiter: "mainDashboardImportotherTermdelimiter",
-            rowDelimiter: "mainDashboardImportotherRowdelimiter"
+            rowDelimiter: "mainDashboardImportotherRowdelimiter",
           },
           states: {
             newUser: [

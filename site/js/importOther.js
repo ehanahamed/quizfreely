@@ -5,18 +5,22 @@
   https://quizfreely.ehan.dev/license
 */
 
-document.getElementById(ui.elements.importOther.button).addEventListener(
-  "click",
-  function () {
+document
+  .getElementById(ui.elements.importOther.button)
+  .addEventListener("click", function () {
     var data = [];
     var rows;
     if (document.getElementById(ui.elements.importOther.data).value == "") {
       /* split by newline if blank */
-      rows = document.getElementById(ui.elements.importOther.data).value.split("\n");
+      rows = document
+        .getElementById(ui.elements.importOther.data)
+        .value.split("\n");
     } else {
-      rows = document.getElementById(ui.elements.importOther.data).value.split(
-        document.getElementById(ui.elements.importOther.rowDelimiter).value
-      );
+      rows = document
+        .getElementById(ui.elements.importOther.data)
+        .value.split(
+          document.getElementById(ui.elements.importOther.rowDelimiter).value
+        );
     }
     for (var i = 0; i < rows.length; i++) {
       data.push(
@@ -32,5 +36,4 @@ document.getElementById(ui.elements.importOther.button).addEventListener(
     /* load it into the table, with noTitle param as true */
     edit.load(true);
     sections.changeTo("edit");
-  }
-)
+  });

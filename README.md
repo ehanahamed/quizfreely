@@ -1,14 +1,14 @@
 Implement import from...
 
- - Study Stack
-   - https://www.studystack.com/
-   - Can export with custom term-delimeters and newlines for row-delimeters
- - Quizlet
-   - https://quizlet.com/
-   - Can export with custom term & row delimiters
- - Omnisets
-   - https://www.omnisets.com/
-   - not sure
+- Study Stack
+  - https://www.studystack.com/
+  - Can export with custom term-delimeters and newlines for row-delimeters
+- Quizlet
+  - https://quizlet.com/
+  - Can export with custom term & row delimiters
+- Omnisets
+  - https://www.omnisets.com/
+  - not sure
 
 TODO NOW:
 
