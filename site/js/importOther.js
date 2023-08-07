@@ -19,8 +19,11 @@ document.getElementById(ui.elements.importOther.button).addEventListener(
         )
       );
     }
-    edit.make();
+    /* make default studyset first */
+    sessionData.studySetData = studySet.make();
+    /* add imported data to studyset */
     sessionData.studySetData.data = data;
+    /* load it into the table, with noTitle param as true */
     edit.load(true);
     sections.changeTo("edit");
   }
