@@ -19,14 +19,9 @@ document.getElementById(ui.elements.importOther.button).addEventListener(
         )
       );
     }
-    sessionData.studySetData = {
-      quizfreely: "Quizfreely",
-      name: "",
-      settings: {
-        public: false,
-      },
-      data: data
-    };
+    edit.make();
+    sessionData.studySetData.data = data;
     edit.load(true);
+    sections.changeTo("edit");
   }
 )
