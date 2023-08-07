@@ -227,7 +227,7 @@
               </div>
             </div>
             <h2 id="mainActionsStudysettitle">Untitled Study Set</h2>
-            <p id="mainOpenCreator">Created by <code id="mainOpenCreatorNickname">User</code></p>
+            <p id="mainOpenCreator">Created by <code id="mainOpenCreatorNickname">User</code><p>
             <p id="mainOpenSavedone" class="bg3 hide">
               <i class="nf nf-oct-check"></i>
               Saved to account
@@ -280,11 +280,8 @@
               </button>
               <button class="a2">Review Game</button>
               <p class="b0 center">Group Activities</p>
-              <a class="b1 button" id="mainOpenActivitylistHost">
-                <!-- href is set in studySet.open() -->
-                Host Review Game
-              </a>
-              <a class="b2 button" href="./join.html">Join Review Game</a>
+              <button class="b1">Host Review Game</button>
+              <button class="b2">Join Review Game</button>
             </div>
             <!-- Add "this study set is private/public..." thingy here too -->
             <div class="flex">
@@ -650,9 +647,6 @@
             data: "mainDashboardImportotherData",
             termDelimiter: "mainDashboardImportotherTermdelimiter",
             rowDelimiter: "mainDashboardImportotherRowdelimiter"
-          },
-          activities: {
-            host: "mainOpenActivitylistHost"
           },
           states: {
             newUser: [

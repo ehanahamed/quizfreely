@@ -90,6 +90,7 @@ var studySet = {
     /* IMPORTANT: the string above has the inner html of the table found in dashboard.html */
     document.getElementById(ui.elements.edit.settings.public.true).checked =
       sessionData.studySetData.settings.public;
+    document.getElementById(ui.elements.activities.host).href = "./host?json=" + JSON.stringify(sessionData.studySetData);
   },
   getSettings: function () {
     return {
