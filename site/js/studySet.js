@@ -10,7 +10,6 @@ var studySet = {
     return {
       quizfreely: "Quizfreely",
       name: "",
-      creator: "",
       settings: {
         public: false,
       },

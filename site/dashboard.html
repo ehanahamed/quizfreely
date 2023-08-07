@@ -160,10 +160,10 @@
               <div class="content">
                 <h2>Import from another app</h2>
                 <p>Delimiter/Seperator between term and definition</p>
-                <input type="text" placeholder="Term delimiter" />
+                <input type="text" placeholder="Term delimiter" id="mainDashboardImportotherTermdelimiter" />
                 <p>Delimiter/Seperator between rows</p>
-                <input type="text" placeholder="Row delimiter" />
-                <textarea class="fullWidth" rows="10" placeholder="Paste data here"></textarea>
+                <input type="text" placeholder="Row delimiter" id="mainDashboardImportotherRowdelimiter" />
+                <textarea id="mainDashboardImportotherData" class="fullWidth" rows="10" placeholder="Paste data here"></textarea>
                 <div class="flex">
                   <button id="mainDashboardImportotherImportbutton">Import</button>
                   <button class="red" onclick="document.getElementById('mainDashboardImportother').classList.add('hide')">Cancel</button>
@@ -642,6 +642,12 @@
             front: "flashcardsFront",
             back: "flashcardsBack",
           },
+          importOther: {
+            button: "mainDashboardImportotherImportbutton",
+            data: "mainDashboardImportotherData",
+            termDelimiter: "mainDashboardImportotherTermdelimiter",
+            rowDelimiter: "mainDashboardImportotherRowdelimiter"
+          },
           states: {
             newUser: [
               "mainDashboardNewuserdiv",
@@ -678,6 +684,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.29.0"></script>
     <script src="./js/supabase.js"></script>
     <script src="./js/exploreToDashboard.js"></script>
+    <script src="./js/importOther.js"></script>
     <script>
       /* functionality of studySetIsCopy buttons below */
       document

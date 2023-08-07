@@ -10,13 +10,15 @@ var edit = {
     sessionData.studySetData = studySet.make();
     edit.add();
   },
-  load: function () {
+  load: function (noTitle) {
     edit.makeTableFromArray(
       sessionData.studySetData.data,
       document.getElementById(ui.elements.inputs.edit.table)
     );
-    document.getElementById(ui.elements.inputs.edit.name).value =
-      sessionData.studySetData.name;
+    if (noTitle !== true) {
+      document.getElementById(ui.elements.inputs.edit.name).value =
+        sessionData.studySetData.name;
+    }
   },
   insert: function (index) {
     var newRow = document
