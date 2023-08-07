@@ -9,9 +9,15 @@ document.getElementById(ui.elements.importOther.button).addEventListener(
   "click",
   function () {
     var data = [];
-    var rows = document.getElementById(ui.elements.importOther.data).value.split(
-      document.getElementById(ui.elements.importOther.rowDelimiter).value
-    );
+    var rows;
+    if (document.getElementById(ui.elements.importOther.data).value == "") {
+      /* split by newline if blank */
+      rows = document.getElementById(ui.elements.importOther.data).value.split("\n");
+    } else {
+      rows = document.getElementById(ui.elements.importOther.data).value.split(
+        document.getElementById(ui.elements.importOther.rowDelimiter).value
+      );
+    }
     for (var i = 0; i < rows.length; i++) {
       data.push(
         rows[i].split(
