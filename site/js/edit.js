@@ -23,7 +23,7 @@ var edit = {
       .getElementById(ui.elements.inputs.edit.table)
       .insertRow(index);
     newRow.insertCell(0).innerHTML =
-      "<input type='text' placeholder='Term'></input>";
+      "<input type='text' placeholder='Term' />";
     newRow.insertCell(1).innerHTML =
       "<textarea class='vertical' rows='2' placeholder='Definition'></textarea>";
     var actions = newRow.insertCell(2);

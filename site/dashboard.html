@@ -147,6 +147,28 @@
               </label>
               <input id="inputImportLocalFile" class="invisible" type="file" />
             </div>
+            <p>
+              You can also import study sets from other apps.
+            </p>
+            <div class="flex">
+              <button onclick="document.getElementById('mainDashboardImportother').classList.remove('hide')">
+                <i class="nf nf-md-content_copy"></i>
+                Import
+              </button>
+            </div>
+            <div id="mainDashboardImportother" class="modal hide">
+              <div class="content">
+                <h2>Import from another app</h2>
+                <p>Delimiter/Seperator between term and definition</p>
+                <input type="text" placeholder="Term delimiter" />
+                <p>Delimiter/Seperator between rows</p>
+                <input type="text" placeholder="Row delimiter" />
+                <textarea class="fullWidth" rows="10" placeholder="Paste data here"></textarea>
+                <div>
+                  <button>Import</button>
+                </div>
+              </div>
+            </div>
             <div id="mainDashboardNewuserdiv" class="hide">
               <p>
                 You are not signed in. You can continue using Quizfreely without
