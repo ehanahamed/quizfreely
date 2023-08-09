@@ -151,85 +151,17 @@
     <script>
       var ui = {
         elements: {
-          sections: {
-            dashboard: "mainDashboarddiv",
-            open: "mainOpendiv",
-            edit: "mainEditdiv",
-            /* flashcards: document.getElementById("sectionFlashcards"), */
-          },
-          buttons: {
-            create: "mainDashboardCreate",
-            importOptions: "buttonImportOptions",
-          },
-          inputs: {
-            importLocal: {
-              file: "inputImportLocalFile",
-            },
-            edit: {
-              name: "mainEditName",
-              table: "mainEditTable",
-            },
-          },
-          links: {
-            exportLocal: {
-              newUserDownload: "mainOpenActionsSaveNewuserExportLocalDownload",
-              userDownload: "mainOpenActionsSaveUserExportLocalDownload",
-            },
-          },
-          alerts: {
-            successImport: "alertSuccessImport",
-            errorImport: "alertErrorImport",
-            flashcardsEnd: "alertFlashcardsEnd",
-          },
-          open: {
-            save: "mainActionsSave",
-            saveDone: "mainOpenSavedone",
-          },
-          edit: {
-            table: "mainEditTable",
-            settings: {
-              public: {
-                true: "publicTrue",
-                false: "publicFalse",
-              },
-            },
-            studySetIsCopy: "mainEditStudySetIsCopy",
-            studySetIsCopyButtons: {
-              update: "mainEditStudySetIsCopyUpdate",
-              back: "mainEditStudySetIsCopyBack",
-            },
-          },
-          flashcards: {
-            card: "flashcardsCard",
-            content: "flashcardsContent",
-            front: "flashcardsFront",
-            back: "flashcardsBack",
-          },
-          importOther: {
-            button: "mainDashboardImportotherImportbutton",
-            data: "mainDashboardImportotherData",
-            termDelimiter: "mainDashboardImportotherTermdelimiter",
-            rowDelimiter: "mainDashboardImportotherRowdelimiter",
-          },
           states: {
-            newUser: [
-              "mainDashboardNewuserdiv",
-              "mainOpenActionsSaveNewuserdiv",
-            ],
-            user: [
-              "mainDashboardUserdiv",
-              "mainOpenActionsSaveUserdiv",
-              "mainEditSettingsPublic",
-            ],
-            setIsMine: ["mainOpenEditbutton", "mainOpenBottomEditbutton"],
-            setIsNotMine: ["mainOpenBottomCopybutton", "mainOpenCreator"],
-            setIsLarge: ["mainOpenBottomdiv"],
+            newUser: [],
+            user: [],
+            setIsMine: [],
+            setIsNotMine: [],
+            setIsLarge: [],
           },
         },
         states: {
           newUser: function (isNewUser) {
             if (isNewUser === false) {
-              loadDashboard();
             }
           },
         },

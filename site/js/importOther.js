@@ -10,7 +10,7 @@ document
   .addEventListener("click", function () {
     var data = [];
     var rows;
-    if (document.getElementById(ui.elements.importOther.data).value == "") {
+    if (document.getElementById(ui.elements.importOther.rowDelimiter).value == "") {
       /* split by newline if blank */
       rows = document
         .getElementById(ui.elements.importOther.data)
