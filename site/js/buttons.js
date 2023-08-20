@@ -14,6 +14,10 @@ var buttons = {
   },
   open: {
     edit: function () {
+      /* save old studyset info before calling edit.load() to start editing */
+      sessionData.beforeEdit = {
+        studySetData: sessionData.studySetData        
+      };
       edit.load();
       sections.changeTo("edit");
       //alerts.clear();
