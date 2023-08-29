@@ -1,4 +1,4 @@
-Copyright (c) 2022-present Ehan Ahamed and contributors
+Copyright (c) 2022 Quizfreely Contributors
 
 The Universal Permissive License (UPL), Version 1.0
 
