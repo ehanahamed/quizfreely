@@ -1,8 +1,8 @@
-/*!
-  Quizfreely (quizfreely.ehan.dev)
+/*
+  Quizfreely
   Copyright (c) 2022 Quizfreely Contributors
   Licensed under the UPL-1.0 License
-  https://quizfreely.ehan.dev/license
+  https://quizfreely.ehan.dev/LICENSE.txt
 */
 
 var studySet = {
@@ -53,7 +53,7 @@ var studySet = {
       ["there are","arrays in this array for each row of the table"]
     ]
   }
-  
+
   */
   open: function () {
     /* reset/rehide "i am saved" popup */

@@ -1,8 +1,8 @@
-/*!
-  Quizfreely (quizfreely.ehan.dev)
+/*
+  Quizfreely
   Copyright (c) 2022 Quizfreely Contributors
   Licensed under the UPL-1.0 License
-  https://quizfreely.ehan.dev/license
+  https://quizfreely.ehan.dev/LICENSE.txt
 */
 
 var sections = {
