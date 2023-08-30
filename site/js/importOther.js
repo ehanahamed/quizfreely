@@ -1,6 +1,6 @@
 /*!
   Quizfreely (quizfreely.ehan.dev)
-  Copyright (c) 2022-present Ehan Ahamed and contributors
+  Copyright (c) 2022 Quizfreely Contributors
   Licensed under the UPL-1.0 License
   https://quizfreely.ehan.dev/license
 */
