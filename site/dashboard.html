@@ -472,6 +472,7 @@
               ).innerHTML = "<p>No study sets are saved to your account.</p>";
             } else {
               for (var i = 0; i < studysetlist.length; i++) {
+                /* the html structure below needs to be copied to reference 11 when changed */
                 var box = document.createElement("div");
                 box.setAttribute("class", "box");
                 box.setAttribute(
@@ -550,7 +551,9 @@
                               .delete()
                               .eq("id", thisId)
                               .then(function () {
-                                location.reload();
+                                /* remove self (and parent) from ui list */
+                                /* needs to change when structure changes (reference 11) */
+                                event.target.parentElement.parentElement.remove()
                               });
                           });
                       });
