@@ -561,9 +561,9 @@
               }
             }
           });
-        document
-          .getElementById("mainWorkinprogressSavetoaccountbutton")
-          .addEventListener("click", function () {
+      }
+      function saveEditedStudySet() {
+        if (states.current.isNewUser === false) {
             supabaseClient
               .from("studyset")
               .insert({
@@ -612,8 +612,10 @@
                 .eq("name", sessionData.studySetData.name)
                 .then();
             }
-          });
-      }
+        } else if (states.current.isNewUser === true) {
+          alert("work in progress, states.current.isNewUser is true (20230908224800)")
+        }
+      };
     </script>
     <script src="./js/states.js"></script>
     <script>

@@ -52,7 +52,7 @@ var buttons = {
             }
           } else if (isStudySetCopy === false) {
             studySet.open();
-            document.getElementById("mainActionsSave").classList.remove("hide");
+            saveEditedStudySet()
           }
         }
       );

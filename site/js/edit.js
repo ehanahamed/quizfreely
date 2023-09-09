@@ -64,7 +64,8 @@ var edit = {
     sessionData.studySetData.data = edit.makeArrayFromTable(
       document.getElementById(ui.elements.inputs.edit.table)
     );
-    exportLocal.save();
+    /* temporarily disabled: */
+    // exportLocal.save();
   },
   remove: function (index) {
     document.getElementById(ui.elements.inputs.edit.table).deleteRow(index);
