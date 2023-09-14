@@ -1054,9 +1054,22 @@
       </div>
       <div class="grid page extra">
         <div class="content">
-          <h2 class="extra">Try it yourself, it's free!</h2>
-          <div class="flex">
-            <a class="button extra" href="./start.html">Get Started</a>
+          <div id="mainExtraNewuserdiv">
+            <h2>Get Started</h2>
+            <p>Accounts are <b>optional</b> and completely free!</p>
+            <div class="flex">
+              <a class="button" href="./signup.html">Sign Up</a>
+              <a class="button alt" href="./dashboard.html">Continue without an account</a>
+            </div>
+            <p>Already have an account? <a href="./signin.html">Sign In</a></p>
+          </div>
+          <div id="mainExtraUserdiv">
+            <h2>You are signed in!</h2>
+            <p>Go to the dashboard to create, edit, or review a study set.</p>
+            <div class="flex">
+              <a class="button" href="./dashboard.html">Dashboard</a>
+              <a class="button alt" href="./settings.html">Settings</a>
+            </div>
           </div>
         </div>
       </div>
@@ -1094,8 +1107,8 @@
       var ui = {
         elements: {
           states: {
-            newUser: ["mainHeroContentNewuserdiv"],
-            user: ["mainHeroContentUserdiv"],
+            newUser: ["mainHeroContentNewuserdiv","mainExtraNewuserdiv"],
+            user: ["mainHeroContentUserdiv","mainExtraUserdiv"],
           },
         },
       };
