@@ -24,7 +24,6 @@ var states = {
             .classList.add("hide");
         }
       }
-      newU;
     } else if (isNewUser === false) {
       if (ui.elements.states.newUser) {
         for (var i = 0; i < ui.elements.states.newUser.length; i++) {
