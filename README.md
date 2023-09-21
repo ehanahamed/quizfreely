@@ -1,5 +1,7 @@
 # BEFORE MERGE
  - re-replace `main--quizfreelyehandev.netlify.app` with `quizfreely.ehan.dev` (search `redirectTo:`)
+ - test supabase
+   - dist uses `@2.29.0`, main uses `@2.36.0`
 
 Implement import from...
 
