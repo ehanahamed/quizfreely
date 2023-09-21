@@ -1,3 +1,6 @@
+# BEFORE MERGE
+ - re-replace `main--quizfreelyehandev.netlify.app` with `quizfreely.ehan.dev` (search `redirectTo:`)
+
 Implement import from...
 
 - Study Stack
