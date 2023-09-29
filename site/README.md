@@ -31,7 +31,7 @@ supabaseClient.auth.getSession().then(function (result) {
 ```
 
 ```javascript
-// multiple child functions apperently work just fine?
+// .then() is the most readable and properly-working way to use supabase since it's async
 supabaseClient
   .from("table")
   .select()
