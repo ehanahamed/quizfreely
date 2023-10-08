@@ -2,7 +2,7 @@
   Quizfreely
   Copyright (c) Ehan Ahamed and contributors
   Licensed under the UPL-1.0 License
-  https://quizfreely.ehan.dev/LICENSE.txt
+  https://quizfreely.com/LICENSE.txt
 */
 
 var states = {
