@@ -30,6 +30,24 @@
   </head>
 
   <body>
+    <div class="topmost box green hide" id="topmostNewUrl">
+      <p>Quizfreely's website is now at <a href="https://quizfreely.com">quizfreely.com</a></p>
+    </div>
+    <div class="topmost box hide" id="topmostDevBranch">
+      <p>This is the development branch, the latest stable version is at <a href="https://quizfreely.com">quizfreely.com</a></p>
+    </div>
+    <script>
+      if (
+        (location.href.includes("quizfreely.com") === false) ||
+        (location.href.includes("main") === false)
+      ) {
+        document.getElementById("topmostNewUrl").classList.remove("hide");
+      } else if (
+        location.href.includes("main") === true
+      ) {
+        document.getElementById("topmostDevBranch").classList.remove("hide");
+      }
+    </script>
     <header>
       <div class="menu nav">
         <div class="current">
