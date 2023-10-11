@@ -1,4 +1,5 @@
 # BEFORE MERGE
+ - remove temporary, cherry-picked, commits currently in dist
  - re-replace `main.quizfreely.com` with `quizfreely.com` (search `redirectTo:`)
  - test supabase
    - dist uses `@2.29.0`, main uses `@2.36.0`
