@@ -1,0 +1,660 @@
+/*!
+  design.ehan.dev
+  Copyright (c) Ehan Ahamed and contributors
+  Licensed under the UPL-1.0 License
+  https://design.ehan.dev/LICENSE.txt
+*/
+
+@media (prefers-color-scheme: dark) {
+  :root,
+  :root.auto {
+    color-scheme: dark;
+    --red: #ff6666;
+    --redAlt: #ff9999;
+    --redDark: #cc5252;
+    --orange: #ff9966;
+    --orangeAlt: #ffbb99;
+    --yellow: #ffcc66;
+    --yellowAlt: #ffdd99;
+    --green: #52cca3;
+    --greenAlt: #7accb1;
+    --greenDark: #3d997a;
+    --blue: #527ACC;
+    --blueAlt: #7A96CC;
+    --purple: #7a52cc;
+    --purpleAlt: #967acc;
+    --pink: #cc52a3;
+    --pinkAlt: #cc7ab1;
+    --primary: #7a52cc;
+    --primaryAlt: #967acc;
+    --primaryDark: #5c3d99;
+    --extra: #52cca3;
+    --extraAlt: #7accb1;
+    --extraDark: #3d997a;
+    --bgExtra: #181829;
+    --black: #1e1e32;
+    --gray: #3d3d66;
+    --grayAlt: #5c5c99;
+    --white: #a3a3cc;
+    --fg: #a3a3cc;
+    --bg3: #5c5c99;
+    --bg2: #3d3d66;
+    --bg1: #1e1e32;
+  }
+}
+
+@media (prefers-color-scheme: light) {
+  :root,
+  :root.auto {
+    color-scheme: light;
+    --red: #E65C5C;
+    --redAlt: #E68A8A;
+    --redDark: #B34747;
+    --orange: #ff9966;
+    --orangeAlt: #ffbb99;
+    --yellow: #ffcc66;
+    --yellowAlt: #ffdd99;
+    --green: #42A685;
+    --greenAlt: #63A690;
+    --greenDark: #2E735C;
+    --blue: #527ACC;
+    --blueAlt: #7A96CC;
+    --purple: #7a52cc;
+    --purpleAlt: #967acc;
+    --pink: #cc52a3;
+    --pinkAlt: #cc7ab1;
+    --primary: #7a52cc;
+    --primaryAlt: #967acc;
+    --primaryDark: #5c3d99;
+    --extra: #42A685;
+    --extraAlt: #63A690;
+    --extraDark: #2E735C;
+    --bgExtra: #CFCFE6;
+    --black: #363659;
+    --gray: #CFCFE6;
+    --grayAlt: #A3A3CC;
+    --white: #EDEDF2;
+    --fg: #363659;
+    --bg3: #A3A3CC;
+    --bg2: #CFCFE6;
+    --bg1: #EDEDF2;
+  }
+
+  :root.auto button:hover,
+  :root.auto button:focus-visible,
+  :root.auto .button:hover,
+  :root.auto .button:focus-visible {
+    color: var(--fg);
+  }
+
+  :root.auto .hero > .logo::before {
+    display: none;
+  }
+}
+
+:root.purpleish {
+  color-scheme: dark;
+  --red: #ff6666;
+  --redAlt: #ff9999;
+  --redDark: #cc5252;
+  --orange: #ff9966;
+  --orangeAlt: #ffbb99;
+  --yellow: #ffcc66;
+  --yellowAlt: #ffdd99;
+  --green: #52cca3;
+  --greenAlt: #7accb1;
+  --greenDark: #3d997a;
+  --blue: #527ACC;
+  --blueAlt: #7A96CC;
+  --purple: #7a52cc;
+  --purpleAlt: #967acc;
+  --pink: #cc52a3;
+  --pinkAlt: #cc7ab1;
+  --primary: #7a52cc;
+  --primaryAlt: #967acc;
+  --primaryDark: #5c3d99;
+  --extra: #52cca3;
+  --extraAlt: #7accb1;
+  --extraDark: #3d997a;
+  --bgExtra: #181829;
+  --black: #1e1e32;
+  --gray: #3d3d66;
+  --grayAlt: #5c5c99;
+  --white: #a3a3cc;
+  --fg: #a3a3cc;
+  --bg3: #5c5c99;
+  --bg2: #3d3d66;
+  --bg1: #1e1e32;
+}
+
+:root.snow {
+  color-scheme: light;
+  --red: #E65C5C;
+  --redAlt: #E68A8A;
+  --redDark: #B34747;
+  --orange: #ff9966;
+  --orangeAlt: #ffbb99;
+  --yellow: #ffcc66;
+  --yellowAlt: #ffdd99;
+  --green: #42A685;
+  --greenAlt: #63A690;
+  --greenDark: #2E735C;
+  --blue: #527ACC;
+  --blueAlt: #7A96CC;
+  --purple: #7a52cc;
+  --purpleAlt: #967acc;
+  --pink: #cc52a3;
+  --pinkAlt: #cc7ab1;
+  --primary: #7a52cc;
+  --primaryAlt: #967acc;
+  --primaryDark: #5c3d99;
+  --extra: #42A685;
+  --extraAlt: #63A690;
+  --extraDark: #2E735C;
+  --bgExtra: #CFCFE6;
+  --black: #363659;
+  --gray: #CFCFE6;
+  --grayAlt: #A3A3CC;
+  --white: #EDEDF2;
+  --fg: #363659;
+  --bg3: #A3A3CC;
+  --bg2: #CFCFE6;
+  --bg1: #EDEDF2;
+}
+
+:root.snow button:hover,
+:root.snow button:focus-visible,
+:root.snow .button:hover,
+:root.snow .button:focus-visible {
+  color: var(--fg);
+}
+
+:root.snow .hero > .logo::before {
+  display: none;
+}
+
+:root.owl {
+  color-scheme: light;
+  --red: #ff4b4b;
+  --redAlt: #ff7878;
+  --redDark: #ea2b2b;
+  --orange: #ffc800;
+  --orangeAlt: #fbe56d;
+  --yellow: #ffc800;
+  --yellowAlt: #fbe56d;
+  --green: #58cc02;
+  --greenAlt: #a5ed6e;
+  --greenDark: #58a700;
+  --blue: #1899d6;
+  --blueAlt: #1cb0f6;
+  --purple: #9069cd;
+  --purpleAlt: #ce82ff;
+  --pink: #9069cd;
+  --pinkAlt: #ce82ff;
+  --primary: #58cc02;
+  --primaryAlt: #a5ed6e;
+  --primaryDark: #58a700;
+  --extra: #1899d6;
+  --extraAlt: #1cb0f6;
+  --extraDark: #2b70c9;
+  --bgExtra: #ddf4ff;
+  --black: #4b4b4b;
+  --gray: #afafaf;
+  --grayAlt: #e5e5e5;
+  --white: #f7f7f7;
+  --fg: #4b4b4b;
+  --bg3: #afafaf;
+  --bg2: #e5e5e5;
+  --bg1: #f7f7f7;
+}
+
+:root.owl button:hover,
+:root.owl button:focus-visible,
+:root.owl .button:hover,
+:root.owl .button:focus-visible {
+  color: var(--fg);
+}
+
+:root.owl .hero > .logo::before {
+  display: none;
+}
+
+:root.blurple {
+  color-scheme: dark;
+  --red: #da373c;
+  --redAlt: #a12828;
+  --redDark: #a12828;
+  --orange: #bf861c;
+  --orangeAlt: #bf861c;
+  --yellow: #fee75c;
+  --yellowAlt: #fee75c;
+  --green: #23a55a;
+  --greenAlt: #1a6334;
+  --greenDark: #1a6334;
+  --blue: #00a8fc;
+  --blueAlt: #00a8fc;
+  --purple: #5865f2;
+  --purpleAlt: #4752c4;
+  --pink: #eb459e;
+  --pinkAlt: #eb459e;
+  --primary: #5865f2;
+  --primaryAlt: #4752c4;
+  --primaryDark: #4752c4;
+  --extra: #5865f2;
+  --extraAlt: #4752c4;
+  --extraDark: #4752c4;
+  --bgExtra: #1e1f22;
+  --black: #2b2d31;
+  --gray: #404249;
+  --grayAlt: #b5bac1;
+  --white: #f2f3f5;
+  --fg: #f2f3f5;
+  --bg3: #b5bac1;
+  --bg2: #404249;
+  --bg1: #2b2d31;
+}
+
+:root.blurple button:hover,
+:root.blurple button:focus-visible,
+:root.blurple .button:hover,
+:root.blurple .button:focus-visible {
+  color: var(--fg);
+}
+
+:root.cat {
+  color-scheme: dark;
+  --red: #fa4549;
+  --redAlt: #ff8182;
+  --redDark: #cf222e;
+  --orange: #fb8f44;
+  --orangeAlt: #ffb77c;
+  --yellow: #eac54f;
+  --yellowAlt: #fae17d;
+  --green: #4ac26b;
+  --greenAlt: #6fdd8b;
+  --greenDark: #2da44e;
+  --blue: #218bff;
+  --blueAlt: #54aeff;
+  --purple: #a475f9;
+  --purpleAlt: #c297ff;
+  --pink: #e85aad;
+  --pinkAlt: #ff80c8;
+  --primary: #a475f9;
+  --primaryAlt: #c297ff;
+  --primaryDark: #8250df;
+  --extra: #a475f9;
+  --extraAlt: #c297ff;
+  --extraDark: #8250df;
+  --bgExtra: #29233f;
+  --black: #0d1117;
+  --gray: #30363d;
+  --grayAlt: #7d8590;
+  --white: #e6edf3;
+  --fg: #e6edf3;
+  --bg3: #7d8590;
+  --bg2: #30363d;
+  --bg1: #0d1117;
+}
+
+:root.cat a,
+:root.cat .a {
+  color: var(--blue);
+}
+
+:root.cat a:hover,
+:root.cat a:focus-visible,
+:root.cat .a:hover,
+:root.cat .a:focus-visible {
+  color: var(--blueAlt);
+}
+
+:root.cat button,
+:root.cat .button,
+:root.cat button.extra,
+:root.cat .button.extra {
+  color: var(--fg);
+  background-color: #238636;
+  border-color: #41a956;
+  box-shadow: none;
+}
+
+:root.cat button:hover,
+:root.cat button:focus-visible,
+:root.cat .button:hover,
+:root.cat .button:focus-visible,
+:root.cat button.extra:hover,
+:root.cat button.extra:focus-visible,
+:root.cat .button.extra:hover,
+:root.cat .button.extra:focus-visible {
+  color: var(--fg);
+  background-color: #2ea043;
+  border-color: #41a956;
+  transform: none;
+}
+
+:root.cat button.alt,
+:root.cat .button.alt,
+:root.cat button.extra.alt,
+:root.cat .button.extra.alt {
+  color: var(--fg);
+  background-color: #21262d;
+  border-color: #363b42;
+}
+
+:root.cat button.alt:hover,
+:root.cat button.alt:focus-visible,
+:root.cat .button.alt:hover,
+:root.cat .button.alt:focus-visible,
+:root.cat button.extra.alt:hover,
+:root.cat button.extra.alt:focus-visible,
+:root.cat .button.extra.alt:hover,
+:root.cat .button.extra.alt:focus-visible {
+  color: var(--fg);
+  background-color: #30363d;
+  border-color: #8b949e;
+  transform: none;
+}
+
+:root.cat button.red,
+:root.cat button.red.alt,
+:root.cat .button.red,
+:root.cat .button.red.alt {
+  color: #f85149;
+  background-color: #21262d;
+  border-color: #363b42;
+}
+
+:root.cat button.red:hover,
+:root.cat button.red:focus-visible,
+:root.cat .button.red:hover,
+:root.cat .button.red:focus-visible,
+:root.cat button.red.alt:hover,
+:root.cat button.red.alt:focus-visible,
+:root.cat .button.red.alt:hover,
+:root.cat .button.red.alt:focus-visible {
+  color: var(--fg);
+  background-color: #da3633;
+  border-color: #f85149;
+  transform: none;
+}
+
+:root.cat button.green,
+:root.cat button.green.alt,
+:root.cat .button.green,
+:root.cat .button.green.alt {
+  color: #41a956;
+  background-color: #21262d;
+  border-color: #363b42;
+}
+
+:root.cat button.green:hover,
+:root.cat button.green:focus-visible,
+:root.cat .button.green:hover,
+:root.cat .button.green:focus-visible,
+:root.cat button.green.alt:hover,
+:root.cat button.green.alt:focus-visible,
+:root.cat .button.green.alt:hover,
+:root.cat .button.green.alt:focus-visible {
+  color: var(--fg);
+  background-color: #2ea043;
+  border-color: #41a956;
+  transform: none;
+}
+
+:root.cat input[type="text"],
+:root.cat input[type="password"],
+:root.cat textarea {
+  background-color: #010409;
+  border-color: var(--bg2);
+  box-shadow: none;
+}
+
+:root.cat input[type="text"]:hover,
+:root.cat input[type="text"]:focus-visible,
+:root.cat input[type="password"]:hover,
+:root.cat input[type="password"]:focus-visible,
+:root.cat textarea:hover,
+:root.cat textarea:focus-visible {
+  border-color: var(--bg3);
+  transform: none;
+}
+
+:root.cat input[type="radio"],
+:root.cat input[type="checkbox"] {
+  border-color: var(--bg2);
+  box-shadow: none;
+  transform: none;
+}
+
+:root.cat input[type="radio"]:hover,
+:root.cat input[type="checkbox"]:hover,
+:root.cat input[type="radio"]:focus-visible,
+:root.cat input[type="checkbox"]:focus-visible {
+  border-color: var(--bg3);
+}
+
+:root.cat .nav > div > a {
+  color: var(--bg3);
+}
+
+:root.cat .nav > div.current {
+  border-color: #f78166;
+}
+
+:root.cat .nav > div.current > a {
+  color: var(--fg);
+}
+
+:root.cat button:focus-visible,
+:root.cat .button:focus-visible,
+:root.cat input[type="radio"]:focus-visible,
+:root.cat input[type="checkbox"]:focus-visible,
+:root.cat input[type="text"]:focus-visible,
+:root.cat input[type="password"]:focus-visible,
+:root.cat textarea:focus-visible {
+  outline-color: var(--blue);
+}
+
+:root.cat input[type="radio"]:checked,
+:root.cat input[type="checkbox"]:checked {
+  background-color: var(--blue);
+}
+
+:root.catdim {
+  color-scheme: dark;
+  --red: #fa4549;
+  --redAlt: #ff8182;
+  --redDark: #cf222e;
+  --orange: #fb8f44;
+  --orangeAlt: #ffb77c;
+  --yellow: #eac54f;
+  --yellowAlt: #fae17d;
+  --green: #4ac26b;
+  --greenAlt: #6fdd8b;
+  --greenDark: #2da44e;
+  --blue: #218bff;
+  --blueAlt: #54aeff;
+  --purple: #a475f9;
+  --purpleAlt: #c297ff;
+  --pink: #e85aad;
+  --pinkAlt: #ff80c8;
+  --primary: #a475f9;
+  --primaryAlt: #c297ff;
+  --primaryDark: #8250df;
+  --extra: #a475f9;
+  --extraAlt: #c297ff;
+  --extraDark: #8250df;
+  --bgExtra: #29233f;
+  --black: #22272e;
+  --gray: #444c56;
+  --grayAlt: #768390;
+  --white: #e6edf3;
+  --fg: #e6edf3;
+  --bg3: #768390;
+  --bg2: #444c56;
+  --bg1: #22272e;
+}
+
+:root.catdim a,
+:root.catdim .a {
+  color: var(--blue);
+}
+
+:root.catdim a:hover,
+:root.catdim a:focus-visible,
+:root.catdim .a:hover,
+:root.catdim .a:focus-visible {
+  color: var(--blueAlt);
+}
+
+:root.catdim button,
+:root.catdim .button,
+:root.catdim button.extra,
+:root.catdim .button.extra {
+  color: var(--fg);
+  background-color: #238636;
+  border-color: #41a956;
+  box-shadow: none;
+}
+
+:root.catdim button:hover,
+:root.catdim button:focus-visible,
+:root.catdim .button:hover,
+:root.catdim .button:focus-visible,
+:root.catdim button.extra:hover,
+:root.catdim button.extra:focus-visible,
+:root.catdim .button.extra:hover,
+:root.catdim .button.extra:focus-visible {
+  color: var(--fg);
+  background-color: #2ea043;
+  border-color: #41a956;
+  transform: none;
+}
+
+:root.catdim button.alt,
+:root.catdim .button.alt,
+:root.catdim button.extra.alt,
+:root.catdim .button.extra.alt {
+  color: var(--fg);
+  background-color: #373e47;
+  border-color: #464e57;
+}
+
+:root.catdim button.alt:hover,
+:root.catdim button.alt:focus-visible,
+:root.catdim .button.alt:hover,
+:root.catdim .button.alt:focus-visible,
+:root.catdim button.extra.alt:hover,
+:root.catdim button.extra.alt:focus-visible,
+:root.catdim .button.extra.alt:hover,
+:root.catdim .button.extra.alt:focus-visible {
+  color: var(--fg);
+  background-color: #444c56;
+  border-color: #768390;
+  transform: none;
+}
+
+:root.catdim button.red,
+:root.catdim button.red.alt,
+:root.catdim .button.red,
+:root.catdim .button.red.alt {
+  color: #f85149;
+  background-color: #373e47;
+  border-color: #464e57;
+}
+
+:root.catdim button.red:hover,
+:root.catdim button.red:focus-visible,
+:root.catdim .button.red:hover,
+:root.catdim .button.red:focus-visible,
+:root.catdim button.red.alt:hover,
+:root.catdim button.red.alt:focus-visible,
+:root.catdim .button.red.alt:hover,
+:root.catdim .button.red.alt:focus-visible {
+  color: var(--fg);
+  background-color: #da3633;
+  border-color: #f85149;
+  transform: none;
+}
+
+:root.catdim button.green,
+:root.catdim button.green.alt,
+:root.catdim .button.green,
+:root.catdim .button.green.alt {
+  color: #41a956;
+  background-color: #373e47;
+  border-color: #464e57;
+}
+
+:root.catdim button.green:hover,
+:root.catdim button.green:focus-visible,
+:root.catdim .button.green:hover,
+:root.catdim .button.green:focus-visible,
+:root.catdim button.green.alt:hover,
+:root.catdim button.green.alt:focus-visible,
+:root.catdim .button.green.alt:hover,
+:root.catdim .button.green.alt:focus-visible {
+  color: var(--fg);
+  background-color: #2ea043;
+  border-color: #41a956;
+  transform: none;
+}
+
+:root.catdim input[type="text"],
+:root.catdim input[type="password"],
+:root.catdim textarea {
+  background-color: #1c2128;
+  border-color: var(--bg2);
+  box-shadow: none;
+}
+
+:root.catdim input[type="text"]:hover,
+:root.catdim input[type="text"]:focus-visible,
+:root.catdim input[type="password"]:hover,
+:root.catdim input[type="password"]:focus-visible,
+:root.catdim textarea:hover,
+:root.catdim textarea:focus-visible {
+  border-color: var(--bg3);
+  transform: none;
+}
+
+:root.catdim input[type="radio"],
+:root.catdim input[type="checkbox"] {
+  border-color: var(--bg2);
+  box-shadow: none;
+  transform: none;
+}
+
+:root.catdim input[type="radio"]:hover,
+:root.catdim input[type="checkbox"]:hover,
+:root.catdim input[type="radio"]:focus-visible,
+:root.catdim input[type="checkbox"]:focus-visible {
+  border-color: var(--bg3);
+}
+
+:root.catdim .nav > div > a {
+  color: var(--bg3);
+}
+
+:root.catdim .nav > div.current {
+  border-color: #f78166;
+}
+
+:root.catdim .nav > div.current > a {
+  color: var(--fg);
+}
+
+:root.catdim button:focus-visible,
+:root.catdim .button:focus-visible,
+:root.catdim input[type="radio"]:focus-visible,
+:root.catdim input[type="checkbox"]:focus-visible,
+:root.catdim input[type="text"]:focus-visible,
+:root.catdim input[type="password"]:focus-visible,
+:root.catdim textarea:focus-visible {
+  outline-color: var(--blue);
+}
+
+:root.catdim input[type="radio"]:checked,
+:root.catdim input[type="checkbox"]:checked {
+  background-color: var(--blue);
+}
