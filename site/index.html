@@ -34,18 +34,19 @@
       <p>Quizfreely's website is now at <a href="https://quizfreely.com">quizfreely.com</a></p>
     </div>
     <div class="topmost box center hide" id="topmostDevBranch">
-      <p>This is the development branch, the latest stable version is at <a href="https://quizfreely.com">quizfreely.com</a></p>
+      <p>This is the <code>main</code> development branch, Quizfreely's website is at <a href="https://quizfreely.com">quizfreely.com</a></p>
     </div>
     <script>
       if (
-        (location.href.includes("quizfreely.com") === false) &&
-        (location.href.includes("main") === false)
-      ) {
-        document.getElementById("topmostNewUrl").classList.remove("hide");
-      } else if (
-        location.href.includes("main") === true
+        location.href.includes("main.quizfreely.com") ||
+        (location.href.includes("netlify") && location.href.includes("main"))
       ) {
         document.getElementById("topmostDevBranch").classList.remove("hide");
+      } else if (
+        location.href.includes("ehan.dev") ||
+        location.href.includes("netlify")
+      ) {
+        document.getElementById("topmostNewUrl").classList.remove("hide");
       }
     </script>
     <header>
@@ -1066,7 +1067,7 @@
         },
       };
     </script>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.36.0"></script>
-    <script src="./js/supabase.js"></script>
+    <script src="./pocketbase/pocketbase.umd.js"></script>
+    <script src="./js/pocketbase.js"></script>
   </body>
 </html>

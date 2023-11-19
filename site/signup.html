@@ -205,8 +205,8 @@
         },
       };
     </script>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.36.0"></script>
-    <script src="./js/supabase.js"></script>
+    <script src="./pocketbase/pocketbase.umd.js"></script>
+    <script src="./js/pocketbase.js"></script>
     <script>
       document
         .getElementById("mainSignupSignupbutton")
@@ -220,33 +220,13 @@
                 document.getElementById("mainSignupUsernameinput").value
               ) === true
             ) {
-              supabaseClient.auth
-                .signUp({
-                  email:
-                    "quizfreelyuser" +
-                    document.getElementById("mainSignupUsernameinput").value +
-                    "@ehan.dev",
-                  password: document.getElementById("mainSignupPasswordinput")
-                    .value,
-                  options: {
-                    data: {
-                      quizfreelyNickname: document.getElementById(
-                        "mainSignupUsernameinput"
-                      ).value,
-                    },
-                  },
+              pocketbase.collection("users").create({
+                  username: document.getElementById("mainSignupUsernameinput").value,
+                  password: document.getElementById("mainSignupPasswordinput").value,
+                  name: document.getElementById("mainSignupUsernameinput").value,
+                  type: "password",
                 })
                 .then(function (result) {
-                  if (result.error !== null) {
-                    document
-                      .getElementById("mainSignupErrortext")
-                      .classList.remove("hide");
-                    document
-                      .getElementById("mainDonediv")
-                      .classList.add("hide");
-                    document.getElementById("mainSignupErrortext").innerText =
-                      "Error: " + result.error.message;
-                  } else if (result.error === null) {
                     document
                       .getElementById("mainSignupErrortext")
                       .classList.add("hide");
@@ -254,6 +234,15 @@
                       .getElementById("mainDonediv")
                       .classList.remove("hide");
                   }
+                ).catch(function (error) {
+                  document
+                      .getElementById("mainSignupErrortext")
+                      .classList.remove("hide");
+                    document
+                      .getElementById("mainDonediv")
+                      .classList.add("hide");
+                    document.getElementById("mainSignupErrortext").innerText =
+                      "Error: " + error.response.message;
                 });
             } else if (
               /^[a-zA-Z0-9._-]+$/.test(
@@ -286,11 +275,13 @@
       document
         .getElementById("mainSignupGooglebutton")
         .addEventListener("click", function () {
-          supabaseClient.auth.signInWithOAuth({
+          pocketbase.collection('users').authWithOAuth2({
             provider: "google",
-            options: {
-              redirectTo: "https://main.quizfreely.com/signin",
-            },
+            createData: {
+              type: "google"
+            }
+          }).then(function (result) {
+            
           });
         });
     </script>

@@ -298,7 +298,7 @@
                 document.getElementById("mainUserNickname").innerText =
                   nickname;
               });
-              supabaseClient.auth.getSession().then(function (result) {
+              pocketbase.collection("users").authRefresh().then(function (result) {
                 if (
                   result.data.session.user.app_metadata.provider === "email"
                 ) {
@@ -336,16 +336,15 @@
         },
       };
     </script>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.36.0"></script>
-    <script src="./js/supabase.js"></script>
+    <script src="./pocketbase/pocketbase.umd.js"></script>
+    <script src="./js/pocketbase.js"></script>
     <script>
       document
         .getElementById("mainUserSignoutbutton")
         .addEventListener("click", function () {
           /* sign out then change signed in state without reload */
-          supabaseClient.auth.signOut().then(function (result) {
-            states.newUser(true);
-          });
+          pocketbase.authStore.clear();
+          states.newUser(true);
         });
     </script>
   </body>

@@ -1,10 +1,8 @@
 # BEFORE MERGE
  - remove temporary, cherry-picked, commits currently in dist
  - re-replace `main.quizfreely.com` with `quizfreely.com` (search `redirectTo:`)
- - test supabase
-   - dist uses `@2.29.0`, main uses `@2.36.0`
  - make sure all `quizfreely.ehan.dev` urls have been updated to `quizfreely.com`
-   - check stuff outside the source code like supabase, google cloud, social profiles, ehan.dev site, etc
+   - check stuff outside the source code like ~~supabase~~, google cloud, social profiles, ehan.dev site, etc
 
 Implement import from...
 
