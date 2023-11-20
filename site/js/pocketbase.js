@@ -5,7 +5,7 @@
   https://quizfreely.com/LICENSE.txt
 */
 
-var pocketbase = new PocketBase("http://127.0.0.1:8090")
+var pocketbase = new PocketBase("https://test.pocketbase.io/")
 
 pocketbase.collection('users').authRefresh().then(
   function (result) {
