@@ -1,6 +1,6 @@
 # BEFORE MERGE
  - remove temporary, cherry-picked, commits currently in dist
- - re-replace `main.quizfreely.com` with `quizfreely.com` (search `redirectTo:`)
+ - re-replace `main.quizfreely.com` with `quizfreely.com`
  - make sure all `quizfreely.ehan.dev` urls have been updated to `quizfreely.com`
    - check stuff outside the source code like ~~supabase~~, google cloud, social profiles, ehan.dev site, etc
 
