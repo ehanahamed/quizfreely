@@ -181,6 +181,16 @@
                   >Octocat Dimmed <span class="bg3">(dark)</span></label
                 >
               </div>
+              <div class="radio">
+                <input
+                  type="radio"
+                  name="theme"
+                  id="mainAppearanceThemeRed"
+                />
+                <label for="mainAppearanceThemeRed"
+                  >Red</label
+                >
+              </div>
             </div>
           </div>
           <h3>Account</h3>
@@ -268,6 +278,11 @@
         .addEventListener("change", function (event) {
           setTheme("catdim");
         });
+      document
+        .getElementById("mainAppearanceThemeRed")
+        .addEventListener("change", function (event) {
+          setTheme("red");
+        });
       if (localStorage.getItem("theme") === "auto") {
         document.getElementById("mainAppearanceThemeAuto").checked = true;
       } else if (localStorage.getItem("theme") === "purpleish") {
@@ -280,6 +295,8 @@
         document.getElementById("mainAppearanceThemeCat").checked = true;
       } else if (localStorage.getItem("theme") === "catdim") {
         document.getElementById("mainAppearanceThemeCatdim").checked = true;
+      } else if (localStorage.getItem("theme") === "red") {
+        document.getElementById("mainAppearanceThemeRed").checked = true;
       }
     </script>
     <script src="./js/states.js"></script>
