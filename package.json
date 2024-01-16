@@ -1,0 +1,19 @@
+{
+  "name": "quizfreely",
+  "version": "1.0.0",
+  "description": "",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ehanahamed/quizfreely.git"
+  },
+  "author": "Ehan Ahamed",
+  "license": "UPL-1.0",
+  "bugs": {
+    "url": "https://github.com/ehanahamed/quizfreely/issues"
+  },
+  "homepage": "https://github.com/ehanahamed/quizfreely#readme",
+  "devDependencies": {
+    "parcel": "^2.11.0",
+    "prettier": "^3.2.2"
+  }
+}
