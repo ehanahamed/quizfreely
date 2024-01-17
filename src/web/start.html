@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en" class="screen">
+<!--
+    Quizfreely
+    Copyright (c) Ehan Ahamed and contributors
+    Licensed under the UPL-1.0 License
+    https://quizfreely.com/LICENSE.txt
+  -->
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=10, user-scalable=1" />
+  <title>Quizfreely</title>
+  <link rel="canonical" href="https://quizfreely.com" />
+  <link rel="apple-touch-icon" sizes="180x180"
+    href="/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="32x32"
+    href="/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16"
+    href="/favicon-16x16.png" />
+  <link rel="stylesheet"
+    href="https://uikit.ehan.dev/css/colors.css" />
+  <link rel="stylesheet"
+    href="https://uikit.ehan.dev/css/components.css" />
+  <link rel="stylesheet"
+    href="https://uikit.ehan.dev/css/layouts.css" />
+  <link rel="stylesheet"
+    href="https://uikit.ehan.dev/css/utils.css" />
+  <link rel="stylesheet" href="./fonts/fonts.css" />
+  <link rel="stylesheet"
+    href="https://www.nerdfonts.com/assets/css/webfont.css" />
+</head>
+
+<body class="screen">
+  <header>
+    <!--<div class="menu">
+        <button id="headerMenuMenubutton">
+          <i class="nf nf-md-menu"></i>
+          Menu
+        </button>
+        <div id="headerMenuMenudiv" class="hide">
+          <ul>
+            <li>
+              <a href="./index.html" class="bg1 mark markPrimary">Home</a>
+            </li>
+            <li><a href="./dashboard.html">Dashboard</a></li>
+            <li><a href="./docs.html">Help & Docs</a></li>
+            <li><a href="./settings.html">Settings</a></li>
+          </ul>
+        </div>
+      </div>-->
+    <div class="menu nav">
+      <div class="current">
+        <a href="./index.html"> <i
+            class="nf nf-fa-home"></i> Home</a>
+      </div>
+      <div>
+        <a href="./dashboard.html">
+          <i class="nf nf-fa-edit"></i> Dashboard
+        </a>
+      </div>
+      <div>
+        <a href="./explore.html"> <i
+            class="nf nf-fa-search"></i> Explore </a>
+      </div>
+      <div>
+        <a href="./settings.html"> <i
+            class="nf nf-fa-cog"></i> Settings</a>
+      </div>
+    </div>
+    <!--<div class="options">
+        <div class="flex center">
+          <button id="headerOptionsLangbutton">
+            <i class="nf nf-md-translate"></i>
+            Language
+          </button>
+          <button id="headerOptionsThemebutton">
+            <i class="nf nf-cod-symbol_color"></i>
+            Theme
+          </button>
+        </div>
+        <div id="headerOptionsLangdiv" class="hide">
+          <div class="radio">
+            <input
+              type="radio"
+              name="lang"
+              id="headerOptionsLangdivEn"
+              checked
+            />
+            <label for="headerOptionsLangdivEn">English</label>
+          </div>
+          <div class="radio">
+                  <input type="radio" name="lang" id="headerOptionsLangdivDe" />
+                  <label for="headerOptionsLangdivDe">Deutsch</label>
+                </div>
+                <div class="radio">
+                  <input type="radio" name="lang" id="headerOptionsLangdivGz" />
+                  <label for="headerOptionsLangdivGz">中文</label>
+                </div>
+        </div>
+        <div id="headerOptionsThemediv" class="hide">
+          <div class="radio">
+            <input
+              type="radio"
+              name="theme"
+              id="headerOptionsThemedivPurpleish"
+              checked
+            />
+            <label for="headerOptionsThemedivPurpleish"
+              >Purpleish <span class="bg3">(dark)</span></label
+            >
+          </div>
+          <div class="radio">
+            <input type="radio" name="theme" id="headerOptionsThemedivOwl" />
+            <label for="headerOptionsThemedivOwl"
+              >Owl <span class="bg3">(light)</span></label
+            >
+          </div>
+        </div>
+      </div>-->
+  </header>
+  <div id="noscript" class="box center red">
+    <p>
+      You have JavaScript disabled. This website uses
+      JavaScript to run
+      correctly.
+    </p>
+    <p>
+      Please enable JavaScript in your browser settings, or
+      this website will
+      not work.
+    </p>
+  </div>
+  <main class="grid screen">
+    <div class="content">
+      <div id="mainNewuserdiv">
+        <h2>Get Started</h2>
+        <p>Accounts are <b>optional</b> and completely free!
+        </p>
+        <div class="grid split">
+          <div class="left">
+            <p>Without an account:</p>
+            <ul>
+              <li>You have to download and save everything
+                yourself <i class="nf nf-oct-x red"></i>
+              </li>
+              <li>Saving data across devices is annoying <i
+                  class="nf nf-oct-x red"></i></li>
+              <li>None of your data is collected <i
+                  class="nf nf-oct-check green"></i></li>
+            </ul>
+          </div>
+          <div class="right">
+            <p>With an account:</p>
+            <ul>
+              <li>You can save stuff to your account <i
+                  class="nf nf-oct-check green"></i></li>
+              <li>Everything can be easily used on multiple
+                devices <i
+                  class="nf nf-oct-check green"></i></li>
+              <li>
+                Your data is "sold" to the CCP <i
+                  class="nf nf-oct-check green"></i>
+                <ul>
+                  <li>It's not actually "sold", I give it
+                    away for free</li>
+                  <li>Cry about it</li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="grid split"
+          style="margin-top: 0px; padding-top: 0px;">
+          <div class="left" style="justify-self: left;">
+            <br />
+            <br />
+            <a class="button alt" href="./dashboard.html">
+              Continue without an account
+            </a>
+          </div>
+          <div class="right">
+            <br />
+            <br />
+            <a class="button" href="./signup.html">Sign
+              Up</a>
+          </div>
+        </div>
+        <br />
+        <br />
+        <p>Already have an account? <a
+            href="./signin.html">Sign In</a></p>
+      </div>
+      <div id="mainUserdiv" class="hide">
+        <h2>You are signed in!</h2>
+        <p>Go to the dashboard to create, edit, or review a
+          study set.</p>
+        <div class="flex">
+          <a class="button"
+            href="./dashboard.html">Dashboard</a>
+          <a class="button alt"
+            href="./settings.html">Settings</a>
+        </div>
+      </div>
+    </div>
+  </main>
+  <script>
+    document.getElementById("noscript").style.display =
+      "none";
+
+  </script>
+  <script src="https://uikit.ehan.dev/js/themes.js">
+  </script>
+  <script src="./js/states.js"></script>
+  <script>
+    var ui = {
+      elements: {
+        states: {
+          newUser: ["mainNewuserdiv"],
+          user: ["mainUserdiv"],
+        },
+      },
+    };
+
+  </script>
+  <script src="./pocketbase/pocketbase.umd.js"></script>
+  <script src="./js/pocketbase.js"></script>
+</body>
+
+</html>

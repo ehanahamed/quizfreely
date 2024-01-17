@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<!--
+    Quizfreely
+    Copyright (c) Ehan Ahamed and contributors
+    Licensed under the UPL-1.0 License
+    https://quizfreely.com/LICENSE.txt
+  -->
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=10, user-scalable=1" />
+  <title>Quizfreely</title>
+  <link rel="canonical" href="https://quizfreely.com" />
+  <link rel="apple-touch-icon" sizes="180x180"
+    href="/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="32x32"
+    href="/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16"
+    href="/favicon-16x16.png" />
+  <link rel="stylesheet"
+    href="https://uikit.ehan.dev/css/colors.css" />
+  <link rel="stylesheet"
+    href="https://uikit.ehan.dev/css/components.css" />
+  <link rel="stylesheet"
+    href="https://uikit.ehan.dev/css/layouts.css" />
+  <link rel="stylesheet"
+    href="https://uikit.ehan.dev/css/utils.css" />
+  <link rel="stylesheet" href="./fonts/fonts.css" />
+  <link rel="stylesheet"
+    href="https://www.nerdfonts.com/assets/css/webfont.css" />
+</head>
+
+<body>
+  <header>
+    <!--<div class="menu">
+        <button id="headerMenuMenubutton">
+          <i class="nf nf-md-menu"></i>
+          Menu
+        </button>
+        <div id="headerMenuMenudiv" class="hide">
+          <ul>
+            <li>
+              <a href="./index.html" class="bg1 mark markPrimary">Home</a>
+            </li>
+            <li><a href="./dashboard.html">Dashboard</a></li>
+            <li><a href="./docs.html">Help & Docs</a></li>
+            <li><a href="./settings.html">Settings</a></li>
+          </ul>
+        </div>
+      </div>-->
+    <div class="menu nav">
+      <div>
+        <a href="./index.html"> <i
+            class="nf nf-fa-home"></i> Home</a>
+      </div>
+      <div>
+        <a href="./dashboard.html">
+          <i class="nf nf-fa-edit"></i> Dashboard
+        </a>
+      </div>
+      <div>
+        <a href="./explore.html"> <i
+            class="nf nf-fa-search"></i> Explore </a>
+      </div>
+      <div class="current">
+        <a href="./settings.html"> <i
+            class="nf nf-fa-cog"></i> Settings</a>
+      </div>
+    </div>
+    <!--<div class="options">
+        <div class="flex center">
+          <button id="headerOptionsLangbutton">
+            <i class="nf nf-md-translate"></i>
+            Language
+          </button>
+          <button id="headerOptionsThemebutton">
+            <i class="nf nf-cod-symbol_color"></i>
+            Theme
+          </button>
+        </div>
+        <div id="headerOptionsLangdiv" class="hide">
+          <div class="radio">
+            <input
+              type="radio"
+              name="lang"
+              id="headerOptionsLangdivEn"
+              checked
+            />
+            <label for="headerOptionsLangdivEn">English</label>
+          </div>
+          <div class="radio">
+                  <input type="radio" name="lang" id="headerOptionsLangdivDe" />
+                  <label for="headerOptionsLangdivDe">Deutsch</label>
+                </div>
+                <div class="radio">
+                  <input type="radio" name="lang" id="headerOptionsLangdivGz" />
+                  <label for="headerOptionsLangdivGz">中文</label>
+                </div>
+        </div>
+        <div id="headerOptionsThemediv" class="hide">
+          <div class="radio">
+            <input
+              type="radio"
+              name="theme"
+              id="headerOptionsThemedivPurpleish"
+              checked
+            />
+            <label for="headerOptionsThemedivPurpleish"
+              >Purpleish <span class="bg3">(dark)</span></label
+            >
+          </div>
+          <div class="radio">
+            <input type="radio" name="theme" id="headerOptionsThemedivOwl" />
+            <label for="headerOptionsThemedivOwl"
+              >Owl <span class="bg3">(light)</span></label
+            >
+          </div>
+        </div>
+      </div>-->
+  </header>
+  <div id="noscript" class="box center red">
+    <p>
+      You have JavaScript disabled. This website uses
+      JavaScript to run
+      correctly.
+    </p>
+    <p>
+      Please enable JavaScript in your browser settings, or
+      this website will
+      not work.
+    </p>
+  </div>
+  <main>
+    <div class="grid page">
+      <div class="content">
+        <h2>Settings</h2>
+        <h3>Appearance</h3>
+        <div class="box">
+          <p>Theme</p>
+          <div id="mainAppearanceThemediv">
+            <div class="radio">
+              <input type="radio" name="theme"
+                id="mainAppearanceThemeAuto" checked />
+              <label for="mainAppearanceThemeAuto">Auto
+                <span class="bg3">(default)</span></label>
+            </div>
+            <div class="radio">
+              <input type="radio" name="theme"
+                id="mainAppearanceThemePurpleish" />
+              <label
+                for="mainAppearanceThemePurpleish">Purpleish
+                <span class="bg3">(default
+                  dark)</span></label>
+            </div>
+            <div class="radio">
+              <input type="radio" name="theme"
+                id="mainAppearanceThemeSnow" />
+              <label for="mainAppearanceThemeSnow">Snow
+                <span class="bg3">(default
+                  light)</span></label>
+            </div>
+            <div class="radio">
+              <input type="radio" name="theme"
+                id="mainAppearanceThemeOwl" />
+              <label for="mainAppearanceThemeOwl">Owl <span
+                  class="bg3">(light)</span></label>
+            </div>
+            <div class="radio">
+              <input type="radio" name="theme"
+                id="mainAppearanceThemeCat" />
+              <label for="mainAppearanceThemeCat">Octocat
+                Dark <span class="bg3">(dark)</span></label>
+            </div>
+            <div class="radio">
+              <input type="radio" name="theme"
+                id="mainAppearanceThemeCatdim" />
+              <label for="mainAppearanceThemeCatdim">Octocat
+                Dimmed <span
+                  class="bg3">(dark)</span></label>
+            </div>
+          </div>
+        </div>
+        <h3>Account</h3>
+        <div id="mainNewuserdiv" class="box">
+          <p>
+            You are not signed in to an account,
+            <a href="./start.html">get started?</a>
+          </p>
+        </div>
+        <div id="mainUserdiv" class="box hide">
+          <p>Display name: <code
+              id="mainUserNickname">nickname</code></p>
+          <div id="mainUserEmailless" class="hide">
+            <p>Username: <code
+                id="mainUserUsername">username</code></p>
+          </div>
+          <div id="mainUserGoogle" class="hide">
+            <p class="bg3">Signed in with Google</p>
+            <p>Google account: <code
+                id="mainUserGoogleemail">email</code></p>
+          </div>
+          <div class="flex">
+            <a class="button"
+              href="./setdisplayname.html">Change display
+              name</a>
+            <a class="button hide"
+              id="mainAccountChangepassword"
+              href="./changepassword.html">Change
+              password</a>
+          </div>
+          <div class="flex">
+            <button id="mainUserSignoutbutton"
+              class="red">Sign out</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+  <!--
+  Footer, copyright, & license
+  -->
+  <footer>
+    <h2>Quizfreely</h2>
+    <p>Quizfreely is free and open source</p>
+    <p>
+      Copyright © Ehan Ahamed & contributors <br />
+      Licensed under the UPL-1.0 License
+    </p>
+    <a href="./license.html">See License</a>
+    <br />
+    <a href="./privacypolicy.html">See Privacy Policy</a>
+  </footer>
+  <script>
+    document.getElementById("noscript").style.display =
+      "none";
+
+  </script>
+  <script src="https://uikit.ehan.dev/js/themes.js">
+  </script>
+  <script>
+    /* this super short script tag is for theme settings */
+    /* setTheme is defined in uikit.ehan.dev/js/themes.js */
+    document
+      .getElementById("mainAppearanceThemeAuto")
+      .addEventListener("change", function(event) {
+        setTheme("auto");
+      });
+    document
+      .getElementById("mainAppearanceThemePurpleish")
+      .addEventListener("change", function(event) {
+        setTheme("purpleish");
+      });
+    document
+      .getElementById("mainAppearanceThemeSnow")
+      .addEventListener("change", function(event) {
+        setTheme("snow");
+      });
+    document
+      .getElementById("mainAppearanceThemeOwl")
+      .addEventListener("change", function(event) {
+        setTheme("owl");
+      });
+    document
+      .getElementById("mainAppearanceThemeCat")
+      .addEventListener("change", function(event) {
+        setTheme("cat");
+      });
+    document
+      .getElementById("mainAppearanceThemeCatdim")
+      .addEventListener("change", function(event) {
+        setTheme("catdim");
+      });
+    if (localStorage.getItem("theme") === "auto") {
+      document.getElementById("mainAppearanceThemeAuto")
+        .checked = true;
+    } else if (localStorage.getItem("theme") ===
+      "purpleish") {
+      document.getElementById(
+        "mainAppearanceThemePurpleish").checked = true;
+    } else if (localStorage.getItem("theme") === "snow") {
+      document.getElementById("mainAppearanceThemeSnow")
+        .checked = true;
+    } else if (localStorage.getItem("theme") === "owl") {
+      document.getElementById("mainAppearanceThemeOwl")
+        .checked = true;
+    } else if (localStorage.getItem("theme") === "cat") {
+      document.getElementById("mainAppearanceThemeCat")
+        .checked = true;
+    } else if (localStorage.getItem("theme") === "catdim") {
+      document.getElementById("mainAppearanceThemeCatdim")
+        .checked = true;
+    }
+
+  </script>
+  <script src="./js/states.js"></script>
+  <script>
+    var ui = {
+      elements: {
+        states: {
+          newUser: ["mainNewuserdiv"],
+          user: ["mainUserdiv"],
+        },
+      },
+      states: {
+        newUser: function(isNewUser) {
+          if (isNewUser === false) {
+            getNickname(function(nickname) {
+              document.getElementById(
+                  "mainUserNickname").innerText =
+                nickname;
+            });
+            pocketbase.collection("users").authRefresh()
+              .then(function(
+                result) {
+                if (
+                  result.data.session.user
+                  .app_metadata.provider ===
+                  "email"
+                ) {
+                  document
+                    .getElementById(
+                      "mainUserEmailless")
+                    .classList.remove("hide");
+                  document
+                    .getElementById(
+                      "mainAccountChangepassword")
+                    .classList.remove("hide");
+                  document
+                    .getElementById("mainUserGoogle")
+                    .classList.add("hide");
+                  document.getElementById(
+                      "mainUserUsername").innerText =
+                    result.data.session.user.email
+                    .replace("quizfreelyuser", "")
+                    .replace("@ehan.dev", "");
+                } else if (
+                  result.data.session.user
+                  .app_metadata.provider ===
+                  "google"
+                ) {
+                  document
+                    .getElementById(
+                      "mainUserEmailless")
+                    .classList.add("hide");
+                  document
+                    .getElementById(
+                      "mainAccountChangepassword")
+                    .classList.add("hide");
+                  document
+                    .getElementById("mainUserGoogle")
+                    .classList.remove("hide");
+                  document.getElementById(
+                      "mainUserGoogleemail")
+                    .innerText =
+                    result.data.session.user.email;
+                }
+              });
+          }
+        },
+      },
+    };
+
+  </script>
+  <script src="./pocketbase/pocketbase.umd.js"></script>
+  <script src="./js/pocketbase.js"></script>
+  <script>
+    document
+      .getElementById("mainUserSignoutbutton")
+      .addEventListener("click", function() {
+        /* sign out then change signed in state without reload */
+        pocketbase.authStore.clear();
+        states.newUser(true);
+      });
+
+  </script>
+</body>
+
+</html>
