@@ -15,5 +15,8 @@
   "devDependencies": {
     "js-beautify": "^1.14.11",
     "parcel": "^2.11.0"
+  },
+  "scripts": {
+    "format": "npx js-beautify --replace '**/*.js' && npx js-beautify --html --replace '**/*.html' && npx js-beautify --css --replace '**/*.css'"
   }
 }
