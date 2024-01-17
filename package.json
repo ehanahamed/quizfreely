@@ -13,7 +13,7 @@
   },
   "homepage": "https://github.com/ehanahamed/quizfreely#readme",
   "devDependencies": {
-    "parcel": "^2.11.0",
-    "prettier": "^3.2.2"
+    "js-beautify": "^1.14.11",
+    "parcel": "^2.11.0"
   }
 }
