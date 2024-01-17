@@ -1,37 +1,40 @@
 <!DOCTYPE html>
 <html lang="en" class="screen">
-  <!--
+<!--
     Quizfreely
     Copyright (c) Ehan Ahamed and contributors
     Licensed under the UPL-1.0 License
     https://quizfreely.com/LICENSE.txt
   -->
 
-  <head>
-    <meta charset="UTF-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=10, user-scalable=1"
-    />
-    <title>Quizfreely</title>
-    <link rel="canonical" href="https://quizfreely.com" />
-    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
-    <link rel="stylesheet" href="https://uikit.ehan.dev/css/colors.css" />
-    <link rel="stylesheet" href="https://uikit.ehan.dev/css/components.css" />
-    <link rel="stylesheet" href="https://uikit.ehan.dev/css/layouts.css" />
-    <link rel="stylesheet" href="https://uikit.ehan.dev/css/utils.css" />
-    <link rel="stylesheet" href="./fonts/fonts.css" />
-    <link
-      rel="stylesheet"
-      href="https://www.nerdfonts.com/assets/css/webfont.css"
-    />
-  </head>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=10, user-scalable=1" />
+  <title>Quizfreely</title>
+  <link rel="canonical" href="https://quizfreely.com" />
+  <link rel="apple-touch-icon" sizes="180x180"
+    href="/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="32x32"
+    href="/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16"
+    href="/favicon-16x16.png" />
+  <link rel="stylesheet"
+    href="https://uikit.ehan.dev/css/colors.css" />
+  <link rel="stylesheet"
+    href="https://uikit.ehan.dev/css/components.css" />
+  <link rel="stylesheet"
+    href="https://uikit.ehan.dev/css/layouts.css" />
+  <link rel="stylesheet"
+    href="https://uikit.ehan.dev/css/utils.css" />
+  <link rel="stylesheet" href="./fonts/fonts.css" />
+  <link rel="stylesheet"
+    href="https://www.nerdfonts.com/assets/css/webfont.css" />
+</head>
 
-  <body>
-    <header>
-      <!--<div class="menu">
+<body>
+  <header>
+    <!--<div class="menu">
         <button id="headerMenuMenubutton">
           <i class="nf nf-md-menu"></i>
           Menu
@@ -47,23 +50,26 @@
           </ul>
         </div>
       </div>-->
-      <div class="menu nav">
-        <div>
-          <a href="./index.html"> <i class="nf nf-fa-home"></i> Home</a>
-        </div>
-        <div class="current">
-          <a href="./dashboard.html">
-            <i class="nf nf-fa-edit"></i> Dashboard
-          </a>
-        </div>
-        <div>
-          <a href="./explore.html"> <i class="nf nf-fa-search"></i> Explore </a>
-        </div>
-        <div>
-          <a href="./settings.html"> <i class="nf nf-fa-cog"></i> Settings</a>
-        </div>
+    <div class="menu nav">
+      <div>
+        <a href="./index.html"> <i
+            class="nf nf-fa-home"></i> Home</a>
       </div>
-      <!--<div class="options">
+      <div class="current">
+        <a href="./dashboard.html">
+          <i class="nf nf-fa-edit"></i> Dashboard
+        </a>
+      </div>
+      <div>
+        <a href="./explore.html"> <i
+            class="nf nf-fa-search"></i> Explore </a>
+      </div>
+      <div>
+        <a href="./settings.html"> <i
+            class="nf nf-fa-cog"></i> Settings</a>
+      </div>
+    </div>
+    <!--<div class="options">
         <div class="flex center">
           <button id="headerOptionsLangbutton">
             <i class="nf nf-md-translate"></i>
@@ -113,181 +119,211 @@
           </div>
         </div>
       </div>-->
-    </header>
-    <div id="noscript" class="box center red">
-      <p>
-        You have JavaScript disabled. This website uses JavaScript to run
-        correctly.
-      </p>
-      <p>
-        Please enable JavaScript in your browser settings, or this website will
-        not work.
-      </p>
-    </div>
-    <main class="grid screen">
-      <div class="content">
-        <div id="mainSignupdiv">
-          <h2>Sign Up</h2>
-          <div>
-            <input
-              type="text"
-              class="fullWidth"
-              id="mainSignupUsernameinput"
-              placeholder="Username"
-            />
-          </div>
-          <div>
-            <input
-              type="password"
-              class="fullWidth"
-              id="mainSignupPasswordinput"
-              placeholder="Password"
-            />
-          </div>
-          <div>
-            <input
-              type="password"
-              class="fullWidth"
-              id="mainSignupRetypepasswordinput"
-              placeholder="Retype Password"
-            />
-          </div>
-          <div>
-            <button id="mainSignupSignupbutton">Sign Up</button>
-          </div>
-          <div class="separator">or</div>
-          <div>
-            <button id="mainSignupGooglebutton" class="fullWidth g">
-              <div class="flex center">
-                <img src="./img/thirdparty/g.png" alt="G" />
-                <div>Sign up with Google</div>
-              </div>
-            </button>
-          </div>
-          <div>
-            <a href="./dashboard.html" class="button guest fullWidth">
-              <div class="flex center">
-                <div>Continue without an account</div>
-              </div>
-            </a>
-          </div>
-          <br />
-          <p>Already have an account? <a href="./signin.html">Sign In</a></p>
-          <p id="mainSignupErrortext" class="box red hide">Error</p>
+  </header>
+  <div id="noscript" class="box center red">
+    <p>
+      You have JavaScript disabled. This website uses
+      JavaScript to run
+      correctly.
+    </p>
+    <p>
+      Please enable JavaScript in your browser settings, or
+      this website will
+      not work.
+    </p>
+  </div>
+  <main class="grid screen">
+    <div class="content">
+      <div id="mainSignupdiv">
+        <h2>Sign Up</h2>
+        <div>
+          <input type="text" class="fullWidth"
+            id="mainSignupUsernameinput"
+            placeholder="Username" />
         </div>
-        <div id="mainDonediv" class="box green hide">
-          <p>
-            Account created, you can now <a href="./signin.html">sign in</a>.
-          </p>
+        <div>
+          <input type="password" class="fullWidth"
+            id="mainSignupPasswordinput"
+            placeholder="Password" />
         </div>
-        <div id="mainUserdiv" class="hide">
-          <h2>You are signed in!</h2>
-          <p>Go to the dashboard to create, edit, or review a study set.</p>
-          <div class="flex">
-            <a class="button" href="./dashboard.html">Dashboard</a>
-            <a class="button alt" href="./settings.html">Settings</a>
-          </div>
+        <div>
+          <input type="password" class="fullWidth"
+            id="mainSignupRetypepasswordinput"
+            placeholder="Retype Password" />
+        </div>
+        <div>
+          <button id="mainSignupSignupbutton">Sign
+            Up</button>
+        </div>
+        <div class="separator">or</div>
+        <div>
+          <button id="mainSignupGooglebutton"
+            class="fullWidth g">
+            <div class="flex center">
+              <img src="./img/thirdparty/g.png" alt="G" />
+              <div>Sign up with Google</div>
+            </div>
+          </button>
+        </div>
+        <div>
+          <a href="./dashboard.html"
+            class="button guest fullWidth">
+            <div class="flex center">
+              <div>Continue without an account</div>
+            </div>
+          </a>
+        </div>
+        <br />
+        <p>Already have an account? <a
+            href="./signin.html">Sign In</a></p>
+        <p id="mainSignupErrortext" class="box red hide">
+          Error</p>
+      </div>
+      <div id="mainDonediv" class="box green hide">
+        <p>
+          Account created, you can now <a
+            href="./signin.html">sign in</a>.
+        </p>
+      </div>
+      <div id="mainUserdiv" class="hide">
+        <h2>You are signed in!</h2>
+        <p>Go to the dashboard to create, edit, or review a
+          study set.</p>
+        <div class="flex">
+          <a class="button"
+            href="./dashboard.html">Dashboard</a>
+          <a class="button alt"
+            href="./settings.html">Settings</a>
         </div>
       </div>
-    </main>
-    <script>
-      document.getElementById("noscript").style.display = "none";
-    </script>
-    <script src="https://uikit.ehan.dev/js/themes.js"></script>
-    <script src="./js/states.js"></script>
-    <script>
-      var ui = {
-        elements: {
-          states: {
-            newUser: ["mainSignupdiv"],
-            user: ["mainUserdiv"],
-          },
+    </div>
+  </main>
+  <script>
+    document.getElementById("noscript").style.display =
+      "none";
+
+  </script>
+  <script src="https://uikit.ehan.dev/js/themes.js">
+  </script>
+  <script src="./js/states.js"></script>
+  <script>
+    var ui = {
+      elements: {
+        states: {
+          newUser: ["mainSignupdiv"],
+          user: ["mainUserdiv"],
         },
-      };
-    </script>
-    <script src="./pocketbase/pocketbase.umd.js"></script>
-    <script src="./js/pocketbase.js"></script>
-    <script>
-      document
-        .getElementById("mainSignupSignupbutton")
-        .addEventListener("click", function () {
+      },
+    };
+
+  </script>
+  <script src="./pocketbase/pocketbase.umd.js"></script>
+  <script src="./js/pocketbase.js"></script>
+  <script>
+    document
+      .getElementById("mainSignupSignupbutton")
+      .addEventListener("click", function() {
+        if (
+          document.getElementById(
+            "mainSignupPasswordinput").value ===
+          document.getElementById(
+            "mainSignupRetypepasswordinput").value
+        ) {
           if (
-            document.getElementById("mainSignupPasswordinput").value ===
-            document.getElementById("mainSignupRetypepasswordinput").value
+            /^[a-z0-9._-]+$/.test(
+              document.getElementById(
+                "mainSignupUsernameinput").value
+            ) === true
           ) {
-            if (
-              /^[a-z0-9._-]+$/.test(
-                document.getElementById("mainSignupUsernameinput").value
-              ) === true
-            ) {
-              pocketbase.collection("users").create({
-                  username: document.getElementById("mainSignupUsernameinput").value,
-                  password: document.getElementById("mainSignupPasswordinput").value,
-                  name: document.getElementById("mainSignupUsernameinput").value,
-                  type: "password",
-                })
-                .then(function (result) {
-                    document
-                      .getElementById("mainSignupErrortext")
-                      .classList.add("hide");
-                    document
-                      .getElementById("mainDonediv")
-                      .classList.remove("hide");
-                  }
-                ).catch(function (error) {
-                  document
-                      .getElementById("mainSignupErrortext")
-                      .classList.remove("hide");
-                    document
-                      .getElementById("mainDonediv")
-                      .classList.add("hide");
-                    document.getElementById("mainSignupErrortext").innerText =
-                      "Error: " + error.response.message;
-                });
-            } else if (
-              /^[a-zA-Z0-9._-]+$/.test(
-                document.getElementById("mainSignupUsernameinput").value
-              ) === false
-            ) {
-              document
-                .getElementById("mainSignupErrortext")
-                .classList.remove("hide");
-              document.getElementById("mainDonediv").classList.add("hide");
-              document.getElementById("mainSignupErrortext").innerHTML =
-                "Usernames can only have:" +
-                "<ul>" +
-                "<li>lowercase letters</li>" +
-                "<li>numbers</li>" +
-                "<li>dots (<code>.</code>)</li>" +
-                "<li>underscores (<code>_</code>)</li>" +
-                "<li>hyphens (<code>-</code>)</li>" +
-                "</ul>";
-            }
-          } else {
+            pocketbase.collection("users").create({
+                username: document.getElementById(
+                    "mainSignupUsernameinput")
+                  .value,
+                password: document.getElementById(
+                    "mainSignupPasswordinput")
+                  .value,
+                name: document.getElementById(
+                    "mainSignupUsernameinput")
+                  .value,
+                type: "password",
+              })
+              .then(function(result) {
+                document
+                  .getElementById("mainSignupErrortext")
+                  .classList.add("hide");
+                document
+                  .getElementById("mainDonediv")
+                  .classList.remove("hide");
+              }).catch(function(error) {
+                document
+                  .getElementById("mainSignupErrortext")
+                  .classList.remove("hide");
+                document
+                  .getElementById("mainDonediv")
+                  .classList.add("hide");
+                document.getElementById(
+                    "mainSignupErrortext").innerText =
+                  "Error: " + error.response.message;
+              });
+          } else if (
+            /^[a-zA-Z0-9._-]+$/.test(
+              document.getElementById(
+                "mainSignupUsernameinput").value
+            ) === false
+          ) {
             document
               .getElementById("mainSignupErrortext")
               .classList.remove("hide");
-            document.getElementById("mainDonediv").classList.add("hide");
-            document.getElementById("mainSignupErrortext").innerHTML =
-              "Error: Password does not match,<br /> retype your new password correctly.";
+            document.getElementById("mainDonediv")
+              .classList.add("hide");
+            document.getElementById("mainSignupErrortext")
+              .innerHTML =
+              "Usernames can only have:" +
+              "<ul>" +
+              "<li>lowercase letters</li>" +
+              "<li>numbers</li>" +
+              "<li>dots (<code>.</code>)</li>" +
+              "<li>underscores (<code>_</code>)</li>" +
+              "<li>hyphens (<code>-</code>)</li>" +
+              "</ul>";
           }
+        } else {
+          document
+            .getElementById("mainSignupErrortext")
+            .classList.remove("hide");
+          document.getElementById("mainDonediv").classList
+            .add("hide");
+          document.getElementById("mainSignupErrortext")
+            .innerHTML =
+            "Error: Password does not match,<br /> retype your new password correctly.";
+        }
+      });
+    document
+      .getElementById("mainSignupGooglebutton")
+      .addEventListener("click", function() {
+        pocketbase.collection('users').authWithOAuth2({
+          provider: "google",
+          createData: {
+            type: "google"
+          }
+        }).then(function(result) {
+
         });
-      document
-        .getElementById("mainSignupGooglebutton")
-        .addEventListener("click", function () {
-          pocketbase.collection('users').authWithOAuth2({
-            provider: "google",
-            createData: {
-              type: "google"
-            }
-          }).then(function (result) {
-            
-          });
-        });
-    </script>
-    <script>
-      /* devtools for mobile & school chromebooks */
-      (function () { var script = document.createElement('script'); script.src="https://cdn.jsdelivr.net/npm/eruda"; document.body.append(script); script.onload = function () { eruda.init(); } })();
-    </script>
-  </body>
+      });
+
+  </script>
+  <script>
+    /* devtools for mobile & school chromebooks */
+    (function() {
+      var script = document.createElement('script');
+      script.src = "https://cdn.jsdelivr.net/npm/eruda";
+      document.body.append(script);
+      script.onload = function() {
+        eruda.init();
+      }
+    })();
+
+  </script>
+</body>
+
 </html>

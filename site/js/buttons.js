@@ -7,13 +7,13 @@
 
 var buttons = {
   load: {
-    make: function () {
+    make: function() {
       edit.make();
       sections.changeTo("edit");
     },
   },
   open: {
-    edit: function () {
+    edit: function() {
       /* save old studyset info before calling edit.load() to start editing */
       sessionData.beforeEdit = {
         studySetData: sessionData.studySetData,
@@ -22,33 +22,37 @@ var buttons = {
       sections.changeTo("edit");
       //alerts.clear();
     },
-    flashcards: function () {
+    flashcards: function() {
       sessionData.flashcards.index = 0;
       flashcards.load(sessionData.flashcards.index);
       sections.changeTo("flashcards");
     },
   },
   edit: {
-    add: function () {
+    add: function() {
       edit.add();
     },
-    done: function () {
+    done: function() {
       /* the snippet below usually has sessionData.studySetData = ..., in this case, that line is in edit.js's edit.save() funciton, which is called/ran below */
       edit.save();
       /* line below saves settings into the json after edit.save() updates the json */
-      sessionData.studySetData.settings = studySet.getSettings();
+      sessionData.studySetData.settings = studySet
+        .getSettings();
       isStudySetCopy(
         sessionData.studySetData.name,
         sessionData.studySetData,
-        function (isStudySetCopy, isStudySetChanged) {
+        function(isStudySetCopy, isStudySetChanged) {
           if (isStudySetCopy === true) {
             if (isStudySetChanged === true) {
               document
-                .getElementById(ui.elements.edit.studySetIsCopy)
+                .getElementById(ui.elements.edit
+                  .studySetIsCopy)
                 .classList.remove("hide");
             } else if (isStudySetChanged === false) {
               studySet.open();
-              document.getElementById("mainActionsSave").classList.add("hide");
+              document.getElementById(
+                "mainActionsSave").classList.add(
+                "hide");
             }
           } else if (isStudySetCopy === false) {
             studySet.open();
@@ -60,13 +64,13 @@ var buttons = {
   },
   save: {},
   flashcards: {
-    flip: function () {
+    flip: function() {
       flashcards.flip();
     },
-    prev: function () {
+    prev: function() {
       flashcards.prev();
     },
-    next: function () {
+    next: function() {
       flashcards.next();
     },
   },

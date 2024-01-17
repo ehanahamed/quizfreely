@@ -1,7 +1,10 @@
 import express from "express";
 import cors from "cors";
 import supertokens from "supertokens-node";
-import { middleware, errorHandler } from "supertokens-node/framework/express";
+import {
+  middleware,
+  errorHandler
+} from "supertokens-node/framework/express";
 import Session from "supertokens-node/recipe/session";
 import ThirdPartyEmailPassword from "supertokens-node/recipe/thirdpartyemailpassword";
 
@@ -10,7 +13,9 @@ const app = express();
 app.use(
   cors({
     origin: "http://localhost:3030",
-    allowedHeaders: ["content-type", ...supertokens.getAllCORSHeaders()],
+    allowedHeaders: ["content-type", ...supertokens
+      .getAllCORSHeaders()
+    ],
     credentials: true,
   })
 );
@@ -28,23 +33,22 @@ supertokens.init({
     // learn more about this on https://supertokens.com/docs/session/appinfo
     appName: "Quizfreely",
     apiDomain: process.env.SUPERTOKENS_API_DOMAIN,
-    websiteDomain: process.env.SUPERTOKENS_WEBSITE_DOMAIN,
+    websiteDomain: process.env
+      .SUPERTOKENS_WEBSITE_DOMAIN,
     apiBasePath: "/auth",
     websiteBasePath: "/auth",
   },
   recipeList: [
     ThirdPartyEmailPassword.init({
-      providers: [
-        {
-          thirdPartyId: "google",
-          clients: [
-            {
-              clientId: process.env.SUPERTOKENS_GOOGLE_CLIENT_ID,
-              clientSecret: process.env.SUPERTOKENS_GOOGLE_CLIENT_SECRET,
-            },
-          ],
-        },
-      ],
+      providers: [{
+        thirdPartyId: "google",
+        clients: [{
+          clientId: process.env
+            .SUPERTOKENS_GOOGLE_CLIENT_ID,
+          clientSecret: process.env
+            .SUPERTOKENS_GOOGLE_CLIENT_SECRET,
+        }, ],
+      }, ],
     }), // initializes signin / sign up features
     Session.init(), // initializes session features
   ],

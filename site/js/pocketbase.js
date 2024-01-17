@@ -5,7 +5,8 @@
   https://quizfreely.com/LICENSE.txt
 */
 
-var pocketbase = new PocketBase("https://test.pocketbase.io/")
+var pocketbase = new PocketBase(
+  "https://test.pocketbase.io/")
 
 if (pocketbase.authStore.isValid) {
   pocketbase.collection('users').authRefresh();

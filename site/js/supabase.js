@@ -5,14 +5,16 @@
   https://quizfreely.com/LICENSE.txt
 */
 
-const { createClient } = supabase;
+const {
+  createClient
+} = supabase;
 const supabaseClient = createClient(
   "https://okejqkisolxqgkgwwlbz.supabase.co",
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9rZWpxa2lzb2x4cWdrZ3d3bGJ6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE2ODU3NDE1MTgsImV4cCI6MjAwMTMxNzUxOH0.T8f_3fPAYnWdzguPonQZCAFmbAN-mTLQB3_EW9pjkis"
 );
 
 if (typeof states !== "undefined") {
-  supabaseClient.auth.getSession().then(function (result) {
+  supabaseClient.auth.getSession().then(function(result) {
     if (result.data.session === null) {
       states.newUser(true);
     } else if (result.data.session !== null) {
@@ -21,11 +23,12 @@ if (typeof states !== "undefined") {
   });
 }
 
-function isStudySetCopy(studySetName, studySetData, returnFunction) {
+function isStudySetCopy(studySetName, studySetData,
+  returnFunction) {
   /*
     returnFunction(isStudySetCopy, isStudySetChanged)
   */
-  supabaseClient.auth.getSession().then(function (result) {
+  supabaseClient.auth.getSession().then(function(result) {
     if (result.data.session === null) {
       returnFunction(false);
     } else if (result.data.session !== null) {
@@ -33,7 +36,7 @@ function isStudySetCopy(studySetName, studySetData, returnFunction) {
         .from("studyset")
         .select()
         .eq("name", studySetName)
-        .then(function (result) {
+        .then(function(result) {
           if (result.data.length === 0) {
             returnFunction(false);
           } else {
@@ -54,11 +57,13 @@ function isStudySetCopy(studySetName, studySetData, returnFunction) {
 function updateStudySet() {
   supabaseClient
     .from("studyset")
-    .update({ json: sessionData.studySetData })
+    .update({
+      json: sessionData.studySetData
+    })
     .eq("name", sessionData.studySetData.name)
     .then();
   if (sessionData.studySetData.settings.public === true) {
-    supabaseClient.auth.getUser().then(function (result) {
+    supabaseClient.auth.getUser().then(function(result) {
       userId = result.data.user.id;
     });
 
@@ -67,9 +72,9 @@ function updateStudySet() {
       .select()
       .eq("user_id", userId)
       .eq("name", sessionData.studySetData.name)
-      .then(function (result) {
+      .then(function(result) {
         if (result.data.length === 0) {
-          getNickname(function (nickname) {
+          getNickname(function(nickname) {
             supabaseClient
               .from("explore")
               .insert({
@@ -83,7 +88,9 @@ function updateStudySet() {
         } else {
           supabaseClient
             .from("explore")
-            .update({ json: sessionData.studySetData })
+            .update({
+              json: sessionData.studySetData
+            })
             .eq("name", sessionData.studySetData.name)
             .then();
         }
@@ -100,23 +107,29 @@ function updateStudySet() {
 }
 
 function getNickname(returnFunction) {
-  supabaseClient.auth.getSession().then(function (result) {
+  supabaseClient.auth.getSession().then(function(result) {
     if (
-      result.data.session.user.user_metadata.hasOwnProperty(
+      result.data.session.user.user_metadata
+      .hasOwnProperty(
         "quizfreelyNickname"
       ) === true
     ) {
-      returnFunction(result.data.session.user.user_metadata.quizfreelyNickname);
-    } else if (result.data.session.user.app_metadata.provider === "email") {
+      returnFunction(result.data.session.user
+        .user_metadata
+        .quizfreelyNickname);
+    } else if (result.data.session.user.app_metadata
+      .provider === "email") {
       returnFunction(
         result.data.session.user.email
-          .replace("quizfreelyuser", "")
-          .replace("@ehan.dev", "")
+        .replace("quizfreelyuser", "")
+        .replace("@ehan.dev", "")
       );
     } else if (
-      result.data.session.user.user_metadata.hasOwnProperty("name") === true
+      result.data.session.user.user_metadata
+      .hasOwnProperty("name") === true
     ) {
-      returnFunction(result.data.session.user.user_metadata.name);
+      returnFunction(result.data.session.user
+        .user_metadata.name);
     }
   });
 }

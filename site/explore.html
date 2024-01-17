@@ -1,37 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
-  <!--
+<!--
     Quizfreely
     Copyright (c) Ehan Ahamed and contributors
     Licensed under the UPL-1.0 License
     https://quizfreely.com/LICENSE.txt
   -->
 
-  <head>
-    <meta charset="UTF-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=10, user-scalable=1"
-    />
-    <title>Quizfreely</title>
-    <link rel="canonical" href="https://quizfreely.com" />
-    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
-    <link rel="stylesheet" href="https://uikit.ehan.dev/css/colors.css" />
-    <link rel="stylesheet" href="https://uikit.ehan.dev/css/components.css" />
-    <link rel="stylesheet" href="https://uikit.ehan.dev/css/layouts.css" />
-    <link rel="stylesheet" href="https://uikit.ehan.dev/css/utils.css" />
-    <link rel="stylesheet" href="./fonts/fonts.css" />
-    <link
-      rel="stylesheet"
-      href="https://www.nerdfonts.com/assets/css/webfont.css"
-    />
-  </head>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=10, user-scalable=1" />
+  <title>Quizfreely</title>
+  <link rel="canonical" href="https://quizfreely.com" />
+  <link rel="apple-touch-icon" sizes="180x180"
+    href="/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="32x32"
+    href="/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16"
+    href="/favicon-16x16.png" />
+  <link rel="stylesheet"
+    href="https://uikit.ehan.dev/css/colors.css" />
+  <link rel="stylesheet"
+    href="https://uikit.ehan.dev/css/components.css" />
+  <link rel="stylesheet"
+    href="https://uikit.ehan.dev/css/layouts.css" />
+  <link rel="stylesheet"
+    href="https://uikit.ehan.dev/css/utils.css" />
+  <link rel="stylesheet" href="./fonts/fonts.css" />
+  <link rel="stylesheet"
+    href="https://www.nerdfonts.com/assets/css/webfont.css" />
+</head>
 
-  <body>
-    <header>
-      <!--<div class="menu">
+<body>
+  <header>
+    <!--<div class="menu">
         <button id="headerMenuMenubutton">
           <i class="nf nf-md-menu"></i>
           Menu
@@ -47,23 +50,26 @@
           </ul>
         </div>
       </div>-->
-      <div class="menu nav">
-        <div>
-          <a href="./index.html"> <i class="nf nf-fa-home"></i> Home</a>
-        </div>
-        <div>
-          <a href="./dashboard.html">
-            <i class="nf nf-fa-edit"></i> Dashboard
-          </a>
-        </div>
-        <div class="current">
-          <a href="./explore.html"> <i class="nf nf-fa-search"></i> Explore </a>
-        </div>
-        <div>
-          <a href="./settings.html"> <i class="nf nf-fa-cog"></i> Settings</a>
-        </div>
+    <div class="menu nav">
+      <div>
+        <a href="./index.html"> <i
+            class="nf nf-fa-home"></i> Home</a>
       </div>
-      <!--<div class="options">
+      <div>
+        <a href="./dashboard.html">
+          <i class="nf nf-fa-edit"></i> Dashboard
+        </a>
+      </div>
+      <div class="current">
+        <a href="./explore.html"> <i
+            class="nf nf-fa-search"></i> Explore </a>
+      </div>
+      <div>
+        <a href="./settings.html"> <i
+            class="nf nf-fa-cog"></i> Settings</a>
+      </div>
+    </div>
+    <!--<div class="options">
         <div class="flex center">
           <button id="headerOptionsLangbutton">
             <i class="nf nf-md-translate"></i>
@@ -113,31 +119,34 @@
           </div>
         </div>
       </div>-->
-    </header>
-    <div id="noscript" class="box center red">
-      <p>
-        You have JavaScript disabled. This website uses JavaScript to run
-        correctly.
-      </p>
-      <p>
-        Please enable JavaScript in your browser settings, or this website will
-        not work.
-      </p>
-    </div>
-    <main>
-      <div class="grid page">
-        <div class="content">
-          <h2>Explore</h2>
-          <div class="flex">
-            <input id="mainSearchinput" type="text" placeholder="Search" />
-            <button id="mainSearchbutton">
-              <i class="nf nf-fa-search"></i>
-              Search
-            </button>
-          </div>
-          <br />
-          <br />
-          <!--
+  </header>
+  <div id="noscript" class="box center red">
+    <p>
+      You have JavaScript disabled. This website uses
+      JavaScript to run
+      correctly.
+    </p>
+    <p>
+      Please enable JavaScript in your browser settings, or
+      this website will
+      not work.
+    </p>
+  </div>
+  <main>
+    <div class="grid page">
+      <div class="content">
+        <h2>Explore</h2>
+        <div class="flex">
+          <input id="mainSearchinput" type="text"
+            placeholder="Search" />
+          <button id="mainSearchbutton">
+            <i class="nf nf-fa-search"></i>
+            Search
+          </button>
+        </div>
+        <br />
+        <br />
+        <!--
         <details>
           <summary>
             Filter results
@@ -188,79 +197,92 @@
           </div>
         </details>
         -->
-          <div id="mainExploreListdiv" class="grid list"></div>
+        <div id="mainExploreListdiv" class="grid list">
         </div>
       </div>
-    </main>
-    <footer>
-      <h2>Quizfreely</h2>
-      <p>Quizfreely is free and open source</p>
-      <p>
-        Copyright © Ehan Ahamed & contributors <br />
-        Licensed under the UPL-1.0 License
-      </p>
-      <a href="./license.html">See License</a>
-      <br />
-      <a href="./privacypolicy.html">See Privacy Policy</a>
-    </footer>
-    <script>
-      document.getElementById("noscript").style.display = "none";
-    </script>
-    <script src="https://uikit.ehan.dev/js/themes.js"></script>
-    <script src="./pocketbase/pocketbase.umd.js"></script>
-    <script src="./js/pocketbase.js"></script>
-    <script>
-      function search(text) {
-        supabaseClient
-          .from("explore")
-          .select()
-          .textSearch("name", `'${text}'`)
-          .then(function (result) {
-            explorelist = result.data;
-            if (explorelist.length === 0) {
+    </div>
+  </main>
+  <footer>
+    <h2>Quizfreely</h2>
+    <p>Quizfreely is free and open source</p>
+    <p>
+      Copyright © Ehan Ahamed & contributors <br />
+      Licensed under the UPL-1.0 License
+    </p>
+    <a href="./license.html">See License</a>
+    <br />
+    <a href="./privacypolicy.html">See Privacy Policy</a>
+  </footer>
+  <script>
+    document.getElementById("noscript").style.display =
+      "none";
+
+  </script>
+  <script src="https://uikit.ehan.dev/js/themes.js">
+  </script>
+  <script src="./pocketbase/pocketbase.umd.js"></script>
+  <script src="./js/pocketbase.js"></script>
+  <script>
+    function search(text) {
+      supabaseClient
+        .from("explore")
+        .select()
+        .textSearch("name", `'${text}'`)
+        .then(function(result) {
+          explorelist = result.data;
+          if (explorelist.length === 0) {
+            var box = document.createElement("div");
+            box.setAttribute("id",
+              "mainDashboardUserExplorelistEmpty");
+            box.setAttribute("class", "box");
+            document.getElementById("mainExploreListdiv")
+              .appendChild(box);
+            document.getElementById(
+              "mainDashboardUserExplorelistEmpty"
+            ).innerHTML = "<p>No study sets found.</p>";
+          } else {
+            for (var i = 0; i < explorelist.length; i++) {
               var box = document.createElement("div");
-              box.setAttribute("id", "mainDashboardUserExplorelistEmpty");
               box.setAttribute("class", "box");
-              document.getElementById("mainExploreListdiv").appendChild(box);
+              box.setAttribute(
+                "id",
+                "mainDashboardUserExplorelist" + i
+                .toString()
+              );
               document.getElementById(
-                "mainDashboardUserExplorelistEmpty"
-              ).innerHTML = "<p>No study sets found.</p>";
-            } else {
-              for (var i = 0; i < explorelist.length; i++) {
-                var box = document.createElement("div");
-                box.setAttribute("class", "box");
-                box.setAttribute(
-                  "id",
-                  "mainDashboardUserExplorelist" + i.toString()
-                );
-                document.getElementById("mainExploreListdiv").appendChild(box);
-                document.getElementById(
-                  "mainDashboardUserExplorelist" + i.toString()
+                "mainExploreListdiv").appendChild(box);
+              document.getElementById(
+                  "mainDashboardUserExplorelist" + i
+                  .toString()
                 ).innerHTML =
-                  "<p>" +
-                  explorelist[i].name +
-                  "</p>" +
-                  "<p class='bg3'>" +
-                  "Created by <code class='fg'>" +
-                  explorelist[i].user_nickname +
-                  "</code>" +
-                  "</p>" +
-                  "<div class='flex'>" +
-                  "<a class='button' href='./studyset?id=" +
-                  explorelist[i].id +
-                  "'> Open </a>" +
-                  "</div>";
-              }
+                "<p>" +
+                explorelist[i].name +
+                "</p>" +
+                "<p class='bg3'>" +
+                "Created by <code class='fg'>" +
+                explorelist[i].user_nickname +
+                "</code>" +
+                "</p>" +
+                "<div class='flex'>" +
+                "<a class='button' href='./studyset?id=" +
+                explorelist[i].id +
+                "'> Open </a>" +
+                "</div>";
             }
-          });
-      }
-      document
-        .getElementById("mainSearchbutton")
-        .addEventListener("click", function (event) {
-          /* clear (set innerHTML to blank) before searching (calling search() func)*/
-          document.getElementById("mainExploreListdiv").innerHTML = "";
-          search(document.getElementById("mainSearchinput").value);
+          }
         });
-    </script>
-  </body>
+    }
+    document
+      .getElementById("mainSearchbutton")
+      .addEventListener("click", function(event) {
+        /* clear (set innerHTML to blank) before searching (calling search() func)*/
+        document.getElementById("mainExploreListdiv")
+          .innerHTML = "";
+        search(document.getElementById("mainSearchinput")
+          .value);
+      });
+
+  </script>
+</body>
+
 </html>
