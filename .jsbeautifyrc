@@ -18,7 +18,7 @@
   "break_chained_methods": false,
   "keep_array_indentation": false,
   "unescape_strings": false,
-  "wrap_line_length": 0,
+  "wrap_line_length": 60,
   "e4x": false,
   "comma_first": false,
   "operator_position": "before-newline",
