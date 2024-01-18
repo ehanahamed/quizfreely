@@ -13,7 +13,10 @@
   },
   "homepage": "https://github.com/ehanahamed/quizfreely#readme",
   "devDependencies": {
-    "js-beautify": "^1.14.11"
+    "clean-css": "^5.3.3",
+    "html-minifier": "^4.0.0",
+    "js-beautify": "^1.14.11",
+    "terser": "^5.27.0"
   },
   "scripts": {
     "format": "npx js-beautify --replace '**/*.js' && npx js-beautify --html --replace '**/*.html' && npx js-beautify --css --replace '**/*.css'"
