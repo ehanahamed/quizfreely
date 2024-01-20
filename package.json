@@ -13,14 +13,17 @@
   },
   "homepage": "https://github.com/ehanahamed/quizfreely#readme",
   "devDependencies": {
-    "clean-css": "^5.3.3",
+    "clean-css-cli": "^5.6.3",
     "foreach-cli": "^1.8.1",
     "html-minifier": "^4.0.0",
     "js-beautify": "^1.14.11",
     "terser": "^5.27.0"
   },
   "scripts": {
-    "format": "npx js-beautify --replace '**/*.js' && npx js-beautify --html --replace '**/*.html' && npx js-beautify --css --replace '**/*.css'",
-    "build": "rm -rf dist && cp -r src/web dist && npx foreach -g 'dist/**/*.js' -x 'terser #{path} --output #{path}'"
+    "format": "js-beautify --replace '**/*.js' && js-beautify --html --replace '**/*.html' && js-beautify --css --replace '**/*.css'",
+    "build-site": "rm -rf site && cp -r src/web site && npm run site-minify-js && npm run site-minify-html && npm run site-minify-css",
+    "site-minify-js": "foreach -g 'site/**/*.js' -x 'terser #{path} --output #{path}'",
+    "site-minify-html": "foreach -g 'site/**/*.html' -x 'rm #{path} html-minifier #{path} --output #{path} --collapse-whitespace --remove-comments'",
+    "site-minify-css": "cleancss --batch 'site/**/*.css' --batch-suffix ''"
   }
 }
