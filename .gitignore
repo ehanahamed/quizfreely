@@ -1,2 +1,4 @@
 node_modules
-backend/node_modules
+src/backend/node_modules
+site
+backend
