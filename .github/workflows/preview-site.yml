@@ -2,7 +2,7 @@ on:
   workflow_dispatch:
 jobs:
   deploy_site:
-    name: Deploy Site
+    name: Deploy Site Preview
     runs-on: ubuntu-latest
     steps:
     - name: Checkout Repository
@@ -13,10 +13,10 @@ jobs:
       run: npm install
     - name: Minify
       run: npm run minify-site
-    - name: Publish on Netlify
+    - name: Deploy Site
       uses: netlify/actions/cli@master
       with:
-        args: deploy --dir=site --prod
+        args: deploy --dir=site
       env:
         NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
         NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
