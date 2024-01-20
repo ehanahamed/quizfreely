@@ -1,0 +1,20 @@
+on:
+  workflow_dispatch:
+jobs:
+  deploy_site:
+    name: Deploy Site
+    runs-on: ubuntu-latest
+    steps:
+    - name: Setup Node.js
+      uses: actions/setup-node@v1
+    - name: Install Dependencies
+      run: npm install
+    - name: Minify
+      run: npm run minify-site
+    - name: Publish on Netlify
+      uses: netlify/actions/cli@master
+      with:
+        args: deploy --dir=site
+      env:
+        NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+        NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
