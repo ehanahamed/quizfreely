@@ -1,0 +1,16 @@
+[Unit]
+Description = pocketbase
+
+[Service]
+Type           = simple
+User           = root
+Group          = root
+LimitNOFILE    = 4096
+Restart        = always
+RestartSec     = 5s
+StandardOutput = append:/root/pb/errors.log
+StandardError  = append:/root/pb/errors.log
+ExecStart      = /root/pb/pocketbase serve --http="api.quizfreely.com:80" --https="api.quizfreely.com:443"
+
+[Install]
+WantedBy = multi-user.target
