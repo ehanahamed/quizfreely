@@ -22,27 +22,15 @@ With all those settings it should be around 6 USD to 12 USD per month
 
 ### DNS Setup
 
-Under digitalocean's homepage, go to "networking". (NOT home > droplet > networking, it's home > networking, there's a difference)
+quizfreely.com should use digitalocean's nameservers, and Quizfreely's domain and subdomains should be set in digitalocean, under "domains".
 
-Under "networking", go to "domains", and add `api.quizfreely.com`
+To setup the backend's url, `api.quizfreely.com`, just add an A record, with:
+- hostname: `api` (`api.quizfreely.com`)
+- "directs to"/value: dropdown/"select resource" > droplet-name-goes-here/"quizfreelybackend"
 
-![image](./docs/image1.png)
+That's all!
 
-after clicking "add domain", create a new `A` reccord, with:
-- hostname: `@`
-- "will direct to": dropdown/"select resource" > the-droplet-name/"quizfreelybackend"
-- TTL: i prefer 600 seconds
-  - but its not super important tbh
-
-After we add that record, look at the list of records.
-
-![image](./docs/image2.png)
-
-Copy those `NS` records' values, and add those same records to quizfreely.com's actual domain registar's DNS records.
-
-![image](./docs/image3.png)
-
-This makes our domain registar's DNS records point to digitalocean's DNS records & nameservers for `api.quizfreely.com`, while still using our domain registar's nameservers for `quizfreely.com`, and its other subdomains.
+Later, when we run pocketbase, it will automatically set up a ssl certificate and everything will "just work"!
 
 ### Download Pocketbase
 
