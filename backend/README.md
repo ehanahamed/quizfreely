@@ -22,7 +22,9 @@ With all those settings it should be around 6 USD to 12 USD per month
 
 ### DNS Setup
 
-quizfreely.com should use digitalocean's nameservers, and Quizfreely's domain and subdomains should be set in digitalocean, under "domains".
+quizfreely.com should use digitalocean's nameservers, and Quizfreely's domain and subdomains should be set in digitalocean, under "networking" > "domains".
+
+btw, its "home" > "networking" > "domains", NOT "home" > "droplet" > "networking",
 
 To setup the backend's url, `api.quizfreely.com`, just add an A record, with:
 - hostname: `api` (`api.quizfreely.com`)
@@ -82,10 +84,20 @@ Paste the contents from our clipboard.
 
 Save the file, and then enable the service.
 ```
-systemctl enable pocketbase.service
+# systemctl enable pocketbase.service
 ```
 
 Finally, start pocketbase!
 ```
-systemctl start pocketbase
+# systemctl start pocketbase
+```
+
+## Controlling the process
+
+Useful commands are listed below, they're self explanitory
+
+```
+# systemctl status pocketbase
+# systemctl start pocketbase
+# systemctl stop pocketbase
 ```
