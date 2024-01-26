@@ -38,7 +38,7 @@ Later, when we run pocketbase, it will automatically set up a ssl certificate an
 
 In the droplet, create `/root/pb/`
 
-Download pocketbase's linux executable, then move it to `/root/pb/pocketbase`.
+We're going to download pocketbase's linux executable, and move it to `/root/pb/pocketbase`. (explained in detail below)
 
 We can find the latest download url/link in [pocketbase's github relases](https://github.com/pocketbase/pocketbase/releases) or somewhere in [pocketbase's website](https://pocketbase.io) or docs. The version in the url/link below is just an example
 
@@ -80,7 +80,9 @@ Edit `/etc/systemd/system/pocketbase.service` on the droplet, using `vi`
 
 Paste the contents from our clipboard.
 
-`Control V` might not work, so: In digitalocean's web console, we can paste through our browsers right-click menu. (It should paste multi-line selections properly btw)
+`control v` might not work, so instead:
+  - try `control shift v`
+  - or use our browsers right-click menu. (It should paste multi-line selections properly)
 
 Save the file, and then enable the service.
 ```
