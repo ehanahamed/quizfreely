@@ -94,6 +94,16 @@ Finally, start pocketbase!
 # systemctl start pocketbase
 ```
 
+### Importing configuration
+
+After the backend is setup and running, open the admin ui.
+
+The url is `/_/` (in this case `api.quizfreely.com/_/`)
+
+Under settings, there are "import collections" and "export collections" options.
+
+Our collections configuration is saved in our source code, at `backend/collections.json`
+
 ## Debugging & Errors
 
 First, get info from systemctl
