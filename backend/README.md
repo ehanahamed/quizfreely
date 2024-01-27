@@ -121,11 +121,13 @@ This happens if DNS changes and other networking stuff didn't take effect yet.
 
 ### Privacy error or certificate not valid
 
-If pocketbase is running fine, but trying to go to the admin ui says "privacy error", "connection is not private", or "certificate is invalid", wait 5 to 10 minutes, and check again.
+If pocketbase is running fine, but trying to go to the admin ui says "privacy error", "connection is not private", "not secure", or "certificate is invalid", wait 5 to 10 minutes, and check again.
 
 It takes a small bit of time for the certificate to fully take effect.
 
 We don't have to manually "fix" the certificate, pocketbase automatically issues one!
+
+Also, try fully killing your browser or even restart your device. Sometimes your browser doesn't actually refresh the page if it said it's "not secure" before.
 
 ## Controlling the process
 
