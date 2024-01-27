@@ -107,6 +107,10 @@ systemctl stop pocketbase
 # /root/pb/pocketbase serve --http="api.quizfreely.com:80" --https="api.quizfreely.com:443"
 ```
 
+### Exec format error
+
+If you get an error that says something like `cannot execute binary file: exec format error`, that means you might have downloaded the wrong executable archetecture ("arm64" looks a lot like "amd64", you might have copied the wrong link) or mabye the zip file something-ed, either way, just try redownloading the executable.
+
 ### Error cannot assign requested address
 
 If you see an error that says `listen tcp... bind: cannot assign requested address` or something similar, stop the process and wait a few minutes for DNS changes to work.
@@ -115,9 +119,13 @@ All I did was stop and start the process a few times waiting a total of about 5 
 
 This happens if DNS changes and other networking stuff didn't take effect yet.
 
-### Exec format error
+### Privacy error or certificate not valid
 
-If you get an error that says something like `cannot execute binary file: exec format error`, that means you might have downloaded the wrong executable archetecture ("arm64" looks a lot like "amd64", you might have copied the wrong link) or mabye the zip file something-ed, either way, just try redownloading the executable.
+If pocketbase is running fine, but trying to go to the admin ui says "privacy error", "connection is not private", or "certificate is invalid", wait 5 to 10 minutes, and check again.
+
+It takes a small bit of time for the certificate to fully take effect.
+
+We don't have to manually "fix" the certificate, pocketbase automatically issues one!
 
 ## Controlling the process
 
