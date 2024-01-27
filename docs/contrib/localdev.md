@@ -19,7 +19,11 @@ Now, you can run pocketbase:
 
 Then navigate to pocketbase's admin ui, which should be at http://127.0.0.1:8090/_/
 
+Create a temporary username and password, it doesn't actually matter.
+
 Under settings, find "import collections", and import our collections configuration which is in our source code, at `backend/collections.json`
+
+Now our local backend "server" is ready.
 
 ### Using local instance
 
