@@ -94,6 +94,31 @@ Finally, start pocketbase!
 # systemctl start pocketbase
 ```
 
+## Debugging & Errors
+
+First, get info from systemctl
+```
+# systemctl status pocketbase
+```
+
+If everything looks fine there, stop the process from systemctl, and try running pocketbase "manually"
+```
+systemctl stop pocketbase
+# /root/pb/pocketbase serve --http="api.quizfreely.com:80" --https="api.quizfreely.com:443"
+```
+
+### Error cannot assign requested address
+
+If you see an error that says `listen tcp... bind: cannot assign requested address` or something similar, stop the process and wait a few minutes for DNS changes to work.
+
+All I did was stop and start the process a few times waiting a total of about 5 minutes, and after running the same exact command a few times it just "started working".
+
+This happens if DNS changes and other networking stuff didn't take effect yet.
+
+### Exec format error
+
+If you get an error that says something like `cannot execute binary file: exec format error`, that means you might have downloaded the wrong executable archetecture ("arm64" looks a lot like "amd64", you might have copied the wrong link) or mabye the zip file something-ed, either way, just try redownloading the executable.
+
 ## Controlling the process
 
 Useful commands are listed below, they're self explanitory
