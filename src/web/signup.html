@@ -226,7 +226,8 @@
           if (
             /^[a-z0-9._-]+$/.test(
               document.getElementById(
-                "mainSignupUsernameinput").value
+                "mainSignupUsernameinput"
+              ).value
             ) === true
           ) {
             pb.collection("users").create({
@@ -273,11 +274,11 @@
               .innerHTML =
               "Usernames can only have:" +
               "<ul>" +
-              "<li>lowercase letters</li>" +
-              "<li>numbers</li>" +
-              "<li>dots (<code>.</code>)</li>" +
-              "<li>underscores (<code>_</code>)</li>" +
-              "<li>hyphens (<code>-</code>)</li>" +
+              "  <li>lowercase letters</li>" +
+              "  <li>numbers</li>" +
+              "  <li>dots <code>.</code></li>" +
+              "  <li>underscores <code>_</code></li>" +
+              "  <li>hyphens <code>-</code></li>" +
               "</ul>";
           }
       });
