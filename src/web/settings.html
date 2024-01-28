@@ -143,42 +143,22 @@
             <div class="radio">
               <input type="radio" name="theme"
                 id="mainAppearanceThemeAuto" checked />
-              <label for="mainAppearanceThemeAuto">Auto
-                <span class="bg3">(default)</span></label>
+              <label for="mainAppearanceThemeAuto">Auto</label>
             </div>
             <div class="radio">
               <input type="radio" name="theme"
                 id="mainAppearanceThemePurpleish" />
-              <label
-                for="mainAppearanceThemePurpleish">Purpleish
-                <span class="bg3">(default
-                  dark)</span></label>
+              <label for="mainAppearanceThemePurpleish">Purpleish</label>
             </div>
             <div class="radio">
               <input type="radio" name="theme"
                 id="mainAppearanceThemeLight" />
-              <label for="mainAppearanceThemeLight">Light
-                <span class="bg3">(default
-                  light)</span></label>
-            </div>
-            <div class="radio">
-              <input type="radio" name="theme"
-                id="mainAppearanceThemeOwl" />
-              <label for="mainAppearanceThemeOwl">Owl <span
-                  class="bg3">(light)</span></label>
-            </div>
-            <div class="radio">
-              <input type="radio" name="theme"
-                id="mainAppearanceThemeCat" />
-              <label for="mainAppearanceThemeCat">Octocat
-                Dark <span class="bg3">(dark)</span></label>
+              <label for="mainAppearanceThemeLight">Light</label>
             </div>
             <div class="radio">
               <input type="radio" name="theme"
                 id="mainAppearanceThemeCatdim" />
-              <label for="mainAppearanceThemeCatdim">Octocat
-                Dimmed <span
-                  class="bg3">(dark)</span></label>
+              <label for="mainAppearanceThemeCatdim">Darker</label>
             </div>
           </div>
         </div>
@@ -235,7 +215,6 @@
   <script>
     document.getElementById("noscript").style.display =
       "none";
-
   </script>
   <script src="https://uikit.ehan.dev/js/ehansUi.js">
   </script>
@@ -271,28 +250,32 @@
       .addEventListener("change", function(event) {
         ehansUi.setTheme("catdim");
       });
-    if (localStorage.getItem("theme") === "auto") {
-      document.getElementById("mainAppearanceThemeAuto")
-        .checked = true;
-    } else if (localStorage.getItem("theme") ===
-      "purpleish") {
+    
+    if (
+      localStorage.getItem("theme") === "auto"
+    ) {
+      document.getElementById(
+        "mainAppearanceThemeAuto"
+      ).checked = true;
+    } else if (
+      localStorage.getItem("theme") === "purpleish"
+    ) {
       document.getElementById(
         "mainAppearanceThemePurpleish"
       ).checked = true;
-    } else if (localStorage.getItem("theme") === "light") {
-      document.getElementById("mainAppearanceThemeLight")
-        .checked = true;
-    } else if (localStorage.getItem("theme") === "owl") {
-      document.getElementById("mainAppearanceThemeOwl")
-        .checked = true;
-    } else if (localStorage.getItem("theme") === "cat") {
-      document.getElementById("mainAppearanceThemeCat")
-        .checked = true;
-    } else if (localStorage.getItem("theme") === "catdim") {
-      document.getElementById("mainAppearanceThemeCatdim")
-        .checked = true;
+    } else if (
+      localStorage.getItem("theme") === "light"
+    ) {
+      document.getElementById(
+        "mainAppearanceThemeLight"
+        ).checked = true;
+    } else if (
+      localStorage.getItem("theme") === "darker"
+    ) {
+      document.getElementById(
+        "mainAppearanceThemeDarker"
+      ).checked = true;
     }
-
   </script>
   <script src="./js/states.js"></script>
   <script>
