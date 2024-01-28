@@ -157,8 +157,8 @@
             </div>
             <div class="radio">
               <input type="radio" name="theme"
-                id="mainAppearanceThemeCatdim" />
-              <label for="mainAppearanceThemeCatdim">Darker</label>
+                id="mainAppearanceThemeDarker" />
+              <label for="mainAppearanceThemeDarker">Darker</label>
             </div>
           </div>
         </div>
@@ -236,19 +236,9 @@
         ehansUi.setTheme("light");
       });
     document
-      .getElementById("mainAppearanceThemeOwl")
+      .getElementById("mainAppearanceThemeDarker")
       .addEventListener("change", function(event) {
-        ehansUi.setTheme("owl");
-      });
-    document
-      .getElementById("mainAppearanceThemeCat")
-      .addEventListener("change", function(event) {
-        ehansUi.setTheme("cat");
-      });
-    document
-      .getElementById("mainAppearanceThemeCatdim")
-      .addEventListener("change", function(event) {
-        ehansUi.setTheme("catdim");
+        ehansUi.setTheme("darker");
       });
     
     if (
