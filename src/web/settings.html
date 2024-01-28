@@ -156,8 +156,8 @@
             </div>
             <div class="radio">
               <input type="radio" name="theme"
-                id="mainAppearanceThemeSnow" />
-              <label for="mainAppearanceThemeSnow">Snow
+                id="mainAppearanceThemeLight" />
+              <label for="mainAppearanceThemeLight">Light
                 <span class="bg3">(default
                   light)</span></label>
             </div>
@@ -252,9 +252,9 @@
         ehansUi.setTheme("purpleish");
       });
     document
-      .getElementById("mainAppearanceThemeSnow")
+      .getElementById("mainAppearanceThemeLight")
       .addEventListener("change", function(event) {
-        ehansUi.setTheme("snow");
+        ehansUi.setTheme("light");
       });
     document
       .getElementById("mainAppearanceThemeOwl")
@@ -277,9 +277,10 @@
     } else if (localStorage.getItem("theme") ===
       "purpleish") {
       document.getElementById(
-        "mainAppearanceThemePurpleish").checked = true;
-    } else if (localStorage.getItem("theme") === "snow") {
-      document.getElementById("mainAppearanceThemeSnow")
+        "mainAppearanceThemePurpleish"
+      ).checked = true;
+    } else if (localStorage.getItem("theme") === "light") {
+      document.getElementById("mainAppearanceThemeLight")
         .checked = true;
     } else if (localStorage.getItem("theme") === "owl") {
       document.getElementById("mainAppearanceThemeOwl")
