@@ -237,40 +237,39 @@
       "none";
 
   </script>
-  <script src="https://uikit.ehan.dev/js/themes.js">
+  <script src="https://uikit.ehan.dev/js/ehansUi.js">
   </script>
   <script>
     /* this super short script tag is for theme settings */
-    /* setTheme is defined in uikit.ehan.dev/js/themes.js */
     document
       .getElementById("mainAppearanceThemeAuto")
       .addEventListener("change", function(event) {
-        setTheme("auto");
+        ehansUi.setTheme("auto");
       });
     document
       .getElementById("mainAppearanceThemePurpleish")
       .addEventListener("change", function(event) {
-        setTheme("purpleish");
+        ehansUi.setTheme("purpleish");
       });
     document
       .getElementById("mainAppearanceThemeSnow")
       .addEventListener("change", function(event) {
-        setTheme("snow");
+        ehansUi.setTheme("snow");
       });
     document
       .getElementById("mainAppearanceThemeOwl")
       .addEventListener("change", function(event) {
-        setTheme("owl");
+        ehansUi.setTheme("owl");
       });
     document
       .getElementById("mainAppearanceThemeCat")
       .addEventListener("change", function(event) {
-        setTheme("cat");
+        ehansUi.setTheme("cat");
       });
     document
       .getElementById("mainAppearanceThemeCatdim")
       .addEventListener("change", function(event) {
-        setTheme("catdim");
+        ehansUi.setTheme("catdim");
       });
     if (localStorage.getItem("theme") === "auto") {
       document.getElementById("mainAppearanceThemeAuto")
