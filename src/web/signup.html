@@ -223,29 +223,22 @@
     document
       .getElementById("mainSignupSignupbutton")
       .addEventListener("click", function() {
-        if (
-          document.getElementById(
-            "mainSignupPasswordinput").value ===
-          document.getElementById(
-            "mainSignupRetypepasswordinput").value
-        ) {
           if (
             /^[a-z0-9._-]+$/.test(
               document.getElementById(
                 "mainSignupUsernameinput").value
             ) === true
           ) {
-            pocketbase.collection("users").create({
+            pb.collection("users").create({
                 username: document.getElementById(
                     "mainSignupUsernameinput")
                   .value,
                 password: document.getElementById(
                     "mainSignupPasswordinput")
                   .value,
-                name: document.getElementById(
-                    "mainSignupUsernameinput")
+                passwordConfirm: document.getElementById(
+                    "mainSignupPasswordinput")
                   .value,
-                type: "password",
               })
               .then(function(result) {
                 document
@@ -287,16 +280,6 @@
               "<li>hyphens (<code>-</code>)</li>" +
               "</ul>";
           }
-        } else {
-          document
-            .getElementById("mainSignupErrortext")
-            .classList.remove("hide");
-          document.getElementById("mainDonediv").classList
-            .add("hide");
-          document.getElementById("mainSignupErrortext")
-            .innerHTML =
-            "Error: Password does not match,<br /> retype your new password correctly.";
-        }
       });
     document
       .getElementById("mainSignupGooglebutton")

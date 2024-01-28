@@ -5,15 +5,15 @@
   https://quizfreely.com/LICENSE.txt
 */
 
-var pocketbase = new PocketBase(
-  "https://test.pocketbase.io/")
+var pb = new PocketBase(
+  "http://127.0.0.1:8090")
 
-if (pocketbase.authStore.isValid) {
-  pocketbase.collection('users').authRefresh();
+if (pb.authStore.isValid) {
+  pb.collection('users').authRefresh();
 }
 
 if (typeof states !== "undefined") {
-  if (pocketbase.authStore.isValid) {
+  if (pb.authStore.isValid) {
     states.newUser(false);
   } else {
     states.newUser(true);
