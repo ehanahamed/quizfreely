@@ -5,11 +5,10 @@
   https://quizfreely.com/LICENSE.txt
 */
 
-var pb = new PocketBase(
-  "http://127.0.0.1:8090")
+var pb = new PocketBase("http://127.0.0.1:8090");
 
 if (pb.authStore.isValid) {
-  pb.collection('users').authRefresh();
+  pb.collection("users").authRefresh();
 }
 
 if (typeof states !== "undefined") {

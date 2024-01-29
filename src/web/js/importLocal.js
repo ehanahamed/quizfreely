@@ -7,30 +7,24 @@
 
 document
   .getElementById(ui.elements.inputs.importLocal.file)
-  .addEventListener("change", function() {
+  .addEventListener("change", function () {
     importLocal.input();
   });
 
 var importLocal = {
-  input: function() {
+  input: function () {
     var fileReader = new FileReader();
-    fileReader.addEventListener("load", function(
-    event) {
-      sessionData.importLocal.fileData = event
-        .target.result;
+    fileReader.addEventListener("load", function (event) {
+      sessionData.importLocal.fileData = event.target.result;
       /*alerts.clear();
             if (studySet.validate(sessionData.importLocal.fileData) === true) {
                 alerts.show("successImport");*/
-      studySet.load(sessionData.importLocal
-        .fileData);
+      studySet.load(sessionData.importLocal.fileData);
       studySet.open();
-      document.getElementById("mainActionsSave")
-        .classList.add("hide");
+      document.getElementById("mainActionsSave").classList.add("hide");
     });
     fileReader.readAsText(
-      document.getElementById(ui.elements.inputs
-        .importLocal.file).files[
-        0]
+      document.getElementById(ui.elements.inputs.importLocal.file).files[0],
     );
   },
 };

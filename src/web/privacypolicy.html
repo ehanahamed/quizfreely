@@ -1,40 +1,37 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<!--
+  <!--
     Quizfreely
     Copyright (c) Ehan Ahamed and contributors
     Licensed under the UPL-1.0 License
     https://quizfreely.com/LICENSE.txt
   -->
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport"
-    content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=10, user-scalable=1" />
-  <title>Quizfreely</title>
-  <link rel="canonical" href="https://quizfreely.com" />
-  <link rel="apple-touch-icon" sizes="180x180"
-    href="/apple-touch-icon.png" />
-  <link rel="icon" type="image/png" sizes="32x32"
-    href="/favicon-32x32.png" />
-  <link rel="icon" type="image/png" sizes="16x16"
-    href="/favicon-16x16.png" />
-  <link rel="stylesheet"
-    href="https://uikit.ehan.dev/css/colors.css" />
-  <link rel="stylesheet"
-    href="https://uikit.ehan.dev/css/components.css" />
-  <link rel="stylesheet"
-    href="https://uikit.ehan.dev/css/layouts.css" />
-  <link rel="stylesheet"
-    href="https://uikit.ehan.dev/css/utils.css" />
-  <link rel="stylesheet" href="./fonts/fonts.css" />
-  <link rel="stylesheet"
-    href="https://www.nerdfonts.com/assets/css/webfont.css" />
-</head>
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=10, user-scalable=1"
+    />
+    <title>Quizfreely</title>
+    <link rel="canonical" href="https://quizfreely.com" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="stylesheet" href="https://uikit.ehan.dev/css/colors.css" />
+    <link rel="stylesheet" href="https://uikit.ehan.dev/css/components.css" />
+    <link rel="stylesheet" href="https://uikit.ehan.dev/css/layouts.css" />
+    <link rel="stylesheet" href="https://uikit.ehan.dev/css/utils.css" />
+    <link rel="stylesheet" href="./fonts/fonts.css" />
+    <link
+      rel="stylesheet"
+      href="https://www.nerdfonts.com/assets/css/webfont.css"
+    />
+  </head>
 
-<body>
-  <header>
-    <!--<div class="menu">
+  <body>
+    <header>
+      <!--<div class="menu">
         <button id="headerMenuMenubutton">
           <i class="nf nf-md-menu"></i>
           Menu
@@ -50,26 +47,23 @@
           </ul>
         </div>
       </div>-->
-    <div class="menu nav">
-      <div class="current">
-        <a href="./index.html"> <i
-            class="nf nf-fa-home"></i> Home</a>
+      <div class="menu nav">
+        <div class="current">
+          <a href="./index.html"> <i class="nf nf-fa-home"></i> Home</a>
+        </div>
+        <div>
+          <a href="./dashboard.html">
+            <i class="nf nf-fa-edit"></i> Dashboard
+          </a>
+        </div>
+        <div>
+          <a href="./explore.html"> <i class="nf nf-fa-search"></i> Explore </a>
+        </div>
+        <div>
+          <a href="./settings.html"> <i class="nf nf-fa-cog"></i> Settings</a>
+        </div>
       </div>
-      <div>
-        <a href="./dashboard.html">
-          <i class="nf nf-fa-edit"></i> Dashboard
-        </a>
-      </div>
-      <div>
-        <a href="./explore.html"> <i
-            class="nf nf-fa-search"></i> Explore </a>
-      </div>
-      <div>
-        <a href="./settings.html"> <i
-            class="nf nf-fa-cog"></i> Settings</a>
-      </div>
-    </div>
-    <!--<div class="options">
+      <!--<div class="options">
         <div class="flex center">
           <button id="headerOptionsLangbutton">
             <i class="nf nf-md-translate"></i>
@@ -119,159 +113,122 @@
           </div>
         </div>
       </div>-->
-  </header>
-  <div id="noscript" class="box center">
-    <p>
-      You have JavaScript disabled. This website uses
-      JavaScript to run
-      correctly.
-    </p>
-    <p>
-      Please enable JavaScript in your browser settings, or
-      this website will
-      not work.
-    </p>
-  </div>
-  <main>
-    <div class="grid page">
-      <div class="content">
-        <h2>Privacy policy</h2>
-        <h3>Summary</h3>
-        <p>Users without an account:</p>
-        <ul>
-          <li class="text green">
-            Can use Quizfreely <i
-              class="nf nf-oct-check"></i>
-          </li>
-          <li>
-            Will <span class="red">NOT</span> have their
-            data collected
-            <i class="nf nf-oct-x red"></i>
-          </li>
-        </ul>
-        <p>Users with an account:</p>
-        <ul>
-          <li class="text green">
-            Will have account data collected so they can
-            sign in
-            <i class="nf nf-oct-check"></i>
-          </li>
-          <li>
-            Will <span class="red">NOT</span> have their
-            account data used for
-            marketing/advertising <i
-              class="nf nf-oct-x red"></i>
-          </li>
-          <li class="text green">
-            Will have their data processed by Supabase to
-            keep it secure
-            <i class="nf nf-oct-check"></i>
-          </li>
-        </ul>
-        <p>All users:</p>
-        <ul>
-          <li class="text green">
-            Can email
-            <a
-              href="mailto:quizfreely@ehan.dev?">quizfreely@ehan.dev</a>
-            with
-            questions about how their data is used.
-            <i class="nf nf-oct-check"></i>
-          </li>
-          <li>
-            Will <span class="red">NOT</span> have their
-            data sold to or
-            shared with anyone else <i
-              class="nf nf-oct-x red"></i>
-          </li>
-          <li class="text green">
-            Can view Quizfreely's
-            <a href="./sourcecode.html">source code</a> and
-            other users'
-            <a href="./explore.html">public content</a>
-            <i class="nf nf-oct-check"></i>
-          </li>
-          <li>
-            Can <span class="red">NOT</span> view other
-            users' private data
-            <i class="nf nf-oct-x red"></i>
-          </li>
-        </ul>
-        <br />
-        <h3>Full privacy policy text</h3>
-        <p>Updated on 2023/08/01</p>
-        <p>
-          This website, https://quizfreely.com
-          ("Quizfreely"), does NOT
-          collect any information ("data") about users who
-          do NOT register
-          ("sign up") for an account with Quizfreely. If a
-          user signs up for
-          an account, Quizfreely collects data about the
-          user and information
-          that makes the user identifiable ("personal
-          information"). The
-          personal information that Quizfreely collects only
-          includes the
-          user's username and email address.
-        </p>
-        <p>
-          All data and personal information that is
-          collected by Quizfreely is
-          processed by a third party, Supabase Inc.
-          ("Supabase"). Data that is
-          collected by Quizfreely and processed by Supabase
-          is NOT subject to
-          Supabase's privacy notice ("Supabase's privacy
-          policy").
-        </p>
-        <p>
-          Users may request details about the disclosure of
-          their personal
-          information to third parties. Users may also
-          request for their data
-          and personal information to be deleted. Users can
-          make these
-          requests by contacting
-          <a
-            href="mailto:quizfreely@ehan.dev?">quizfreely@ehan.dev</a>.
-        </p>
-        <p>
-          The data and personal information that is
-          collected by Quizfreely is
-          NOT sold or otherwise disclosed to any third
-          parties that are not
-          specified in this privacy notice ("privacy
-          policy").
-        </p>
-        <p>
-          Contact
-          <a
-            href="mailto:quizfreely@ehan.dev?">quizfreely@ehan.dev</a>
-          with
-          any questions about this privacy policy.
-        </p>
-      </div>
+    </header>
+    <div id="noscript" class="box center">
+      <p>
+        You have JavaScript disabled. This website uses JavaScript to run
+        correctly.
+      </p>
+      <p>
+        Please enable JavaScript in your browser settings, or this website will
+        not work.
+      </p>
     </div>
-  </main>
-  <footer>
-    <h2>Quizfreely</h2>
-    <p>Quizfreely is free and open source</p>
-    <p>
-      Copyright © Ehan Ahamed & contributors <br />
-      Licensed under the UPL-1.0 License
-    </p>
-    <a href="./license.html">See License</a>
-    <br />
-    <a href="./privacypolicy.html">See Privacy Policy</a>
-  </footer>
-  <script>
-    document.getElementById("noscript").style.display =
-      "none";
-
-  </script>
-  <script src="https://uikit.ehan.dev/js/ehansUi.js">
-  </script>
-</body>
-
+    <main>
+      <div class="grid page">
+        <div class="content">
+          <h2>Privacy policy</h2>
+          <h3>Summary</h3>
+          <p>Users without an account:</p>
+          <ul>
+            <li class="text green">
+              Can use Quizfreely <i class="nf nf-oct-check"></i>
+            </li>
+            <li>
+              Will <span class="red">NOT</span> have their data collected
+              <i class="nf nf-oct-x red"></i>
+            </li>
+          </ul>
+          <p>Users with an account:</p>
+          <ul>
+            <li class="text green">
+              Will have account data collected so they can sign in
+              <i class="nf nf-oct-check"></i>
+            </li>
+            <li>
+              Will <span class="red">NOT</span> have their account data used for
+              marketing/advertising <i class="nf nf-oct-x red"></i>
+            </li>
+            <li class="text green">
+              Will have their data processed by Supabase to keep it secure
+              <i class="nf nf-oct-check"></i>
+            </li>
+          </ul>
+          <p>All users:</p>
+          <ul>
+            <li class="text green">
+              Can email
+              <a href="mailto:quizfreely@ehan.dev?">quizfreely@ehan.dev</a>
+              with questions about how their data is used.
+              <i class="nf nf-oct-check"></i>
+            </li>
+            <li>
+              Will <span class="red">NOT</span> have their data sold to or
+              shared with anyone else <i class="nf nf-oct-x red"></i>
+            </li>
+            <li class="text green">
+              Can view Quizfreely's
+              <a href="./sourcecode.html">source code</a> and other users'
+              <a href="./explore.html">public content</a>
+              <i class="nf nf-oct-check"></i>
+            </li>
+            <li>
+              Can <span class="red">NOT</span> view other users' private data
+              <i class="nf nf-oct-x red"></i>
+            </li>
+          </ul>
+          <br />
+          <h3>Full privacy policy text</h3>
+          <p>Updated on 2023/08/01</p>
+          <p>
+            This website, https://quizfreely.com ("Quizfreely"), does NOT
+            collect any information ("data") about users who do NOT register
+            ("sign up") for an account with Quizfreely. If a user signs up for
+            an account, Quizfreely collects data about the user and information
+            that makes the user identifiable ("personal information"). The
+            personal information that Quizfreely collects only includes the
+            user's username and email address.
+          </p>
+          <p>
+            All data and personal information that is collected by Quizfreely is
+            processed by a third party, Supabase Inc. ("Supabase"). Data that is
+            collected by Quizfreely and processed by Supabase is NOT subject to
+            Supabase's privacy notice ("Supabase's privacy policy").
+          </p>
+          <p>
+            Users may request details about the disclosure of their personal
+            information to third parties. Users may also request for their data
+            and personal information to be deleted. Users can make these
+            requests by contacting
+            <a href="mailto:quizfreely@ehan.dev?">quizfreely@ehan.dev</a>.
+          </p>
+          <p>
+            The data and personal information that is collected by Quizfreely is
+            NOT sold or otherwise disclosed to any third parties that are not
+            specified in this privacy notice ("privacy policy").
+          </p>
+          <p>
+            Contact
+            <a href="mailto:quizfreely@ehan.dev?">quizfreely@ehan.dev</a>
+            with any questions about this privacy policy.
+          </p>
+        </div>
+      </div>
+    </main>
+    <footer>
+      <h2>Quizfreely</h2>
+      <p>Quizfreely is free and open source</p>
+      <p>
+        Copyright © Ehan Ahamed & contributors <br />
+        Licensed under the UPL-1.0 License
+      </p>
+      <a href="./license.html">See License</a>
+      <br />
+      <a href="./privacypolicy.html">See Privacy Policy</a>
+    </footer>
+    <script>
+      document.getElementById("noscript").style.display = "none";
+    </script>
+    <script src="https://uikit.ehan.dev/js/ehansUi.js"></script>
+  </body>
 </html>

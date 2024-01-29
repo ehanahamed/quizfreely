@@ -13,6 +13,7 @@ Anyway, first download pocketbase's latest version from [pocketbase's github rel
 Then, extract the zip file into some remember-able directory.
 
 Now, you can run pocketbase:
+
 ```
 ./pocketbase serve
 ```

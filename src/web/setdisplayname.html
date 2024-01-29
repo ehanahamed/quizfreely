@@ -1,40 +1,37 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en" class="screen">
-<!--
+  <!--
     Quizfreely
     Copyright (c) Ehan Ahamed and contributors
     Licensed under the UPL-1.0 License
     https://quizfreely.com/LICENSE.txt
   -->
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport"
-    content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=10, user-scalable=1" />
-  <title>Quizfreely</title>
-  <link rel="canonical" href="https://quizfreely.com" />
-  <link rel="apple-touch-icon" sizes="180x180"
-    href="/apple-touch-icon.png" />
-  <link rel="icon" type="image/png" sizes="32x32"
-    href="/favicon-32x32.png" />
-  <link rel="icon" type="image/png" sizes="16x16"
-    href="/favicon-16x16.png" />
-  <link rel="stylesheet"
-    href="https://uikit.ehan.dev/css/colors.css" />
-  <link rel="stylesheet"
-    href="https://uikit.ehan.dev/css/components.css" />
-  <link rel="stylesheet"
-    href="https://uikit.ehan.dev/css/layouts.css" />
-  <link rel="stylesheet"
-    href="https://uikit.ehan.dev/css/utils.css" />
-  <link rel="stylesheet" href="./fonts/fonts.css" />
-  <link rel="stylesheet"
-    href="https://www.nerdfonts.com/assets/css/webfont.css" />
-</head>
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=10, user-scalable=1"
+    />
+    <title>Quizfreely</title>
+    <link rel="canonical" href="https://quizfreely.com" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="stylesheet" href="https://uikit.ehan.dev/css/colors.css" />
+    <link rel="stylesheet" href="https://uikit.ehan.dev/css/components.css" />
+    <link rel="stylesheet" href="https://uikit.ehan.dev/css/layouts.css" />
+    <link rel="stylesheet" href="https://uikit.ehan.dev/css/utils.css" />
+    <link rel="stylesheet" href="./fonts/fonts.css" />
+    <link
+      rel="stylesheet"
+      href="https://www.nerdfonts.com/assets/css/webfont.css"
+    />
+  </head>
 
-<body>
-  <header>
-    <!--<div class="menu">
+  <body>
+    <header>
+      <!--<div class="menu">
         <button id="headerMenuMenubutton">
           <i class="nf nf-md-menu"></i>
           Menu
@@ -50,26 +47,23 @@
           </ul>
         </div>
       </div>-->
-    <div class="menu nav">
-      <div>
-        <a href="./index.html"> <i
-            class="nf nf-fa-home"></i> Home</a>
+      <div class="menu nav">
+        <div>
+          <a href="./index.html"> <i class="nf nf-fa-home"></i> Home</a>
+        </div>
+        <div class="current">
+          <a href="./dashboard.html">
+            <i class="nf nf-fa-edit"></i> Dashboard
+          </a>
+        </div>
+        <div>
+          <a href="./explore.html"> <i class="nf nf-fa-search"></i> Explore </a>
+        </div>
+        <div>
+          <a href="./settings.html"> <i class="nf nf-fa-cog"></i> Settings</a>
+        </div>
       </div>
-      <div class="current">
-        <a href="./dashboard.html">
-          <i class="nf nf-fa-edit"></i> Dashboard
-        </a>
-      </div>
-      <div>
-        <a href="./explore.html"> <i
-            class="nf nf-fa-search"></i> Explore </a>
-      </div>
-      <div>
-        <a href="./settings.html"> <i
-            class="nf nf-fa-cog"></i> Settings</a>
-      </div>
-    </div>
-    <!--<div class="options">
+      <!--<div class="options">
         <div class="flex center">
           <button id="headerOptionsLangbutton">
             <i class="nf nf-md-translate"></i>
@@ -119,82 +113,70 @@
           </div>
         </div>
       </div>-->
-  </header>
-  <div id="noscript" class="box center red">
-    <p>
-      You have JavaScript disabled. This website uses
-      JavaScript to run
-      correctly.
-    </p>
-    <p>
-      Please enable JavaScript in your browser settings, or
-      this website will
-      not work.
-    </p>
-  </div>
-  <main class="grid screen">
-    <div class="content">
-      <h2>Change display name</h2>
-      <div>
-        <input type="text" id="mainNicknameinput"
-          placeholder="Display name" />
-      </div>
-      <div>
-        <button id="mainChangenicknamebutton">Change display
-          name</button>
-      </div>
-      <p id="mainErrortext" class="box red hide">Error</p>
-      <div id="mainDonediv" class="box green hide">
-        <p>
-          Your display name has been changed. Go to
-          <a href="./settings.html">settings</a>?
-        </p>
-      </div>
+    </header>
+    <div id="noscript" class="box center red">
+      <p>
+        You have JavaScript disabled. This website uses JavaScript to run
+        correctly.
+      </p>
+      <p>
+        Please enable JavaScript in your browser settings, or this website will
+        not work.
+      </p>
     </div>
-  </main>
-  <script>
-    document.getElementById("noscript").style.display =
-      "none";
-
-  </script>
-  <script src="https://uikit.ehan.dev/js/ehansUi.js">
-  </script>
-  <script src="./pocketbase/pocketbase.umd.js"></script>
-  <script src="./js/pocketbase.js"></script>
-  <script>
-    document
-      .getElementById("mainChangenicknamebutton")
-      .addEventListener("click", function() {
-        supabaseClient.auth
-          .updateUser({
-            data: {
-              quizfreelyNickname: document
-                .getElementById(
-                  "mainNicknameinput").value,
-            },
-          })
-          .then(function(result) {
-            if (result.error !== null) {
-              document
-                .getElementById("mainErrortext")
-                .classList.remove("hide");
-              document.getElementById("mainDonediv")
-                .classList.add("hide");
-              document.getElementById("mainErrortext")
-                .innerText =
-                "Error: " + result.error.message;
-            } else if (result.error === null) {
-              document.getElementById("mainErrortext")
-                .classList.add(
-                  "hide");
-              document.getElementById("mainDonediv")
-                .classList.remove(
-                  "hide");
-            }
-          });
-      });
-
-  </script>
-</body>
-
+    <main class="grid screen">
+      <div class="content">
+        <h2>Change display name</h2>
+        <div>
+          <input
+            type="text"
+            id="mainNicknameinput"
+            placeholder="Display name"
+          />
+        </div>
+        <div>
+          <button id="mainChangenicknamebutton">Change display name</button>
+        </div>
+        <p id="mainErrortext" class="box red hide">Error</p>
+        <div id="mainDonediv" class="box green hide">
+          <p>
+            Your display name has been changed. Go to
+            <a href="./settings.html">settings</a>?
+          </p>
+        </div>
+      </div>
+    </main>
+    <script>
+      document.getElementById("noscript").style.display = "none";
+    </script>
+    <script src="https://uikit.ehan.dev/js/ehansUi.js"></script>
+    <script src="./pocketbase/pocketbase.umd.js"></script>
+    <script src="./js/pocketbase.js"></script>
+    <script>
+      document
+        .getElementById("mainChangenicknamebutton")
+        .addEventListener("click", function () {
+          supabaseClient.auth
+            .updateUser({
+              data: {
+                quizfreelyNickname:
+                  document.getElementById("mainNicknameinput").value,
+              },
+            })
+            .then(function (result) {
+              if (result.error !== null) {
+                document
+                  .getElementById("mainErrortext")
+                  .classList.remove("hide");
+                document.getElementById("mainDonediv").classList.add("hide");
+                document.getElementById("mainErrortext").innerText =
+                  "Error: " + result.error.message;
+              } else if (result.error === null) {
+                document.getElementById("mainErrortext").classList.add("hide");
+                document.getElementById("mainDonediv").classList.remove("hide");
+              }
+            });
+        });
+    </script>
+  </body>
 </html>

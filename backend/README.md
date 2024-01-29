@@ -11,6 +11,7 @@ As of right now we use digitalocean.
 ### Droplet Setup
 
 First, create a "droplet", with:
+
 - shared cpu > basic > regular + disk type: ssd
   - 1GB/1cpu or 2GB/1cpu
   - 25GB SSD Disk or 50GB SSD Disk
@@ -27,6 +28,7 @@ quizfreely.com should use digitalocean's nameservers, and Quizfreely's domain an
 btw, its "home" > "networking" > "domains", NOT "home" > "droplet" > "networking",
 
 To setup the backend's url, `api.quizfreely.com`, just add an A record, with:
+
 - hostname: `api` (`api.quizfreely.com`)
 - "directs to"/value: dropdown/"select resource" > droplet-name-goes-here/"quizfreelybackend"
 
@@ -43,6 +45,7 @@ We're going to download pocketbase's linux executable, and move it to `/root/pb/
 We can find the latest download url/link in [pocketbase's github relases](https://github.com/pocketbase/pocketbase/releases) or somewhere in [pocketbase's website](https://pocketbase.io) or docs. The version in the url/link below is just an example
 
 Use curl to download it in the droplet, for example:
+
 ```
 # cd /root
 # curl https://github.com/pocketbase/pocketbase/releases/download/v1234/pocketbase_1234_linux_amd64.zip -L -o /root/pocketbase.zip
@@ -51,6 +54,7 @@ Use curl to download it in the droplet, for example:
 The `-L` and `-o pocketbase.zip` options above are important.
 
 Extract it using `unzip`
+
 ```
 # apt install unzip
 # unzip /root/pocketbase.zip -d /root/pocketbasezip
@@ -59,6 +63,7 @@ Extract it using `unzip`
 Now, we will have a folder named `pocketbasezip`, which has the contents of the zip file!
 
 Delete the zip file (we don't need it anymore), move `/root/pocketbasezip/pocketbase` to `/root/pb/pocketbase`, and then delete `/root/pocketbasezip/` and its contents.
+
 ```
 # rm /root/pocketbase.zip
 # mv /root/pocketbasezip/pocketbase /root/pb/pocketbase
@@ -74,6 +79,7 @@ Under `/etc/systemd/system/`, create `/etc/systemd/system/pocketbase.service`.
 Then copy `backend/etc/systemd/system/pocketbase.serivce` from Quizfreely's source code. (Copy the entire file's contents)
 
 Edit `/etc/systemd/system/pocketbase.service` on the droplet, using `vi`
+
 ```
 # vi /etc/systemd/system/pocketbase.service
 ```
@@ -81,15 +87,18 @@ Edit `/etc/systemd/system/pocketbase.service` on the droplet, using `vi`
 Paste the contents from our clipboard.
 
 `control v` might not work, so instead:
-  - try `control shift v`
-  - or use our browsers right-click menu. (It should paste multi-line selections properly)
+
+- try `control shift v`
+- or use our browsers right-click menu. (It should paste multi-line selections properly)
 
 Save the file, and then enable the service.
+
 ```
 # systemctl enable pocketbase.service
 ```
 
 Finally, start pocketbase!
+
 ```
 # systemctl start pocketbase
 ```
@@ -107,11 +116,13 @@ Our collections configuration is saved in our source code, at `backend/collectio
 ## Debugging & Errors
 
 First, get info from systemctl
+
 ```
 # systemctl status pocketbase
 ```
 
 If everything looks fine there, stop the process from systemctl, and try running pocketbase "manually"
+
 ```
 systemctl stop pocketbase
 # /root/pb/pocketbase serve --http="api.quizfreely.com:80" --https="api.quizfreely.com:443"
