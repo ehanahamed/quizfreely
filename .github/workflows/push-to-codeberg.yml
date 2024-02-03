@@ -8,4 +8,6 @@ jobs:
       - name: Clone from GitHub
         run: git clone https://github.com/ehanahamed/quizfreely.git
       - name: Push to Codeberg
-        run: git push https://ehanahamed:${{ secrets.CODEBERG_TOKEN }}@codeberg.org/ehanahamed/quizfreely.git --all
+        run: |
+          cd quizfreely
+          git push https://ehanahamed:${{ secrets.CODEBERG_TOKEN }}@codeberg.org/ehanahamed/quizfreely.git --all
