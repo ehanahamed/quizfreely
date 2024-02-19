@@ -1,5 +1,9 @@
 # BEFORE MERGE
 
+![GitHub](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fapi.github.com%2Frepos%2Fehanahamed%2Fquizfreely%2Fcommits%2FHEAD&query=%24.sha&style=for-the-badge&label=GitHub&labelColor=%231e1e32&color=%237a52cc)
+
+![Codeberg](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fcodeberg.org%2Fapi%2Fv1%2Frepos%2Fehanahamed%2Fquizfreely%2Fcommits&query=%24%5B0%5D.sha&style=for-the-badge&label=Codeberg&labelColor=%231e1e32&color=%237a52cc)
+
 - remove temporary, cherry-picked, commits currently in dist
 - re-replace `main.quizfreely.com` with `quizfreely.com`
 - make sure all `quizfreely.ehan.dev` urls have been updated to `quizfreely.com`

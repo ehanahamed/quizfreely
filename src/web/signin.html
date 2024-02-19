@@ -193,20 +193,16 @@
       };
     </script>
     <script src="./pocketbase/pocketbase.umd.js"></script>
-    <script src="./js/pocketbase.js"></script>
+    <script src="./js/pb.js"></script>
     <script>
       document
         .getElementById("mainSigninSigninbutton")
         .addEventListener("click", function () {
-          supabaseClient.auth
-            .signInWithPassword({
-              email:
-                "quizfreelyuser" +
-                document.getElementById("mainSigninUsernameinput").value +
-                "@ehan.dev",
-              password: document.getElementById("mainSigninPasswordinput")
-                .value,
-            })
+          pb.collection("users")
+            .authWithPassword(
+              document.getElementById("mainSigninUsernameinput").value,
+              document.getElementById("mainSigninPasswordinput").value,
+            )
             .then(function (result) {
               if (result.error !== null) {
                 document
@@ -226,12 +222,23 @@
       document
         .getElementById("mainSigninGooglebutton")
         .addEventListener("click", function () {
-          supabaseClient.auth.signInWithOAuth({
+          pb.collection("users").authWithOAuth2({
             provider: "google",
-            options: {
-              redirectTo: "https://main.quizfreely.com/signin",
-            },
-          });
+          }).then(function (result) {
+              if (result.error !== null) {
+                document
+                  .getElementById("mainSigninErrortext")
+                  .classList.remove("hide");
+                document.getElementById("mainSigninErrortext").innerText =
+                  "Error: " + result.error.message;
+              } else if (result.error === null) {
+                document
+                  .getElementById("mainSigninErrortext")
+                  .classList.add("hide");
+                document.getElementById("mainSignindiv").classList.add("hide");
+                document.getElementById("mainUserdiv").classList.remove("hide");
+              }
+            })
         });
     </script>
   </body>
