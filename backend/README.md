@@ -22,6 +22,11 @@ Now we have docker & docker compose installed, we can now install Conduit.
 
 ## Conduit
 
+Before we can install conduit, start `docker.service`. It's `start`, NOT `enable`. For local testing, we don't want docker to autostart every boot, which is what `enable` does.
+```
+systemctl start docker.service
+```
+
 Install conduit's cli (it doesn't matter what folder you run this in, it will download conduit into `~/.conduit/`)
 ```
 $ sh <(curl -s https://getconduit.dev/bootstrap)
