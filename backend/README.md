@@ -15,4 +15,7 @@ $ docker info
 # pacman -S docker-compose
 ```
 
-
+now install conduit (doesn't matter what folder you run it in, it will download conduit into `~/.conduit/`)
+```
+$ sh <(curl -s https://getconduit.dev/bootstrap)
+```
