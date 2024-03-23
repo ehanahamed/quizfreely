@@ -2,7 +2,7 @@
 
 ## Docker & Docker Compose
 
-First, install docker. (on archlinux, just `pacman -S docker`)
+First, install docker (on archlinux, just `pacman -S docker`)
 
 Next, add the `docker` group to your linux user.
 ```
@@ -31,3 +31,7 @@ Install conduit's cli (it doesn't matter what folder you run this in, it will do
 ```
 $ sh <(curl -s https://getconduit.dev/bootstrap)
 ```
+
+The command above installs conduit and then runs `conduit deploy setup --config`
+
+You can use conduit's cli to start it again, see `conduit --help` 
