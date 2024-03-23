@@ -1,6 +1,6 @@
 # Local Testing
 
-## Docker & Docker Compose
+## Install & Setup
 
 First, install docker (on archlinux, just `pacman -S docker`)
 
@@ -20,8 +20,6 @@ $ docker info
 
 Now we have docker & docker compose installed, we can now install Conduit.
 
-## Conduit
-
 Before we can install conduit, start `docker.service`. It's `start`, NOT `enable`. For local testing, we don't want docker to autostart every boot, which is what `enable` does.
 ```
 systemctl start docker.service
@@ -32,6 +30,25 @@ Install conduit's cli (it doesn't matter what folder you run this in, it will do
 $ sh <(curl -s https://getconduit.dev/bootstrap)
 ```
 
-The command above installs conduit and then runs `conduit deploy setup --config`
+The command above installs conduit and then runs `conduit deploy setup --config` It should open conduit's dashboard (at `http://localhost:8080/`) when it's done!
 
-You can use conduit's cli to start it again, see `conduit --help` 
+## Starting & Restarting
+
+Conduit's dashboard should be at `http://localhost:8080/`
+
+To setup a new conduit backend:
+```
+conduit deploy setup --config
+```
+
+To start a deployment that you already setup before:
+```
+conduit deploy start
+```
+
+To stop a currently running deployment:
+```
+conduit deploy stop
+```
+
+See `conduit --help` for all the commands & info
