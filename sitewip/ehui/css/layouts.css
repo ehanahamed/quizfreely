@@ -1,0 +1,388 @@
+/*!
+  EhUI
+  Copyright (c) Ehan Ahamed and contributors
+  Licensed under the UPL-1.0 License
+  https://ehui.ehan.dev/LICENSE.txt
+*/
+
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+}
+
+.center {
+  text-align: center;
+}
+
+.flex {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.flex.row {
+  flex-direction: row;
+}
+
+.flex.row.rev {
+  flex-direction: row-reverse;
+}
+
+.flex.col {
+  flex-direction: column;
+}
+
+.flex.col.rev {
+  flex-direction: column-reverse;
+}
+
+.flex.nowrap {
+  flex-wrap: nowrap;
+}
+
+.flex.wrap {
+  flex-wrap: wrap;
+}
+
+.flex.start {
+  justify-content: flex-start;
+}
+
+.flex.end {
+  justify-content: flex-end;
+}
+
+.flex.center {
+  justify-content: center;
+}
+
+.flex.spaceBetween {
+  justify-content: space-between;
+}
+
+.flex.alignStart {
+  align-items: flex-start;
+  align-content: flex-start;
+}
+
+.flex.alignEnd {
+  align-items: flex-end;
+  align-content: flex-end;
+}
+
+.flex.alignCenter {
+  align-items: center;
+  align-content: center;
+}
+
+.flex.stretch {
+  align-items: stretch;
+  align-content: stretch;
+}
+
+.flex.alignSpaceBetween {
+  align-items: space-between;
+  align-content: space-between;
+}
+
+.flex.alignSpaceAround {
+  align-items: space-around;
+  align-content: space-around;
+}
+
+.justifyselfstretch {
+  justify-self: stretch;
+}
+
+.justifyselfcenter {
+  justify-self: center;
+}
+
+.justifyselfstart {
+  justify-self: start;
+}
+
+.justifyselfend {
+  justify-self: end;
+}
+
+.grid {
+  display: grid;
+}
+
+.grid.split {
+  gap: 0px;
+  grid-template-columns: 4fr 4fr;
+  grid-template-rows: 1fr;
+  grid-template-areas: "left right";
+}
+
+.grid.split > .left {
+  grid-area: left;
+  justify-self: right;
+  padding-right: 2rem;
+}
+
+.grid.split > .right {
+  grid-area: right;
+  justify-self: left;
+  padding-left: 2rem;
+  border-left: 0.2rem solid var(--bg2);
+}
+
+.grid.split.noBorder > .left,
+.grid.split.noBorder > .right {
+  border: none;
+}
+
+/* when mobile/smaller-window, resize */
+@media only screen and (max-width: 800px) {
+  .grid.split {
+    grid-template-rows: auto auto;
+    grid-template-columns: 1fr;
+    grid-template-areas: 
+      "left"
+      "right";
+    padding: 0px 2rem;
+  }
+  .grid.split > .left,
+  .grid.split > .right {
+    justify-self: left;
+    padding-left: 0px;
+    padding-right: 0px;
+    border: none;
+  }
+}
+
+.grid.list {
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 1rem;
+  margin-bottom: 2rem; /* temporary fix */
+}
+
+/*
+when inside a grid split (the list will have less space),
+and 
+when on mobile/smaller-window,
+make the list have only one column
+*/
+.grid.split .grid.list {
+  /* for grid split */
+  grid-template-columns: 1fr;
+}
+@media only screen and (max-width: 800px) {
+  .grid.list {
+    /* for mobile/smaller-window */
+    grid-template-columns: 1fr;
+  }
+}
+
+.grid.hero {
+  grid-template-columns: 6fr 2fr 6fr;
+  grid-template-rows: 1fr;
+  grid-template-areas: "content . logo";
+}
+
+.grid.hero > .content {
+  grid-area: content;
+  justify-self: end;
+  align-self: center;
+  text-align: center;
+}
+
+.grid.hero > .logo {
+  grid-area: logo;
+  justify-self: start;
+  align-self: center;
+}
+
+@media only screen and (max-width: 800px) {
+  .grid.hero {
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 1fr;
+    grid-template-areas:
+      "logo"
+      "content";
+  }
+
+  .grid.hero > .content,
+  .grid.hero > .logo {
+    justify-self: center;
+  }
+}
+
+.grid.intro {
+  grid-template-rows: auto auto;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  grid-template-areas:
+    "logotype actions"
+    "content content";
+  padding-top: 1rem;
+  padding-left: 2rem;
+  padding-right: 2rem;
+  padding-bottom: 4rem;
+  margin-top: 0px;
+  margin-left: 1rem;
+  margin-right: 1rem;
+  margin-bottom: 4rem;
+  border-bottom: 0.2rem solid var(--bg2);
+}
+
+.grid.intro > .logotype {
+  grid-area: logotype;
+  display: flex;
+  gap: 1rem;
+  justify-items: start;
+  justify-content: start;
+  align-items: center;
+}
+
+.grid.intro > .logotype p {
+  margin-bottom: 0px;
+}
+
+.grid.intro > .logotype > .logo {
+  width: 4rem;
+  height: 4rem;
+}
+
+.grid.intro > .content {
+  grid-area: content;
+  text-align: center;
+}
+
+@media only screen and (max-width: 800px) {
+  .grid.intro {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}
+
+.grid.page {
+  grid-template-columns: 2fr 10fr 2fr;
+  grid-template-rows: 1fr;
+  grid-template-areas: ". content .";
+}
+
+.grid.page > .content {
+  grid-area: content;
+  justify-self: stretch;
+  align-self: start;
+}
+
+@media only screen and (max-width: 800px) {
+  .grid.page {
+    grid-template-columns: 1fr 12fr 1fr;
+  }
+}
+
+.grid.screen {
+  height: 100%;
+  margin: 0px 1rem;
+}
+
+.grid.screen > .content {
+  justify-self: center;
+  align-self: center;
+  margin-top: 0px;
+}
+
+html.screen {
+  height: 100%;
+}
+
+html.screen body {
+  height: 100%;
+  display: grid;
+  grid-template-rows: auto 1fr;
+}
+
+header {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: 1fr;
+  grid-template-areas: "menu";
+}
+
+header > .menu {
+  grid-area: menu;
+  text-align: left;
+  justify-self: left;
+}
+
+header > .options {
+  grid-area: options;
+  text-align: right;
+  justify-self: right;
+  padding: 1rem;
+}
+
+.nav > div {
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+/*
+
+* + *        for default,
+* + element  for reversing margin-top: 0px;
+
+*/
+* + *,
+* + p,
+* + h1,
+* + h2,
+* + h3,
+* + h4,
+* + h5,
+* + h6 {
+  margin-top: 1rem;
+}
+
+.flex > *,
+.grid > *,
+header > *,
+.radio > *,
+.checkbox > *,
+.caption > *,
+.caption > div > *,
+.nav > div,
+.logotype > * {
+  margin-top: 0px;
+}
+
+.grid.paragraph {
+  gap: 1rem;
+  grid-template-columns: 1fr 1fr;
+  grid-template-areas: "content image";
+}
+
+.grid.paragraph.alt {
+  grid-template-areas: "image content";
+}
+
+.grid.paragraph > .content {
+  grid-area: content;
+}
+
+.grid.paragraph > .image {
+  grid-area: image;
+  display: flex;
+  justify-items: center;
+  align-items: center;
+}
+
+@media only screen and (max-width: 1000px) {
+  .grid.paragraph,
+  .grid.paragraph.alt {
+    gap: 1rem;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr auto;
+    grid-template-areas:
+      "content"
+      "image";
+  }
+}
