@@ -1,0 +1,14 @@
+{
+  "name": "quizfreely",
+  "module": "index.js",
+  "type": "module",
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "eta": "^3.4.0"
+  }
+}
