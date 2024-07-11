@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+  <!--
+    Quizfreely
+    Copyright (c) Ehan Ahamed and contributors
+    Licensed under the UPL-1.0 License
+    https://quizfreely.com/LICENSE.txt
+  -->
+
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=10, user-scalable=1"
+    />
+    <title>Quizfreely</title>
+    <link rel="canonical" href="https://quizfreely.com" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="stylesheet" href="https://ehui.ehan.dev/css/colors.css" />
+    <link rel="stylesheet" href="https://ehui.ehan.dev/css/components.css" />
+    <link rel="stylesheet" href="https://ehui.ehan.dev/css/layouts.css" />
+    <link rel="stylesheet" href="https://ehui.ehan.dev/css/utils.css" />
+    <link rel="stylesheet" href="./fonts/fonts.css" />
+    <link
+      rel="stylesheet"
+      href="https://www.nerdfonts.com/assets/css/webfont.css"
+    />
+  </head>
+
+  <body>
+    <main>
+      <div class="grid page">
+        <div class="content">
+            <p>Hello <%= foo %>!</p>
+        </div>
+      </div>
+      <div style="margin-top: 1rem; margin-bottom: 0px">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          display="block"
+          style="width: 100%; height: 100%"
+          viewBox="0 0 1000 200"
+        >
+          <path
+            fill="var(--bgExtra)"
+            d="M0 100s250.096-101.786 566.869 6.735C861.491 207.668 1000 60 1000 60v140H0Z"
+          />
+        </svg>
+      </div>
+      <div class="grid page extra">
+        <div class="content">
+          <div id="mainExtraNewuserdiv">
+            <h2>Try it out!</h2>
+            <p>
+              It's free, open source, and you don't even need an account, <br />
+              they're <b>optional</b> and free!
+            </p>
+            <div class="flex">
+              <a class="button large extra" href="./start.html">Get Started</a>
+            </div>
+          </div>
+          <div id="mainExtraUserdiv">
+            <h2>You're signed in!</h2>
+            <p>
+              Go to the dashboard to create, edit, or review a study set, <br />
+              or find more user-made study sets in the explore page!
+            </p>
+            <div class="flex">
+              <a class="button large extra" href="./dashboard.html"
+                >Dashboard</a
+              >
+              <a class="button large extra alt" href="./explore.html"
+                >Explore</a
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+      <div style="margin-top: 0px; margin-bottom: 1rem">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          display="block"
+          style="width: 100%; height: 100%"
+          viewBox="0 0 1000 200"
+        >
+          <path
+            fill="var(--bgExtra)"
+            d="M0 100s250.096-101.786 566.869 6.735C861.491 207.668 1000 60 1000 60V0H0Z"
+          />
+        </svg>
+      </div>
+    </main>
+    <footer>
+      <h2>Quizfreely</h2>
+      <p>Quizfreely is free and open source</p>
+      <p>
+        Copyright © Ehan Ahamed & contributors <br />
+        Licensed under the UPL-1.0 License
+      </p>
+      <a href="./license.html">See License</a>
+      <br />
+      <a href="./privacypolicy.html">See Privacy Policy</a>
+    </footer>
+    <script>
+      document.getElementById("noscript").style.display = "none";
+    </script>
+    <script src="https://ehui.ehan.dev/js/ehUi.js"></script>
+    <script src="./js/states.js"></script>
+    <script>
+      var ui = {
+        elements: {
+          states: {
+            newUser: ["mainHeroContentNewuserdiv", "mainExtraNewuserdiv"],
+            user: ["mainHeroContentUserdiv", "mainExtraUserdiv"],
+          },
+        },
+      };
+    </script>
+    <script src="./pocketbase/pocketbase.umd.js"></script>
+    <script src="./js/pocketbase.js"></script>
+  </body>
+</html>
