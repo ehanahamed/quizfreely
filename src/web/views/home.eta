@@ -33,7 +33,7 @@
     <main>
       <div class="grid page">
         <div class="content">
-            <p>Hello <%= foo %>!</p>
+            <p>Hello <%= it.foo %>!</p>
         </div>
       </div>
       <div style="margin-top: 1rem; margin-bottom: 0px">
