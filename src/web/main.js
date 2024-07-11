@@ -17,6 +17,16 @@ router.get("/", function (ctx) {
     )
 })
 
+router.get("/users/:username", function (ctx) {
+    ctx.response.headers.set("Content-Type", "text/html");
+    ctx.response.body = eta.render(
+        "user",
+        {
+            username: ctx.request.url.pathname.split('/').filter(Boolean).pop()
+        }
+    )
+})
+
 app.use(router.routes());
 app.use(router.allowedMethods());
 
