@@ -1,14 +1,11 @@
 {
-  "name": "quizfreely",
-  "module": "index.js",
-  "type": "module",
-  "devDependencies": {
-    "@types/bun": "latest"
+  "name": "quizfreely-web",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "peerDependencies": {
-    "typescript": "^5.0.0"
-  },
-  "dependencies": {
-    "eta": "^3.4.0"
-  }
+  "author": "Ehan Ahamed and contributors",
+  "license": "UPL-1.0",
+  "description": ""
 }
