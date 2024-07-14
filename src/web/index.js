@@ -1,3 +1,5 @@
+import "dotenv/config"
+
 import { createRequire } from "module";
 const require = createRequire(import.meta.url);
 const HyperExpress = require('hyper-express');
@@ -8,6 +10,17 @@ const vto = vento({
   dataVarname: "data",
   useWith: false,
 });
+
+const appwrite = require('node-appwrite');
+const awadmin = new appwrite.Client();
+awadmin
+  .setEndpoint("https://api.quizfreely.com/v1")
+  .setProject("quizfreely")
+  .setKey(process.env.API_KEY_SECRET);
+const awclient = new appwrite.Client();
+awclient
+  .setEndpoint("https://api.quizfreely.com/v1")
+  .setProject("quizfreely");
 
 server.set_error_handler(
   function (request, response, error) {
