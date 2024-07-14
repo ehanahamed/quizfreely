@@ -2,10 +2,16 @@
   "name": "quizfreely-web",
   "version": "1.0.0",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Ehan Ahamed and contributors",
-  "license": "UPL-1.0",
-  "description": ""
+  "license": "MIT",
+  "description": "",
+  "dependencies": {
+    "eta": "^3.4.0",
+    "hyper-express": "^6.16.4",
+    "ventojs": "^0.12.9"
+  }
 }

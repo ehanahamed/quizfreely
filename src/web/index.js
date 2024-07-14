@@ -1,36 +1,55 @@
-import { Eta } from "eta";
+import { createRequire } from "module";
+const require = createRequire(import.meta.url);
+const HyperExpress = require('hyper-express');
+const server = new HyperExpress.Server();
 
-const eta = new Eta({
-  views: import.meta.dir + '/views/',
-  cache: true
+import vento from "ventojs";
+const vto = vento({
+  dataVarname: "data",
+  useWith: false,
 });
 
-Bun.serve({
-  fetch(req) {
-    const url = new URL(req.url);
-    const headersHtml = new Headers();
-    headersHtml.append("Content-Type", "text/html; charset=UTF-8");
-    if (
-      (url.pathname == "/") ||
-      (url.pathname == "/home")
-    ) {
-      return new Response(
-        eta.render(
-          "home"
-        ),
-        { headers: headersHtml }
-      );
-    } else if (
-      url.pathname.startsWith()
-    ) {
+server.set_error_handler(
+  function (request, response, error) {
+    response.status(500).send(
+      "500 Internal Server Error\n" +
+      ":( \n Report this at https://github.com/ehanahamed/quizfreely/issues"
+    )
+  }
+)
 
-    } else {
-      return new Response(
-        eta.render(
-          "404"
-        ),
-        { headers: headersHtml }
-      );
+server.set_not_found_handler(
+  function (request, response) {
+    response.status(404).type("html");
+    vto.run("./templates/404.vto", {}).then(
+      function (result) {
+        response.send(
+          result.content
+        )
+      }
+    )
+  }
+)
+
+function homepage(request, response) {
+  response.type("html");
+  vto.run("./templates/home.vto", {}).then(
+    function (result) {
+      response.send(
+        result.content
+      )
     }
-  },
-});
+  )
+}
+server.get("/", homepage);
+server.get("/home", homepage);
+server.get("/home/", homepage);
+
+server.get(
+  "/user/:username",
+  function (request, response) {
+    response.send("hai, you typed " + request.path_parameters.username)
+  }
+)
+
+server.listen(8080);

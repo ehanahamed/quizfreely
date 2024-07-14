@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+  <!--
+    Quizfreely
+    Copyright (c) Ehan Ahamed and contributors
+    Licensed under the UPL-1.0 License
+    https://quizfreely.com/LICENSE.txt
+  -->
+
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=10, user-scalable=1"
+    />
+    <title>Quizfreely</title>
+    <link rel="canonical" href="https://quizfreely.com" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="stylesheet" href="https://ehui.ehan.dev/css/colors.css" />
+    <link rel="stylesheet" href="https://ehui.ehan.dev/css/components.css" />
+    <link rel="stylesheet" href="https://ehui.ehan.dev/css/layouts.css" />
+    <link rel="stylesheet" href="https://ehui.ehan.dev/css/utils.css" />
+    <link rel="stylesheet" href="./fonts/fonts.css" />
+    <link
+      rel="stylesheet"
+      href="https://www.nerdfonts.com/assets/css/webfont.css"
+    />
+  </head>
+
+  <body>
+    {{ include "./include/navbar.vto" }}
+    <div id="noscript" class="box center red">
+      <p>
+        You have JavaScript disabled. This website uses JavaScript to run
+        correctly.
+      </p>
+      <p>
+        Please enable JavaScript in your browser settings, or this website will
+        not work.
+      </p>
+    </div>
+    <main>
+      <div class="grid page">
+        <div class="content">
+          <h2>404</h2>
+          <p>Page not found! Go <a href="/home">home</a>?</p>
+        </div>
+      </div>
+    </main>
+    {{ include "./include/footer.vto" }}
+    <script>
+      document.getElementById("noscript").style.display = "none";
+    </script>
+    <script src="https://ehui.ehan.dev/js/ehUi.js"></script>
+  </body>
+</html>

@@ -28,8 +28,8 @@
       href="https://www.nerdfonts.com/assets/css/webfont.css"
     />
   </head>
-
   <body>
+    {{ include "./include/navbar.vto" }}
     <main>
       <div class="grid page">
         <div class="content">
@@ -92,7 +92,7 @@
         </svg>
       </div>
     </main>
-    <%~ include("./partials/footer") %>
+    {{ include "./include/footer.vto" }}
     <script>
       document.getElementById("noscript").style.display = "none";
     </script>
