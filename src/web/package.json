@@ -13,7 +13,6 @@
     "dotenv": "^16.4.5",
     "eta": "^3.4.0",
     "hyper-express": "^6.16.4",
-    "node-appwrite": "^13.0.0",
-    "ventojs": "^0.12.9"
+    "node-appwrite": "^13.0.0"
   }
 }
