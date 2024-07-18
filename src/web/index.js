@@ -5,11 +5,11 @@ const require = createRequire(import.meta.url);
 const HyperExpress = require('hyper-express');
 const server = new HyperExpress.Server();
 
-import vento from "ventojs";
-const vto = vento({
-  dataVarname: "data",
-  useWith: false,
-});
+import { Eta } from "eta";
+const eta = new Eta({
+  views: path.join(__dirname, "views"),
+  asdfjkl
+})
 
 const appwrite = require('node-appwrite');
 const awadmin = new appwrite.Client();
