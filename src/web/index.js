@@ -1,14 +1,21 @@
 import "dotenv/config"
 
-import { createRequire } from "module";
+import { createRequire } from "node:module";
 const require = createRequire(import.meta.url);
-const HyperExpress = require('hyper-express');
+
+const path = require("node:path");
+
+const HyperExpress = require("hyper-express");
 const server = new HyperExpress.Server();
 
 import { Eta } from "eta";
 const eta = new Eta({
-  views: path.join(__dirname, "views"),
-  asdfjkl
+  tags: [
+    "<eta>",
+    "</eta>"
+  ],
+  views: path.join(import.meta.dirname, "views"),
+  defaultExtension: ".html"
 })
 
 const appwrite = require('node-appwrite');
