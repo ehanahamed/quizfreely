@@ -30,6 +30,7 @@
   </head>
   <body>
     <eta>~ include("./partials/navbar.eta") </eta>
+    <p>theme will be <eta>= data.theme</eta></p>
     <main>
       <div class="grid page">
         <div class="content">

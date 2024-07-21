@@ -40,27 +40,20 @@ server.set_error_handler(
 
 server.set_not_found_handler(
   function (request, response) {
-    response.status(404).type("html");
-    vto.run("./templates/404.vto", {}).then(
-      function (result) {
-        response.send(
-          result.content
-        )
-      }
+    response.status(404).type("html").send(
+      eta.render("./404.eta")
     )
   }
 )
 
 function homepage(request, response) {
-  response.type("html");
-  vto.run("./templates/home.vto", {}).then(
-    function (result) {
-      response.send(
-        result.content
-      )
-    }
+  response.type("html").send(
+    eta.render("./home.eta", {
+      theme: request.cookies.theme
+    })
   )
 }
+
 server.get("/", homepage);
 server.get("/home", homepage);
 server.get("/home/", homepage);
@@ -69,6 +62,21 @@ server.get(
   "/user/:username",
   function (request, response) {
     response.send("hai, you typed " + request.path_parameters.username)
+  }
+)
+
+server.get(
+  "/settings/theme/:theme",
+  function (request, response) {
+    response.cookie(
+      "theme",
+      request.path_parameters.theme,
+      /* expire time in milliseconds,
+      365 days, 24 hours per day, 60 mins per hour, 60 seconds per minute, 1000 milliseconds in a second */
+      365 * 24 * 60 * 60 * 1000
+    ).send(
+      "ok :3"
+    )
   }
 )
 
