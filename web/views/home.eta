@@ -29,7 +29,7 @@
     />
   </head>
   <body>
-    {{ include "./include/navbar.vto" }}
+    <eta>~ include("./partials/navbar.eta") </eta>
     <main>
       <div class="grid page">
         <div class="content">
@@ -92,7 +92,7 @@
         </svg>
       </div>
     </main>
-    {{ include "./include/footer.vto" }}
+    <eta>~ include("./partials/footer.eta") </eta>
     <script>
       document.getElementById("noscript").style.display = "none";
     </script>

@@ -14,16 +14,16 @@ const eta = new Eta({
     "<eta>",
     "</eta>"
   ],
+  varName: "data",
   views: path.join(import.meta.dirname, "views"),
-  defaultExtension: ".html"
 })
 
 const appwrite = require('node-appwrite');
-const awadmin = new appwrite.Client();
+/*const awadmin = new appwrite.Client();
 awadmin
   .setEndpoint("https://api.quizfreely.com/v1")
   .setProject("quizfreely")
-  .setKey(process.env.API_KEY_SECRET);
+  .setKey(process.env.APPWRITE_API_KEY_SECRET);*/
 const awclient = new appwrite.Client();
 awclient
   .setEndpoint("https://api.quizfreely.com/v1")

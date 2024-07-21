@@ -30,7 +30,7 @@
   </head>
 
   <body>
-    {{ include "./include/navbar.vto" }}
+    <eta>~ include("./partials/navbar.eta") </eta>
     <div id="noscript" class="box center red">
       <p>
         You have JavaScript disabled. This website uses JavaScript to run
@@ -49,7 +49,7 @@
         </div>
       </div>
     </main>
-    {{ include "./include/footer.vto" }}
+    <eta>~ include("./partials/footer.eta") </eta>
     <script>
       document.getElementById("noscript").style.display = "none";
     </script>
