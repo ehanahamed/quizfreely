@@ -1,7 +1,7 @@
 import "dotenv/config"
 
-const domain = "localhost" // "quizfreely.com"
-const url = "http://localhost:8080" // "https://quizfreely.com"
+const domain = "http://localhost:8008" // "https://quizfreely.com"
+const domainName = "localhost" // "quizfreely.com"
 
 import { createRequire } from "node:module";
 const require = createRequire(import.meta.url);
@@ -49,33 +49,25 @@ server.set_not_found_handler(
   }
 )
 
-function homepage(request, response) {
-  response.type("html").send(
-    eta.render("./home.eta", {
-      theme: request.cookies.theme
-    })
-  )
+function page(page) {
+  return function (request, response) {
+    response.type("html").send(
+      eta.render(page, {
+        domain: domain,
+        theme: request.cookies.theme
+      })
+    )
+  }
 }
 
-server.get("/", homepage);
-server.get("/home", homepage);
-server.get("/home/", homepage);
+server.get("/", page("./home.eta"));
+server.get("/home", page("./home.eta"));
+server.get("/home/", page("./home.eta"));
 
 server.get(
   "/user/:username",
   function (request, response) {
     response.send("hai, you typed " + request.path_parameters.username)
-  }
-)
-
-server.get("/settings",
-  function (request, response) {
-    response.type("html").send(
-      eta.render("./settings.eta", {
-        url: url,
-        theme: request.cookies.theme
-      })
-    )
   }
 )
 
@@ -89,7 +81,7 @@ server.get(
       365 days, 24hr per day, 60min per hour, 60sec per min, 1000 ms in a second */
       365 * 24 * 60 * 60 * 1000,
       {
-        domain: domain,
+        domain: domainName,
         path: "/",
         /* expire time in seconds,
         365 days, 24hr/day, 60min/hour, 60sec/min */
@@ -107,4 +99,4 @@ server.get(
   }
 )
 
-server.listen(8080);
+server.listen(8008);
