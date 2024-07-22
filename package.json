@@ -16,10 +16,8 @@
     "clean-css-cli": "^5.6.3",
     "foreach-cli": "^1.8.1",
     "html-minifier": "^4.0.0",
-    "netlify-cli": "^17.19.4",
     "prettier": "^3.2.4",
     "terser": "^5.27.0"
   },
-  "scripts": {
-  }
+  "scripts": {}
 }
