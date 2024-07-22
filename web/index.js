@@ -66,6 +66,7 @@ function page(page) {
 server.get("/", page("./home.eta"));
 server.get("/home", page("./home.eta"));
 server.get("/home/", page("./home.eta"));
+server.get("/settings", page("./settings.eta"));
 
 server.get(
   "/user/:username",
@@ -74,30 +75,38 @@ server.get(
   }
 )
 
-server.get(
-  "/settings/theme/:theme",
+server.post(
+  "/settings/theme",
   function (request, response) {
-    response.cookie(
-      "theme",
-      request.path_parameters.theme,
-      /* expire time in milliseconds,
-      365 days, 24hr per day, 60min per hour, 60sec per min, 1000 ms in a second */
-      365 * 24 * 60 * 60 * 1000,
-      {
-        domain: domainName,
-        path: "/",
-        /* expire time in seconds,
-        365 days, 24hr/day, 60min/hour, 60sec/min */
-        maxAge: 365 * 24 * 60 * 60,
-        /* when secure is true,
-        browsers only send the cookie through https,
-        on localhost, browsers send it even if localhost isn't using https */
-        secure: true,
-        httpOnly: true,
-        sameSite: "lax"
+    request.text().then(
+      function (body) {
+        if (/^[\w.-]+$/.test(body)) {
+          response.cookie(
+            "theme",
+            body,
+            /* expire time in milliseconds,
+            365 days, 24hr per day, 60min per hour, 60sec per min, 1000 ms in a second */
+            365 * 24 * 60 * 60 * 1000,
+            {
+              domain: domainName,
+              path: "/",
+              /* expire time in seconds,
+              365 days, 24hr/day, 60min/hour, 60sec/min */
+              maxAge: 365 * 24 * 60 * 60,
+              /* when secure is true,
+              browsers only send the cookie through https,
+              on localhost, browsers send it even if localhost isn't using https */
+              secure: true,
+              httpOnly: true,
+              sameSite: "lax"
+            }
+          ).send(
+            "ok :3"
+          )
+        } else {
+          response.status(400).send("invalid request body :(")
+        }
       }
-    ).send(
-      "ok :3"
     )
   }
 )

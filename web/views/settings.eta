@@ -131,9 +131,10 @@
     <script>
       function setThemeCookie(theme) {
         fetch(
-          "<eta>~ data.url </eta>/settings/theme/" + theme,
+          "<eta>~ data.url </eta>/settings/theme",
           {
-            method: "GET",
+            method: "POST",
+            body: theme
           }
         ).then(
           function (result) {
