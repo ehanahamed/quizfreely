@@ -1,7 +1,10 @@
 import "dotenv/config"
 
-const domain = "http://localhost:8008" // "https://quizfreely.com"
-const domainName = "localhost" // "quizfreely.com"
+const port = 8008
+/* domain for prod: "https://quizfreely.com" */
+const domain = "http://localhost:" + port
+/* domainName for prod: "quizfreely.com" */
+const domainName = "localhost"
 
 import { createRequire } from "node:module";
 const require = createRequire(import.meta.url);
@@ -99,4 +102,4 @@ server.get(
   }
 )
 
-server.listen(8008);
+server.listen(port);
