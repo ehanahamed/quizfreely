@@ -21,10 +21,5 @@
     "terser": "^5.27.0"
   },
   "scripts": {
-    "format": "prettier --write .",
-    "minify-site": "rm -rf site && cp -r src/web site && npm run minify-site-js && npm run minify-site-html && npm run minify-site-css",
-    "minify-site-js": "foreach -g 'site/**/*.js' -x 'terser #{path} --output #{path}'",
-    "minify-site-html": "foreach -g 'site/**/*.html' -x 'html-minifier #{path} --output #{path} --collapse-whitespace --remove-comments'",
-    "minify-site-css": "cleancss --batch 'site/**/*.css' --batch-suffix '' "
   }
 }
