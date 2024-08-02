@@ -6,12 +6,12 @@
     viewBox="0 0 1000 200"
   >
     <path
-      fill="var(--bgExtra)"
+      class="fill-bg0"
       d="M0 100s250.096-101.786 566.869 6.735C861.491 207.668 1000 60 1000 60v140H0Z"
     />
   </svg>
 </div>
-<footer style="border: none; margin: 0px; padding-top: 1rem; padding-bottom: 8rem; background: var(--bgExtra);">
+<footer class="background-bg0" style="border: none; margin: 0px; padding-top: 1rem; padding-bottom: 8rem;">
     <h2>Quizfreely</h2>
     <p>Quizfreely is free and open source</p>
     <p>
