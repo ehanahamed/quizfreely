@@ -13,9 +13,13 @@ const path = require("node:path");
 
 const HyperExpress = require("hyper-express");
 const server = new HyperExpress.Server();
+
 const LiveDirectory = require('live-directory');
 const assets = new LiveDirectory(path.join(import.meta.dirname, "assets"), {
-
+  cache: {
+    max_file_count: 200,
+    max_file_size: 1024 * 1024
+  }
 })
 
 import { Eta } from "eta";
@@ -56,13 +60,32 @@ server.set_not_found_handler(
   }
 )
 
+server.get("/assets/*", function (request, response) {
+  const path = request.path.replace("/assets", "");
+  const file = assets.get(path);
+
+  if (file === undefined) {
+    return response.status(404).send();
+  }
+
+  const filepath = file.path.split(".");
+  const ext = filepath[filepath.length - 1];
+
+  const content = file.content;
+  if (content instanceof Buffer) {
+    return response.type(ext).send(content);
+  } else {
+    return response.type(ext).stream(content);
+  }
+})
+
 function page(page) {
   return function (request, response) {
     response.type("html").send(
       eta.render(page, {
         domain: domain,
         theme: request.cookies.theme,
-        themeCss: `<link rel="stylesheet" href="/ehui/themes/${request.cookies.theme}.css" />`
+        themeCss: `<link rel="stylesheet" href="/assets/themes/${request.cookies.theme}.css" />`
       })
     )
   }
