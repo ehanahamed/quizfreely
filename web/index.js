@@ -53,11 +53,7 @@ server.set_error_handler(
 )
 
 server.set_not_found_handler(
-  function (request, response) {
-    response.status(404).type("html").send(
-      eta.render("./404.eta")
-    )
-  }
+  page("./404.eta")
 )
 
 server.get("/assets/*", function (request, response) {
