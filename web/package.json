@@ -13,6 +13,7 @@
     "dotenv": "^16.4.5",
     "eta": "^3.4.0",
     "hyper-express": "^6.16.4",
+    "live-directory": "^3.0.3",
     "node-appwrite": "^13.0.0"
   }
 }

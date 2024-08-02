@@ -13,6 +13,10 @@ const path = require("node:path");
 
 const HyperExpress = require("hyper-express");
 const server = new HyperExpress.Server();
+const LiveDirectory = require('live-directory');
+const assets = new LiveDirectory(path.join(import.meta.dirname, "assets"), {
+
+})
 
 import { Eta } from "eta";
 const eta = new Eta({
@@ -57,7 +61,8 @@ function page(page) {
     response.type("html").send(
       eta.render(page, {
         domain: domain,
-        theme: request.cookies.theme
+        theme: request.cookies.theme,
+        themeCss: `<link rel="stylesheet" href="/ehui/themes/${request.cookies.theme}.css" />`
       })
     )
   }
