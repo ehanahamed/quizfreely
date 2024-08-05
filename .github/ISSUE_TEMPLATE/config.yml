@@ -1,8 +1,8 @@
 blank_issues_enabled: true
 contact_links:
-  - name: Quizfreely Discord
-    url: https://quizfreely.com/discord
-    about: i forgor
-  - name: Quizfreely GitHub Discussions
+  - name: GitHub Discussions
     url: https://github.com/ehanahamed/quizfreely/discussions
-    about: i forgor
+    about: "Post other questions or comments in Quizfreely's GitHub Discussions"
+  - name: Discord
+    url: https://quizfreely.com/discord
+    about: "You can also post bugs, feature requests, & questions on Quizfreely's discord server."
