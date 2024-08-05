@@ -1,6 +1,6 @@
 ---
 name: Bug report
-about: Report bugs, errors, typos, etc
+about: Report bugs, errors, typos, & other problems
 title: ''
 labels: ''
 assignees: ehanahamed
