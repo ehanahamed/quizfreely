@@ -1,10 +1,8 @@
 import "dotenv/config"
 
 const port = 8008
-/* domain for prod: "https://quizfreely.com" */
-const domain = "http://localhost:" + port
-/* domainName for prod: "quizfreely.com" */
-const domainName = "localhost"
+/* for prod: "quizfreely.com" */
+const domain = "localhost"
 
 import { createRequire } from "node:module";
 const require = createRequire(import.meta.url);
@@ -43,8 +41,11 @@ awclient
   .setEndpoint("https://api.quizfreely.com/v1")
   .setProject("quizfreely");
 
+import { themes } from "./themes.js";
+
 server.set_error_handler(
   function (request, response, error) {
+    console.error(error);
     response.status(500).send(
       "500 Internal Server Error\n" +
       ":( \n Report this at https://github.com/ehanahamed/quizfreely/issues"
@@ -53,7 +54,11 @@ server.set_error_handler(
 )
 
 server.set_not_found_handler(
-  page("./404.eta")
+  function (request, response) {
+    response.status(404).type("html").send(
+      renderPage("404.eta", request)
+    );
+  }
 )
 
 server.get("/assets/*", function (request, response) {
@@ -75,22 +80,32 @@ server.get("/assets/*", function (request, response) {
   }
 })
 
+function renderPage(page, request) {
+  let theme = "auto";
+  if (request.cookies.theme !== undefined && themes.includes(request.cookies.theme)) {
+    theme = request.cookies.theme;
+  }
+  return eta.render(page, {
+    domain: domain,
+    themes: JSON.stringify(themes),
+    theme: theme,
+    themeCss: `<link rel="stylesheet" href="/assets/themes/${theme}.css" />`
+  })
+}
+
 function page(page) {
   return function (request, response) {
     response.type("html").send(
-      eta.render(page, {
-        domain: domain,
-        theme: request.cookies.theme,
-        themeCss: `<link rel="stylesheet" href="/assets/themes/${request.cookies.theme}.css" />`
-      })
+      renderPage(page, request)
     )
   }
 }
 
-server.get("/", page("./home.eta"));
-server.get("/home", page("./home.eta"));
-server.get("/home/", page("./home.eta"));
-server.get("/settings", page("./settings.eta"));
+server.get("/", page("home.eta"));
+server.get("/home", page("home.eta"));
+server.get("/home/", page("home.eta"));
+server.get("/settings", page("settings.eta"));
+server.get("/settings/", page("settings.eta"));
 
 server.get(
   "/user/:username",
@@ -99,39 +114,33 @@ server.get(
   }
 )
 
-server.post(
-  "/settings/theme",
+server.get(
+  "/settings/themes/:theme",
   function (request, response) {
-    request.text().then(
-      function (body) {
-        if (/^[\w.-]+$/.test(body)) {
-          response.cookie(
-            "theme",
-            body,
-            /* expire time in milliseconds,
-            365 days, 24hr per day, 60min per hour, 60sec per min, 1000 ms in a second */
-            365 * 24 * 60 * 60 * 1000,
-            {
-              domain: domainName,
-              path: "/",
-              /* expire time in seconds,
-              365 days, 24hr/day, 60min/hour, 60sec/min */
-              maxAge: 365 * 24 * 60 * 60,
-              /* when secure is true,
-              browsers only send the cookie through https,
-              on localhost, browsers send it even if localhost isn't using https */
-              secure: true,
-              httpOnly: true,
-              sameSite: "lax"
-            }
-          ).send(
-            "ok :3"
-          )
-        } else {
-          response.status(400).send("invalid request body :(")
+    if (themes.includes(request.path_parameters.theme)) {
+      response.cookie(
+        "theme",
+        request.path_parameters.theme,
+        /* expire time in milliseconds,
+        100 days, 24hr per day, 60min per hour, 60sec per min, 1000 ms in a second */
+        100 * 24 * 60 * 60 * 1000,
+        {
+          domain: domain,
+          path: "/",
+          /* expire time in seconds,
+          100 days, 24hr/day, 60min/hour, 60sec/min */
+          maxAge: 100 * 24 * 60 * 60,
+          /* when secure is true,
+          browsers only send the cookie through https,
+          on localhost, browsers send it even if localhost isn't using https */
+          secure: true,
+          httpOnly: true,
+          sameSite: "lax"
         }
-      }
-    )
+      ).send("ok :3")
+    } else {
+      response.status(400).send("invalid request body :(")
+    }
   }
 )
 
