@@ -27,7 +27,7 @@
   </head>
 
   <body>
-    <eta>~ include("./partials/navbar.eta") </eta>
+    <eta>~ include("./partials/navbar.eta", { current: "" }) </eta>
     <div id="noscript" class="box center red">
       <p>
         You have JavaScript disabled. This website uses JavaScript to run
@@ -41,8 +41,8 @@
     <main>
       <div class="grid page">
         <div class="content">
-          <h2>404</h2>
-          <p>Page not found! Go <a href="/home">home</a>?</p>
+          <h2>404 Not Found</h2>
+          <p>Go <a href="/home">home</a>?</p>
         </div>
       </div>
     </main>
