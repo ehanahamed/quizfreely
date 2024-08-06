@@ -26,7 +26,7 @@
     />
   </head>
   <body>
-    <eta>~ include("./partials/navbar.eta") </eta>
+    <eta>~ include("./partials/navbar.eta", { page: "home" }) </eta>
     <main>
     <div class="grid intro">
         <div class="logotype">
@@ -157,7 +157,23 @@
     <script>
       document.getElementById("noscript").style.display = "none";
     </script>
-    <script src="https://ehui.ehan.dev/js/ehUi.js"></script>
+    <script src="/assets/js/ehui.js"></script>
+    <script>
+      ehui.themes = JSON.parse(`<eta>~ data.themes </eta>`);
+      ehui.theme.sync(
+        "<eta>= data.theme </eta>",
+        "/assets/themes/",
+        ".css",
+        function (theme) {
+          fetch("/settings/themes/" + theme, {
+            credentials: "same-origin"
+          }).then(
+          function (response) {
+            console.log(response);
+          })
+        }  
+      );
+    </script>
     <script src="./js/states.js"></script>
     <script>
       var ui = {
