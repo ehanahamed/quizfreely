@@ -27,7 +27,7 @@
   </head>
 
   <body>
-    <eta>~ include("./partials/navbar.eta") </eta>
+    <eta>~ include("./partials/navbar.eta", { current: "settings" }) </eta>
     <div id="noscript" class="box center red">
       <p>
         You have JavaScript disabled. This website uses JavaScript to run
@@ -54,9 +54,9 @@
                   checked
                 />
                 <label for="mainAppearanceThemeAuto">
-                  Auto
+                  Follow device/browser settings
                   <span class="bg3">
-                    (Purpleish or Light)
+                    (Automatic Dark/Light)
                   </span>
                 </label>
               </div>
@@ -64,9 +64,9 @@
                 <input
                   type="radio"
                   name="theme"
-                  id="mainAppearanceThemePurpleish"
+                  id="mainAppearanceThemeDark"
                 />
-                <label for="mainAppearanceThemePurpleish">Purpleish</label>
+                <label for="mainAppearanceThemeDark">Dark</label>
               </div>
               <div class="radio">
                 <input
@@ -75,14 +75,6 @@
                   id="mainAppearanceThemeLight"
                 />
                 <label for="mainAppearanceThemeLight">Light</label>
-              </div>
-              <div class="radio">
-                <input
-                  type="radio"
-                  name="theme"
-                  id="mainAppearanceThemeDarker"
-                />
-                <label for="mainAppearanceThemeDarker">Darker</label>
               </div>
             </div>
           </div>
@@ -124,55 +116,45 @@
     <script>
       document.getElementById("noscript").style.display = "none";
     </script>
-    <script src="https://ehui.ehan.dev/js/ehUi.js"></script>
+    <script src="/assets/js/ehui.js"></script>
     <script>
       function setThemeCookie(theme) {
-        fetch(
-          "<eta>~ data.domain </eta>/settings/theme",
-          {
-            method: "POST",
-            body: theme
-          }
-        ).then(
-          function (result) {
-            console.log(result)
-          }
-        )
+        fetch("/settings/themes/" + theme, {
+          credentials: "same-origin"
+        }).then(
+        function (response) {
+          console.log(response);
+        })
       }
       /* this super short script tag is for theme settings */
       document
         .getElementById("mainAppearanceThemeAuto")
         .addEventListener("change", function (event) {
-          //ehUi.setTheme("auto");
+          ehui.theme.set("auto");
           setThemeCookie("auto");
+          ehui.loadCss("/assets/themes/auto.css");
         });
       document
-        .getElementById("mainAppearanceThemePurpleish")
+        .getElementById("mainAppearanceThemeDark")
         .addEventListener("change", function (event) {
-          //ehUi.setTheme("purpleish");
-          setThemeCookie("purpleish");
+          ehui.theme.set("dark");
+          setThemeCookie("dark");
+          ehui.loadCss("/assets/themes/dark.css");
         });
       document
         .getElementById("mainAppearanceThemeLight")
         .addEventListener("change", function (event) {
-          //ehUi.setTheme("light");
+          ehui.theme.set("light");
           setThemeCookie("light");
-        });
-      document
-        .getElementById("mainAppearanceThemeDarker")
-        .addEventListener("change", function (event) {
-          //ehUi.setTheme("darker");
-          setThemeCookie("darker");
+          ehui.loadCss("/assets/themes/light.css");
         });
 
       if (localStorage.getItem("theme") === "auto") {
         document.getElementById("mainAppearanceThemeAuto").checked = true;
-      } else if (localStorage.getItem("theme") === "purpleish") {
-        document.getElementById("mainAppearanceThemePurpleish").checked = true;
+      } else if (localStorage.getItem("theme") === "dark") {
+        document.getElementById("mainAppearanceThemeDark").checked = true;
       } else if (localStorage.getItem("theme") === "light") {
         document.getElementById("mainAppearanceThemeLight").checked = true;
-      } else if (localStorage.getItem("theme") === "darker") {
-        document.getElementById("mainAppearanceThemeDarker").checked = true;
       }
     </script>
     <script src="./js/states.js"></script>
