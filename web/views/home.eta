@@ -155,26 +155,7 @@
       </div>
     </main>
     <eta>~ include("./partials/footer.eta") </eta>
-    <script>
-      document.getElementById("noscript").style.display = "none";
-    </script>
-    <script src="/assets/js/ehui.js"></script>
-    <script>
-      ehui.themes = JSON.parse(`<eta>~ data.themes </eta>`);
-      ehui.theme.sync(
-        "<eta>= data.theme </eta>",
-        "/assets/themes/",
-        ".css",
-        function (theme) {
-          fetch("/settings/themes/" + theme, {
-            credentials: "same-origin"
-          }).then(
-          function (response) {
-            console.log(response);
-          })
-        }  
-      );
-    </script>
+    <eta>~ include("./partials/body-end.eta", { themes: data.themes, theme: data.theme }) </eta>
     <script src="./js/states.js"></script>
     <script>
       var ui = {
@@ -186,7 +167,6 @@
         },
       };
     </script>
-    <script src="./pocketbase/pocketbase.umd.js"></script>
     <script src="./js/pocketbase.js"></script>
   </body>
 </html>

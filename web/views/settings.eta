@@ -29,19 +29,10 @@
   <body>
     <eta>~ include("./partials/body-start.eta", { theme: data.theme }) </eta>
     <eta>~ include("./partials/navbar.eta", { page: "settings" }) </eta>
-    <div id="noscript" class="box center red">
-      <p>
-        You have JavaScript disabled. This website uses JavaScript to run
-        correctly.
-      </p>
-      <p>
-        Please enable JavaScript in your browser settings, or this website will
-        not work.
-      </p>
-    </div>
     <main>
       <div class="grid page">
         <div class="content">
+          <eta>~ include("./partials/noscript.eta") </eta>
           <h2>Settings</h2>
           <h3>Appearance</h3>
           <div class="box">
@@ -114,10 +105,7 @@
       </div>
     </main>
     <eta>~ include("./partials/footer.eta") </eta>
-    <script>
-      document.getElementById("noscript").style.display = "none";
-    </script>
-    <script src="/assets/js/ehui.js"></script>
+    <eta>~ include("./partials/body-end.eta", { themes: data.themes, theme: data.theme }) </eta>
     <script>
       function setThemeCookie(theme) {
         fetch("/settings/themes/" + theme, {
