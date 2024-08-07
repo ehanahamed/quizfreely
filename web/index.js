@@ -85,11 +85,15 @@ function renderPage(page, request) {
   if (request.cookies.theme !== undefined && themes.includes(request.cookies.theme)) {
     theme = request.cookies.theme;
   }
+  let themeCss = `<link rel="stylesheet" href="/assets/themes/${theme}.css" />`;
+  if (theme == "custom") {
+    themeCss = ""
+  }
   return eta.render(page, {
     domain: domain,
     themes: JSON.stringify(themes),
     theme: theme,
-    themeCss: `<link rel="stylesheet" href="/assets/themes/${theme}.css" />`
+    themeCss: themeCss
   })
 }
 
