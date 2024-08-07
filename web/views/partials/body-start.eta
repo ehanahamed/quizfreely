@@ -1,0 +1,9 @@
+<eta> if (data.theme == "custom") { </eta>
+<script>
+    if (window.localStorage && (localStorage.get("css") != null)) {
+        var style = document.createElement("style")
+        style.innerHTML = localStorage.get("css")
+        document.getElementsByTagName("head")[0].appendChild(style)
+    }
+</script>
+<eta> } </eta>
