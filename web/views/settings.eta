@@ -27,7 +27,8 @@
   </head>
 
   <body>
-    <eta>~ include("./partials/navbar.eta", { current: "settings" }) </eta>
+    <eta>~ include("./partials/body-start.eta", { theme: data.theme }) </eta>
+    <eta>~ include("./partials/navbar.eta", { page: "settings" }) </eta>
     <div id="noscript" class="box center red">
       <p>
         You have JavaScript disabled. This website uses JavaScript to run

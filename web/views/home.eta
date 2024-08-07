@@ -26,6 +26,7 @@
     />
   </head>
   <body>
+    <eta>~ include("./partials/body-start.eta", { theme: data.theme }) </eta>
     <eta>~ include("./partials/navbar.eta", { page: "home" }) </eta>
     <main>
     <div class="grid intro">
