@@ -56,7 +56,7 @@ server.set_error_handler(
 server.set_not_found_handler(
   function (request, response) {
     response.status(404).type("html").send(
-      renderPage("404.eta", request)
+      eta.render("404.eta", pageData(request))
     );
   }
 )
@@ -80,7 +80,7 @@ server.get("/assets/*", function (request, response) {
   }
 })
 
-function renderPage(page, request) {
+function pageData(request) {
   let theme = "auto";
   if (request.cookies.theme !== undefined && themes.includes(request.cookies.theme)) {
     theme = request.cookies.theme;
@@ -89,18 +89,18 @@ function renderPage(page, request) {
   if (theme == "custom") {
     themeCss = ""
   }
-  return eta.render(page, {
+  return {
     domain: domain,
     themes: JSON.stringify(themes),
     theme: theme,
     themeCss: themeCss
-  })
+  }
 }
 
 function page(page) {
   return function (request, response) {
     response.type("html").send(
-      renderPage(page, request)
+      eta.render(page, pageData(request))
     )
   }
 }
@@ -110,6 +110,35 @@ server.get("/home", page("home.eta"));
 server.get("/home/", page("home.eta"));
 server.get("/settings", page("settings.eta"));
 server.get("/settings/", page("settings.eta"));
+function signupPage(request, response) {
+  response.type("html").send(
+    eta.render(
+      "account.eta",
+      {
+        signup: true,
+        ...pageData(request)
+      }
+    )
+  )
+}
+function loginPage(request, response) {
+  response.type("html").send(
+    eta.render(
+      "account.eta",
+      {
+        signup: false,
+        ...pageData(request)
+      }
+    )
+  )
+}
+
+server.get("/signup", signupPage)
+server.get("/sign-up", signupPage)
+server.get("/login", loginPage)
+server.get("/log-in", loginPage)
+server.get("/signin", loginPage)
+server.get("/sign-in", loginPage)
 
 server.get(
   "/user/:username",
