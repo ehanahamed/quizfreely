@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="screen">
+<html lang="en">
   <!--
     Quizfreely
     Copyright (c) Ehan Ahamed and contributors
@@ -24,100 +24,54 @@
       rel="stylesheet"
       href="https://www.nerdfonts.com/assets/css/webfont.css"
     />
+    <style>
+      button.gaccount-button {
+        background-color: #F2F2F2;
+        color: #1F1F1F;
+        font-family: "roboto";
+        font-weight: 500;
+        border: none;
+        border-radius: 2rem;
+        padding: 0.8rem;
+      }
+      button.gaccount-button:hover,
+      button.gaccount-button:focus,
+      button.gaccount-button:focus-visible {
+        background-color: #E6E6E6;
+        color: #1F1F1F;
+        border: none;
+      }
+
+      button.gaccount-button div.gaccount-container {
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+        align-content: center;
+        justify-items: center;
+        justify-content: center;
+      }
+
+      button.gaccount-button div.gaccount-container div {
+        margin-top: 0px;
+      }
+
+      .gaccount-icon {
+        width: 1.4rem;
+        height: 1.4rem;
+      }
+
+      .button.noaccount-button {
+        padding: 0.6rem 0.8rem;
+      }
+    </style>
   </head>
 
   <body>
-    <header>
-      <!--<div class="menu">
-        <button id="headerMenuMenubutton">
-          <i class="nf nf-md-menu"></i>
-          Menu
-        </button>
-        <div id="headerMenuMenudiv" class="hide">
-          <ul>
-            <li>
-              <a href="./index.html" class="bg1 mark markPrimary">Home</a>
-            </li>
-            <li><a href="./dashboard.html">Dashboard</a></li>
-            <li><a href="./docs.html">Help & Docs</a></li>
-            <li><a href="./settings.html">Settings</a></li>
-          </ul>
-        </div>
-      </div>-->
-      <div class="menu nav">
-        <div>
-          <a href="./index.html">Home</a>
-        </div>
-        <div class="current">
-          <a href="./dashboard.html">Dashboard</a>
-        </div>
-        <div>
-          <a href="./explore.html">Explore</a>
-        </div>
-        <div>
-          <a href="./settings.html">Settings</a>
-        </div>
+    <eta>~ include("./partials/body-start.eta", { theme: data.theme }) </eta>
+    <eta>~ include("./partials/navbar.eta", { page: "sign-up" }) </eta>
+    <div class="grid page">
+      <div class="content"><eta>~ include("./partials/noscript.eta") </eta>
       </div>
-      <!--<div class="options">
-        <div class="flex center">
-          <button id="headerOptionsLangbutton">
-            <i class="nf nf-md-translate"></i>
-            Language
-          </button>
-          <button id="headerOptionsThemebutton">
-            <i class="nf nf-cod-symbol_color"></i>
-            Theme
-          </button>
-        </div>
-        <div id="headerOptionsLangdiv" class="hide">
-          <div class="radio">
-            <input
-              type="radio"
-              name="lang"
-              id="headerOptionsLangdivEn"
-              checked
-            />
-            <label for="headerOptionsLangdivEn">English</label>
-          </div>
-          <div class="radio">
-                  <input type="radio" name="lang" id="headerOptionsLangdivDe" />
-                  <label for="headerOptionsLangdivDe">Deutsch</label>
-                </div>
-                <div class="radio">
-                  <input type="radio" name="lang" id="headerOptionsLangdivGz" />
-                  <label for="headerOptionsLangdivGz">中文</label>
-                </div>
-        </div>
-        <div id="headerOptionsThemediv" class="hide">
-          <div class="radio">
-            <input
-              type="radio"
-              name="theme"
-              id="headerOptionsThemedivPurpleish"
-              checked
-            />
-            <label for="headerOptionsThemedivPurpleish"
-              >Purpleish <span class="bg3">(dark)</span></label
-            >
-          </div>
-          <div class="radio">
-            <input type="radio" name="theme" id="headerOptionsThemedivOwl" />
-            <label for="headerOptionsThemedivOwl"
-              >Owl <span class="bg3">(light)</span></label
-            >
-          </div>
-        </div>
-      </div>-->
-    </header>
-    <div id="noscript" class="box center red">
-      <p>
-        You have JavaScript disabled. This website uses JavaScript to run
-        correctly.
-      </p>
-      <p>
-        Please enable JavaScript in your browser settings, or this website will
-        not work.
-      </p>
     </div>
     <main class="grid screen">
       <div class="content">
@@ -152,18 +106,24 @@
           </div>
           <div class="separator">or</div>
           <div>
-            <button id="mainSignupGooglebutton" class="fullWidth g">
-              <div class="flex center">
-                <img src="./img/thirdparty/g.png" alt="G" />
+            <button class="fullWidth gaccount-button">
+              <div class="gaccount-container">
+                <div class="gaccount-icon">
+                  <svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" xmlns:xlink="http://www.w3.org/1999/xlink" style="display: block;">
+                    <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"></path>
+                    <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"></path>
+                    <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"></path>
+                    <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"></path>
+                    <path fill="none" d="M0 0h48v48H0z"></path>
+                  </svg>
+                </div>
                 <div>Sign up with Google</div>
               </div>
             </button>
           </div>
           <div>
-            <a href="./dashboard.html" class="button guest fullWidth">
-              <div class="flex center">
-                <div>Continue without an account</div>
-              </div>
+            <a href="./dashboard.html" class="button fullWidth noaccount-button">
+              Continue without an account
             </a>
           </div>
           <br />
