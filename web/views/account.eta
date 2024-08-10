@@ -70,10 +70,7 @@
   <body>
     <eta>~ include("./partials/body-start.eta", { theme: data.theme }) </eta>
     <eta>~ include("./partials/navbar.eta", { page: "sign-up" }) </eta>
-    <div class="grid page">
-      <div class="content"><eta>~ include("./partials/noscript.eta") </eta>
-      </div>
-    </div>
+    <eta>~ include("./partials/noscript.eta") </eta>
     <main>
         <eta> if (data.signup) { </eta>
         <div class="grid screen">
@@ -104,7 +101,7 @@
               />
             </div>
             <div>
-              <button id="mainSignupSignupbutton">Sign Up</button>
+              <button id="signupButton">Sign Up</button>
             </div>
             <div class="separator">or</div>
             <div>
@@ -162,7 +159,7 @@
               />
             </div>
             <div>
-              <button id="mainSignupSignupbutton">Sign In</button>
+              <button id="signinButton">Sign In</button>
             </div>
             <div class="separator">or</div>
             <div>
@@ -209,37 +206,28 @@
           </div>
         </div>
     </main>
+    <script src="/assets/js/supabase.min.js"></script>
     <script>
-      document.getElementById("noscript").style.display = "none";
+      var sbclient = supabase.createClient(
+        "<eta>= data.apiUrl </eta>",
+        "<eta= data.apiPublicKey </eta>"
+      )
     </script>
-    <script src="https://ehui.ehan.dev/js/ehUi.js"></script>
-    <script src="./js/states.js"></script>
-    <script>
-      var ui = {
-        elements: {
-          states: {
-            newUser: ["mainSignupdiv"],
-            user: ["mainUserdiv"],
-          },
-        },
-      };
-    </script>
-    <script src="./pocketbase/pocketbase.umd.js"></script>
-    <script src="./js/pb.js"></script>
+    <eta>if (data.signup) { </eta>
     <script>
       document
-        .getElementById("mainSignupSignupbutton")
+        .getElementById("signupButton")
         .addEventListener("click", function () {
           if (
             /^[a-z0-9._-]+$/.test(
-              document.getElementById("mainSignupUsernameinput").value,
+              document.getElementById("signupUsernameInput").value,
             ) === true
           ) {
             pb.collection("users")
               .create({
-                username: document.getElementById("mainSignupUsernameinput")
+                username: document.getElementById("signupUsernameInput")
                   .value,
-                password: document.getElementById("mainSignupPasswordinput")
+                password: document.getElementById("signupUsernameInput")
                   .value,
                 passwordConfirm: document.getElementById(
                   "mainSignupPasswordinput",
@@ -293,5 +281,10 @@
             .then(function (result) {});
         });
     </script>
+    <eta> } else { </eta>
+    <script>
+
+    </script>
+    <eta> } </eta>
   </body>
 </html>
