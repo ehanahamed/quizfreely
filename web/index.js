@@ -1,5 +1,3 @@
-import "dotenv/config"
-
 const port = 8080
 /* for prod: "quizfreely.com" */
 const domain = "localhost"

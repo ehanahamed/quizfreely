@@ -10,7 +10,6 @@
   "license": "MIT",
   "description": "",
   "dependencies": {
-    "dotenv": "^16.4.5",
     "eta": "^3.4.0",
     "hyper-express": "^6.16.4",
     "live-directory": "^3.0.3",
