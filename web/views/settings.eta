@@ -29,10 +29,10 @@
   <body>
     <eta>~ include("./partials/body-start.eta", { theme: data.theme }) </eta>
     <eta>~ include("./partials/navbar.eta", { page: "settings" }) </eta>
+    <eta>~ include("./partials/noscript.eta") </eta>
     <main>
       <div class="grid page">
         <div class="content">
-          <eta>~ include("./partials/noscript.eta") </eta>
           <h2>Settings</h2>
           <h3>Appearance</h3>
           <div class="box">
