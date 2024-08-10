@@ -80,7 +80,7 @@
               <input
                 type="text"
                 class="fullWidth"
-                id="mainSignupUsernameinput"
+                id="signupUsernameInput"
                 placeholder="Username"
               />
             </div>
@@ -88,7 +88,7 @@
               <input
                 type="password"
                 class="fullWidth"
-                id="mainSignupPasswordinput"
+                id="signupPasswordInput"
                 placeholder="Password"
               />
             </div>
@@ -96,7 +96,7 @@
               <input
                 type="password"
                 class="fullWidth"
-                id="mainSignupRetypepasswordinput"
+                id="signupPasswordConfirmInput"
                 placeholder="Retype Password"
               />
             </div>
@@ -130,7 +130,7 @@
           <div class="grid screen">
             <div class="content">
             <p>Already have an account? <a href="./signin">Sign In</a></p>
-            <p id="mainSignupErrortext" class="box red hide">Error</p>
+            <p id="signupError" class="box red hide">Error</p>
             </div>
           </div>
         <div id="mainDonediv" class="box green hide">
@@ -208,9 +208,9 @@
     </main>
     <script src="/assets/js/supabase.min.js"></script>
     <script>
-      var sbclient = supabase.createClient(
+      var sb = supabase.createClient(
         "<eta>= data.apiUrl </eta>",
-        "<eta= data.apiPublicKey </eta>"
+        "<eta>= data.apiPublicKey </eta>"
       )
     </script>
     <eta>if (data.signup) { </eta>
@@ -218,6 +218,22 @@
       document
         .getElementById("signupButton")
         .addEventListener("click", function () {
+          if (
+            document.getElementById("signupPasswordInput").value === document.getElementById("signupPasswordConfirmInput").value
+          ) {
+            sb.auth.signUp({
+              email: "user-" + document.getElementById("signupUsernameInput").value + "@quizfreely.com",
+              password: document.getElementById("signupPasswordInput").value
+            }).then(function (result) {
+              console.log(result)
+            });
+          } else {
+            document.getElementById("signupError").classList.remove("hide");
+            //document.getElementById("mainDonediv").classList.add("hide");
+            document.getElementById("signupError").innerHTML =
+              "Passwords don't match D: <br />" +
+              "Make sure you retyped your password how you want!";
+          }
           if (
             /^[a-z0-9._-]+$/.test(
               document.getElementById("signupUsernameInput").value,
@@ -267,24 +283,14 @@
               "</ul>";
           }
         });
-      document
-        .getElementById("mainSignupGooglebutton")
-        .addEventListener("click", function () {
-          pocketbase
-            .collection("users")
-            .authWithOAuth2({
-              provider: "google",
-              createData: {
-                type: "google",
-              },
-            })
-            .then(function (result) {});
-        });
     </script>
     <eta> } else { </eta>
     <script>
 
     </script>
     <eta> } </eta>
+    <script>
+
+    </script>
   </body>
 </html>
