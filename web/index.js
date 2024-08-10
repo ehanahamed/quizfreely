@@ -28,6 +28,7 @@ const eta = new Eta({
   ],
   varName: "data",
   views: path.join(import.meta.dirname, "views"),
+  defaultExtension: ".html"
 })
 
 const appwrite = require('node-appwrite');
@@ -56,7 +57,7 @@ server.set_error_handler(
 server.set_not_found_handler(
   function (request, response) {
     response.status(404).type("html").send(
-      eta.render("404.eta", pageData(request))
+      eta.render("404", pageData(request))
     );
   }
 )
@@ -105,15 +106,15 @@ function page(page) {
   }
 }
 
-server.get("/", page("home.eta"));
-server.get("/home", page("home.eta"));
-server.get("/home/", page("home.eta"));
-server.get("/settings", page("settings.eta"));
-server.get("/settings/", page("settings.eta"));
+server.get("/", page("home"));
+server.get("/home", page("home"));
+server.get("/home/", page("home"));
+server.get("/settings", page("settings"));
+server.get("/settings/", page("settings"));
 function signupPage(request, response) {
   response.type("html").send(
     eta.render(
-      "account.eta",
+      "account",
       {
         signup: true,
         apiUrl: apiUrl,
@@ -126,7 +127,7 @@ function signupPage(request, response) {
 function loginPage(request, response) {
   response.type("html").send(
     eta.render(
-      "account.eta",
+      "account",
       {
         signup: false,
         apiUrl: apiUrl,

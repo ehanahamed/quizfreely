@@ -68,9 +68,9 @@
   </head>
 
   <body>
-    <eta>~ include("./partials/body-start.eta", { theme: data.theme }) </eta>
-    <eta>~ include("./partials/navbar.eta", { page: "sign-up" }) </eta>
-    <eta>~ include("./partials/noscript.eta") </eta>
+    <eta>~ include("./partials/body-start", { theme: data.theme }) </eta>
+    <eta>~ include("./partials/navbar", { page: "sign-up" }) </eta>
+    <eta>~ include("./partials/noscript") </eta>
     <main>
         <eta> if (data.signup) { </eta>
         <div class="grid screen">
