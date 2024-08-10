@@ -1,8 +1,10 @@
 import "dotenv/config"
 
-const port = 8008
+const port = 8080
 /* for prod: "quizfreely.com" */
 const domain = "localhost"
+const apiUrl = "https://api.quizfreely.com"
+const apiPublicKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.ewogICJyb2xlIjogImFub24iLAogICJpc3MiOiAic3VwYWJhc2UiLAogICJpYXQiOiAxNzIzMDg5NjAwLAogICJleHAiOiAxODgwODU2MDAwCn0.G8CTyZfDfpzoQ5nRN58Se_NXFZFCmEHT6w_oBZwyy78"
 
 import { createRequire } from "node:module";
 const require = createRequire(import.meta.url);
@@ -116,6 +118,8 @@ function signupPage(request, response) {
       "account.eta",
       {
         signup: true,
+        apiUrl: apiUrl,
+        apiPublicKey: apiPublicKey,
         ...pageData(request)
       }
     )
@@ -127,6 +131,8 @@ function loginPage(request, response) {
       "account.eta",
       {
         signup: false,
+        apiUrl: apiUrl,
+        apiPublicKey: apiPublicKey,
         ...pageData(request)
       }
     )
