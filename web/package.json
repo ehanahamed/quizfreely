@@ -11,6 +11,7 @@
   "description": "",
   "dependencies": {
     "eta": "^3.4.0",
+    "fastify": "^4.28.1",
     "hyper-express": "^6.16.4",
     "live-directory": "^3.0.3",
     "node-appwrite": "^13.0.0"
