@@ -2,6 +2,7 @@ import fastify from "fastify";
 import fastifyView from "@fastify/view";
 import { Eta } from "eta";
 import path from "path";
+import { themes } from "./themes.js";
 
 const port = 8080
 /* for prod: "quizfreely.com" */
@@ -24,8 +25,6 @@ server.register(fastifyView, {
   },
   templates: path.join(import.meta.dirname, "views"),
 })
-
-import { themes } from "./themes.js";
 
 server.set_error_handler(
   function (request, response, error) {
