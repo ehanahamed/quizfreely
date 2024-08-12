@@ -1,46 +1,29 @@
+import fastify from "fastify";
+import fastifyView from "@fastify/view";
+import { Eta } from "eta";
+import path from "path";
+
 const port = 8080
 /* for prod: "quizfreely.com" */
 const domain = "localhost"
-const apiUrl = "https://api.quizfreely.com"
-const apiPublicKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.ewogICJyb2xlIjogImFub24iLAogICJpc3MiOiAic3VwYWJhc2UiLAogICJpYXQiOiAxNzIzMDg5NjAwLAogICJleHAiOiAxODgwODU2MDAwCn0.G8CTyZfDfpzoQ5nRN58Se_NXFZFCmEHT6w_oBZwyy78"
 
-import { createRequire } from "node:module";
-const require = createRequire(import.meta.url);
-
-const path = require("node:path");
-
-const HyperExpress = require("hyper-express");
-const server = new HyperExpress.Server();
-
-const LiveDirectory = require('live-directory');
-const assets = new LiveDirectory(path.join(import.meta.dirname, "assets"), {
-  cache: {
-    max_file_count: 200,
-    max_file_size: 1024 * 1024
-  }
-})
-
-import { Eta } from "eta";
 const eta = new Eta({
   tags: [
     "<eta>",
     "</eta>"
   ],
   varName: "data",
-  views: path.join(import.meta.dirname, "views"),
   defaultExtension: ".html"
 })
 
-const appwrite = require('node-appwrite');
-/*const awadmin = new appwrite.Client();
-awadmin
-  .setEndpoint("https://api.quizfreely.com/v1")
-  .setProject("quizfreely")
-  .setKey(process.env.APPWRITE_API_KEY_SECRET);*/
-const awclient = new appwrite.Client();
-awclient
-  .setEndpoint("https://api.quizfreely.com/v1")
-  .setProject("quizfreely");
+const server = fastify();
+
+server.register(fastifyView, {
+  engine: {
+    eta
+  },
+  templates: path.join(import.meta.dirname, "views"),
+})
 
 import { themes } from "./themes.js";
 
