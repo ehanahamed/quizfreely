@@ -101,11 +101,11 @@
               />
             </div>
             <div>
-              <button id="signupButton">Sign Up</button>
+              <button id="signupButton">Create account</button>
             </div>
             <div class="separator">or</div>
             <div>
-              <button class="fullWidth gaccount-button">
+              <button class="fullWidth gaccount-button" id="gaccount-button">
                 <div class="gaccount-container">
                   <div class="gaccount-icon">
                     <svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" xmlns:xlink="http://www.w3.org/1999/xlink" style="display: block;">
@@ -163,7 +163,7 @@
             </div>
             <div class="separator">or</div>
             <div>
-              <button class="fullWidth gaccount-button">
+              <button class="fullWidth gaccount-button" id="gaccount-button">
                 <div class="gaccount-container">
                   <div class="gaccount-icon">
                     <svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" xmlns:xlink="http://www.w3.org/1999/xlink" style="display: block;">
@@ -187,7 +187,7 @@
         </div>
         <div class="grid screen">
           <div class="content">
-            <p>Don't have an account yet? <a href="./sign-up">Sign up</a></p>
+            <p><a href="./sign-up">Sign Up</a> to create an account</p>
             <p id="mainSignupErrortext" class="box red hide">Error</p>
           </div>
         </div>
@@ -214,78 +214,33 @@
     </script>
     <eta>if (data.signup) { </eta>
     <script>
-      document
-        .getElementById("signupButton")
-        .addEventListener("click", function () {
-          if (
-            document.getElementById("signupPasswordInput").value === document.getElementById("signupPasswordConfirmInput").value
-          ) {
-            sb.auth.signUp({
-              email: "user-" + document.getElementById("signupUsernameInput").value + "@quizfreely.com",
-              password: document.getElementById("signupPasswordInput").value
-            }).then(function (result) {
-              console.log(result)
-            });
-          } else {
-            document.getElementById("signupError").classList.remove("hide");
-            //document.getElementById("mainDonediv").classList.add("hide");
-            document.getElementById("signupError").innerHTML =
-              "Passwords don't match D: <br />" +
-              "Make sure you retyped your password how you want!";
-          }
-          if (
-            /^[a-z0-9._-]+$/.test(
-              document.getElementById("signupUsernameInput").value,
-            ) === true
-          ) {
-            pb.collection("users")
-              .create({
-                username: document.getElementById("signupUsernameInput")
-                  .value,
-                password: document.getElementById("signupUsernameInput")
-                  .value,
-                passwordConfirm: document.getElementById(
-                  "mainSignupPasswordinput",
-                ).value,
-              })
-              .then(function (result) {
-                document
-                  .getElementById("mainSignupErrortext")
-                  .classList.add("hide");
-                document.getElementById("mainDonediv").classList.remove("hide");
-              })
-              .catch(function (error) {
-                document
-                  .getElementById("mainSignupErrortext")
-                  .classList.remove("hide");
-                document.getElementById("mainDonediv").classList.add("hide");
-                document.getElementById("mainSignupErrortext").innerText =
-                  "Error: " + error.response.message;
-              });
-          } else if (
-            /^[a-zA-Z0-9._-]+$/.test(
-              document.getElementById("mainSignupUsernameinput").value,
-            ) === false
-          ) {
-            document
-              .getElementById("mainSignupErrortext")
-              .classList.remove("hide");
-            document.getElementById("mainDonediv").classList.add("hide");
-            document.getElementById("mainSignupErrortext").innerHTML =
-              "Usernames can only have:" +
-              "<ul>" +
-              "  <li>lowercase letters</li>" +
-              "  <li>numbers</li>" +
-              "  <li>dots <code>.</code></li>" +
-              "  <li>underscores <code>_</code></li>" +
-              "  <li>hyphens <code>-</code></li>" +
-              "</ul>";
-          }
-        });
+      document.getElementById("signupButton").addEventListener("click", function () {
+        if (
+          document.getElementById("signupPasswordInput").value === document.getElementById("signupPasswordConfirmInput").value
+        ) {
+          sb.auth.signUp({
+            email: "user-" + document.getElementById("signupUsernameInput").value + "@quizfreely.com",
+            password: document.getElementById("signupPasswordInput").value
+          }).then(function (result) {
+            console.log(result)
+          });
+        } else {
+          document.getElementById("signupError").classList.remove("hide");
+          //document.getElementById("mainDonediv").classList.add("hide");
+          document.getElementById("signupError").innerHTML =
+            "Passwords don't match D: <br />" +
+            "Make sure you retyped your password how you want!";
+        }
+      })
     </script>
     <eta> } else { </eta>
     <script>
-
+      document.getElementById("signinButton").addEventListener("click", function () {
+        sb.auth.signInWithPassword({
+          email: "user-" + document.getElementById("signinUsernameInput").value + "@quizfreely.com",
+          password: document.getElementById("signinPasswordInput").value
+        })
+      })
     </script>
     <eta> } </eta>
     <script>
