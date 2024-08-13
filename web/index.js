@@ -9,7 +9,8 @@ import { themes } from "./themes.js";
 const port = 8080
 /* for prod: "quizfreely.com" */
 const domain = "localhost"
-
+const apiUrl = "https://api.quizfreely.com"
+const apiPublicKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.ewogICJyb2xlIjogImFub24iLAogICJpc3MiOiAic3VwYWJhc2UiLAogICJpYXQiOiAxNzIzNTIxNjAwLAogICJleHAiOiAxODgxMjg4MDAwCn0.pwb3AzlkbzhG-OTbadLZzSdu6piEkss7WWYEMeFipj0"
 
 const fastify = Fastify({
   logger: true
@@ -88,6 +89,8 @@ fastify.get("/settings", function (request, reply) {
 fastify.get("/sign-up", function (request, reply) {
   reply.view("/account.html", {
     signup: true,
+    apiUrl: apiUrl,
+    apiPublicKey: apiPublicKey,
     ...themeData(request)
   })
 })
@@ -95,6 +98,8 @@ fastify.get("/sign-up", function (request, reply) {
 fastify.get("/sign-in", function (request, reply) {
   reply.view("/account.html", {
     signup: false,
+    apiUrl: apiUrl,
+    apiPublicKey: apiPublicKey,
     ...themeData(request)
   })
 })
