@@ -129,7 +129,7 @@
           </div>
           <div class="grid screen">
             <div class="content">
-            <p>Already have an account? <a href="./signin">Sign In</a></p>
+            <p>Already have an account? <a href="./sign-in">Sign In</a></p>
             <p id="signupError" class="box red hide">Error</p>
             </div>
           </div>
@@ -187,7 +187,7 @@
         </div>
         <div class="grid screen">
           <div class="content">
-            <p>Don't have an account yet? <a href="./signup">Sign up</a></p>
+            <p>Don't have an account yet? <a href="./sign-up">Sign up</a></p>
             <p id="mainSignupErrortext" class="box red hide">Error</p>
           </div>
         </div>
@@ -207,12 +207,6 @@
         </div>
     </main>
     <script src="/assets/js/supabase.min.js"></script>
-    <script>
-      var sb = supabase.createClient(
-        "<eta>= data.apiUrl </eta>",
-        "<eta>= data.apiPublicKey </eta>"
-      )
-    </script>
     <eta>if (data.signup) { </eta>
     <script>
       document
