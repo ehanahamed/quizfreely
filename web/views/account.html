@@ -206,7 +206,12 @@
           </div>
         </div>
     </main>
-    
+    <script>
+      var sb = supabase.createClient(
+        "<eta>= data.apiUrl </eta>",
+        "<eta>= data.apiPublicKey </eta>"
+      )
+    </script>
     <eta>if (data.signup) { </eta>
     <script>
       document
