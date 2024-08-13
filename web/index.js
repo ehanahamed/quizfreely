@@ -71,15 +71,43 @@ function themeData(request) {
   }
 }
 
-fastify.get("/", function (request, reply) {
-  reply.view("home.html", {
-    ...themeData(request)
-  })
-});
-fastify.get("/home", function (request, reply) {
-  reply.view("home.html", {
-    ...themeData(request)
-  })
+function homepage(request, reply) {
+  if (request.cookies.returning) {
+    reply.view("dashboard.html", {
+      ...themeData(request)
+    });
+  } else {
+    reply.view("home.html", {
+      ...themeData(request)
+    });
+  }
+}
+
+fastify.get("/", homepage);
+fastify.get("/home", homepage);
+fastify.get("/dashboard", function (request, reply) {
+  let time = new Date();
+    /* 100 days * 24h * 60m * 60s = 8640000 sec for 100 days */
+    time.setSeconds(time.getSeconds() + 8640000)
+    reply.setCookie(
+      "dashboard",
+      "show",
+      {
+        domain: domain,
+        path: "/",
+        signed: false,
+        expires: time,
+        maxAge: 8640000,
+        httpOnly: true,
+        sameSite: "lax",
+        /* when secure is true,
+        browsers only send the cookie through https,
+        on localhost, browsers send it even if localhost isn't using https */
+        secure: true
+      }
+    ).view("dashboard.html", {
+      ...themeData(request)
+    })
 });
 fastify.get("/settings", function (request, reply) {
   reply.view("settings.html", {
