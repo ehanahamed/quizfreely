@@ -206,6 +206,8 @@
           </div>
         </div>
     </main>
+    <eta>~ include("./partials/footer") </eta>
+    <eta>~ include("./partials/body-end", { themes: data.themes, theme: data.theme }) </eta>
     <script src="/assets/js/supabase.min.js"></script>
     <script>
       var sb = supabase.createClient(
@@ -245,7 +247,11 @@
     </script>
     <eta> } </eta>
     <script>
-      document.getElementById("")
+      document.getElementById("gaccount-button").addEventListener("click", function () {
+        sb.auth.signInWithOAuth({
+          provider: "google"
+        })
+      })
     </script>
   </body>
 </html>
