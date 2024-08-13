@@ -10,6 +10,9 @@
   "license": "MIT",
   "description": "",
   "dependencies": {
+    "@fastify/cookie": "^9.3.1",
+    "@fastify/static": "^7.0.4",
+    "@fastify/view": "^9.1.0",
     "eta": "^3.4.0",
     "fastify": "^4.28.1",
     "hyper-express": "^6.16.4",
