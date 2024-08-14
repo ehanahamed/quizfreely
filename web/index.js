@@ -138,6 +138,12 @@ fastify.get("/edit", function (request, reply) {
   })
 })
 
+fastify.get("/privacy", function (request, reply) {
+  reply.view("/privacy.html", {
+    ...themeData(request)
+  })
+})
+
 fastify.get("/settings/themes/:theme", function (request, reply) {
   if (themes.includes(request.params.theme)) {
     let time = new Date();
