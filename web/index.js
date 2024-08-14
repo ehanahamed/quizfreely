@@ -132,6 +132,12 @@ fastify.get("/sign-in", function (request, reply) {
   })
 })
 
+fastify.get("/edit", function (request, reply) {
+  reply.view("/edit.html", {
+    ...themeData(request)
+  })
+})
+
 fastify.get("/settings/themes/:theme", function (request, reply) {
   if (themes.includes(request.params.theme)) {
     let time = new Date();
