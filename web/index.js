@@ -72,7 +72,7 @@ function themeData(request) {
 }
 
 function homepage(request, reply) {
-  if (request.cookies.returning) {
+  if (request.cookies.dashboard == "true") {
     reply.view("dashboard.html", {
       ...themeData(request)
     });
@@ -91,7 +91,7 @@ fastify.get("/dashboard", function (request, reply) {
     time.setSeconds(time.getSeconds() + 8640000)
     reply.setCookie(
       "dashboard",
-      "show",
+      "true",
       {
         domain: domain,
         path: "/",
