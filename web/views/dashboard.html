@@ -1,0 +1,651 @@
+<!doctype html>
+<html lang="en">
+  <!--
+    Quizfreely
+    Copyright (c) Ehan Ahamed and contributors
+    Licensed under the UPL-1.0 License
+    https://quizfreely.com/LICENSE.txt
+  -->
+
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=10, user-scalable=1"
+    />
+    <title>Quizfreely</title>
+    <link rel="canonical" href="https://quizfreely.com" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <eta>~ data.themeCss </eta>
+    <link rel="stylesheet" href="/assets/fonts/fonts.css" />
+    <link
+      rel="stylesheet"
+      href="https://www.nerdfonts.com/assets/css/webfont.css"
+    />
+  </head>
+
+  <body>
+    <eta>~ include("./partials/body-start", { theme: data.theme }) </eta>
+    <eta>~ include("./partials/navbar", { page: "home" }) </eta>
+    <eta>~ include("./partials/noscript") </eta>
+    <main>
+      <div class="grid page">
+        <div class="content">
+          <!--
+          Starting point ig
+          -->
+          <div id="mainDashboarddiv">
+            <h2>Dashboard</h2>
+            <p>
+              Create a new study set or open a study set file you downloaded.
+            </p>
+            <div class="flex">
+              <button id="mainDashboardCreate" onclick="buttons.load.make();">
+                <i class="nf nf-oct-plus"></i>
+                Create new
+              </button>
+              <label for="inputImportLocalFile" class="button alt">
+                <i class="nf nf-md-import"></i>
+                Open file
+              </label>
+              <input id="inputImportLocalFile" class="invisible" type="file" />
+            </div>
+            <p>You can also import study sets from other apps.</p>
+            <div class="flex">
+              <button
+                onclick="document.getElementById('mainDashboardImportother').classList.remove('hide')"
+              >
+                <i class="nf nf-md-content_copy"></i>
+                Import
+              </button>
+            </div>
+            <div id="mainDashboardImportother" class="modal hide">
+              <div class="content">
+                <h2>Import from another app</h2>
+                <p>Delimiter/Seperator between term and definition</p>
+                <input
+                  type="text"
+                  placeholder="Term delimiter"
+                  id="mainDashboardImportotherTermdelimiter"
+                />
+                <p>
+                  Delimiter/Seperator between rows, leave blank to use a
+                  newline/enter
+                </p>
+                <input
+                  type="text"
+                  placeholder="Row delimiter"
+                  id="mainDashboardImportotherRowdelimiter"
+                />
+                <textarea
+                  id="mainDashboardImportotherData"
+                  class="fullWidth"
+                  rows="10"
+                  placeholder="Paste data here"
+                ></textarea>
+                <div class="flex">
+                  <button id="mainDashboardImportotherImportbutton">
+                    Import
+                  </button>
+                  <button
+                    class="red"
+                    onclick="document.getElementById('mainDashboardImportother').classList.add('hide')"
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div id="mainDashboardNewuserdiv" class="hide">
+              <p>
+                You are not signed in. You can continue using Quizfreely without
+                an account, <br />
+                or you can <a href="./start.html">get started</a> to save study
+                sets to an account instead of manually saving them.
+              </p>
+            </div>
+            <div id="mainDashboardUserdiv" class="hide">
+              <p>
+                You are signed in. Study sets saved to your account are shown
+                below.
+              </p>
+              <div
+                id="mainDashboardUserStudysetlistdiv"
+                class="grid list"
+              ></div>
+            </div>
+          </div>
+
+          <!--
+          Action section
+          -->
+          <div id="mainOpendiv" class="hide">
+            <div id="mainActionsSave" class="modal hide">
+              <div class="content">
+                <h2>Save?</h2>
+                <div id="mainOpenActionsSaveNewuserdiv">
+                  <div class="flex">
+                    <a
+                      id="mainOpenActionsSaveNewuserExportLocalDownload"
+                      class="button"
+                      >Download</a
+                    >
+                    <a href="./dashboard.html" class="button red">Cancel</a>
+                  </div>
+                </div>
+                <div id="mainOpenActionsSaveUserdiv" class="flex">
+                  <a class="button" id="mainWorkinprogressSavetoaccountbutton"
+                    >Save to account</a
+                  >
+                  <a
+                    id="mainOpenActionsSaveUserExportLocalDownload"
+                    class="button alt"
+                    >Download</a
+                  >
+                  <a href="./dashboard.html" class="button alt red">Cancel</a>
+                </div>
+                <div id="mainSaveClouderror" class="box red hide">
+                  <p>
+                    An unknown error prevented the study set from saving. Sorry
+                    ¯\_(ツ)_/¯
+                  </p>
+                </div>
+              </div>
+            </div>
+            <h2 id="mainActionsStudysettitle">Untitled Study Set</h2>
+            <p id="mainOpenCreator">
+              Created by <code id="mainOpenCreatorNickname">User</code>
+            </p>
+            <p id="mainOpenSavedone" class="bg3 hide">
+              <i class="nf nf-oct-check"></i>
+              Saved to account
+            </p>
+            <div id="mainOpenFlashcarddiv">
+              <button
+                class="exitFullscreen"
+                onclick="document.getElementById('mainOpenFlashcarddiv').classList.remove('fullscreen')"
+              >
+                Exit Fullscreen
+              </button>
+              <div>
+                <div
+                  class="card double"
+                  id="flashcardsCard"
+                  onclick="buttons.flashcards.flip()"
+                >
+                  <div class="content" id="flashcardsContent">
+                    <div class="front" id="flashcardsFront">front</div>
+                    <div class="back" id="flashcardsBack">back</div>
+                  </div>
+                </div>
+                <div class="caption centerThree">
+                  <p id="mainActionsFlashcardoptionsIndex">1/1</p>
+                  <div class="flex justifyselfcenter">
+                    <button
+                      id="flashcardsPrev"
+                      onclick="buttons.flashcards.prev()"
+                    >
+                      <i class="nf nf-cod-arrow_left"></i>
+                    </button>
+                    <button onclick="buttons.flashcards.flip()">Flip</button>
+                    <button
+                      id="flashcardsNext"
+                      onclick="buttons.flashcards.next()"
+                    >
+                      <i class="nf nf-cod-arrow_right"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="caption box activityList">
+              <p class="a0 center">Individual Studying</p>
+              <button
+                class="a1"
+                onclick="document.getElementById('mainOpenFlashcarddiv').classList.add('fullscreen')"
+              >
+                Fullscreen Flashcards
+              </button>
+              <button class="a2">Review Game</button>
+              <p class="b0 center">Group Activities</p>
+              <a class="b1 button" id="mainOpenActivitylistHost">
+                <!-- href is set in studySet.open() -->
+                Host Review Game
+              </a>
+              <a class="b2 button" href="./join.html">Join Review Game</a>
+            </div>
+            <!-- Add "this study set is private/public..." thingy here too -->
+            <div class="flex">
+              <button id="mainOpenEditbutton" onclick="buttons.open.edit();">
+                Edit
+              </button>
+              <button
+                onclick="exportLocal.save();document.getElementById(ui.elements.open.save).classList.remove('hide');"
+              >
+                Save or download a copy
+              </button>
+            </div>
+            <table class="outer" id="mainActionsTable">
+              <!--
+                IMPORTANT:
+                the html below is also used in buttons.js, (its copied into a string)
+                if this html is updated, change it there too
+              -->
+              <thead>
+                <tr>
+                  <th>Term</th>
+                  <th>Definition</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+            <div id="mainOpenBottomdiv">
+              <button
+                id="mainOpenBottomEditbutton"
+                onclick="buttons.open.edit();"
+              >
+                Edit
+              </button>
+              <button
+                id="mainOpenBottomCopybutton"
+                onclick="exportLocal.save();document.getElementById(ui.elements.open.save).classList.remove('hide');"
+              >
+                Save or download a copy
+              </button>
+            </div>
+          </div>
+          <div id="mainEditdiv" class="hide">
+            <div id="mainEditStudySetIsCopy" class="modal hide">
+              <div class="content">
+                <h2>¯\_(ツ)_/¯</h2>
+                <p>
+                  A study set with this name already exists in your account.
+                  <br />
+                  You can update/overwrite the existing copy or go back and
+                  rename this copy.
+                </p>
+                <div class="flex">
+                  <button id="mainEditStudySetIsCopyUpdate">
+                    Update existing
+                  </button>
+                  <button id="mainEditStudySetIsCopyBack">Go back</button>
+                </div>
+              </div>
+            </div>
+            <h2>Edit</h2>
+            <input id="mainEditName" type="text" placeholder="Title" />
+            <table class="outer" id="mainEditTable">
+              <!--
+                IMPORTANT:
+                the html below is also used in buttons.js, (its copied into a string)
+                if this html is updated, change it there too
+              -->
+              <thead>
+                <tr>
+                  <th class="center">Term</th>
+                  <th class="center">Definition</th>
+                  <th class="center">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    <div class="flex">
+                      <button onclick="buttons.edit.add();">
+                        <i class="nf nf-oct-plus"></i>
+                        Add row
+                      </button>
+                    </div>
+                  </td>
+                  <td></td>
+                  <td></td>
+                </tr>
+              </tbody>
+            </table>
+            <div id="mainEditSettingsPublic">
+              <div class="radio">
+                <input
+                  type="radio"
+                  name="public"
+                  id="publicFalse"
+                  checked="true"
+                />
+                <label for="publicFalse"
+                  >Private
+                  <span class="bg3"
+                    >(Visible to you and anyone you give the downloadable file
+                    to)</span
+                  ></label
+                >
+              </div>
+              <div class="radio">
+                <input type="radio" name="public" id="publicTrue" />
+                <label for="publicTrue"
+                  >Public
+                  <span class="bg3"
+                    >(Visible to everyone, can only be edited by you)</span
+                  ></label
+                >
+              </div>
+            </div>
+            <button id="buttonEditDone" onclick="buttons.edit.done()">
+              <i class="nf nf-oct-check"></i>
+              Done
+            </button>
+          </div>
+        </div>
+      </div>
+    </main>
+    <eta>~ include("./partials/footer") </eta>
+    <eta>~ include("./partials/body-end", { themes: data.themes, theme: data.theme }) </eta>
+    <script>
+      function loadDashboard() {
+        supabaseClient.auth.getUser().then(function (result) {
+          userId = result.data.user.id;
+        });
+        supabaseClient
+          .from("studyset")
+          .select()
+          .then(function (result) {
+            studysetlist = result.data;
+            if (studysetlist.length === 0) {
+              var box = document.createElement("div");
+              box.setAttribute("class", "box");
+              box.setAttribute("id", "mainDashboardUserStudysetlistEmpty");
+              document
+                .getElementById("mainDashboardUserStudysetlistdiv")
+                .appendChild(box);
+              document.getElementById(
+                "mainDashboardUserStudysetlistEmpty",
+              ).innerHTML = "<p>No study sets are saved to your account.</p>";
+            } else {
+              for (var i = 0; i < studysetlist.length; i++) {
+                /* the html structure below needs to be copied to reference 11 when changed */
+                var box = document.createElement("div");
+                box.setAttribute("class", "box");
+                box.setAttribute(
+                  "id",
+                  "mainDashboardUserStudysetlist" + i.toString(),
+                );
+                document
+                  .getElementById("mainDashboardUserStudysetlistdiv")
+                  .appendChild(box);
+                document.getElementById(
+                  "mainDashboardUserStudysetlist" + i.toString(),
+                ).innerHTML =
+                  "<p>" +
+                  studysetlist[i].name +
+                  "</p> <div class='flex'> <button id='mainDashboardUserStudysetlist" +
+                  i.toString() +
+                  "Openbutton'> Open </button> <button id='mainDashboardUserStudysetlist" +
+                  i.toString() +
+                  "Deletebutton' class='red'> Delete </button>";
+                document
+                  .getElementById(
+                    "mainDashboardUserStudysetlist" +
+                      i.toString() +
+                      "Openbutton",
+                  )
+                  .addEventListener("click", function (event) {
+                    sessionData.studySetData =
+                      /* studysetlist.ID.json */
+                      /* to get the selected ID, take event.target.id and remove the extra text like "mainDashboard..." and "Openbutton..." */
+                      studysetlist[
+                        event.target.id
+                          .replace("mainDashboardUserStudysetlist", "")
+                          .replace("Openbutton", "")
+                      ].json;
+                    studySet.open();
+                    document
+                      .getElementById("mainActionsSave")
+                      .classList.add("hide");
+                  });
+                document
+                  .getElementById(
+                    "mainDashboardUserStudysetlist" +
+                      i.toString() +
+                      "Deletebutton",
+                  )
+                  .addEventListener("click", function (event) {
+                    var thisId =
+                      studysetlist[
+                        event.target.id
+                          .replace("mainDashboardUserStudysetlist", "")
+                          .replace("Deletebutton", "")
+                      ].id;
+                    supabaseClient
+                      .from("studyset")
+                      .select()
+                      .eq("id", thisId)
+                      .then(function (result) {
+                        var thisName = result.data[0].name;
+                        supabaseClient
+                          .from("explore")
+                          .delete()
+                          .eq("user_id", userId)
+                          .eq("name", thisName)
+                          .then(function () {
+                            /*
+                            here we delete from studyset table
+                            AFTER we delete from explore
+                            (which is why this is in a .then())
+
+                            because we need to get the name from studyset table
+                            to be able to delete from explore table
+                            if we delete from studyset first, we cant delete from explore anymore
+                          */
+                            supabaseClient
+                              .from("studyset")
+                              .delete()
+                              .eq("id", thisId)
+                              .then(function () {
+                                /* remove self (and parent) from ui list */
+                                /* needs to change when structure changes (reference 11) */
+                                event.target.parentElement.parentElement.remove();
+                              });
+                          });
+                      });
+                  });
+              }
+            }
+          });
+      }
+
+      function saveEditedStudySet() {
+        if (states.current.isNewUser === false) {
+          supabaseClient
+            .from("studyset")
+            .insert({
+              user_id: userId,
+              name: sessionData.studySetData.name,
+              json: sessionData.studySetData,
+            })
+            .then(function (result) {
+              if (result.status === 201) {
+                document
+                  .getElementById(ui.elements.open.saveDone)
+                  .classList.remove("hide");
+                document
+                  .getElementById(ui.elements.open.save)
+                  .classList.add("hide");
+                document
+                  .getElementById("mainSaveClouderror")
+                  .classList.add("hide");
+              } else if (result.status !== 201) {
+                document
+                  .getElementById(ui.elements.open.saveDone)
+                  .classList.add("hide");
+                document
+                  .getElementById("mainSaveClouderror")
+                  .classList.remove("hide");
+              }
+            });
+          if (sessionData.studySetData.settings.public === true) {
+            getNickname(function (nickname) {
+              supabaseClient
+                .from("explore")
+                .insert({
+                  user_id: userId,
+                  user_nickname: nickname,
+                  name: sessionData.studySetData.name,
+                  json: sessionData.studySetData,
+                })
+                .then();
+            });
+          } else {
+            /* if its not public in settings, but the set is in explore from a previous save, delete it from explore */
+            supabaseClient
+              .from("explore")
+              .delete()
+              .eq("user_id", userId)
+              .eq("name", sessionData.studySetData.name)
+              .then();
+          }
+        } else if (states.current.isNewUser === true) {
+          alert(
+            "work in progress, states.current.isNewUser is true (20230908224800)",
+          );
+        }
+      }
+    </script>
+    <script src="./js/states.js"></script>
+    <script>
+      var ui = {
+        elements: {
+          sections: {
+            dashboard: "mainDashboarddiv",
+            open: "mainOpendiv",
+            edit: "mainEditdiv",
+            /* flashcards: document.getElementById("sectionFlashcards"), */
+          },
+          buttons: {
+            create: "mainDashboardCreate",
+            importOptions: "buttonImportOptions",
+          },
+          inputs: {
+            importLocal: {
+              file: "inputImportLocalFile",
+            },
+            edit: {
+              name: "mainEditName",
+              table: "mainEditTable",
+            },
+          },
+          links: {
+            exportLocal: {
+              newUserDownload: "mainOpenActionsSaveNewuserExportLocalDownload",
+              userDownload: "mainOpenActionsSaveUserExportLocalDownload",
+            },
+          },
+          alerts: {
+            successImport: "alertSuccessImport",
+            errorImport: "alertErrorImport",
+            flashcardsEnd: "alertFlashcardsEnd",
+          },
+          open: {
+            save: "mainActionsSave",
+            saveDone: "mainOpenSavedone",
+          },
+          edit: {
+            table: "mainEditTable",
+            settings: {
+              public: {
+                true: "publicTrue",
+                false: "publicFalse",
+              },
+            },
+            studySetIsCopy: "mainEditStudySetIsCopy",
+            studySetIsCopyButtons: {
+              update: "mainEditStudySetIsCopyUpdate",
+              back: "mainEditStudySetIsCopyBack",
+            },
+          },
+          flashcards: {
+            card: "flashcardsCard",
+            content: "flashcardsContent",
+            front: "flashcardsFront",
+            back: "flashcardsBack",
+          },
+          importOther: {
+            button: "mainDashboardImportotherImportbutton",
+            data: "mainDashboardImportotherData",
+            termDelimiter: "mainDashboardImportotherTermdelimiter",
+            rowDelimiter: "mainDashboardImportotherRowdelimiter",
+          },
+          activities: {
+            host: "mainOpenActivitylistHost",
+          },
+          states: {
+            newUser: [
+              "mainDashboardNewuserdiv",
+              "mainOpenActionsSaveNewuserdiv",
+            ],
+            user: [
+              "mainDashboardUserdiv",
+              "mainOpenActionsSaveUserdiv",
+              "mainEditSettingsPublic",
+            ],
+            setIsMine: ["mainOpenEditbutton", "mainOpenBottomEditbutton"],
+            setIsNotMine: ["mainOpenBottomCopybutton", "mainOpenCreator"],
+            setIsLarge: ["mainOpenBottomdiv"],
+          },
+        },
+        states: {
+          newUser: function (isNewUser) {
+            if (isNewUser === false) {
+              loadDashboard();
+            }
+          },
+        },
+      };
+    </script>
+    <script src="https://ehui.ehan.dev/js/ehUi.js"></script>
+    <script src="./js/sections.js"></script>
+    <script src="./js/buttons.js"></script>
+    <script src="./js/studySet.js"></script>
+    <script src="./js/sessionData.js"></script>
+    <script src="./js/importLocal.js"></script>
+    <script src="./js/edit.js"></script>
+    <script src="./js/exportLocal.js"></script>
+    <script src="./js/flashcards.js"></script>
+    <script src="./pocketbase/pocketbase.umd.js"></script>
+    <script src="./js/pocketbase.js"></script>
+    <script src="./js/exploreToDashboard.js"></script>
+    <script src="./js/importOther.js"></script>
+    <script>
+      /* functionality of studySetIsCopy buttons below */
+      document
+        .getElementById(ui.elements.edit.studySetIsCopyButtons.update)
+        .addEventListener("click", function () {
+          /* updateStudySet() & isStudySetCopy() are in js/supabase.js */
+          updateStudySet();
+          studySet.open();
+          document
+            .getElementById(ui.elements.edit.studySetIsCopy)
+            .classList.add("hide");
+        });
+      document
+        .getElementById(ui.elements.edit.studySetIsCopyButtons.back)
+        .addEventListener("click", function () {
+          document
+            .getElementById(ui.elements.edit.studySetIsCopy)
+            .classList.add("hide");
+        });
+      /*
+    Make download button also hide the modal when clicked (just like save to acc button)
+    */
+      document
+        .getElementById(ui.elements.links.exportLocal.newUserDownload)
+        .addEventListener("click", function () {
+          document.getElementById(ui.elements.open.save).classList.add("hide");
+        });
+      document
+        .getElementById(ui.elements.links.exportLocal.userDownload)
+        .addEventListener("click", function () {
+          document.getElementById(ui.elements.open.save).classList.add("hide");
+        });
+    </script>
+  </body>
+</html>
