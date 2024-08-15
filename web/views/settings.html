@@ -35,17 +35,28 @@
         <div class="content">
           <h2>Settings</h2>
           <h3>Appearance</h3>
-          <div class="box">
+          <div>
             <p>Theme</p>
             <div id="mainAppearanceThemediv">
+              <div class="grid list">
+                <a href="/settings/themes/auto" class="box select-card">
+                  <p>Auto</p>
+                </a>
+                <a href="/settings/themes/dark" class="box select-card">
+                  <p>Dark</p>
+                </a>
+                <a href="/settings/themes/light" class="box select-card">
+                  <p>Light</p>
+                </a>
+              </div>
               <div class="radio">
                 <input
                   type="radio"
                   name="theme"
-                  id="mainAppearanceThemeAuto"
+                  id="theme-auto"
                   checked
                 />
-                <label for="mainAppearanceThemeAuto">
+                <label for="theme-auto">
                   Follow device/browser settings
                   <span class="bg3">
                     (Automatic Dark/Light)
@@ -56,17 +67,17 @@
                 <input
                   type="radio"
                   name="theme"
-                  id="mainAppearanceThemeDark"
+                  id="theme-dark"
                 />
-                <label for="mainAppearanceThemeDark">Dark</label>
+                <label for="theme-dark">Dark</label>
               </div>
               <div class="radio">
                 <input
                   type="radio"
                   name="theme"
-                  id="mainAppearanceThemeLight"
+                  id="theme-light"
                 />
-                <label for="mainAppearanceThemeLight">Light</label>
+                <label for="theme-light">Light</label>
               </div>
             </div>
           </div>
@@ -101,50 +112,27 @@
               <button id="mainUserSignoutbutton" class="red">Sign out</button>
             </div>
           </div>
+          <h3>Data & Privacy</h3>
+          <div class="box">
+            <p>Some settings are stored as cookies.<br />
+            Quizfreely does not use third-party cookies or trackers.<br />
+            You can clear cookies here or through your browser settings.</p>
+            <a href="/settings/clear-cookies" class="button ohno">Clear Cookies</a>
+          </div>
+          <eta> if (data.modal == "clearedCookies") { </eta>
+          <div class="modal">
+            <div class="content">
+              <p>Cookies cleared :3</p>
+              <a href="/settings" class="button">Okay</a>
+            </div>
+          </div>
+          <eta> } </eta>
         </div>
       </div>
     </main>
     <eta>~ include("./partials/footer") </eta>
-    <eta>~ include("./partials/body-end", { themes: data.themes, theme: data.theme }) </eta>
     <script>
-      function setThemeCookie(theme) {
-        fetch("/settings/themes/" + theme, {
-          credentials: "same-origin"
-        }).then(
-        function (response) {
-          console.log(response);
-        })
-      }
-      /* this super short script tag is for theme settings */
-      document
-        .getElementById("mainAppearanceThemeAuto")
-        .addEventListener("change", function (event) {
-          ehui.theme.set("auto");
-          setThemeCookie("auto");
-          ehui.loadCss("/assets/themes/auto.css");
-        });
-      document
-        .getElementById("mainAppearanceThemeDark")
-        .addEventListener("change", function (event) {
-          ehui.theme.set("dark");
-          setThemeCookie("dark");
-          ehui.loadCss("/assets/themes/dark.css");
-        });
-      document
-        .getElementById("mainAppearanceThemeLight")
-        .addEventListener("change", function (event) {
-          ehui.theme.set("light");
-          setThemeCookie("light");
-          ehui.loadCss("/assets/themes/light.css");
-        });
-
-      if (localStorage.getItem("theme") === "auto") {
-        document.getElementById("mainAppearanceThemeAuto").checked = true;
-      } else if (localStorage.getItem("theme") === "dark") {
-        document.getElementById("mainAppearanceThemeDark").checked = true;
-      } else if (localStorage.getItem("theme") === "light") {
-        document.getElementById("mainAppearanceThemeLight").checked = true;
-      }
+      //document.getElementById("theme-<eta>= data.theme </eta>").checked = true
     </script>
     <script src="./js/states.js"></script>
     <script>
@@ -203,8 +191,6 @@
         },
       };
     </script>
-    <script src="./pocketbase/pocketbase.umd.js"></script>
-    <script src="./js/pocketbase.js"></script>
     <script>
       document
         .getElementById("mainUserSignoutbutton")
