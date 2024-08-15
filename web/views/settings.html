@@ -35,51 +35,17 @@
         <div class="content">
           <h2>Settings</h2>
           <h3>Appearance</h3>
-          <div>
-            <p>Theme</p>
-            <div id="mainAppearanceThemediv">
-              <div class="grid list">
-                <a href="/settings/themes/auto" class="box select-card">
-                  <p>Auto</p>
-                </a>
-                <a href="/settings/themes/dark" class="box select-card">
-                  <p>Dark</p>
-                </a>
-                <a href="/settings/themes/light" class="box select-card">
-                  <p>Light</p>
-                </a>
-              </div>
-              <div class="radio">
-                <input
-                  type="radio"
-                  name="theme"
-                  id="theme-auto"
-                  checked
-                />
-                <label for="theme-auto">
-                  Follow device/browser settings
-                  <span class="bg3">
-                    (Automatic Dark/Light)
-                  </span>
-                </label>
-              </div>
-              <div class="radio">
-                <input
-                  type="radio"
-                  name="theme"
-                  id="theme-dark"
-                />
-                <label for="theme-dark">Dark</label>
-              </div>
-              <div class="radio">
-                <input
-                  type="radio"
-                  name="theme"
-                  id="theme-light"
-                />
-                <label for="theme-light">Light</label>
-              </div>
-            </div>
+          <p>Theme</p>
+          <div class="grid list">
+            <a href="/settings/themes/auto" class="box link-box">
+              Auto
+            </a>
+            <a href="/settings/themes/dark" class="box link-box">
+              Dark
+            </a>
+            <a href="/settings/themes/light" class="box link-box">
+              Light
+            </a>
           </div>
           <h3>Account</h3>
           <div id="mainNewuserdiv" class="box">
@@ -117,7 +83,7 @@
             <p>Some settings are stored as cookies.<br />
             Quizfreely does not use third-party cookies or trackers.<br />
             You can clear cookies here or through your browser settings.</p>
-            <a href="/settings/clear-cookies" class="button ohno">Clear Cookies</a>
+            <a href="/settings/clear-cookies" class="button ohno">Clear cookies</a>
           </div>
           <eta> if (data.modal == "clearedCookies") { </eta>
           <div class="modal">
