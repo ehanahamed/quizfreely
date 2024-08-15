@@ -13,7 +13,24 @@ const apiUrl = "https://api.quizfreely.com"
 const apiPublicKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.ewogICJyb2xlIjogImFub24iLAogICJpc3MiOiAic3VwYWJhc2UiLAogICJpYXQiOiAxNzIzNTIxNjAwLAogICJleHAiOiAxODgxMjg4MDAwCn0.pwb3AzlkbzhG-OTbadLZzSdu6piEkss7WWYEMeFipj0"
 
 const fastify = Fastify({
-  logger: true
+  logger: {
+    level: "warn",
+    transport: {
+      target: "pino-pretty",
+      options: {
+        colorize: false,
+        colorizeObjects: false,
+        translateTime: "yyyy-mm-dd HH:MM:ss p",
+        ignore: "pid,hostname",
+        destination: path.join(
+          import.meta.dirname,
+          "logs",
+          new Date().toISOString().replace(":", "-").replace(":", "-").replace(".", "-")
+        ),
+        mkdir: true,
+      }
+    }
+  }
 })
 
 const eta = new Eta({
@@ -40,7 +57,8 @@ fastify.register(fastifyStatic, {
 })
 
 fastify.setErrorHandler(function (error, request, reply) {
-  this.log.error(error)
+  request.log.error("500 at " + request.url)
+  request.log.error(error)
   reply.status(500).send(
     "500 Internal Server Error\n" +
     ":(\n" +
@@ -49,6 +67,7 @@ fastify.setErrorHandler(function (error, request, reply) {
 })
 
 fastify.setNotFoundHandler(function (request, reply) {
+  request.log.warn("404 at " + request.url)
   reply.status(404).view("404.html", {
     ...themeData(request)
   })
@@ -104,7 +123,7 @@ fastify.get("/", homepage);
 fastify.get("/home", homepage);
 fastify.get("/dashboard", dashboard);
 fastify.get("/settings", function (request, reply) {
-  reply.view("settings.html", {
+  reply.view("settings.e", {
     ...themeData(request),
     modal: "none"
   })
