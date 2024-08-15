@@ -31,9 +31,7 @@ fastify.register(fastifyView, {
     eta
   },
   root: path.join(import.meta.dirname, "views"),
-  defaultContext: {
-    themes: JSON.stringify(themes)
-  }
+  //defaultContext: {}
 })
 
 fastify.register(fastifyStatic, {
@@ -111,11 +109,12 @@ fastify.get("/dashboard", function (request, reply) {
 });
 fastify.get("/settings", function (request, reply) {
   reply.view("settings.html", {
-    ...themeData(request)
+    ...themeData(request),
+    modal: "none"
   })
 });
 fastify.get("/sign-up", function (request, reply) {
-  reply.view("/account.html", {
+  reply.view("account.html", {
     signup: true,
     apiUrl: apiUrl,
     apiPublicKey: apiPublicKey,
@@ -124,7 +123,7 @@ fastify.get("/sign-up", function (request, reply) {
 })
 
 fastify.get("/sign-in", function (request, reply) {
-  reply.view("/account.html", {
+  reply.view("account.html", {
     signup: false,
     apiUrl: apiUrl,
     apiPublicKey: apiPublicKey,
@@ -133,13 +132,13 @@ fastify.get("/sign-in", function (request, reply) {
 })
 
 fastify.get("/edit", function (request, reply) {
-  reply.view("/edit.html", {
+  reply.view("edit.html", {
     ...themeData(request)
   })
 })
 
 fastify.get("/privacy", function (request, reply) {
-  reply.view("/privacy.html", {
+  reply.view("privacy.html", {
     ...themeData(request)
   })
 })
@@ -165,10 +164,23 @@ fastify.get("/settings/themes/:theme", function (request, reply) {
         on localhost, browsers send it even if localhost isn't using https */
         secure: true
       }
-    ).send("ok :3")
+    ).view("settings.html", {
+      ...themeData({ cookies: { theme: request.params.theme }}),
+      modal: "none"
+    })
   } else {
-    reply.status(400).send("invalid request body :(")
+    reply.callNotFound()
   }
+})
+
+fastify.get("/settings/clear-cookies", function (request, reply) {
+  reply.clearCookie("theme").clearCookie("dashboard").view(
+    "settings.html",
+    {
+      ...themeData(request),
+      modal: "clearedCookies"
+    }
+  )
 })
 
 fastify.listen({
