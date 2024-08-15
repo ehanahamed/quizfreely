@@ -69,11 +69,30 @@ function themeData(request) {
   }
 }
 
+function dashboard(request, reply) {
+  let themeDataObj = themeData(request);
+  let cookieOptionsObj = cookieOptions();
+  /*
+    cookies are not permanent, they eventually expire
+    resetting the expiration date on every page doesn't make sense
+    instead we refresh/update the expiration date when users visit the dashboard
+  */
+  reply.setCookie(
+    "dashboard",
+    "true",
+    cookieOptionsObj
+  ).setCookie(
+    "theme",
+    themeDataObj.theme,
+    cookieOptionsObj
+  ).view("dashboard.html", {
+    ...themeDataObj
+  })
+}
+
 function homepage(request, reply) {
   if (request.cookies.dashboard == "true") {
-    reply.view("dashboard.html", {
-      ...themeData(request)
-    });
+    dashboard(request, reply);
   } else {
     reply.view("home.html", {
       ...themeData(request)
@@ -83,30 +102,7 @@ function homepage(request, reply) {
 
 fastify.get("/", homepage);
 fastify.get("/home", homepage);
-fastify.get("/dashboard", function (request, reply) {
-  let time = new Date();
-    /* 100 days * 24h * 60m * 60s = 8640000 sec for 100 days */
-    time.setSeconds(time.getSeconds() + 8640000)
-    reply.setCookie(
-      "dashboard",
-      "true",
-      {
-        domain: domain,
-        path: "/",
-        signed: false,
-        expires: time,
-        maxAge: 8640000,
-        httpOnly: true,
-        sameSite: "lax",
-        /* when secure is true,
-        browsers only send the cookie through https,
-        on localhost, browsers send it even if localhost isn't using https */
-        secure: true
-      }
-    ).view("dashboard.html", {
-      ...themeData(request)
-    })
-});
+fastify.get("/dashboard", dashboard);
 fastify.get("/settings", function (request, reply) {
   reply.view("settings.html", {
     ...themeData(request),
@@ -143,27 +139,31 @@ fastify.get("/privacy", function (request, reply) {
   })
 })
 
+function cookieOptions() {
+  let time = new Date();
+  /* 100 days * 24h * 60m * 60s = 8640000 sec for 100 days */
+  time.setSeconds(time.getSeconds() + 8640000)
+  return {
+    domain: domain,
+    path: "/",
+    signed: false,
+    expires: time,
+    maxAge: 8640000,
+    httpOnly: true,
+    sameSite: "lax",
+    /* when secure is true,
+    browsers only send the cookie through https,
+    on localhost, browsers send it even if localhost isn't using https */
+    secure: true
+  }
+}
+
 fastify.get("/settings/themes/:theme", function (request, reply) {
   if (themes.includes(request.params.theme)) {
-    let time = new Date();
-    /* 100 days * 24h * 60m * 60s = 8640000 sec for 100 days */
-    time.setSeconds(time.getSeconds() + 8640000)
     reply.setCookie(
       "theme",
       request.params.theme,
-      {
-        domain: domain,
-        path: "/",
-        signed: false,
-        expires: time,
-        maxAge: 8640000,
-        httpOnly: true,
-        sameSite: "lax",
-        /* when secure is true,
-        browsers only send the cookie through https,
-        on localhost, browsers send it even if localhost isn't using https */
-        secure: true
-      }
+      cookieOptions()
     ).view("settings.html", {
       ...themeData({ cookies: { theme: request.params.theme }}),
       modal: "none"
