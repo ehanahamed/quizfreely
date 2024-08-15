@@ -345,7 +345,6 @@
       </div>
     </main>
     <eta>~ include("./partials/footer") </eta>
-    <eta>~ include("./partials/body-end", { themes: data.themes, theme: data.theme }) </eta>
     <script>
       function loadDashboard() {
         supabaseClient.auth.getUser().then(function (result) {
