@@ -123,7 +123,7 @@ fastify.get("/", homepage);
 fastify.get("/home", homepage);
 fastify.get("/dashboard", dashboard);
 fastify.get("/settings", function (request, reply) {
-  reply.view("settings.e", {
+  reply.view("settings.html", {
     ...themeData(request),
     modal: "none"
   })
