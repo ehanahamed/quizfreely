@@ -1,9 +1,22 @@
-# BEFORE MERGE
+# Quizfreely
+
+Quizfreely is a free and open source studying tool.
+
+
+
+## Before merging main to dist
 
 - remove temporary, cherry-picked, commits currently in dist
-- re-replace `main.quizfreely.com` with `quizfreely.com`
 - make sure all `quizfreely.ehan.dev` urls have been updated to `quizfreely.com`
   - check stuff outside the source code like ~~supabase~~, google cloud, social profiles, ehan.dev site, etc
+- make sure all `main.quizfreely.com` urls and `abc.supabase.co` urls have been removed
+  - check stuff outside the source code like google cloud, social profiles, ehan.dev site, etc
+
+Implement import & export from/to:
+- scholarsome
+  - https://scholarsome.com/
+  - https://github.com/hwgilbert16/scholarsome
+  - ❤️ it's free & open source, just like quizfreely
 
 Implement import from...
 
