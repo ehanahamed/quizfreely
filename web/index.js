@@ -4,7 +4,9 @@ import fastifyCookie from "@fastify/cookie";
 import fastifyStatic from "@fastify/static";
 import path from "path";
 import { Eta } from "eta";
+import { createClient } from '@supabase/supabase-js'
 import { themes } from "./themes.js";
+import { create } from "domain";
 
 const port = 8080
 /* for prod: "quizfreely.com" */
@@ -186,6 +188,23 @@ fastify.get("/settings/clear-cookies", function (request, reply) {
       modal: "clearedCookies"
     }
   )
+})
+
+const supabase = createClient(apiUrl, apiPublicKey);
+fastify.get("/studysets/:studyset", function (request, reply) {
+  supabase.from("studysets").select().eq(
+    "id",
+    request.params.studyset
+  ).then(function (result) {
+    if (result.error == null && result.status == 200 && result.data.length == 1) {
+      reply.view("studyset.html", {
+        ...themeData(request),
+
+      })
+    } else {
+      reply.callNotFound()
+    }
+  })
 })
 
 fastify.listen({
