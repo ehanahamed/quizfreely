@@ -88,27 +88,26 @@
               <div>
                 <div
                   class="card double"
-                  id="flashcardsCard"
-                  onclick="buttons.flashcards.flip()"
+                  id="flashcard"
                 >
-                  <div class="content" id="flashcardsContent">
-                    <div class="front" id="flashcardsFront">front</div>
-                    <div class="back" id="flashcardsBack">back</div>
+                  <div class="content">
+                    <div class="front" id="flashcard-front">front</div>
+                    <div class="back" id="flashcard-back">back</div>
                   </div>
                 </div>
                 <div class="caption centerThree">
-                  <p id="mainActionsFlashcardoptionsIndex">1/1</p>
+                  <p id="flashcards-count">
+                    1/<eta>= data.studyset.data.terms.length </eta>
+                  </p>
                   <div class="flex justifyselfcenter">
                     <button
-                      id="flashcardsPrev"
-                      onclick="buttons.flashcards.prev()"
+                      id="flashcards-prev-button"
                     >
                       <i class="nf nf-cod-arrow_left"></i>
                     </button>
-                    <button onclick="buttons.flashcards.flip()">Flip</button>
+                    <button id="flashcards-flip-button">Flip</button>
                     <button
-                      id="flashcardsNext"
-                      onclick="buttons.flashcards.next()"
+                      id="flashcards-next-button"
                     >
                       <i class="nf nf-cod-arrow_right"></i>
                     </button>
@@ -277,6 +276,38 @@
           document.getElementById("edit-button").classList.remove("hide");
         }
       })
+    </script>
+    <script>
+      var studyset = JSON.parse("<eta>~ JSON.stringify(data.studyset).replaceAll('\\', '\\\\').replaceAll('\"', '\\\"') </eta>")
+      var flashcardsIndex = 0;
+      function flashcardsFlip() {
+        document.getElementById("flashcard").classList.toggle("flip");
+      }
+      document.getElementById("flashcard").addEventListener("click", flashcardsFlip);
+      document.getElementById("flashcards-flip-button").addEventListener("click", flashcardsFlip);
+      
+      function flashcardsChange() {
+        document.getElementById("flashcard-front").innerText = studyset.data.terms[flashcardsIndex][0]
+        document.getElementById("flashcard-back").innerText = studyset.data.terms[flashcardsIndex][1]
+        let flashcardsCount = flashcardsIndex + 1
+        document.getElementById("flashcards-count").innerText = flashcardsCount + "/" + studyset.data.terms.length;
+      }
+
+      function flashcardsNext() {
+        if (flashcardsIndex < (studyset.data.terms.length - 1)) {
+          flashcardsIndex += 1
+          flashcardsChange()
+        }
+      }
+      document.getElementById("flashcards-next-button").addEventListener("click", flashcardsNext);
+
+      function flashcardsPrev() {
+        if (flashcardsIndex > 0) {
+          flashcardsIndex -= 1
+          flashcardsChange()
+        }
+      }
+      document.getElementById("flashcards-prev-button").addEventListener("click", flashcardsPrev);
     </script>
   </body>
 </html>
