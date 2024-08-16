@@ -33,101 +33,11 @@
     <main>
       <div class="grid page">
         <div class="content">
-          <!--
-          Starting point ig
-          -->
-          <div id="mainDashboarddiv">
-            <div class="grid list">
-              <div class="box flex center-h center-v">
-                <div>
-                  Create New
-                </div>
-              </div>
-            </div>
-            <p>
-              Create a new study set or open a study set file you downloaded.
-            </p>
-            <div class="flex">
-              <button id="mainDashboardCreate" onclick="buttons.load.make();">
-                <i class="nf nf-oct-plus"></i>
-                Create new
-              </button>
-              <label for="inputImportLocalFile" class="button alt">
-                <i class="nf nf-md-import"></i>
-                Open file
-              </label>
-              <input id="inputImportLocalFile" class="invisible" type="file" />
-            </div>
-            <p>You can also import study sets from other apps.</p>
-            <div class="flex">
-              <button
-                onclick="document.getElementById('mainDashboardImportother').classList.remove('hide')"
-              >
-                <i class="nf nf-md-content_copy"></i>
-                Import
-              </button>
-            </div>
-            <div id="mainDashboardImportother" class="modal hide">
-              <div class="content">
-                <h2>Import from another app</h2>
-                <p>Delimiter/Seperator between term and definition</p>
-                <input
-                  type="text"
-                  placeholder="Term delimiter"
-                  id="mainDashboardImportotherTermdelimiter"
-                />
-                <p>
-                  Delimiter/Seperator between rows, leave blank to use a
-                  newline/enter
-                </p>
-                <input
-                  type="text"
-                  placeholder="Row delimiter"
-                  id="mainDashboardImportotherRowdelimiter"
-                />
-                <textarea
-                  id="mainDashboardImportotherData"
-                  class="fullWidth"
-                  rows="10"
-                  placeholder="Paste data here"
-                ></textarea>
-                <div class="flex">
-                  <button id="mainDashboardImportotherImportbutton">
-                    Import
-                  </button>
-                  <button
-                    class="red"
-                    onclick="document.getElementById('mainDashboardImportother').classList.add('hide')"
-                  >
-                    Cancel
-                  </button>
-                </div>
-              </div>
-            </div>
-            <div id="mainDashboardNewuserdiv" class="hide">
-              <p>
-                You are not signed in. You can continue using Quizfreely without
-                an account, <br />
-                or you can <a href="./start.html">get started</a> to save study
-                sets to an account instead of manually saving them.
-              </p>
-            </div>
-            <div id="mainDashboardUserdiv" class="hide">
-              <p>
-                You are signed in. Study sets saved to your account are shown
-                below.
-              </p>
-              <div
-                id="mainDashboardUserStudysetlistdiv"
-                class="grid list"
-              ></div>
-            </div>
-          </div>
 
           <!--
           Action section
           -->
-          <div id="mainOpendiv" class="hide">
+          <div id="mainOpendiv">
             <div id="mainActionsSave" class="modal hide">
               <div class="content">
                 <h2>Save?</h2>
