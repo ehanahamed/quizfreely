@@ -197,9 +197,21 @@ fastify.get("/studysets/:studyset", function (request, reply) {
     request.params.studyset
   ).then(function (result) {
     if (result.error == null && result.status == 200 && result.data.length == 1) {
-      reply.view("studyset.html", {
-        ...themeData(request),
-
+      supabase.from("profiles").select().eq(
+        "id",
+        result.data[0].user_id
+      ).then(function (result2) {
+        let profile = {
+          display_name: "Unnamed User"
+        };
+        if (result2.error == null && result2.status == 200 && result2.data.length == 1) {
+          profile = result2.data[0]
+        }
+        reply.view("studyset.html", {
+          ...themeData(request),
+          studyset: result.data[0],
+          profile: profile
+        })
       })
     } else {
       reply.callNotFound()
