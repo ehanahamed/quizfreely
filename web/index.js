@@ -15,21 +15,7 @@ const apiPublicKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.ewogICJyb2xlIjogImFub
 const fastify = Fastify({
   logger: {
     level: "warn",
-    transport: {
-      target: "pino-pretty",
-      options: {
-        colorize: false,
-        colorizeObjects: false,
-        translateTime: "yyyy-mm-dd HH:MM:ss p",
-        ignore: "pid,hostname",
-        destination: path.join(
-          import.meta.dirname,
-          "logs",
-          new Date().toISOString().replace(":", "-").replace(":", "-").replace(".", "-")
-        ),
-        mkdir: true,
-      }
-    }
+    file: path.join(import.meta.dirname, "logs/logfile.log")
   }
 })
 
