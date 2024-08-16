@@ -210,7 +210,9 @@ fastify.get("/studysets/:studyset", function (request, reply) {
         reply.view("studyset.html", {
           ...themeData(request),
           studyset: result.data[0],
-          profile: profile
+          profile: profile,
+          apiUrl: apiUrl,
+          apiPublicKey: apiPublicKey
         })
       })
     } else {
