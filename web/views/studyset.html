@@ -74,6 +74,16 @@
             <p id="mainOpenCreator">
               Created by <a href="/users/<eta>= data.studyset.user_id</eta>"><eta>= data.profile.display_name </eta></a>
             </p>
+            <div id="edit-menu" class="flex hide">
+              <a href="./edit" class="button">
+                <i class="nf nf-fa-pencil"></i>
+                Edit
+              </a>
+              <a href="./edit" class="button alt">
+                <i class="nf nf-md-cog"></i>
+                Settings
+              </a>
+            </div>
             <p id="mainOpenSavedone" class="bg3 hide">
               <i class="nf nf-oct-check"></i>
               Saved to account
@@ -116,49 +126,35 @@
                       <i class="nf nf-cod-arrow_right"></i>
                     </button>
                   </div>
+                  <div class="flex end">
+                    <button>
+                      <i class="nf nf-md-fullscreen"></i>
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
-            <div class="caption box activityList">
-              <p class="a0 center">Individual Studying</p>
-              <button
-                class="a1"
-                onclick="document.getElementById('mainOpenFlashcarddiv').classList.add('fullscreen')"
-              >
-                Fullscreen Flashcards
+            <div class="caption grid list">
+              <button id="fullscreen-flashcards-button" class="alt">
+                <i class="nf nf-md-card_multiple"></i>
+                Flashcards
               </button>
-              <button class="a2">Review Game</button>
-              <p class="b0 center">Group Activities</p>
-              <a class="b1 button" id="mainOpenActivitylistHost">
-                <!-- href is set in studySet.open() -->
-                Host Review Game
+              <a href="./review" class="button alt">
+                <i class="nf nf-fa-book"></i>
+                Review Mode
               </a>
-              <a class="b2 button" href="./join.html">Join Review Game</a>
+              <a href="./test" class="button alt">
+                <i class="nf nf-md-list_status"></i>
+                Practice Test
+              </a>
             </div>
             <!-- Add "this study set is private/public..." thingy here too -->
-            <div class="flex">
-              <button id="mainOpenEditbutton" onclick="buttons.open.edit();">
-                Edit
-              </button>
-              <button
-                onclick="exportLocal.save();document.getElementById(ui.elements.open.save).classList.remove('hide');"
-              >
-                Save or download a copy
-              </button>
-            </div>
-            <table class="outer" id="mainActionsTable">
-              <!--
-                IMPORTANT:
-                the html below is also used in buttons.js, (its copied into a string)
-                if this html is updated, change it there too
-              -->
-              <thead>
+            <table class="outer caption box">
+              <tbody>
                 <tr>
                   <th>Term</th>
                   <th>Definition</th>
                 </tr>
-              </thead>
-              <tbody>
                 <eta> data.studyset.data.terms.forEach(function (term) { </eta>
                 <tr>
                   <td>
@@ -171,20 +167,6 @@
                 <eta>})</eta>
               </tbody>
             </table>
-            <div id="mainOpenBottomdiv">
-              <button
-                id="mainOpenBottomEditbutton"
-                onclick="buttons.open.edit();"
-              >
-                Edit
-              </button>
-              <button
-                id="mainOpenBottomCopybutton"
-                onclick="exportLocal.save();document.getElementById(ui.elements.open.save).classList.remove('hide');"
-              >
-                Save or download a copy
-              </button>
-            </div>
           </div>
           <div id="mainEditdiv" class="hide">
             <div id="mainEditStudySetIsCopy" class="modal hide">
@@ -277,7 +259,7 @@
       )
       sb.auth.getSession().then(function (result) {
         if (result.error == null && result.data.session.user.id == "<eta>= data.studyset.user_id </eta>") {
-          document.getElementById("edit-button").classList.remove("hide");
+          document.getElementById("edit-menu").classList.remove("hide");
         }
       })
     </script>
@@ -312,6 +294,10 @@
         }
       }
       document.getElementById("flashcards-prev-button").addEventListener("click", flashcardsPrev);
+
+      document.getElementById("fullscreen-flashcards-button").addEventListener("click", function () {
+        document.getElementById('mainOpenFlashcarddiv').classList.add('fullscreen')
+      })
     </script>
   </body>
 </html>
