@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "main": "index.js",
   "type": "module",
-  "scripts": {},
+  "scripts": {
+    "start": "node index.js"
+  },
   "author": "Ehan Ahamed and contributors",
   "license": "MIT",
   "description": "",
