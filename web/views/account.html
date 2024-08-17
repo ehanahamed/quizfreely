@@ -72,6 +72,11 @@
     <eta>~ include("./partials/navbar", { page: "account" }) </eta>
     <eta>~ include("./partials/noscript") </eta>
     <main>
+      <div id="error-div" class="grid page hide">
+        <div class="content">
+          <p id="error-text" class="box ohno">Error</p>
+        </div>
+      </div>
         <eta> if (data.signup) { </eta>
           <div id="account-div">
           <div class="grid screen">
@@ -191,11 +196,6 @@
           </div>
         </div>
         <eta> } </eta>
-        <div id="error-div" class="grid page hide">
-          <div class="content">
-            <p id="error-text" class="box ohno">Error</p>
-          </div>
-        </div>
         <div id="signedin-div" class="grid page hide">
           <div class="content">
             <h2>You're signed in!</h2>
