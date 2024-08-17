@@ -275,6 +275,10 @@
         }).then(function (result) {
           if (result.error == null) {
             showSignedIn()
+          } else {
+            showError()
+            document.getElementById("error-text").innerHTML =
+              "<b>Error</b>: " + result.error.message;
           }
         })
       })
