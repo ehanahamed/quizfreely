@@ -25,6 +25,12 @@ Now you will have `quizfreely/web/`
 cd web
 ```
 
+make sure you have nodejs v20 lts (or higher) installed,
+install node modules
+```sh
+npm install
+```
+
 Now copy the example .env file:
 ```sh
 cp .env.example .env
