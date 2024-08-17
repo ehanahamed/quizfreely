@@ -2,9 +2,9 @@
 
 Quizfreely is a free and open source studying tool.
 
-## Server thingy thingy
+## Server setup
 
-To run that `quizfreely/web/` server thing, do:
+To run `quizfreely/web/` server:
 
 Clone without downloading the whole repo:
 ```sh
@@ -21,6 +21,33 @@ git checkout
 ```
 
 Now you will have `quizfreely/web/`
+```sh
+cd web
+```
+
+Now copy the example .env file:
+```sh
+cp .env.example .env
+```
+
+Now edit the .env file and make sure everything is correct, there are comments inside it for everything.
+
+Now, copy the systemd service file into its correct location (usually `/etc/systemd/system/`)
+```sh
+cp quizfreely-web.service /etc/systemd/system/
+```
+
+The systemd service file assumes you cloned quizfreely/web into `/root/quizfreely/web`. If you cloned it into a different path, change the path in the `ExecStart` line of the systemd file you just copied.
+
+Reload systemd thingies
+```sh
+systemctl daemon-reload
+```
+
+Start the systemd service
+```sh
+systemctl start quizfreely-web
+```
 
 ## Before merging main to dist
 
