@@ -49,6 +49,20 @@ Start the systemd service
 systemctl start quizfreely-web
 ```
 
+### Checking & managing the service
+In case you don't know how to use systemctl, useful commands are listed here:
+
+```sh
+# start the service
+systemctl start quizfreely-web
+# check if it's running or if there's errors
+systemctl status quizfreely-web
+# stop the service
+systemctl stop quizfreely-web
+```
+
+We **usually** don't need to enable or disable the service, we just start or stop it.
+
 ## Before merging main to dist
 
 - remove temporary, cherry-picked, commits currently in dist
