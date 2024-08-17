@@ -1,18 +1,18 @@
+import "dotenv/config"
 import Fastify from "fastify";
+import fastifyStatic from "@fastify/static";
 import fastifyView from "@fastify/view";
 import fastifyCookie from "@fastify/cookie";
-import fastifyStatic from "@fastify/static";
 import path from "path";
 import { Eta } from "eta";
 import { createClient } from '@supabase/supabase-js'
 import { themes } from "./themes.js";
-import { create } from "domain";
 
-const port = 8080
-/* for prod: "quizfreely.com" */
-const domain = "localhost"
-const apiUrl = "https://api.quizfreely.com"
-const apiPublicKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.ewogICJyb2xlIjogImFub24iLAogICJpc3MiOiAic3VwYWJhc2UiLAogICJpYXQiOiAxNzIzNTIxNjAwLAogICJleHAiOiAxODgxMjg4MDAwCn0.pwb3AzlkbzhG-OTbadLZzSdu6piEkss7WWYEMeFipj0"
+const port = process.env.PORT
+const host = process.env.HOST
+const apiUrl = process.env.API_URL
+const apiPublicKey = process.env.API_PUBLIC_KEY
+const cookiesDomain = process.env.COOKIES_DOMAIN
 
 const fastify = Fastify({
   logger: {
@@ -151,7 +151,7 @@ function cookieOptions() {
   /* 100 days * 24h * 60m * 60s = 8640000 sec for 100 days */
   time.setSeconds(time.getSeconds() + 8640000)
   return {
-    domain: domain,
+    domain: cookiesDomain,
     path: "/",
     signed: false,
     expires: time,
@@ -222,5 +222,6 @@ fastify.get("/studysets/:studyset", function (request, reply) {
 })
 
 fastify.listen({
-  port: port
+  port: port,
+  host: host
 })
