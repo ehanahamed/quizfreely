@@ -50,16 +50,17 @@
           <h3>Account</h3>
           <div id="mainNewuserdiv" class="box">
             <p>
-              You are not signed in to an account,
-              <a href="./start.html">get started?</a>
+              You're not signed in.<br />
+              Do you want to <a href="./sign-in">sign in</a> or <a href="./sign-up">create an account</a>?
             </p>
           </div>
-          <div id="mainUserdiv" class="box hide">
-            <p>Display name: <code id="mainUserNickname">nickname</code></p>
-            <div id="mainUserEmailless" class="hide">
+          <div id="signedin-div" class="box hide">
+            <p>Display name:</p>
+            <input type="text" id="display-name" placeholder="Display Name" />
+            <div id="emailless-div" class="hide">
               <p>Username: <code id="mainUserUsername">username</code></p>
             </div>
-            <div id="mainUserGoogle" class="hide">
+            <div id="gaccount-div" class="hide">
               <p class="bg3">Signed in with Google</p>
               <p>Google account: <code id="mainUserGoogleemail">email</code></p>
             </div>
@@ -75,14 +76,15 @@
               >
             </div>
             <div class="flex">
-              <button id="mainUserSignoutbutton" class="red">Sign out</button>
+              <button id="signout-button" class="red">Sign out</button>
             </div>
           </div>
           <h3>Data & Privacy</h3>
           <div class="box">
             <p>Some settings are stored as cookies.<br />
             Quizfreely does not use third-party cookies or trackers.<br />
-            You can clear cookies here or through your browser settings.</p>
+            You can clear cookies here or through your browser settings,<br />
+            but clearing them will reset some settings.</p>
             <a href="/settings/clear-cookies" class="button ohno">Clear cookies</a>
           </div>
           <eta> if (data.modal == "clearedCookies") { </eta>
@@ -159,11 +161,10 @@
     </script>
     <script>
       document
-        .getElementById("mainUserSignoutbutton")
+        .getElementById("signout-button")
         .addEventListener("click", function () {
           /* sign out then change signed in state without reload */
-          pocketbase.authStore.clear();
-          states.newUser(true);
+          
         });
     </script>
   </body>
