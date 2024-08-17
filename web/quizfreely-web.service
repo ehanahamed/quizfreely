@@ -8,6 +8,7 @@ StartLimitIntervalSec=10
 Restart=always
 RestartSec=1
 ExecStart=/usr/bin/npm run --prefix /root/quizfreely/web start
+TimeoutStopSec=5
 
 [Install]
 WantedBy=multi-user.target
