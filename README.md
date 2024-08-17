@@ -7,14 +7,14 @@ Quizfreely is a free and open source studying tool.
 To run that `quizfreely/web/` server thing, do:
 
 Clone without downloading the whole repo:
-```
+```sh
 git clone --filter=blob:none --no-checkout --depth 1 --sparse https://github.com/ehanahamed/quizfreely
 # or, for dist branch:
 # git clone --filter=blob:none --no-checkout --depth 1 --sparse https://github.com/ehanahamed/quizfreely --branch dist
 ```
 
 Then, get just the web folder:
-```
+```sh
 cd quizfreely
 git sparse-checkout add web
 git checkout
