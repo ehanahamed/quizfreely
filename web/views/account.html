@@ -210,14 +210,19 @@
         "<eta>= data.apiUrl </eta>",
         "<eta>= data.apiPublicKey </eta>"
       )
-      function signedIn() {
+      function showSignedIn() {
         document.getElementById("account-div").classList.add("hide");
         document.getElementById("error-div").classList.add("hide");
         document.getElementById("signedin-div").classList.remove("hide");
       }
+      function showError() {
+        document.getElementById("account-div").classList.remove("hide");
+        document.getElementById("error-div").classList.remove("hide");
+        document.getElementById("signedin-div").classList.add("hide");
+      }
       sb.auth.getSession().then(function (result) {
-        if (result.error == null && result.data.session.user) {
-          signedIn()
+        if (result.error == null && result.data.session) {
+          showSignedIn()
         }
       })
       document.getElementById("gaccount-button").addEventListener("click", function () {
@@ -232,26 +237,29 @@
         if (
           document.getElementById("signupPasswordInput").value === document.getElementById("signupPasswordConfirmInput").value
         ) {
+          document.getElementById("error-div").classList.add("hide");
           var username = document.getElementById("signupUsernameInput").value
           sb.auth.signUp({
             email: "user-" + username + "@quizfreely.com",
             password: document.getElementById("signupPasswordInput").value
           }).then(function (result) {
             if (result.error == null) {
-              document.getElementById("error-div").classList.add("hide");
               /* from supabase js reference: "If Confirm email is disabled, both a user and a session are returned."
               this means we can insert into RLS-protected tables correctly after signup (yay) */
               sb.from("profiles").insert({
                 id: result.data.user.id,
                 display_name: username
               }).then(function (result) {
-                signedIn()
+                showSignedIn()
               })
+            } else {
+              showError();
+              document.getElementById("error-text").innerHTML =
+                "<b>Error</b>: " + result.error.message;
             }
           });
         } else {
-          document.getElementById("error-div").classList.remove("hide");
-          document.getElementById("signedin-div").classList.add("hide");
+          showError();
           document.getElementById("error-text").innerHTML =
             "Passwords don't match <b>D:</b> <br />" +
             "Make sure you retyped your password how you want!";
@@ -266,7 +274,7 @@
           password: document.getElementById("signinPasswordInput").value
         }).then(function (result) {
           if (result.error == null) {
-            signedIn()
+            showSignedIn()
           }
         })
       })
