@@ -17,7 +17,7 @@ const cookiesDomain = process.env.COOKIES_DOMAIN
 const fastify = Fastify({
   logger: {
     level: "warn",
-    file: path.join(import.meta.dirname, "logs/logfile.log")
+    file: path.join(import.meta.dirname, "logfile.log")
   }
 })
 
