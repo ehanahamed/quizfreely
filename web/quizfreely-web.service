@@ -7,7 +7,8 @@ StartLimitIntervalSec=10
 [Service]
 Restart=always
 RestartSec=1
-ExecStart=npm run --prefix /root/quizfreely/web start
+WorkingDirectory=/root/quizfreely/web/
+ExecStart=/usr/bin/npm run start
 TimeoutStopSec=5
 
 [Install]
