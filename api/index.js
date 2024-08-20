@@ -46,7 +46,7 @@ function cookieOptions() {
 
 function clearExpiredSessions() {
   fastify.pg.query(
-    "delete from auth.sessions where expires < clock_timestamp()",
+    "delete from auth.sessions where expire_at < clock_timestamp()",
     [],
     function (error, result) {
       if (error) {
