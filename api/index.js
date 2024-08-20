@@ -66,7 +66,7 @@ function newSessionCookie(request, reply, userId) {
         "values ($1) returning token",
         [userId],
         function (error, result) {
-            if (error, result) {
+            if (error) {
                 request.log.error(error);
                 return false;
             } else {
