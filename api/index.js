@@ -20,9 +20,68 @@ const fastify = Fastify({
 fastify.register(fastifyCors, {
   origin: corsOrigin
 })
+fastify.register(fastifyCookie)
 fastify.register(fastifyPostgres, {
   connectionString: pgConnection
 })
+
+function cookieOptions() {
+  let time = new Date();
+  /* 7 days * 24h * 60m * 60s = 8640000 sec for 100 days */
+  time.setSeconds(time.getSeconds() + 604800)
+  return {
+    domain: cookiesDomain,
+    path: "/",
+    signed: false,
+    expires: time,
+    maxAge: 604800,
+    httpOnly: true,
+    sameSite: "lax",
+    /* when secure is true,
+    browsers only send the cookie through https,
+    on localhost, browsers send it even if localhost isn't using https */
+    secure: true
+  }
+}
+
+function clearExpiredSessions() {
+  fastify.pg.query(
+    "delete from auth.sessions where expires < clock_timestamp()",
+    [],
+    function (error, result) {
+      if (error) {
+        fastify.log.error(error);
+      }
+    }
+  )
+}
+
+function newSessionCookie(request, reply, userId) {
+  clearExpiredSessions()
+  fastify.pg.query(
+    "insert into auth.sessions (user_id) " +
+    "values ($1) returning token",
+    [ userId ],
+    function (error, result) {
+      if (error, result) {
+        request.log.error(error);
+        reply.status(500).send({
+          error: {
+            type: "postgres-error"
+          }
+        })
+        return false;
+      } else {
+        reply.setCookie(
+          "session",
+          result.rows[0].token,
+          cookieOptions()
+        )
+        return true;
+      }
+    }
+  )
+}
 
 fastify.post("/sign-up", function (request, reply) {
   if (request.body && request.body.username && request.body.password) {
@@ -41,18 +100,20 @@ fastify.post("/sign-up", function (request, reply) {
                 "error": true
               })
             } else {
-              reply.send({
-                error: false,
-                data: {
-                  user: {
-                    id: result.rows[0].id,
-                    username: username,
-                    display_name: username
-                  },
-                  session: {
+              let userId = result.rows[0].id;
+              session = newSessionCookie(request, reply, userId)
+              if (session) {
+                reply.send({
+                  error: false,
+                  data: {
+                    user: {
+                      id: userId,
+                      username: username,
+                      display_name: username
+                    }
                   }
-                }
-              })
+                })
+              }
             }
           }
         )
