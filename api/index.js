@@ -41,13 +41,11 @@ fastify.post("/sign-up", function (request, reply) {
                 "error": true
               })
             } else {
-              console.log(result)
               reply.send({
                 error: false,
                 data: {
                   user: {
                     id: result.rows[0].id,
-                    //workinprogress (2)
                     username: username,
                     display_name: username
                   },
