@@ -1,9 +1,14 @@
-Create schema for auth
+Enable postgres extensions
+```sql
+create extension if not exists pgcrypto;
 ```
+
+Create schema for auth
+```sql
 create schema auth;
 ```
 
-Create users table (auth schema)
+Create auth.users table
 ```sql
 create table auth.users (
   id bigint primary key generated always as identity,
@@ -13,7 +18,16 @@ create table auth.users (
 );
 ```
 
-Create studysets table (public schema)
+Create auth.sessions table
+```sql
+create table auth.sessions (
+  token text not null primary key default encode(gen_random_bytes(32), 'base64'),
+  user_id bigint not null,
+  expire_at timestamptz default clock_timestamp() + '7 days'::interval
+);
+```
+
+Create public.studysets table
 ```sql
 CREATE TABLE studysets (
   id bigint primary key generated always as identity,
