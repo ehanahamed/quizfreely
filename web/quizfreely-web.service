@@ -9,7 +9,7 @@ Restart=always
 RestartSec=1
 WorkingDirectory=/root/quizfreely/web/
 ExecStart=/usr/bin/npm run start
-TimeoutStopSec=5
+TimeoutStopSec=1
 
 [Install]
 WantedBy=multi-user.target
