@@ -9,6 +9,7 @@ const port = process.env.PORT;
 const host = process.env.HOST;
 const pgConnection = process.env.POSTGRES_URI;
 const corsOrigin = process.env.CORS_ORIGIN;
+const cookiesDomain = process.env.COOKIES_DOMAIN;
 
 const fastify = Fastify({
     logger: {
