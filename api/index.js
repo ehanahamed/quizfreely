@@ -3,6 +3,7 @@ const Fastify = require("fastify");
 const fastifyCookie = require("@fastify/cookie");
 const fastifyCors = require("@fastify/cors");
 const fastifyPostgres = require("@fastify/postgres");
+const fastifyRateLimit = require("@fastify/rate-limit");
 const path = require("node:path");
 
 const port = process.env.PORT;
@@ -335,8 +336,8 @@ fastify.post("/sign-in", function (request, reply) {
 
 fastify.get("/studysets/public/:studyset", function (request, reply) {
     fastify.pg.query(
-        "SELECT id, user_id, title, data, updated_at FROM studysets " +
-        "WHERE private = false and id = $1",
+        "select id, user_id, title, data, updated_at FROM studysets " +
+        "where private = false and id = $1 limit 1",
         [request.params.studyset],
         function (error, result) {
             if (error) {
@@ -347,12 +348,45 @@ fastify.get("/studysets/public/:studyset", function (request, reply) {
                     }
                 })
             } else {
-                reply.send({
-                    error: false,
-                    data: {
-                        studyset: result.rows[0]
+                if (result.rows.length == 1) {
+                    reply.send({
+                        error: false,
+                        data: {
+                            studyset: result.rows[0]
+                        }
+                    })
+                } else {
+                    reply.callNotFound();
+                }
+            }
+        }
+    )
+})
+
+fastify.get("/users/public/:user", function (request, reply) {
+    fastify.pg.query(
+        "select id, username, display_name from auth.users " +
+        "where id = $1",
+        [request.params.user],
+        function (error, result) {
+            if (error) {
+                request.log.error(error);
+                reply.code(500).send({
+                    error: {
+                        type: "postgres-error"
                     }
                 })
+            } else {
+                if (result.rows.length == 1) {
+                    reply.send({
+                        error: false,
+                        data: {
+                            user: result.rows[0]
+                        }
+                    })
+                } else {
+                    reply.callNotFound();
+                }
             }
         }
     )
