@@ -1,10 +1,10 @@
-require("dotenv").config();
-const Fastify = require("fastify");
-const fastifyCookie = require("@fastify/cookie");
-const fastifyCors = require("@fastify/cors");
-const fastifyPostgres = require("@fastify/postgres");
-const fastifyRateLimit = require("@fastify/rate-limit");
-const path = require("node:path");
+import "dotenv/config";
+import Fastify from "fastify";
+import fastifyCookie from "@fastify/cookie";
+import fastifyCors from "@fastify/cors";
+import fastifyPostgres from "@fastify/postgres";
+import fastifyRateLimit from "@fastify/rate-limit";
+import path from "path";
 
 const port = process.env.PORT;
 const host = process.env.HOST;
@@ -16,7 +16,7 @@ const logLevel = process.env.LOG_LEVEL;
 const fastify = Fastify({
     logger: {
         level: logLevel,
-        file: path.join(__dirname, "logfile.log")
+        file: path.join(import.meta.dirname, "logfile.log")
     }
 })
 
