@@ -240,10 +240,20 @@ fastify.post("/sign-in", function (request, reply) {
     }
 })
 
-fastify.get("/studytestn", function (req, reply) {
+fastify.get("/studysets/public/:studyset", function (request, reply) {
     fastify.pg.query(
-        'SELECT id, user_id, title FROM studysets WHERE id=$1', ["1"],
-        function (err, result) {
+        "SELECT id, user_id, title, data, updated_at FROM studysets " +
+        "WHERE private = false and id = $1",
+        [request.params.studyset],
+        function (error, result) {
+            if (error) {
+                request.log.error(error);
+                reply.status(500).send({
+                    error: {
+                        type: "postgres-error"
+                    }
+                })
+            }
             reply.send(err || result)
         }
     )
