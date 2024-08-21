@@ -10,10 +10,11 @@ const host = process.env.HOST;
 const pgConnection = process.env.POSTGRES_URI;
 const corsOrigin = process.env.CORS_ORIGIN;
 const cookiesDomain = process.env.COOKIES_DOMAIN;
+const logLevel = process.env.LOG_LEVEL;
 
 const fastify = Fastify({
     logger: {
-        level: "warn",
+        level: logLevel,
         file: path.join(__dirname, "logfile.log")
     }
 })

@@ -13,10 +13,11 @@ const host = process.env.HOST
 const apiUrl = process.env.API_URL
 const apiPublicKey = process.env.API_PUBLIC_KEY
 const cookiesDomain = process.env.COOKIES_DOMAIN
+const logLevel = process.env.LOG_LEVEL
 
 const fastify = Fastify({
   logger: {
-    level: "warn",
+    level: logLevel,
     file: path.join(import.meta.dirname, "logfile.log")
   }
 })
