@@ -11,7 +11,6 @@ import { themes } from "./themes.js";
 const port = process.env.PORT
 const host = process.env.HOST
 const apiUrl = process.env.API_URL
-const apiPublicKey = process.env.API_PUBLIC_KEY
 const cookiesDomain = process.env.COOKIES_DOMAIN
 const logLevel = process.env.LOG_LEVEL
 
@@ -193,6 +192,15 @@ fastify.get("/settings/clear-cookies", function (request, reply) {
 
 const supabase = createClient(apiUrl, apiPublicKey);
 fastify.get("/studysets/:studyset", function (request, reply) {
+  fetch(apiUrl + "/studysets/public/" + request.params.studyset).then(function (response) { return response.json(); }).then(
+    function (responseJson) {
+      if (responseJson.error) {
+        reply.callNotFound()
+      } else if (responseJson.data.studyset) {
+        fetch(apiUrl + "/users/public/" + responseJson.data.user_id)
+      }
+    }
+  );
   supabase.from("studysets").select().eq(
     "id",
     request.params.studyset
