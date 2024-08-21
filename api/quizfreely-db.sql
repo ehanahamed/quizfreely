@@ -16,11 +16,11 @@ create table auth.sessions (
   expire_at timestamptz default clock_timestamp() + '7 days'::interval
 );
 
-CREATE TABLE studysets (
+create table public.studysets (
   id bigint primary key generated always as identity,
   user_id bigint not null,
   title text not null,
   private boolean not null,
   data jsonb not null,
-  updated_at timestamptz not null
+  updated_at timestamptz default clock_timestamp()
 );
