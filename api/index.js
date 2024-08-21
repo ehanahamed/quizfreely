@@ -89,6 +89,22 @@ function clearExpiredSessions() {
 }
 
 function verifySessionCookie(request, reply, callback) {
+    /*
+        usage example:
+        verifySessionCookie(request, reply, function (result) {
+            if (result.error) {
+                // error
+                // use result.error.type
+                // and log result.error.error 
+            } else if (result.data.user) {
+                // user logged in
+                // result.data.user.id contains user's id
+            } else {
+                // result.data.user is false,
+                // user not logged in
+            }
+        })
+    */
     if (request.cookies.session) {
         fastify.pg.query(
             "select user_id from auth.sessions" +
@@ -96,7 +112,12 @@ function verifySessionCookie(request, reply, callback) {
             [request.cookies.session],
             function (error, result) {
                 if (error) {
-                    callback(error, false)
+                    callback({
+                        error: {
+                            type: "postgres-error",
+                            error: error
+                        }
+                    })
                 } else {
                     clearExpiredSessions()
                     if (result.rows.length == 1) {
@@ -106,15 +127,30 @@ function verifySessionCookie(request, reply, callback) {
                             [request.cookies.session],
                             function (error, result) {
                                 if (error) {
-                                    request.log.error(error)
+                                    callback({
+                                        error: {
+                                            type: "postgres-error",
+                                            error: error
+                                        }
+                                    })
                                 } else {
                                     newSessionCookie(request, reply, userId,
-                                        function (error) {
-                                            if (error) {
-                                                callback(error, false)
+                                        function (result) {
+                                            if (result.error) {
+                                                callback({
+                                                    error: {
+                                                        type: result.error.type,
+                                                        error: result.error.error
+                                                    }
+                                                })
                                             } else {
-                                                callback(false, {
-                                                    id: userId
+                                                callback({
+                                                    error: false,
+                                                    data: {
+                                                        user: {
+                                                            id: userId
+                                                        }
+                                                    }
                                                 })
                                             }
                                         }
@@ -126,13 +162,23 @@ function verifySessionCookie(request, reply, callback) {
                         /* else, token didn't return a row,
                         so this token is invalid or expired,
                         so we call the callback with error false and login false */
-                        callback(false, false)
+                        callback({
+                            error: false,
+                            data: {
+                                user: false
+                            }
+                        })
                     }
                 }
             }
         )
     } else {
-        callback(false, false);
+        callback({
+            error: false,
+            data: {
+                user: false
+            }
+        });
     }
 }
 
@@ -141,15 +187,19 @@ calls callback function with error parameter true if error was logged
 or false if success */
 function newSessionCookie(request, reply, userId, callback) {
     /* usage example
-        newSessionCookie(request, reply, result.something.user_id,
-        function (error) {
-            if (error) {
-                request.log.error(error)
-                reply.send("error")
-            } else {
-                reply.send("no error")
+        newSessionCookie(
+            request,
+            reply,
+            something.user_id,
+            function (result) {
+                if (result.error) {
+                    request.log.error(result.error.error)
+                    reply.send("ERROR: " + result.error.type)
+                } else {
+                    reply.send("no error")
+                }
             }
-        })
+        )
     */
     clearExpiredSessions()
     fastify.pg.query(
@@ -158,14 +208,21 @@ function newSessionCookie(request, reply, userId, callback) {
         [userId],
         function (error, result) {
             if (error) {
-                callback(error)
+                callback({
+                    error: {
+                        type: "postgres-error",
+                        error: error
+                    }
+                })
             } else {
                 reply.setCookie(
                     "session",
                     result.rows[0].token,
                     cookieOptions()
                 )
-                callback(false)
+                callback({
+                    error: false
+                })
             }
         }
     )
@@ -186,7 +243,7 @@ fastify.post("/sign-up", function (request, reply) {
                         request.log.error(error)
                         reply.code(500).send({
                             error: {
-                                type: "postgres-errorrr"
+                                type: "postgres-error"
                             }
                         })
                     } else {
@@ -213,12 +270,12 @@ fastify.post("/sign-up", function (request, reply) {
                                                 request,
                                                 reply,
                                                 userId,
-                                                function (error) {
-                                                    if (error) {
-                                                        request.log.error(error);
+                                                function (result) {
+                                                    if (result.error) {
+                                                        request.log.error(result.error.error);
                                                         reply.code(500).send({
                                                             error: {
-                                                                type: "postgres-error"
+                                                                type: result.error.type
                                                             }
                                                         })
                                                     } else {
@@ -294,9 +351,10 @@ fastify.post("/sign-in", function (request, reply) {
                     })
                 } else {
                     if (result.rows.length == 1) {
-                        newSessionCookie(request, reply, result.rows[0].id,
-                            function(error) {
-                                if (error) {
+                        let user = result.rows[0]
+                        newSessionCookie(request, reply, user.id,
+                            function(result) {
+                                if (result.error) {
                                     request.log.error(error);
                                     reply.code(500).send({
                                         error: {
@@ -307,7 +365,7 @@ fastify.post("/sign-in", function (request, reply) {
                                     reply.send({
                                         "error": false,
                                         "data": {
-                                            user: result.rows[0],
+                                            user: user,
                                         }
                                     })
                                 }
