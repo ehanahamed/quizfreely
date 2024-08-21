@@ -20,14 +20,14 @@ const fastify = Fastify({
     }
 })
 
-fastify.register(fastifyCors, {
+await fastify.register(fastifyCors, {
     origin: corsOrigin
 })
-fastify.register(fastifyCookie)
-fastify.register(fastifyPostgres, {
+await fastify.register(fastifyCookie)
+await fastify.register(fastifyPostgres, {
     connectionString: pgConnection
 })
-fastify.register(fastifyRateLimit, {
+await fastify.register(fastifyRateLimit, {
     max: 100,
     timeWindow: "1 minute"
 })
