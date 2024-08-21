@@ -58,10 +58,69 @@ function clearExpiredSessions() {
     )
 }
 
-function newSessionCookie(request, reply, userId) {
-    /* sets session cookie on reply object,
-    it sets the cookie and returns true
-    or logs an error and returns false */
+function verifySessionCookie(request, reply, callback) {
+    if (request.cookies.session) {
+        fastify.pg.query(
+            "select user_id from auth.sessions" +
+            "where token = $1 and expire_at > clock_timestamp() limit 1",
+            [request.cookies.session],
+            function (error, result) {
+                if (error) {
+                    callback(error, false)
+                } else {
+                    clearExpiredSessions()
+                    if (result.rows.length == 1) {
+                        let userId = result.rows[0].user_id
+                        fastify.pg.query(
+                            "delete from auth.sessions where token = $1",
+                            [request.cookies.session],
+                            function (error, result) {
+                                if (error) {
+                                    request.log.error(error)
+                                } else {
+                                    newSessionCookie(request, reply, userId,
+                                        function (error) {
+                                            if (error) {
+                                                callback(error, false)
+                                            } else {
+                                                callback(false, {
+                                                    id: userId
+                                                })
+                                            }
+                                        }
+                                    )
+                                }
+                            }
+                        )
+                    } else {
+                        /* else, token didn't return a row,
+                        so this token is invalid or expired,
+                        so we call the callback with error false and login false */
+                        callback(false, false)
+                    }
+                }
+            }
+        )
+    } else {
+        callback(false, false);
+    }
+}
+
+/* sets session cookie on reply object,
+calls callback function with error parameter true if error was logged
+or false if success */
+function newSessionCookie(request, reply, userId, callback) {
+    /* usage example
+        newSessionCookie(request, reply, result.something.user_id,
+        function (error) {
+            if (error) {
+                request.log.error(error)
+                reply.send("error")
+            } else {
+                reply.send("no error")
+            }
+        })
+    */
     clearExpiredSessions()
     fastify.pg.query(
         "insert into auth.sessions (user_id) " +
@@ -69,15 +128,14 @@ function newSessionCookie(request, reply, userId) {
         [userId],
         function (error, result) {
             if (error) {
-                request.log.error(error);
-                return false;
+                callback(error)
             } else {
                 reply.setCookie(
                     "session",
                     result.rows[0].token,
                     cookieOptions()
                 )
-                return true;
+                callback(false)
             }
         }
     )
@@ -98,20 +156,12 @@ fastify.post("/sign-up", function (request, reply) {
                         request.log.error(error)
                         reply.status(500).send({
                             error: {
-                                type: "postgres-error"
+                                type: "postgres-errorrr"
                             }
                         })
                     } else {
-                        if (result.rowCount = 1) {
-                            /* if the query returned a row, this username is already taken */
-                            reply.status(400).send({
-                                error: {
-                                    type: "username-taken"
-                                }
-                            })
-                        } else {
-                            /* if it didn't return 1 row (its either 1 or 0, because the query had "...limit 1",
-                            then this username is okay */
+                        if (result.rows.length == 0) {
+                            /* if it returned 0 rows, that means this username is not taken, yay */
                             if (request.body.password.length >= 8) {
                                 fastify.pg.query(
                                     "insert into auth.users (username, encrypted_password, display_name) " +
@@ -129,27 +179,32 @@ fastify.post("/sign-up", function (request, reply) {
                                             /* user_id was generated by postgres when the user was added,
                                             now we send data including the id in the response below */
                                             let userId = result.rows[0].id;
-                                            if (newSessionCookie(request, reply, userId)) {
-                                                /* use newSessionCookie() func inside if statement,
-                                                it returns true if the cookie was set,
-                                                or returns false after logging any errors */
-                                                reply.send({
-                                                    error: false,
-                                                    data: {
-                                                        user: {
-                                                            id: userId,
-                                                            username: username,
-                                                            display_name: username
-                                                        }
+                                            newSessionCookie(
+                                                request,
+                                                reply,
+                                                userId,
+                                                function (error) {
+                                                    if (error) {
+                                                        request.log.error(error);
+                                                        reply.status(500).send({
+                                                            error: {
+                                                                type: "postgres-error"
+                                                            }
+                                                        })
+                                                    } else {
+                                                        reply.send({
+                                                            error: false,
+                                                            data: {
+                                                                user: {
+                                                                    id: userId,
+                                                                    username: username,
+                                                                    display_name: username
+                                                                }
+                                                            }
+                                                        })
                                                     }
-                                                })
-                                            } else {
-                                                reply.send({
-                                                    error: {
-                                                        type: "postgres-error"
-                                                    }
-                                                })
-                                            }
+                                                }
+                                            )
                                         }
                                     }
                                 )
@@ -161,6 +216,14 @@ fastify.post("/sign-up", function (request, reply) {
                                     }
                                 })
                             }
+                        } else {
+                            console.log(result)
+                            /* if the query returned a row, this username is already taken */
+                            reply.status(400).send({
+                                error: {
+                                    type: "username-taken"
+                                }
+                            })
                         }
                     }
                 }
@@ -200,28 +263,29 @@ fastify.post("/sign-in", function (request, reply) {
                         }
                     })
                 } else {
-                    if (result.rowCount = 1) {
-                        if (newSessionCookie(request, reply, result.rows[0].id)) {
-                            /* if newSessionCookie() returns true, no error, so send data */
-                            reply.send({
-                                "error": false,
-                                "data": {
-                                    user: result.rows[0],
+                    if (result.rows.length == 1) {
+                        newSessionCookie(request, reply, result.rows[0].id,
+                            function(error) {
+                                if (error) {
+                                    request.log.error(error);
+                                    reply.status(500).send({
+                                        error: {
+                                            type: "postgres-error"
+                                        }
+                                    })
+                                } else {
+                                    reply.send({
+                                        "error": false,
+                                        "data": {
+                                            user: result.rows[0],
+                                        }
+                                    })
                                 }
-                            })
-                        } else {
-                            /* else newSessionCookie() logged an error and returned false, so send error */
-                            reply.send({
-                                error: {
-                                    type: "postgres-error"
-                                }
-                            })
-                        }
+                            }
+                        )
                     } else {
-                        /* result successful, but rowCount isn't 1,
-                        the query above used limit 1, so if it's not 1, its 0,
-                        if no rows are returned, then the username or password is wrong */
-                        reply.send({
+                        /* if no rows are returned, then the username or password is wrong */
+                        reply.status(400).send({
                             error: {
                                 type: "sign-in-incorrect"
                             }
