@@ -26,6 +26,35 @@ fastify.register(fastifyCookie)
 fastify.register(fastifyPostgres, {
     connectionString: pgConnection
 })
+fastify.register(fastifyRateLimit, {
+    max: 100,
+    timeWindow: "1 minute"
+})
+
+fastify.setErrorHandler(function (error, request, reply) {
+  if (error.statusCode == 429) {
+    reply.code(429).send({
+        error: {
+            type: "rate-limit"
+        }
+    })
+  } else {
+    request.log.error(error)
+    reply.code(500).send({
+        error: {
+            type: "server-error"
+        }
+    })
+  }
+})
+
+fastify.setNotFoundHandler(function (request, reply) {
+  reply.code(404).send({
+    error: {
+        type: "not-found"
+    }
+  })
+})
 
 function cookieOptions() {
     let time = new Date();
@@ -154,7 +183,7 @@ fastify.post("/sign-up", function (request, reply) {
                 function (error, result) {
                     if (error) {
                         request.log.error(error)
-                        reply.status(500).send({
+                        reply.code(500).send({
                             error: {
                                 type: "postgres-errorrr"
                             }
@@ -170,7 +199,7 @@ fastify.post("/sign-up", function (request, reply) {
                                     function (error, result) {
                                         if (error) {
                                             request.log.error(error)
-                                            reply.status(500).send({
+                                            reply.code(500).send({
                                                 error: {
                                                     type: "postgres-error"
                                                 }
@@ -186,7 +215,7 @@ fastify.post("/sign-up", function (request, reply) {
                                                 function (error) {
                                                     if (error) {
                                                         request.log.error(error);
-                                                        reply.status(500).send({
+                                                        reply.code(500).send({
                                                             error: {
                                                                 type: "postgres-error"
                                                             }
@@ -210,7 +239,7 @@ fastify.post("/sign-up", function (request, reply) {
                                 )
                             } else {
                                 /* password does not match length */
-                                reply.status(400).send({
+                                reply.code(400).send({
                                     error: {
                                         type: "password-weak"
                                     }
@@ -219,7 +248,7 @@ fastify.post("/sign-up", function (request, reply) {
                         } else {
                             console.log(result)
                             /* if the query returned a row, this username is already taken */
-                            reply.status(400).send({
+                            reply.code(400).send({
                                 error: {
                                     type: "username-taken"
                                 }
@@ -230,7 +259,7 @@ fastify.post("/sign-up", function (request, reply) {
             )
         } else {
             /* username does not match regex or does not match length */
-            reply.status(400).send(
+            reply.code(400).send(
                 {
                     error: {
                         type: "username-invalid"
@@ -240,7 +269,7 @@ fastify.post("/sign-up", function (request, reply) {
         }
     } else {
         /* password and/or username missing in request.body */
-        reply.status(400).send({
+        reply.code(400).send({
             error: {
                 type: "fields-missing"
             }
@@ -257,7 +286,7 @@ fastify.post("/sign-in", function (request, reply) {
             function (error, result) {
                 if (error) {
                     request.log.error(error);
-                    reply.status(500).send({
+                    reply.code(500).send({
                         error: {
                             type: "postgres-error"
                         }
@@ -268,7 +297,7 @@ fastify.post("/sign-in", function (request, reply) {
                             function(error) {
                                 if (error) {
                                     request.log.error(error);
-                                    reply.status(500).send({
+                                    reply.code(500).send({
                                         error: {
                                             type: "postgres-error"
                                         }
@@ -285,7 +314,7 @@ fastify.post("/sign-in", function (request, reply) {
                         )
                     } else {
                         /* if no rows are returned, then the username or password is wrong */
-                        reply.status(400).send({
+                        reply.code(400).send({
                             error: {
                                 type: "sign-in-incorrect"
                             }
@@ -296,7 +325,7 @@ fastify.post("/sign-in", function (request, reply) {
         )
     } else {
         /* password and/or username missing in request.body */
-        reply.status(400).send({
+        reply.code(400).send({
             error: {
                 type: "fields-missing"
             }
@@ -312,7 +341,7 @@ fastify.get("/studysets/public/:studyset", function (request, reply) {
         function (error, result) {
             if (error) {
                 request.log.error(error);
-                reply.status(500).send({
+                reply.code(500).send({
                     error: {
                         type: "postgres-error"
                     }
