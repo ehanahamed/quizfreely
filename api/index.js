@@ -349,6 +349,7 @@ fastify.get("/studysets/public/:studyset", function (request, reply) {
                 })
             } else {
                 if (result.rows.length == 1) {
+                    publicUser(result.rows[0].user_id)
                     reply.send({
                         error: false,
                         data: {
@@ -363,33 +364,57 @@ fastify.get("/studysets/public/:studyset", function (request, reply) {
     )
 })
 
-fastify.get("/users/public/:user", function (request, reply) {
+function getUserPublic(userId, callback) {
     fastify.pg.query(
         "select id, username, display_name from auth.users " +
         "where id = $1",
-        [request.params.user],
+        [userId],
         function (error, result) {
             if (error) {
-                request.log.error(error);
-                reply.code(500).send({
+                callback({
                     error: {
-                        type: "postgres-error"
+                        type: "postgres-error",
+                        error: error
                     }
                 })
             } else {
                 if (result.rows.length == 1) {
-                    reply.send({
+                    callback({
                         error: false,
                         data: {
                             user: result.rows[0]
                         }
                     })
                 } else {
-                    reply.callNotFound();
+                    callback({
+                        error: {
+                            type: "not-found"
+                        }
+                    })
                 }
             }
         }
     )
+}
+
+fastify.get("/users/public/:user", function (request, reply) {
+    getUserPublic(request.params.user, function (result) {
+        if (result.error) {
+            if (result.error.type == "not-found") {
+                reply.callNotFound();
+            } else {
+                request.log.error(result.error.error);
+                reply.callNotFound();
+            }
+        } else {
+            reply.send({
+                error: false,
+                data: {
+                    user: result.data.user
+                }
+            })
+        }
+    })
 })
 
 fastify.listen({
