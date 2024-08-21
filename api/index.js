@@ -253,8 +253,14 @@ fastify.get("/studysets/public/:studyset", function (request, reply) {
                         type: "postgres-error"
                     }
                 })
+            } else {
+                reply.send({
+                    error: false,
+                    data: {
+                        studyset: result.rows[0]
+                    }
+                })
             }
-            reply.send(err || result)
         }
     )
 })
