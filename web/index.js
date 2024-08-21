@@ -3,6 +3,7 @@ import Fastify from "fastify";
 import fastifyStatic from "@fastify/static";
 import fastifyView from "@fastify/view";
 import fastifyCookie from "@fastify/cookie";
+import fastifyRateLimit from "@fastify/rate-limit";
 import path from "path";
 import { Eta } from "eta";
 import { createClient } from '@supabase/supabase-js'
@@ -30,19 +31,22 @@ const eta = new Eta({
   defaultExtension: ".html"
 })
 
-fastify.register(fastifyCookie);
-fastify.register(fastifyView, {
+await fastify.register(fastifyCookie);
+await fastify.register(fastifyView, {
   engine: {
     eta
   },
   root: path.join(import.meta.dirname, "views"),
   //defaultContext: {}
-})
-
-fastify.register(fastifyStatic, {
+});
+await fastify.register(fastifyRateLimit, {
+  max: 100,
+  timeWindow: "1 minute"
+});
+await fastify.register(fastifyStatic, {
   root: path.join(import.meta.dirname, "assets"),
   prefix: "/assets/"
-})
+});
 
 fastify.setErrorHandler(function (error, request, reply) {
   request.log.error("500 at " + request.url)
