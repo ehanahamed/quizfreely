@@ -50,11 +50,6 @@ Also set the `postgres` sql user's password with `psql`:
 \password postgres
 ```
 
-Temporarily switch to the `quizfreely_auth` postgres user:
-```sql
-set role quizfreely_auth;
-```
-
 Create auth functions, create users table, and add row level security:
 ```sql
 create schema auth;
@@ -98,8 +93,9 @@ for delete
 to quizfreely_auth_user
 using ((select auth.get_user_id()) = id);
 
-create view public.profiles (id, username, display_name)
-as select (id, username, display_name) from auth.users;
+create view public.profiles as select
+id, username, display_name from auth.users;
+
 grant select on public.profiles to quizfreely_public, quizfreely_auth_user;
 
 create table auth.sessions (
