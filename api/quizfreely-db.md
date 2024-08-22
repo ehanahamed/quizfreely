@@ -1,19 +1,23 @@
-Install postgres, then switch to the `postgres` linux user:
+Install postgres
+```sh
+sudo apt install postgresql
+# or
+# sudo pacman -S postgresql
+```
+
+Check if `postgresql.service` is running
+```sh
+sudo systemctl status postgresql.service
+# if it's not, run:
+# sudo systemctl start postgresql.service
+```
+
+Then switch to the `postgres` linux user:
 ```sh
 sudo su postgres
 ```
 
-While being the `postgres` linux user, initalize the database cluster:
-```sh
-initdb --locale=C.UTF-8 --encoding=UTF8 -D /var/lib/postgres/data
-```
-
-Go back to your normal linux user (open a new terminal or use the `exit` command) and start `postgresql.service`:
-```sh
-sudo systemctl start postgresql.service
-```
-
-Then, while being the `postgres` linux user (`sudo su postgres`), create the database:
+Now create the database:
 ```sh
 createdb quizfreely-db
 ```
@@ -22,6 +26,8 @@ Now, while still being the `postgres` linux user, access the database shell:
 ```sh
 psql -d quizfreely-db
 ```
+
+You should be using the postgresql database shell as the `postgres` postgressql user. The roles we create below are for the api, we will not log in to them here.
 
 Install extensions and create roles:
 ```sql
@@ -51,6 +57,8 @@ set role quizfreely_auth;
 
 Create auth functions, create users table, and add row level security:
 ```sql
+create schema auth;
+
 create function auth.get_user_id() returns uuid
 as $$ select current_setting('quizfreely_auth_user_id')::uuid $$
 language sql;
@@ -63,8 +71,36 @@ create table auth.users (
   unique (username)
 );
 
-revoke all privileges on auth.users from quizfreely_public, quizfreely_auth_user;
-grant select (id, username, display_name) on auth.users to quizfreely_public, quizfreely_auth_user;
+alter table auth.users enable row level security;
+
+create policy select_users_for_quizfreely_auth on auth.users
+as permissive
+for select
+to quizfreely_auth
+using (true);
+
+create policy insert_users_for_quizfreely_auth on auth.users
+as permissive
+for insert
+to quizfreely_auth
+with check (true);
+
+create policy update_users_for_auth_user_by_user_id on auth.users
+as permissive
+for update
+to quizfreely_auth_user
+using ((select auth.get_user_id()) = id)
+with check ((select auth.get_user_id()) = id);
+
+create policy delete_users_for_auth_user_by_user_id on auth.users
+as permissive
+for delete
+to quizfreely_auth_user
+using ((select auth.get_user_id()) = id);
+
+create view public.profiles (id, username, display_name)
+as select (id, username, display_name) from auth.users;
+grant select on public.profiles to quizfreely_public, quizfreely_auth_user;
 
 create table auth.sessions (
   id uuid primary key default gen_random_uuid(),
@@ -74,6 +110,12 @@ create table auth.sessions (
 );
 
 alter table auth.sessions enable row level security;
+
+create policy select_sessions_for_quizfreely_auth on auth.sessions
+as permissive
+for select
+to quizfreely_auth
+using (true);
 
 create policy select_sessions_for_auth_user_by_user_id on auth.sessions
 as permissive
@@ -92,14 +134,13 @@ as permissive
 for delete
 to quizfreely_auth_user
 using ((select auth.get_user_id()) = user_id);
-```
 
-Switch back to the `postgres` postgresql user:
-```sql
-reset role;
-```
+create policy delete_expired_sessions on auth.sessions
+as permissive
+for delete
+to quizfreely_auth, quizfreely_public, quizfreely_auth_user
+using (expire_at < clock_timestamp());
 
-```sql
 create table public.studysets (
   id uuid primary key default gen_random_uuid(),
   user_id uuid not null,
