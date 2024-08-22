@@ -1,6 +1,5 @@
 import "dotenv/config";
 import Fastify from "fastify";
-import fastifyCookie from "@fastify/cookie";
 import fastifyCors from "@fastify/cors";
 import fastifyPostgres from "@fastify/postgres";
 import fastifyRateLimit from "@fastify/rate-limit";
@@ -22,15 +21,14 @@ const fastify = Fastify({
 
 await fastify.register(fastifyCors, {
     origin: corsOrigin
-})
-await fastify.register(fastifyCookie)
+});
 await fastify.register(fastifyPostgres, {
     connectionString: pgConnection
-})
+});
 await fastify.register(fastifyRateLimit, {
     max: 100,
     timeWindow: "1 minute"
-})
+});
 
 fastify.setErrorHandler(function (error, request, reply) {
   if (error.statusCode == 429) {
