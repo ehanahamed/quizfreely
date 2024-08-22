@@ -200,8 +200,8 @@ fastify.get("/studysets/:studyset", function (request, reply) {
     function (responseJson) {
       if (responseJson.error) {
         reply.callNotFound()
-      } else if (responseJson.data.studyset) {
-        fetch(apiUrl + "/users/public/" + responseJson.data.user_id)
+      } else {
+        
       }
     }
   );

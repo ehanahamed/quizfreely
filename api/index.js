@@ -407,12 +407,16 @@ fastify.get("/studysets/public/:studyset", function (request, reply) {
                 })
             } else {
                 if (result.rows.length == 1) {
-                    publicUser(result.rows[0].user_id)
-                    reply.send({
-                        error: false,
-                        data: {
-                            studyset: result.rows[0]
-                        }
+                    let studyset = result.rows[0]
+                    getUserPublic(result.rows[0].user_id, function (result) {
+                        if (result.error)
+                        reply.send({
+                            error: false,
+                            data: {
+                                studyset: studyset,
+                                user: result.rows[0]
+                            }
+                        })
                     })
                 } else {
                     reply.callNotFound();
