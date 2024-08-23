@@ -152,8 +152,7 @@ using (expire_at < clock_timestamp());
 
 create function auth.verify_and_refresh_session(session_id uuid, session_token text)
 returns table(id uuid, token text, user_id uuid)
-as $$
-update auth.sessions
+as $$ update auth.sessions
 set token = encode(gen_random_bytes(32), 'base64'),
 expire_at = clock_timestamp() + '5 days'::interval
 where id = $1 and token = $2
