@@ -113,6 +113,19 @@ for select
 to quizfreely_auth
 using (true);
 
+create policy insert_sessions_for_quizfreely_auth on auth.sessions
+as permissive
+for insert
+to quizfreely_auth
+with check (true);
+
+create policy update_sessions_for_quizfreely_auth on auth.sessions
+as permissive
+for update
+to quizfreely_auth
+using (true)
+with check (true);
+
 create policy select_sessions_for_auth_user_by_user_id on auth.sessions
 as permissive
 for select
