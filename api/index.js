@@ -113,8 +113,31 @@ function newSession(client, userId, callback) {
 }
 
 function verifyAndRefreshSession(client, sessionId, sessionToken, callback) {
+    /*
+        usage example:
+        verifyAndRefreshSession(
+            fastify.pg,
+            something.request.getSessionId
+            something.request.getSessionToken,
+            function (result) {
+                if (result.error) {
+                    // there was an error
+                    // use result.error.type for error type
+                    // log result.error.error for full info
+                } else if (result.data.user) {
+                    // user session is valid,
+                    // result.data.user.id is user's id 
+                } else {
+                    // user's session is invalid or expired
+                    // or mabye user doesn't have an account
+                    // result.data.user is false
+                }
+            }
+        )
+    */
+    if (sessionId && sessionToken) {
     client.query(
-        "select * from auth.verify_and_refresh_session($1, $2)",
+        "select id, token, user_id from auth.verify_and_refresh_session($1, $2)",
         [sessionId],
         function (error, result) {
             if (error) {
@@ -148,7 +171,14 @@ function verifyAndRefreshSession(client, sessionId, sessionToken, callback) {
                 }
             }
         }
-    )
+    )} else {
+        callback({
+            error: false,
+            data: {
+                user: false
+            }
+        })
+    }
 }
 
 fastify.post("/sign-up", function (request, reply) {
