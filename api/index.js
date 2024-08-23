@@ -126,7 +126,15 @@ function verifyAndRefreshSession(client, sessionId, sessionToken, callback) {
                     // log result.error.error for full info
                 } else if (result.data.user) {
                     // user session is valid,
-                    // result.data.user.id is user's id 
+                    // result.data.user.id is user's id
+                    doSomethingWithUserId(result.data.user.id)
+                    //
+                    // result.session.id is same session id
+                    // result.session.token is new session token
+                    something.storeUsersNewSession(
+                        result.session.id,
+                        result.session.token
+                    )
                 } else {
                     // user's session is invalid or expired
                     // or mabye user doesn't have an account
@@ -311,10 +319,10 @@ fastify.post("/sign-in", function (request, reply) {
                         newSession(fastify.pg, user.id,
                             function(result) {
                                 if (result.error) {
-                                    request.log.error(error);
+                                    request.log.error(result.error.error);
                                     reply.code(500).send({
                                         error: {
-                                            type: "postgres-error"
+                                            type: result.error.type
                                         }
                                     })
                                 } else {
