@@ -102,7 +102,7 @@ create table auth.sessions (
   id uuid primary key default gen_random_uuid(),
   token text not null default encode(gen_random_bytes(32), 'base64'),
   user_id uuid not null,
-  expire_at timestamptz default clock_timestamp() + '7 days'::interval
+  expire_at timestamptz default clock_timestamp() + '5 days'::interval
 );
 
 alter table auth.sessions enable row level security;
@@ -149,6 +149,16 @@ as permissive
 for delete
 to quizfreely_auth, quizfreely_public, quizfreely_auth_user
 using (expire_at < clock_timestamp());
+
+create function auth.refresh_session(session_id uuid)
+returns table(id uuid, token text, user_id uuid)
+as $$
+update auth.sessions
+set token = encode(gen_random_bytes(32), 'base64'),
+expire_at = clock_timestamp() + '5 days'::interval
+where id = $1
+returning id, token, user_id $$
+language sql;
 
 create table public.studysets (
   id uuid primary key default gen_random_uuid(),
