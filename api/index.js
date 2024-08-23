@@ -66,7 +66,7 @@ function clearExpiredSessions() {
     )
 }
 
-function verifySession(request, reply, callback) {
+function verifySession(sessionId, sessionToken, callback) {
     /*
         usage example:
         verifySession(request, reply, function (result) {
@@ -83,11 +83,12 @@ function verifySession(request, reply, callback) {
             }
         })
     */
-    if (request.cookies.session) {
+    if (sessionId && sessionToken) {
         fastify.pg.query(
             "select user_id from auth.sessions" +
-            "where token = $1 and expire_at > clock_timestamp() limit 1",
-            [request.cookies.session],
+            "where id = $1 and token = $2 and expire_at > clock_timestamp() limit 1",
+            /* get row where id and token matches, and isn't expired */
+            [sessionId, sessionToken],
             function (error, result) {
                 if (error) {
                     callback({
@@ -97,12 +98,13 @@ function verifySession(request, reply, callback) {
                         }
                     })
                 } else {
+                    /* clear any users expired sessions */
                     clearExpiredSessions()
                     if (result.rows.length == 1) {
                         let userId = result.rows[0].user_id
                         fastify.pg.query(
-                            "delete from auth.sessions where token = $1",
-                            [request.cookies.session],
+                            "update auth.sessions set expire_at = clock_timestamp() + '7 days'::interval, token =  where id = $1",
+                            [sessionId],
                             function (error, result) {
                                 if (error) {
                                     callback({
@@ -163,7 +165,7 @@ function verifySession(request, reply, callback) {
 /* WORK IN PROGRESS,
 calls callback function with error parameter true if error was logged
 or false if success */
-function newSession(request, reply, userId, callback) {
+function newSession(client, userId, callback) {
     /* usage example
         newSession(
             request,
@@ -180,7 +182,7 @@ function newSession(request, reply, userId, callback) {
         )
     */
     clearExpiredSessions()
-    fastify.pg.query(
+    client.query(
         "insert into auth.sessions (user_id) " +
         "values ($1) returning id, token",
         [userId],
@@ -246,8 +248,7 @@ fastify.post("/sign-up", function (request, reply) {
                                             now we send data including the id in the response below */
                                             let userId = result.rows[0].id;
                                             newSession(
-                                                request,
-                                                reply,
+                                                fastify.pg,
                                                 userId,
                                                 function (result) {
                                                     if (result.error) {
@@ -264,7 +265,11 @@ fastify.post("/sign-up", function (request, reply) {
                                                                 user: {
                                                                     id: userId,
                                                                     username: username,
-                                                                    display_name: username
+                                                                    displayName: username
+                                                                },
+                                                                session: {
+                                                                    id: result.data.session.id,
+                                                                    token: result.data.session.token
                                                                 }
                                                             }
                                                         })
@@ -331,7 +336,7 @@ fastify.post("/sign-in", function (request, reply) {
                 } else {
                     if (result.rows.length == 1) {
                         let user = result.rows[0]
-                        newSession(request, reply, user.id,
+                        newSession(fastify.pg, user.id,
                             function(result) {
                                 if (result.error) {
                                     request.log.error(error);
@@ -344,7 +349,15 @@ fastify.post("/sign-in", function (request, reply) {
                                     reply.send({
                                         "error": false,
                                         "data": {
-                                            user: user,
+                                            user: {
+                                                id: user.id,
+                                                username: user.username,
+                                                displayName: user.display_name
+                                            },
+                                            session: {
+                                                id: result.data.session.id,
+                                                token: result.data.session.token
+                                            }
                                         }
                                     })
                                 }
