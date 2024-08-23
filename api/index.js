@@ -66,117 +66,20 @@ function clearExpiredSessions() {
     )
 }
 
-function verifySession(sessionId, sessionToken, callback) {
-    /*
-        usage example:
-        verifySession(request, reply, function (result) {
-            if (result.error) {
-                // error
-                // use result.error.type
-                // and log result.error.error 
-            } else if (result.data.user) {
-                // user logged in
-                // result.data.user.id contains user's id
-            } else {
-                // result.data.user is false,
-                // user not logged in
-            }
-        })
-    */
-    if (sessionId && sessionToken) {
-        fastify.pg.query(
-            "select user_id from auth.sessions" +
-            "where id = $1 and token = $2 and expire_at > clock_timestamp() limit 1",
-            /* get row where id and token matches, and isn't expired */
-            [sessionId, sessionToken],
-            function (error, result) {
-                if (error) {
-                    callback({
-                        error: {
-                            type: "postgres-error",
-                            error: error
-                        }
-                    })
-                } else {
-                    /* clear any users expired sessions */
-                    clearExpiredSessions()
-                    if (result.rows.length == 1) {
-                        let userId = result.rows[0].user_id
-                        fastify.pg.query(
-                            "update auth.sessions set expire_at = clock_timestamp() + '7 days'::interval, token =  where id = $1",
-                            [sessionId],
-                            function (error, result) {
-                                if (error) {
-                                    callback({
-                                        error: {
-                                            type: "postgres-error",
-                                            error: error
-                                        }
-                                    })
-                                } else {
-                                    newSession(request, reply, userId,
-                                        function (result) {
-                                            if (result.error) {
-                                                callback({
-                                                    error: {
-                                                        type: result.error.type,
-                                                        error: result.error.error
-                                                    }
-                                                })
-                                            } else {
-                                                callback({
-                                                    error: false,
-                                                    data: {
-                                                        user: {
-                                                            id: userId
-                                                        }
-                                                    }
-                                                })
-                                            }
-                                        }
-                                    )
-                                }
-                            }
-                        )
-                    } else {
-                        /* else, token didn't return a row,
-                        so this token is invalid or expired,
-                        so we call the callback with error false and login false */
-                        callback({
-                            error: false,
-                            data: {
-                                user: false
-                            }
-                        })
-                    }
-                }
-            }
-        )
-    } else {
-        callback({
-            error: false,
-            data: {
-                user: false
-            }
-        });
-    }
-}
-
-/* WORK IN PROGRESS,
-calls callback function with error parameter true if error was logged
-or false if success */
 function newSession(client, userId, callback) {
     /* usage example
         newSession(
-            request,
-            reply,
+            fastify.pg,
             something.user_id,
             function (result) {
                 if (result.error) {
                     request.log.error(result.error.error)
                     reply.send("ERROR: " + result.error.type)
                 } else {
-                    reply.send("no error")
+                    something.storeSession(
+                        result.data.session.id,
+                        result.data.session.token
+                    )
                 }
             }
         )
@@ -204,6 +107,45 @@ function newSession(client, userId, callback) {
                         }
                     }
                 })
+            }
+        }
+    )
+}
+
+function verifyAndRefreshSession(client, sessionId, sessionToken, callback) {
+    client.query(
+        "select * from auth.verify_and_refresh_session($1, $2)",
+        [sessionId],
+        function (error, result) {
+            if (error) {
+                callback({
+                    error: {
+                        type: "postgres-error",
+                        error: error
+                    }
+                })
+            } else {
+                if (result.rows.length == 1) {
+                    callback({
+                        error: false,
+                        data: {
+                            user: {
+                                id: result.rows[0].user_id
+                            },
+                            session: {
+                                id: result.rows[0].id,
+                                token: result.rows[0].token
+                            }
+                        }
+                    })
+                } else {
+                    callback({
+                        error: false,
+                        data: {
+                            user: false
+                        }
+                    })
+                }
             }
         }
     )
