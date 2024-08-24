@@ -54,6 +54,8 @@ Create auth functions, create users table, and add row level security:
 ```sql
 create schema auth;
 
+grant usage on schema auth to quizfreely_auth, quizfreely_public, quizfreely_auth_user;
+
 create function auth.get_user_id() returns uuid
 as $$ select current_setting('quizfreely_auth_user_id')::uuid $$
 language sql;
@@ -65,6 +67,11 @@ create table auth.users (
   display_name text not null,
   unique (username)
 );
+
+grant select on auth.users to quizfreely_auth;
+grant insert on auth.users to quizfreely_auth;
+grant update on auth.users to quizfreely_auth, quizfreely_auth_user;
+grant delete on auth.users to quizfreely_auth, quizfreely_auth_user;
 
 alter table auth.users enable row level security;
 
@@ -104,6 +111,11 @@ create table auth.sessions (
   user_id uuid not null,
   expire_at timestamptz default clock_timestamp() + '5 days'::interval
 );
+
+grant select on auth.sessions to quizfreely_auth, quizfreely_auth_user;
+grant insert on auth.sessions to quizfreely_auth, quizfreely_auth_user;
+grant update on auth.sessions to quizfreely_auth, quizfreely_auth_user;
+grant delete on auth.sessions to quizfreely_auth, quizfreely_auth_user, quizfreely_public;
 
 alter table auth.sessions enable row level security;
 
