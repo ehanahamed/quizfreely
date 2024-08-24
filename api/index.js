@@ -144,6 +144,7 @@ function verifyAndRefreshSession(client, sessionId, sessionToken, callback) {
         )
     */
     if (sessionId && sessionToken) {
+    clearExpiredSessions()
     client.query(
         "select id, token, user_id from auth.verify_and_refresh_session($1, $2)",
         [sessionId],
@@ -363,7 +364,7 @@ fastify.post("/sign-in", function (request, reply) {
     }
 })
 
-fastify.get("/studysets/public/:studyset", function (request, reply) {
+fastify.get("/studysets/:studyset/public", function (request, reply) {
     fastify.pg.query(
         "select id, user_id, title, data, updated_at FROM studysets " +
         "where private = false and id = $1 limit 1",
@@ -377,29 +378,45 @@ fastify.get("/studysets/public/:studyset", function (request, reply) {
                     }
                 })
             } else {
-                if (result.rows.length == 1) {
+                if (result.rows.length == 0) {
+                    reply.callNotFound();
+                } else {
                     let studyset = result.rows[0]
-                    getUserPublic(result.rows[0].user_id, function (result) {
-                        if (result.error)
+                    getProfile(result.rows[0].user_id, function (result) {
+                        if (result.error && result.error.type != "not-found") {
+                            request.log.error(result.error.error);
+                        }
+                        let user = {
+                            id: result.data.user.id,
+                            username: result.data.user.username,
+                            displayName: result.data.user.displayName   
+                        }
+                        if (result.error) {
+                            user = false
+                        }
                         reply.send({
                             error: false,
                             data: {
-                                studyset: studyset,
-                                user: result.rows[0]
+                                studyset: {
+                                    id: studyset.id,
+                                    userId: studyset.user_id,
+                                    title: studyset.title,
+                                    data: studyset.data,
+                                    updatedAt: studyset.updated_at
+                                },
+                                user: user
                             }
                         })
                     })
-                } else {
-                    reply.callNotFound();
                 }
             }
         }
     )
 })
 
-function getUserPublic(userId, callback) {
+function getProfile(userId, callback) {
     fastify.pg.query(
-        "select id, username, display_name from auth.users " +
+        "select id, username, display_name from public.profiles " +
         "where id = $1",
         [userId],
         function (error, result) {
@@ -415,7 +432,11 @@ function getUserPublic(userId, callback) {
                     callback({
                         error: false,
                         data: {
-                            user: result.rows[0]
+                            user: {
+                                id: result.rows[0].id,
+                                username: result.rows[0].username,
+                                displayName: result.rows[0].display_name
+                            }
                         }
                     })
                 } else {
@@ -430,14 +451,18 @@ function getUserPublic(userId, callback) {
     )
 }
 
-fastify.get("/users/public/:user", function (request, reply) {
-    getUserPublic(request.params.user, function (result) {
+fastify.get("/profiles/:user", function (request, reply) {
+    getProfile(request.params.user, function (result) {
         if (result.error) {
             if (result.error.type == "not-found") {
                 reply.callNotFound();
             } else {
                 request.log.error(result.error.error);
-                reply.callNotFound();
+                reply.code(500).send({
+                    error: {
+                        type: result.error.type
+                    }
+                });
             }
         } else {
             reply.send({
