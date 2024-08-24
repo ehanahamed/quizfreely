@@ -364,6 +364,117 @@ fastify.post("/sign-in", function (request, reply) {
     }
 })
 
+fastify.post("/studysets/new", function (request, reply) {
+    if (
+        request.body &&
+        request.body.session.id &&
+        request.body.session.token &&
+        request.body.studyset &&
+        request.body.studyset.title &&
+        request.body.studyset.private &&
+        request.body.studyset.data
+    ) {
+        let studysetTitle = request.studyset.title || "Untitled Studyset";
+        fastify.pg.connect(function (error, client, release) {
+            if (error) {
+                return reply.code(500).send({
+                    error: {
+                        type: "postgres-error"
+                    }
+                })
+            } else {
+                verifyAndRefreshSession(
+                    client,
+                    request.body.session.id,
+                    request.body.session.token,
+                    function (result) {
+                        if (result.error) {
+                            request.log.error(result.error);
+                            release()
+                            reply.code(500).send({
+                                error: {
+                                    type: result.error.type
+                                }
+                            })
+                        } else if (result.data.user) {
+                            client.query(
+                                "set role quizfreely_auth_user; set quizfreely_auth.user_id $1",
+                                [result.data.user.id],
+                                function (error, result2) {
+                                    if (error) {
+                                        request.log.error(error);
+                                        release()
+                                        reply.code(500).send({
+                                            error: {
+                                                type: "postgres-error"
+                                            }
+                                        })
+                                    } else {
+                                        client.query(
+                                            "insert into public.studysets (user_id, title, private, data) " +
+                                            "values ($1, $2, $3, $4) returning id, user_id, title, private, updated_at",
+                                            [
+                                                result.data.user.id,
+                                                studysetTitle,
+                                                request.body.studyset.private,
+                                                request.body.studyset.data
+                                            ],
+                                            function (error, result3) {
+                                                if (error) {
+                                                    release()
+                                                    reply.code(500).send({
+                                                        error: {
+                                                            type: "postgres-error"
+                                                        }
+                                                    })
+                                                } else {
+                                                    release()
+                                                    reply.send({
+                                                        error: false,
+                                                        data: {
+                                                            studyset: {
+                                                                id: result3.rows[0].id,
+                                                                userId: result3.rows[0].user_id,
+                                                                title: result3.rows[0].title,
+                                                                private: result3.rows[0].private,
+                                                                updatedAt: result3.rows[0].updated_at
+                                                            },
+                                                            user: {
+                                                                id: result.data.user.id
+                                                            },
+                                                            session: {
+                                                                id: result.data.session.id,
+                                                                token: result.data.session.token
+                                                            }
+                                                        }
+                                                    })
+                                                }
+                                            }
+                                        )
+                                    }
+                                }
+                            )
+                        } else {
+                            release()
+                            reply.code(400).send({
+                                error: {
+                                    type: "session-invalid"
+                                }
+                            })
+                        }
+                    }
+                )
+            }
+        })
+    } else {
+        reply.code(400).send({
+            error: {
+                type: "fields-missing"
+            }
+        })
+    }
+})
+
 fastify.get("/studysets/:studyset/public", function (request, reply) {
     fastify.pg.query(
         "select id, user_id, title, data, updated_at FROM studysets " +
