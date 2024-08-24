@@ -103,7 +103,7 @@ using ((select auth.get_user_id()) = id);
 create view public.profiles as select
 id, username, display_name from auth.users;
 
-grant select on public.profiles to quizfreely_public, quizfreely_auth_user;
+grant select on public.profiles to quizfreely_public, quizfreely_auth_user, quizfreely_auth;
 
 create table auth.sessions (
   id uuid primary key default gen_random_uuid(),
