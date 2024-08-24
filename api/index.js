@@ -268,7 +268,6 @@ fastify.post("/sign-up", function (request, reply) {
                                 })
                             }
                         } else {
-                            console.log(result)
                             /* if the query returned a row, this username is already taken */
                             reply.code(400).send({
                                 error: {
