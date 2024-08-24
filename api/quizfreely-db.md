@@ -57,7 +57,7 @@ create schema auth;
 grant usage on schema auth to quizfreely_auth, quizfreely_public, quizfreely_auth_user;
 
 create function auth.get_user_id() returns uuid
-as $$ select current_setting('quizfreely_auth_user_id')::uuid $$
+as $$ select current_setting('quizfreely_auth.user_id')::uuid $$
 language sql;
 
 create table auth.users (
