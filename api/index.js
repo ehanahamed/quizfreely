@@ -228,64 +228,57 @@ fastify.post("/sign-up", async function (request, reply) {
     }
 })
 
-fastify.post("/sign-in", function (request, reply) {
+fastify.post("/sign-in", async function (request, reply) {
     if (request.body && request.body.username && request.body.password) {
-        fastify.pg.query(
-            "select id, username, display_name from auth.users " +
-            "where username = $1 and encrypted_password = crypt($2, encrypted_password) limit 1",
-            [request.body.username, request.body.password],
-            function (error, result) {
-                if (error) {
-                    request.log.error(error);
-                    reply.code(500).send({
-                        error: {
-                            type: "postgres-error"
+        let client = await pool.connect();
+        try {
+            await client.query("BEGIN");
+            let result = await client.query(
+                "select id, username, display_name from auth.users " +
+                "where username = $1 and encrypted_password = crypt($2, encrypted_password) limit 1",
+                [request.body.username, request.body.password]
+            )
+            if (result.rows.length == 1) {
+                let session = await client.query(
+                    newSessionQuery,
+                    [result.rows[0].id]
+                )
+                return reply.send({
+                    error: false,
+                    data: {
+                        user: {
+                            id: result.rows[0].id,
+                            username: result.rows[0].username,
+                            displayName: result.rows[0].display_name
+                        },
+                        session: {
+                            id: session.rows[0].id,
+                            token: session.rows[0].token
                         }
-                    })
-                } else {
-                    if (result.rows.length == 1) {
-                        let user = result.rows[0]
-                        newSession(fastify.pg, user.id,
-                            function(result) {
-                                if (result.error) {
-                                    request.log.error(result.error.error);
-                                    reply.code(500).send({
-                                        error: {
-                                            type: result.error.type
-                                        }
-                                    })
-                                } else {
-                                    reply.send({
-                                        "error": false,
-                                        "data": {
-                                            user: {
-                                                id: user.id,
-                                                username: user.username,
-                                                displayName: user.display_name
-                                            },
-                                            session: {
-                                                id: result.data.session.id,
-                                                token: result.data.session.token
-                                            }
-                                        }
-                                    })
-                                }
-                            }
-                        )
-                    } else {
-                        /* if no rows are returned, then the username or password is wrong */
-                        reply.code(400).send({
-                            error: {
-                                type: "sign-in-incorrect"
-                            }
-                        })
                     }
-                }
+                })
+            } else {
+                await client.query("ROLLBACK");
+                return reply.code(400).send({
+                    error: {
+                        type: "sign-in-incorrect"
+                    }
+                })
             }
-        )
+        } catch (error) {
+            await client.query("ROLLBACK");
+            request.log.error(error);
+            return reply.code(500).send({
+                error: {
+                    type: "postgres-error"
+                }
+            })
+        } finally {
+            client.release();
+        }
     } else {
         /* password and/or username missing in request.body */
-        reply.code(400).send({
+        return reply.code(400).send({
             error: {
                 type: "fields-missing"
             }
