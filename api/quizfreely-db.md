@@ -180,6 +180,11 @@ create table public.studysets (
   updated_at timestamptz default clock_timestamp()
 );
 
+grant select on public.studysets to quizfreely_auth_user, quizfreely_public, quizfreely_auth;
+grant insert on public.studysets to quizfreely_auth_user;
+grant update on public.studysets to quizfreely_auth_user;
+grant delete on public.studysets to quizfreely_auth_user;
+
 alter table public.studysets enable row level security;
 
 create policy select_studysets_for_quizfreely_public_by_private on public.studysets
