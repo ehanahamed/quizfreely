@@ -3,6 +3,7 @@ import Fastify from "fastify";
 import fastifyCors from "@fastify/cors";
 import fastifyRateLimit from "@fastify/rate-limit";
 import pg from "pg";
+const { Pool, Client } = pg;
 import path from "path";
 
 const port = process.env.PORT;
@@ -16,6 +17,10 @@ const fastify = Fastify({
         level: logLevel,
         file: path.join(import.meta.dirname, "logfile.log")
     }
+})
+
+const pool = new Pool({
+    connectionString: pgConnection
 })
 
 await fastify.register(fastifyCors, {
@@ -51,63 +56,8 @@ fastify.setNotFoundHandler(function (request, reply) {
   })
 })
 
-function clearExpiredSessions() {
-    fastify.pg.query(
-        "delete from auth.sessions where expire_at < clock_timestamp()",
-        [],
-        function (error, result) {
-            if (error) {
-                fastify.log.error(error);
-            }
-        }
-    )
-}
-
-function newSession(client, userId, callback) {
-    /* usage example
-        newSession(
-            fastify.pg,
-            something.user_id,
-            function (result) {
-                if (result.error) {
-                    request.log.error(result.error.error)
-                    reply.send("ERROR: " + result.error.type)
-                } else {
-                    something.storeSession(
-                        result.data.session.id,
-                        result.data.session.token
-                    )
-                }
-            }
-        )
-    */
-    clearExpiredSessions()
-    client.query(
-        "insert into auth.sessions (user_id) " +
-        "values ($1) returning id, token",
-        [userId],
-        function (error, result) {
-            if (error) {
-                callback({
-                    error: {
-                        type: "postgres-error22",
-                        error: error
-                    }
-                })
-            } else {
-                callback({
-                    error: false,
-                    data: {
-                        session: {
-                            id: result.rows[0].id,
-                            token: result.rows[0].token
-                        }
-                    }
-                })
-            }
-        }
-    )
-}
+const newSessionQuery = "insert into auth.sessions (user_id) values ($1) returning id, token";
+const clearExpiredSessionsQuery = "delete from auth.sessions where expire_at < clock_timestamp()";
 
 function verifyAndRefreshSession(client, sessionId, sessionToken, callback) {
     /*
@@ -187,108 +137,90 @@ function verifyAndRefreshSession(client, sessionId, sessionToken, callback) {
     }
 }
 
-fastify.post("/sign-up", function (request, reply) {
+fastify.post("/sign-up", async function (request, reply) {
     /* check if username and password were sent in sign-up request body */
     if (request.body && request.body.username && request.body.password) {
-        let username = request.body.username;
-        /* regex to check if username has letters or numbers (any alphabet) or dot, underscore, or dash */
-        if (/^[\p{L}\p{N}\p{M}._-]+$/u.test(username) && username.length >= 2 && username.length < 100) {
-            fastify.pg.query(
-                /* check if username already taken */
-                "select username from auth.users where username = $1 limit 1",
-                [username],
-                function (error, result) {
-                    if (error) {
-                        request.log.error(error)
-                        reply.code(500).send({
-                            error: {
-                                type: "postgres-error"
+        if (request.body.password.length >= 8) {
+            let username = request.body.username;
+             /* regex to check if username has letters or numbers (any alphabet) or dot, underscore, or dash */
+            if (/^[\p{L}\p{N}\p{M}._-]+$/u.test(username) && username.length >= 2 && username.length < 100) {
+                let client = await pool.connect();
+                try {
+                    await client.query("BEGIN");
+                    let result = await client.query(
+                        "select username from auth.users where username = $1 limit 1",
+                        [username]
+                    );
+                    if (result.rows.length == 0) {
+                        let result2 = await client.query(
+                            "insert into auth.users (username, encrypted_password, display_name) " +
+                            "values ($1, crypt($2, gen_salt('bf')), $1) returning id",
+                            [username, request.body.password]
+                        );
+                        let userId = result2.rows[0].id;
+                        await client.query(
+                            clearExpiredSessionsQuery
+                        );
+                        let session = await client.query(
+                            newSessionQuery,
+                            [username]
+                        );
+                        await client.query("COMMIT");
+                        return reply.send({
+                            error: false,
+                            data: {
+                                user: {
+                                    id: userId,
+                                    username: username,
+                                    displayName: username
+                                },
+                                session: {
+                                    id: session.rows[0].id,
+                                    token: session.rows[0].id
+                                }
                             }
                         })
                     } else {
-                        if (result.rows.length == 0) {
-                            /* if it returned 0 rows, that means this username is not taken, yay */
-                            if (request.body.password.length >= 8) {
-                                fastify.pg.query(
-                                    "insert into auth.users (username, encrypted_password, display_name) " +
-                                    "values ($1, crypt($2, gen_salt('bf')), $1) returning id",
-                                    [username, request.body.password],
-                                    function (error, result) {
-                                        if (error) {
-                                            request.log.error(error)
-                                            reply.code(500).send({
-                                                error: {
-                                                    type: "postgres-error"
-                                                }
-                                            })
-                                        } else {
-                                            /* user_id was generated by postgres when the user was added,
-                                            now we send data including the id in the response below */
-                                            let userId = result.rows[0].id;
-                                            newSession(
-                                                fastify.pg,
-                                                userId,
-                                                function (result) {
-                                                    if (result.error) {
-                                                        request.log.error(result.error.error);
-                                                        reply.code(500).send({
-                                                            error: {
-                                                                type: result.error.type
-                                                            }
-                                                        })
-                                                    } else {
-                                                        reply.send({
-                                                            error: false,
-                                                            data: {
-                                                                user: {
-                                                                    id: userId,
-                                                                    username: username,
-                                                                    displayName: username
-                                                                },
-                                                                session: {
-                                                                    id: result.data.session.id,
-                                                                    token: result.data.session.token
-                                                                }
-                                                            }
-                                                        })
-                                                    }
-                                                }
-                                            )
-                                        }
-                                    }
-                                )
-                            } else {
-                                /* password does not match length */
-                                reply.code(400).send({
-                                    error: {
-                                        type: "password-weak"
-                                    }
-                                })
+                        await client.query("ROLLBACK");
+                        return reply.code(400).send({
+                            error: {
+                                type: "username-taken"
                             }
-                        } else {
-                            /* if the query returned a row, this username is already taken */
-                            reply.code(400).send({
-                                error: {
-                                    type: "username-taken"
-                                }
-                            })
+                        })
+                    }
+                } catch (error) {
+                    await client.query("ROLLBACK");
+                    request.log.error(error);
+                    return reply.code(500).send({
+                        error: {
+                            type: "postgres-error"
+                        }
+                    })
+                } finally {
+                    /* finally block will execute even though we put return statements in try block or catch block
+                    which is good for our use case :D */
+                    client.release();
+                }
+            } else {
+                /* username does not match regex or does not match length */
+                return reply.code(400).send(
+                    {
+                        error: {
+                            type: "username-invalid"
                         }
                     }
-                }
-            )
+                )
+            }
         } else {
-            /* username does not match regex or does not match length */
-            reply.code(400).send(
-                {
-                    error: {
-                        type: "username-invalid"
-                    }
+            return reply.code(400).send({
+                error: {
+                    type: "password-weak"
                 }
-            )
+            })
         }
     } else {
         /* password and/or username missing in request.body */
-        reply.code(400).send({
+        return reply.code(400).send({
             error: {
                 type: "fields-missing"
             }
