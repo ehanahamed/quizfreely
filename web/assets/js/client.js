@@ -7,7 +7,7 @@ var client = {
             }
         ).then(
             function(responseJson) {
-                if (responseJson.session) {
+                if (responseJson.session && window.localStorage) {
                     localStorage.setItem("sessionId", responseJson.session.id);
                     localStorage.setItem("sessionToken", responseJson.session.token);
                 }
@@ -44,7 +44,7 @@ var client = {
             }
         ).then(
             function(responseJson) {
-                if (responseJson.session) {
+                if (responseJson.session && window.localStorage) {
                     localStorage.setItem("sessionId", responseJson.session.id);
                     localStorage.setItem("sessionToken", responseJson.session.token);
                 }
