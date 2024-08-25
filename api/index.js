@@ -291,8 +291,8 @@ fastify.post("/studysets/new", async function (request, reply) {
 fastify.get("/studysets/public/:studyset", async function (request, reply) {
     try {
         let result = await pool.query(
-            "select id, user_id, title, data, updated_at FROM studysets " +
-            "where private = false and id = $1 limit 1",
+            "select id, user_id, title, data, updated_at from public.studysets " +
+            "where id = $1 and private = false limit 1",
             [request.params.studyset]
         )
         if (result.rows.length == 1) {
