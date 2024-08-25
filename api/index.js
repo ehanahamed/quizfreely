@@ -93,7 +93,7 @@ function newSession(client, userId, callback) {
             if (error) {
                 callback({
                     error: {
-                        type: "postgres-error",
+                        type: "postgres-error22",
                         error: error
                     }
                 })
@@ -152,7 +152,7 @@ function verifyAndRefreshSession(client, sessionId, sessionToken, callback) {
             if (error) {
                 callback({
                     error: {
-                        type: "postgres-error",
+                        type: "postgres-error15",
                         error: error
                     }
                 })
@@ -403,7 +403,7 @@ fastify.post("/studysets/new", function (request, reply) {
                             })
                         } else if (result.data.user) {
                             client.query(
-                                "set role quizfreely_auth_user; set quizfreely_auth.user_id $1",
+                                "set role quizfreely_auth_user; select set_config('quizfreely_auth.user_id', $1, false)",
                                 [result.data.user.id],
                                 function (error, result2) {
                                     if (error) {
@@ -411,7 +411,7 @@ fastify.post("/studysets/new", function (request, reply) {
                                         release()
                                         reply.code(500).send({
                                             error: {
-                                                type: "postgres-error"
+                                                type: "postgres-errorhere"
                                             }
                                         })
                                     } else {
@@ -427,6 +427,7 @@ fastify.post("/studysets/new", function (request, reply) {
                                             function (error, result3) {
                                                 if (error) {
                                                     release()
+                                                    request.log.error(error)
                                                     reply.code(500).send({
                                                         error: {
                                                             type: "postgres-error3"
