@@ -163,7 +163,7 @@ fastify.post("/sign-up", async function (request, reply) {
                         );
                         let session = await client.query(
                             newSessionQuery,
-                            [username]
+                            [userId]
                         );
                         await client.query("COMMIT");
                         return reply.send({
@@ -176,7 +176,7 @@ fastify.post("/sign-up", async function (request, reply) {
                                 },
                                 session: {
                                     id: session.rows[0].id,
-                                    token: session.rows[0].id
+                                    token: session.rows[0].token
                                 }
                             }
                         })
