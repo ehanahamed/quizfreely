@@ -15,7 +15,7 @@ var client = {
             }
         )
     },
-    request: function (path, method, body, callback) {
+    req: function (path, method, body, callback) {
         if (body.session) {
             reqBody = body
         } else if (window.localStorage && localStorage.getItem("sessionId") && localStorage.getItem("sessionToken")) {
