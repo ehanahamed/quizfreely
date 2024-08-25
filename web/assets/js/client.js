@@ -8,8 +8,8 @@ var client = {
         ).then(
             function(responseJson) {
                 if (responseJson.session) {
-                    localStorage.setItem("session", responseJson.session.id);
-                    localStorage.setItem("token", responseJson.session.token);
+                    localStorage.setItem("sessionId", responseJson.session.id);
+                    localStorage.setItem("sessionToken", responseJson.session.token);
                 }
                 callback(responseJson);
             }
@@ -18,7 +18,7 @@ var client = {
     request: function (path, method, body, callback) {
         if (body.session) {
             reqBody = body
-        } else if () {
+        } else if (window.localStorage && localStorage.getItem("sessionId") && localStorage.getItem("sessionToken")) {
             reqBody = {
                 ...body,
                 session: {
@@ -26,6 +26,8 @@ var client = {
                     token: "e"
                 }
             }
+        } else {
+            reqBody = body;
         }
         fetch(
             apiUrl + path,
@@ -43,8 +45,8 @@ var client = {
         ).then(
             function(responseJson) {
                 if (responseJson.session) {
-                    localStorage.setItem("session", responseJson.session.id);
-                    localStorage.setItem("token", responseJson.session.token);
+                    localStorage.setItem("sessionId", responseJson.session.id);
+                    localStorage.setItem("sessionToken", responseJson.session.token);
                 }
                 callback(responseJson);
             }
