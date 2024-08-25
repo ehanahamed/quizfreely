@@ -310,6 +310,7 @@ fastify.get("/studysets/public/:studyset", async function (request, reply) {
                             userId: result.rows[0].user_id,
                             title: result.rows[0].title,
                             private: result.rows[0].private,
+                            data: result.rows[0].data,
                             user: {
                                 id: user.rows[0].id,
                                 username: user.rows[0].username,
