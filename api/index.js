@@ -58,84 +58,7 @@ fastify.setNotFoundHandler(function (request, reply) {
 
 const newSessionQuery = "insert into auth.sessions (user_id) values ($1) returning id, token";
 const clearExpiredSessionsQuery = "delete from auth.sessions where expire_at < clock_timestamp()";
-
-function verifyAndRefreshSession(client, sessionId, sessionToken, callback) {
-    /*
-        usage example:
-        verifyAndRefreshSession(
-            fastify.pg,
-            something.request.getSessionId
-            something.request.getSessionToken,
-            function (result) {
-                if (result.error) {
-                    // there was an error
-                    // use result.error.type for error type
-                    // log result.error.error for full info
-                } else if (result.data.user) {
-                    // user session is valid,
-                    // result.data.user.id is user's id
-                    doSomethingWithUserId(result.data.user.id)
-                    //
-                    // result.session.id is same session id
-                    // result.session.token is new session token
-                    something.storeUsersNewSession(
-                        result.session.id,
-                        result.session.token
-                    )
-                } else {
-                    // user's session is invalid or expired
-                    // or mabye user doesn't have an account
-                    // result.data.user is false
-                }
-            }
-        )
-    */
-    if (sessionId && sessionToken) {
-    clearExpiredSessions()
-    client.query(
-        "select id, token, user_id from auth.verify_and_refresh_session($1, $2)",
-        [sessionId, sessionToken],
-        function (error, result) {
-            if (error) {
-                callback({
-                    error: {
-                        type: "postgres-error15",
-                        error: error
-                    }
-                })
-            } else {
-                if (result.rows.length == 1) {
-                    callback({
-                        error: false,
-                        data: {
-                            user: {
-                                id: result.rows[0].user_id
-                            },
-                            session: {
-                                id: result.rows[0].id,
-                                token: result.rows[0].token
-                            }
-                        }
-                    })
-                } else {
-                    callback({
-                        error: false,
-                        data: {
-                            user: false
-                        }
-                    })
-                }
-            }
-        }
-    )} else {
-        callback({
-            error: false,
-            data: {
-                user: false
-            }
-        })
-    }
-}
+const verifyAndRefreshSessionQuery = "select id, token, user_id from auth.verify_and_refresh_session($1, $2)";
 
 fastify.post("/sign-up", async function (request, reply) {
     /* check if username and password were sent in sign-up request body */
@@ -287,7 +210,7 @@ fastify.post("/sign-in", async function (request, reply) {
     }
 })
 
-fastify.post("/studysets/new", function (request, reply) {
+fastify.post("/studysets/new", async function (request, reply) {
     if (
         request.body &&
         request.body.session &&
@@ -302,91 +225,6 @@ fastify.post("/studysets/new", function (request, reply) {
         request.body.studyset.data
     ) {
         let studysetTitle = request.body.studyset.title || "Untitled Studyset";
-        fastify.pg.transact(function (client, commit) {
-            verifyAndRefreshSession(
-                client,
-                request.body.session.id,
-                request.body.session.token,
-                    function (result) {
-                        if (result.error) {
-                            request.log.error(result.error);
-                            release()
-                            reply.code(500).send({
-                                error: {
-                                    type: result.error.type,
-                                    extra: "e"
-                                }
-                            })
-                        } else if (result.data.user) {
-                            client.query(
-                                "set role quizfreely_auth_user; select set_config('quizfreely_auth.user_id', $1, false)",
-                                [result.data.user.id],
-                                function (error, result2) {
-                                    if (error) {
-                                        request.log.error(error);
-                                        release()
-                                        reply.code(500).send({
-                                            error: {
-                                                type: "postgres-errorhere"
-                                            }
-                                        })
-                                    } else {
-                                        client.query(
-                                            "insert into public.studysets (user_id, title, private, data) " +
-                                            "values ($1, $2, $3, $4) returning id, user_id, title, private, updated_at",
-                                            [
-                                                result.data.user.id,
-                                                studysetTitle,
-                                                request.body.studyset.private,
-                                                request.body.studyset.data
-                                            ],
-                                            function (error, result3) {
-                                                if (error) {
-                                                    release()
-                                                    request.log.error(error)
-                                                    reply.code(500).send({
-                                                        error: {
-                                                            type: "postgres-error3"
-                                                        }
-                                                    })
-                                                } else {
-                                                    release()
-                                                    reply.send({
-                                                        error: false,
-                                                        data: {
-                                                            studyset: {
-                                                                id: result3.rows[0].id,
-                                                                userId: result3.rows[0].user_id,
-                                                                title: result3.rows[0].title,
-                                                                private: result3.rows[0].private,
-                                                                updatedAt: result3.rows[0].updated_at
-                                                            },
-                                                            user: {
-                                                                id: result.data.user.id
-                                                            },
-                                                            session: {
-                                                                id: result.data.session.id,
-                                                                token: result.data.session.token
-                                                            }
-                                                        }
-                                                    })
-                                                }
-                                            }
-                                        )
-                                    }
-                                }
-                            )
-                        } else {
-                            release()
-                            reply.code(400).send({
-                                error: {
-                                    type: "session-invalid"
-                                }
-                            })
-                        }
-                    }
-                )
-            })
     } else {
         console.log(request.body)
         reply.code(400).send({
@@ -397,115 +235,97 @@ fastify.post("/studysets/new", function (request, reply) {
     }
 })
 
-fastify.get("/studysets/:studyset/public", function (request, reply) {
-    fastify.pg.query(
-        "select id, user_id, title, data, updated_at FROM studysets " +
-        "where private = false and id = $1 limit 1",
-        [request.params.studyset],
-        function (error, result) {
-            if (error) {
-                request.log.error(error);
-                reply.code(500).send({
-                    error: {
-                        type: "postgres-error"
-                    }
-                })
-            } else {
-                if (result.rows.length == 0) {
-                    reply.callNotFound();
-                } else {
-                    let studyset = result.rows[0]
-                    getProfile(result.rows[0].user_id, function (result) {
-                        if (result.error && result.error.type != "not-found") {
-                            request.log.error(result.error.error);
-                        }
-                        let user = {
-                            id: result.data.user.id,
-                            username: result.data.user.username,
-                            displayName: result.data.user.displayName   
-                        }
-                        if (result.error) {
-                            user = false
-                        }
-                        reply.send({
-                            error: false,
-                            data: {
-                                studyset: {
-                                    id: studyset.id,
-                                    userId: studyset.user_id,
-                                    title: studyset.title,
-                                    data: studyset.data,
-                                    updatedAt: studyset.updated_at
-                                },
-                                user: user
-                            }
-                        })
-                    })
-                }
-            }
-        }
-    )
-})
-
-function getProfile(userId, callback) {
-    fastify.pg.query(
-        "select id, username, display_name from public.profiles " +
-        "where id = $1",
-        [userId],
-        function (error, result) {
-            if (error) {
-                callback({
-                    error: {
-                        type: "postgres-error",
-                        error: error
-                    }
-                })
-            } else {
-                if (result.rows.length == 1) {
-                    callback({
-                        error: false,
-                        data: {
+fastify.get("/studysets/:studyset/public", async function (request, reply) {
+    try {
+        let result = await pool.query(
+            "select id, user_id, title, data, updated_at FROM studysets " +
+            "where private = false and id = $1 limit 1",
+            [request.params.studyset]
+        )
+        if (result.rows.length == 1) {
+            let user = await pool.query(
+                "select id, username, display_name from public.profiles " +
+                "where id = $1",
+                [result.rows[0].user_id]
+            )
+            if (user.rows.length == 1) {
+                return reply.send({
+                    error: false,
+                    data: {
+                        studyset: {
+                            id: result.rows[0].id,
+                            userId: result.rows[0].user_id,
+                            title: result.rows[0].title,
+                            private: result.rows[0].private,
                             user: {
-                                id: result.rows[0].id,
-                                username: result.rows[0].username,
-                                displayName: result.rows[0].display_name
+                                id: user.rows[0].id,
+                                username: user.rows[0].username,
+                                displayName: user.rows[0].display_name
                             }
                         }
-                    })
-                } else {
-                    callback({
-                        error: {
-                            type: "not-found"
-                        }
-                    })
-                }
-            }
-        }
-    )
-}
-
-fastify.get("/profiles/:user", function (request, reply) {
-    getProfile(request.params.user, function (result) {
-        if (result.error) {
-            if (result.error.type == "not-found") {
-                reply.callNotFound();
-            } else {
-                request.log.error(result.error.error);
-                reply.code(500).send({
-                    error: {
-                        type: result.error.type
                     }
-                });
+                })
+            } else {
+                /* if querying for the user returns no rows,
+                then the user was deleted or for some reason not found,
+                but we found the studyset, so return the studyset
+                with the user set to false,
+                which means the studyset was found, but the user was not found */
+                return reply.send({
+                    error: false,
+                    data: {
+                        studyset: {
+                            id: result.rows[0].id,
+                            userId: result.rows[0].user_id,
+                            title: result.rows[0].title,
+                            private: result.rows[0].private,
+                            user: false
+                        }
+                    }
+                })
             }
         } else {
-            reply.send({
+            return reply.callNotFound();
+        }
+    } catch (error) {
+        request.log.error(error);
+        return reply.status(500).send({
+            error: {
+                type: "postgres-error"
+            }
+        })
+    }
+})
+
+fastify.get("/users/:userid", async function (request, reply) {
+    try {
+        let result = await pool.query(
+            "select id, username, display_name from public.profiles " +
+            "where id = $1",
+            [request.params.userid]
+        )
+        if (result.rows.length == 1) {
+            return reply.send({
                 error: false,
                 data: {
-                    user: result.data.user
+                    user: {
+                        id: result.rows[0].id,
+                        username: result.rows[0].username,
+                        displayName: result.rows[0].display_name
+                    }
                 }
             })
+        } else {
+            return reply.callNotFound();
         }
-    })
+    } catch (error) {
+        request.log.error(error);
+        return reply.code(500).send({
+            error: {
+                type: "postgres-error"
+            }
+        })
+    }
 })
 
 fastify.listen({
