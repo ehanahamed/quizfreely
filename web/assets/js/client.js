@@ -15,10 +15,10 @@ var client = {
             }
         )
     },
-    post: function (path, body, callback) {
+    request: function (path, method, body, callback) {
         if (body.session) {
             reqBody = body
-        } else {
+        } else if () {
             reqBody = {
                 ...body,
                 session: {
@@ -30,8 +30,11 @@ var client = {
         fetch(
             apiUrl + path,
             {
-                method: "POST",
-                body: ""
+                method: method.toUpperCase(),
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(reqBody)
             }
         ).then(
             function (response) {
