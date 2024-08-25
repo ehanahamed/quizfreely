@@ -228,11 +228,13 @@ fastify.post("/studysets/new", async function (request, reply) {
         let client = await pool.connect();
         try {
             await client.query("BEGIN");
-            session = await client.query(
+            let session = await client.query(
                 "select id, token, user_id from auth.verify_and_refresh_session($1, $2)",
                 [request.body.session.id, request.body.session.token]
             );
             if (session.rows.length == 1) {
+                await client.query("set role quizfreely_auth_user");
+                await client.query("select set_config('quizfreely_auth.user_id', $1, true)", [session.rows[0].user_id]);
                 let insertedStudyset = await client.query(
                     "insert into public.studysets (user_id, title, private, data) " +
                     "values ($1, $2, $3, $4) returning id, user_id, title, private, updated_at",
