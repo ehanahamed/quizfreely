@@ -225,8 +225,17 @@ fastify.post("/studysets/new", async function (request, reply) {
         request.body.studyset.data
     ) {
         let studysetTitle = request.body.studyset.title || "Untitled Studyset";
+        try {
+
+        } catch (error) {
+            request.log.error(error);
+            return reply.code(500).send({
+                error: {
+                    type: "postgres-error"
+                }
+            })
+        }
     } else {
-        console.log(request.body)
         reply.code(400).send({
             error: {
                 type: "fields-missing"
@@ -235,7 +244,7 @@ fastify.post("/studysets/new", async function (request, reply) {
     }
 })
 
-fastify.get("/studysets/:studyset/public", async function (request, reply) {
+fastify.get("/studysets/public/:studyset", async function (request, reply) {
     try {
         let result = await pool.query(
             "select id, user_id, title, data, updated_at FROM studysets " +
