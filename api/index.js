@@ -243,6 +243,7 @@ fastify.post("/sign-in", async function (request, reply) {
                     newSessionQuery,
                     [result.rows[0].id]
                 )
+                await client.query("COMMIT");
                 return reply.send({
                     error: false,
                     data: {
