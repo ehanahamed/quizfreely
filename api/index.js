@@ -379,18 +379,11 @@ fastify.post("/studysets/new", function (request, reply) {
         request.body.studyset.data
     ) {
         let studysetTitle = request.body.studyset.title || "Untitled Studyset";
-        fastify.pg.connect(function (error, client, release) {
-            if (error) {
-                return reply.code(500).send({
-                    error: {
-                        type: "postgres-errorw"
-                    }
-                })
-            } else {
-                verifyAndRefreshSession(
-                    client,
-                    request.body.session.id,
-                    request.body.session.token,
+        fastify.pg.transact(function (client, commit) {
+            verifyAndRefreshSession(
+                client,
+                request.body.session.id,
+                request.body.session.token,
                     function (result) {
                         if (result.error) {
                             request.log.error(result.error);
@@ -470,8 +463,7 @@ fastify.post("/studysets/new", function (request, reply) {
                         }
                     }
                 )
-            }
-        })
+            })
     } else {
         console.log(request.body)
         reply.code(400).send({
