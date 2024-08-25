@@ -194,44 +194,20 @@ fastify.get("/settings/clear-cookies", function (request, reply) {
   )
 })
 
-const supabase = createClient(apiUrl, apiPublicKey);
 fastify.get("/studysets/:studyset", function (request, reply) {
-  fetch(apiUrl + "/studysets/public/" + request.params.studyset).then(function (response) { return response.json(); }).then(
-    function (responseJson) {
+  fetch(apiUrl + "/studysets/public/" + request.params.studyset)
+    .then(function (response) { return response.json(); })
+    .then(function (responseJson) {
       if (responseJson.error) {
         reply.callNotFound()
       } else {
-        
-      }
-    }
-  );
-  supabase.from("studysets").select().eq(
-    "id",
-    request.params.studyset
-  ).then(function (result) {
-    if (result.error == null && result.status == 200 && result.data.length == 1) {
-      supabase.from("profiles").select().eq(
-        "id",
-        result.data[0].user_id
-      ).then(function (result2) {
-        let profile = {
-          display_name: "Unnamed User"
-        };
-        if (result2.error == null && result2.status == 200 && result2.data.length == 1) {
-          profile = result2.data[0]
-        }
         reply.view("studyset.html", {
           ...themeData(request),
-          studyset: result.data[0],
-          profile: profile,
-          apiUrl: apiUrl,
-          apiPublicKey: apiPublicKey
+          studyset: responseJson.data.studyset,
+          apiUrl: apiUrl
         })
-      })
-    } else {
-      reply.callNotFound()
-    }
-  })
+      }
+    });
 })
 
 fastify.listen({
