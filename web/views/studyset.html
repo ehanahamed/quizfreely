@@ -253,11 +253,9 @@
       </div>
     </main>
     <eta>~ include("./partials/footer") </eta>
-    <script src="/assets/js/supabase.min.js"></script>
     <script>
       var sb = supabase.createClient(
-        "<eta>= data.apiUrl </eta>",
-        "<eta>= data.apiPublicKey </eta>"
+        "<eta>= data.apiUrl </eta>"
       )
       sb.auth.getSession().then(function (result) {
         if (result.error == null && result.data.session.user.id == "<eta>= data.studyset.user_id </eta>") {
