@@ -71,9 +71,11 @@
               </div>
             </div>
             <h2 id="mainActionsStudysettitle"><eta>= data.studyset.title </eta></h2>
-            <p id="mainOpenCreator">
-              Created by <a href="/users/<eta>= data.studyset.user_id</eta>"><eta>= data.profile.display_name </eta></a>
+            <eta> if (data.studyset.user) { </eta>
+            <p>
+              Created by <a href="/users/<eta>= data.studyset.user.id</eta>"><eta>= data.studyset.user.displayName </eta></a>
             </p>
+            <eta> } </eta>
             <div id="edit-menu" class="flex hide">
               <a href="/studysets/<eta>= data.studyset.id </eta>/edit" class="button">
                 <i class="nf nf-fa-pencil"></i>
