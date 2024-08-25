@@ -1,8 +1,8 @@
 import "dotenv/config";
 import Fastify from "fastify";
 import fastifyCors from "@fastify/cors";
-import fastifyPostgres from "@fastify/postgres";
 import fastifyRateLimit from "@fastify/rate-limit";
+import pg from "pg";
 import path from "path";
 
 const port = process.env.PORT;
@@ -20,9 +20,6 @@ const fastify = Fastify({
 
 await fastify.register(fastifyCors, {
     origin: corsOrigin
-});
-await fastify.register(fastifyPostgres, {
-    connectionString: pgConnection
 });
 await fastify.register(fastifyRateLimit, {
     max: 100,
