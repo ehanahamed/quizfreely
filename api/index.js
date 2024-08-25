@@ -210,7 +210,7 @@ fastify.post("/sign-in", async function (request, reply) {
     }
 })
 
-fastify.post("/studysets/new", async function (request, reply) {
+fastify.post("/studysets/create", async function (request, reply) {
     if (
         request.body &&
         request.body.session &&
@@ -288,12 +288,90 @@ fastify.post("/studysets/new", async function (request, reply) {
     }
 })
 
-fastify.get("/studysets/public/:studyset", async function (request, reply) {
+fastify.post("/studysets/update/:studysetid", async function (request, reply) {
+    if (
+        request.body &&
+        request.body.session &&
+        request.body.session.id &&
+        request.body.session.token &&
+        request.body.studyset &&
+        request.body.studyset.title &&
+        (
+            request.body.studyset.private === true || 
+            request.body.studyset.private === false
+        ) &&
+        request.body.studyset.data
+    ) {
+        let studysetTitle = request.body.studyset.title || "Untitled Studyset";
+        let client = await pool.connect();
+        try {
+            await client.query("BEGIN");
+            let session = await client.query(
+                "select id, token, user_id from auth.verify_and_refresh_session($1, $2)",
+                [request.body.session.id, request.body.session.token]
+            );
+            if (session.rows.length == 1) {
+                await client.query("set role quizfreely_auth_user");
+                await client.query("select set_config('quizfreely_auth.user_id', $1, true)", [session.rows[0].user_id]);
+                let updatedStudyset = await client.query(
+                    "update public.studysets set title = $2, private = $3, data = $4, updated_at = clock_timestamp()" +
+                    "where id = $1 returning id, user_id, title, private, updated_at",
+                    [
+                        request.params.studysetid,
+                        studysetTitle,
+                        request.body.studyset.private,
+                        request.body.studyset.data
+                    ]
+                );
+                await client.query("COMMIT")
+                return reply.send({
+                    "error": false,
+                    "data": {
+                        studyset: {
+                            id: updatedStudyset.rows[0].id,
+                            userId: updatedStudyset.rows[0].user_id,
+                            title: updatedStudyset.rows[0].title,
+                            private: updatedStudyset.rows[0].private,
+                            updatedAt: updatedStudyset.rows[0].updated_at
+                        },
+                        session: {
+                            id: session.rows[0].id,
+                            token: session.rows[0].token
+                        }
+                    }
+                })
+            } else {
+                await client.query("ROLLBACK");
+                return reply.code(401).send({
+                    error: {
+                        type: "session-invalid"
+                    }
+                })
+            }
+        } catch (error) {
+            await client.query("ROLLBACK");
+            request.log.error(error);
+            return reply.code(500).send({
+                error: {
+                    type: "postgres-error"
+                }
+            })
+        }
+    } else {
+        reply.code(400).send({
+            error: {
+                type: "fields-missing"
+            }
+        })
+    }
+})
+
+fastify.get("/studysets/public/:studysetid", async function (request, reply) {
     try {
         let result = await pool.query(
-            "select id, user_id, title, data, updated_at from public.studysets " +
+            "select id, user_id, title, private, data, updated_at from public.studysets " +
             "where id = $1 and private = false limit 1",
-            [request.params.studyset]
+            [request.params.studysetid]
         )
         if (result.rows.length == 1) {
             let user = await pool.query(
@@ -310,6 +388,7 @@ fastify.get("/studysets/public/:studyset", async function (request, reply) {
                             userId: result.rows[0].user_id,
                             title: result.rows[0].title,
                             private: result.rows[0].private,
+                            updatedAt: result.rows[0].updated_at,
                             data: result.rows[0].data,
                             user: {
                                 id: user.rows[0].id,
