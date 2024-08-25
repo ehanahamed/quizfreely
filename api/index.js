@@ -225,9 +225,51 @@ fastify.post("/studysets/new", async function (request, reply) {
         request.body.studyset.data
     ) {
         let studysetTitle = request.body.studyset.title || "Untitled Studyset";
+        let client = await pool.connect();
         try {
-
+            await client.query("BEGIN");
+            session = await client.query(
+                "select id, token, user_id from auth.verify_and_refresh_session($1, $2)",
+                [request.body.session.id, request.body.session.token]
+            );
+            if (session.rows.length == 1) {
+                let insertedStudyset = await client.query(
+                    "insert into public.studysets (user_id, title, private, data) " +
+                    "values ($1, $2, $3, $4) returning id, user_id, title, private, updated_at",
+                    [
+                        session.rows[0].user_id,
+                        studysetTitle,
+                        request.body.studyset.private,
+                        request.body.studyset.data
+                    ]
+                );
+                await client.query("COMMIT")
+                return reply.send({
+                    "error": false,
+                    "data": {
+                        studyset: {
+                            id: insertedStudyset.rows[0].id,
+                            userId: insertedStudyset.rows[0].user_id,
+                            title: insertedStudyset.rows[0].title,
+                            private: insertedStudyset.rows[0].private,
+                            updatedAt: insertedStudyset.rows[0].updated_at
+                        },
+                        session: {
+                            id: session.rows[0].id,
+                            token: session.rows[0].token
+                        }
+                    }
+                })
+            } else {
+                await client.query("ROLLBACK");
+                return reply.code(401).send({
+                    error: {
+                        type: "session-invalid"
+                    }
+                })
+            }
         } catch (error) {
+            await client.query("ROLLBACK");
             request.log.error(error);
             return reply.code(500).send({
                 error: {
