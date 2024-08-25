@@ -147,7 +147,7 @@ function verifyAndRefreshSession(client, sessionId, sessionToken, callback) {
     clearExpiredSessions()
     client.query(
         "select id, token, user_id from auth.verify_and_refresh_session($1, $2)",
-        [sessionId],
+        [sessionId, sessionToken],
         function (error, result) {
             if (error) {
                 callback({
@@ -367,19 +367,23 @@ fastify.post("/sign-in", function (request, reply) {
 fastify.post("/studysets/new", function (request, reply) {
     if (
         request.body &&
+        request.body.session &&
         request.body.session.id &&
         request.body.session.token &&
         request.body.studyset &&
         request.body.studyset.title &&
-        request.body.studyset.private &&
+        (
+            request.body.studyset.private === true || 
+            request.body.studyset.private === false
+        ) &&
         request.body.studyset.data
     ) {
-        let studysetTitle = request.studyset.title || "Untitled Studyset";
+        let studysetTitle = request.body.studyset.title || "Untitled Studyset";
         fastify.pg.connect(function (error, client, release) {
             if (error) {
                 return reply.code(500).send({
                     error: {
-                        type: "postgres-error"
+                        type: "postgres-errorw"
                     }
                 })
             } else {
@@ -393,7 +397,8 @@ fastify.post("/studysets/new", function (request, reply) {
                             release()
                             reply.code(500).send({
                                 error: {
-                                    type: result.error.type
+                                    type: result.error.type,
+                                    extra: "e"
                                 }
                             })
                         } else if (result.data.user) {
@@ -424,7 +429,7 @@ fastify.post("/studysets/new", function (request, reply) {
                                                     release()
                                                     reply.code(500).send({
                                                         error: {
-                                                            type: "postgres-error"
+                                                            type: "postgres-error3"
                                                         }
                                                     })
                                                 } else {
@@ -467,6 +472,7 @@ fastify.post("/studysets/new", function (request, reply) {
             }
         })
     } else {
+        console.log(request.body)
         reply.code(400).send({
             error: {
                 type: "fields-missing"
