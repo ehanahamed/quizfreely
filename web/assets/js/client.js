@@ -1,7 +1,7 @@
 var client = {
     apiUrl: "https://api.quizfreely.com",
     get: function (path, callback) {
-        fetch(apiUrl + path).then(
+        fetch(client.apiUrl + path).then(
             function (response) {
                 return response.json()
             }
@@ -16,7 +16,7 @@ var client = {
         if (method) {
             reqMethod = method
         }
-        
+
         var reqBody = {};
         if (body && body.session) {
             reqBody = body
@@ -37,7 +37,7 @@ var client = {
             }
         }
         fetch(
-            apiUrl + path,
+            client.apiUrl + path,
             {
                 method: reqMethod,
                 headers: {
@@ -51,9 +51,9 @@ var client = {
             }
         ).then(
             function(responseJson) {
-                if (responseJson.session && window.localStorage) {
-                    localStorage.setItem("sessionId", responseJson.session.id);
-                    localStorage.setItem("sessionToken", responseJson.session.token);
+                if (responseJson.data && responseJson.data.session && window.localStorage) {
+                    localStorage.setItem("sessionId", responseJson.data.session.id);
+                    localStorage.setItem("sessionToken", responseJson.data.session.token);
                 }
                 callback(responseJson);
             }
