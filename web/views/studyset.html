@@ -256,12 +256,13 @@
     <script src="/assets/js/client.js"></script>
     <script>
       client.apiUrl = "<eta>= data.apiUrl </eta>"
-      client.req("/user")
-      sb.auth.getSession().then(function (result) {
-        if (result.error == null && result.data.session.user.id == "<eta>= data.studyset.user_id </eta>") {
-          document.getElementById("edit-menu").classList.remove("hide");
-        }
-      })
+      if (client.hasSession()) {
+        client.req("/user", function (response) {
+          if (response.data && response.data.user.id == "<eta>= data.studyset.user.id </eta>") {
+            document.getElementById("edit-menu").classList.remove("hide");
+          }
+        })
+      }
     </script>
     <script>
       var studyset = JSON.parse("<eta>~ JSON.stringify(data.studyset).replaceAll('\\', '\\\\').replaceAll('\"', '\\\"') </eta>")
