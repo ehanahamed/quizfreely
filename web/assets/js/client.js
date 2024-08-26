@@ -11,10 +11,16 @@ var client = {
             }
         )
     },
-    req: function (path, method, body, callback) {
-        if (body.session) {
+    req: function (path, callback, method, body) {
+        var reqMethod = "POST";
+        if (method) {
+            reqMethod = method
+        }
+        
+        var reqBody = {};
+        if (body && body.session) {
             reqBody = body
-        } else if (window.localStorage && localStorage.getItem("sessionId") && localStorage.getItem("sessionToken")) {
+        } else if (body && window.localStorage && localStorage.getItem("sessionId") && localStorage.getItem("sessionToken")) {
             reqBody = {
                 ...body,
                 session: {
@@ -22,13 +28,18 @@ var client = {
                     token: localStorage.getItem("sessionToken")
                 }
             }
-        } else {
-            reqBody = body;
+        } else if (window.localStorage && localStorage.getItem("sessionId") && localStorage.getItem("sessionToken")) {
+            reqBody = {
+                session: {
+                    id: localStorage.getItem("sessionId"),
+                    token: localStorage.getItem("sessionToken")
+                }
+            }
         }
         fetch(
             apiUrl + path,
             {
-                method: method.toUpperCase(),
+                method: reqMethod,
                 headers: {
                     "Content-Type": "application/json",
                 },
