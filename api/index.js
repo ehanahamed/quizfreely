@@ -494,7 +494,7 @@ fastify.post("/user", async function (request, reply) {
                         "error": false,
                         "data": {
                             user: {
-                                id: userData.rows[0],
+                                id: userData.rows[0].id,
                                 username: userData.rows[0].username,
                                 displayName: userData.rows[0].display_name
                             },
