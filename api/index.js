@@ -323,23 +323,28 @@ fastify.post("/studysets/update/:studysetid", async function (request, reply) {
                         request.body.studyset.data
                     ]
                 );
-                await client.query("COMMIT")
-                return reply.send({
-                    "error": false,
-                    "data": {
-                        studyset: {
-                            id: updatedStudyset.rows[0].id,
-                            userId: updatedStudyset.rows[0].user_id,
-                            title: updatedStudyset.rows[0].title,
-                            private: updatedStudyset.rows[0].private,
-                            updatedAt: updatedStudyset.rows[0].updated_at
-                        },
-                        session: {
-                            id: session.rows[0].id,
-                            token: session.rows[0].token
+                if (updatedStudyset.rows.length == 1) {
+                    await client.query("COMMIT")
+                    return reply.send({
+                        "error": false,
+                        "data": {
+                            studyset: {
+                                id: updatedStudyset.rows[0].id,
+                                userId: updatedStudyset.rows[0].user_id,
+                                title: updatedStudyset.rows[0].title,
+                                private: updatedStudyset.rows[0].private,
+                                updatedAt: updatedStudyset.rows[0].updated_at
+                            },
+                            session: {
+                                id: session.rows[0].id,
+                                token: session.rows[0].token
+                            }
                         }
-                    }
-                })
+                    })
+                } else {
+                    await client.query("ROLLBACK");
+                    return reply.callNotFound();
+                }
             } else {
                 await client.query("ROLLBACK");
                 return reply.code(401).send({
