@@ -7,10 +7,6 @@ var client = {
             }
         ).then(
             function(responseJson) {
-                if (responseJson.session && window.localStorage) {
-                    localStorage.setItem("sessionId", responseJson.session.id);
-                    localStorage.setItem("sessionToken", responseJson.session.token);
-                }
                 callback(responseJson);
             }
         )
@@ -22,8 +18,8 @@ var client = {
             reqBody = {
                 ...body,
                 session: {
-                    id: "e",
-                    token: "e"
+                    id: localStorage.getItem("sessionId"),
+                    token: localStorage.getItem("sessionToken")
                 }
             }
         } else {
@@ -51,5 +47,12 @@ var client = {
                 callback(responseJson);
             }
         )
+    },
+    hasSession: function () {
+        if (window.localStorage && localStorage.getItem("sessionId") && localStorage.getItem("sessionToken")) {
+            return true;
+        } else{
+            return false;
+        }
     }
 }
