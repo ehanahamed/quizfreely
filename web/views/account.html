@@ -244,12 +244,12 @@
               password: document.getElementById("signupPasswordInput").value
             }
           }, function (response) {
-            if (response.data.session) {
-              showSignedIn();
-            } else {
+            if (response.error) {
               showError();
               document.getElementById("error-text").innerHTML =
                 "<b>Error</b>: " + response.error.type;
+            } else {
+              showSignedIn();
             }
           })
         } else {
@@ -267,12 +267,12 @@
           username: document.getElementById("signinUsernameInput").value,
           password: document.getElementById("signinPasswordInput").value
         }, function (response) {
-          if (response.data.session) {
-            showSignedIn();
-          } else {
+          if (response.error) {
             showError()
             document.getElementById("error-text").innerHTML =
               "<b>Error</b>: " + response.error.type;
+          } else {
+            showSignedIn();
           }
         })
       })
