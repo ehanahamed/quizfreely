@@ -238,26 +238,20 @@
         ) {
           document.getElementById("error-div").classList.add("hide");
           var username = document.getElementById("signupUsernameInput").value
-          client.req("/sign-up",)
-          sb.auth.signUp({
-            email: "user-" + username + "@quizfreely.com",
-            password: document.getElementById("signupPasswordInput").value
-          }).then(function (result) {
-            if (result.error == null) {
-              /* from supabase js reference: "If Confirm email is disabled, both a user and a session are returned."
-              this means we can insert into RLS-protected tables correctly after signup (yay) */
-              sb.from("profiles").insert({
-                id: result.data.user.id,
-                display_name: username
-              }).then(function (result) {
-                showSignedIn()
-              })
-            } else {
+          client.req("/sign-up", {
+            body: {
+              username: username,
+              password: document.getElementById("signupPasswordInput").value
+            }
+          }, function (response) {
+            if (response.error) {
               showError();
               document.getElementById("error-text").innerHTML =
-                "<b>Error</b>: " + result.error.message;
+                "<b>Error</b>: " + response.error.type;
+            } else {
+              showSignedIn();
             }
-          });
+          })
         } else {
           showError();
           document.getElementById("error-text").innerHTML =
