@@ -257,7 +257,7 @@
     <script>
       client.apiUrl = "<eta>= data.apiUrl </eta>"
       if (client.hasSession()) {
-        client.req("/user", function (response) {
+        client.req("/user", {}, function (response) {
           if (response.data && response.data.user.id == "<eta>= data.studyset.user.id </eta>") {
             document.getElementById("edit-menu").classList.remove("hide");
           }
