@@ -264,8 +264,10 @@
     <script>
       document.getElementById("signinButton").addEventListener("click", function () {
         client.req("/sign-in", {
-          username: document.getElementById("signinUsernameInput").value,
-          password: document.getElementById("signinPasswordInput").value
+          body: {
+            username: document.getElementById("signinUsernameInput").value,
+            password: document.getElementById("signinPasswordInput").value
+          }
         }, function (response) {
           if (response.error) {
             showError()
