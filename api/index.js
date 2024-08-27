@@ -2,6 +2,7 @@ import "dotenv/config";
 import Fastify from "fastify";
 import fastifyCors from "@fastify/cors";
 import fastifyRateLimit from "@fastify/rate-limit";
+import { fastifyOauth2 } from "@fastify/oauth2";
 import pg from "pg";
 const { Pool, Client } = pg;
 import path from "path";
@@ -30,6 +31,24 @@ await fastify.register(fastifyRateLimit, {
     max: 100,
     timeWindow: "1 minute"
 });
+await fastify.register(fastifyOauth2, {
+  name: "googleOAuth2",
+  scope: ["profile", "email"],
+  credentials: {
+    client: {
+        id: "",
+        secret: "",
+    },
+    auth: fastifyOauth2.GOOGLE_CONFIGURATION
+  },
+  startRedirectPath: '/oauth2/google',
+  callbackUri: 'http://localhost:3000/oauth2/google/callback',
+  callbackUriParams: {
+    // custom query param that will be passed to callbackUri
+    access_type: 'offline', // will tell Google to send a refreshToken too
+  },
+  pkce: 'S256'
+})
 
 fastify.setErrorHandler(function (error, request, reply) {
   if (error.statusCode == 429) {
