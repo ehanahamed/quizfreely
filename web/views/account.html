@@ -204,12 +204,9 @@
         </div>
     </main>
     <eta>~ include("./partials/footer") </eta>
-    <script src="/assets/js/supabase.min.js"></script>
+    <script src="/assets/js/client.js"></script>
     <script>
-      var sb = supabase.createClient(
-        "<eta>= data.apiUrl </eta>",
-        "<eta>= data.apiPublicKey </eta>"
-      )
+      client.apiUrl = "<eta>= data.apiUrl </eta>";
       function showSignedIn() {
         document.getElementById("account-div").classList.add("hide");
         document.getElementById("error-div").classList.add("hide");
@@ -220,16 +217,18 @@
         document.getElementById("error-div").classList.remove("hide");
         document.getElementById("signedin-div").classList.add("hide");
       }
-      sb.auth.getSession().then(function (result) {
-        if (result.error == null && result.data.session) {
-          showSignedIn()
-        }
-      })
+      if (client.hasSession()) {
+        client.req("/user", function (response) {
+          if (response.data && response.data.user) {
+            showSignedIn()
+          }
+        })
+      }/*
       document.getElementById("gaccount-button").addEventListener("click", function () {
         sb.auth.signInWithOAuth({
           provider: "google"
         })
-      })
+      })*/
     </script>
     <eta>if (data.signup) { </eta>
     <script>
@@ -239,6 +238,7 @@
         ) {
           document.getElementById("error-div").classList.add("hide");
           var username = document.getElementById("signupUsernameInput").value
+          client.req("/sign-up",)
           sb.auth.signUp({
             email: "user-" + username + "@quizfreely.com",
             password: document.getElementById("signupPasswordInput").value
