@@ -194,17 +194,21 @@ fastify.get("/settings/clear-cookies", function (request, reply) {
 
 fastify.get("/studysets/:studyset", function (request, reply) {
   fetch(apiUrl + "/studysets/public/" + request.params.studyset)
-    .then(function (response) { return response.json(); })
-    .then(function (responseJson) {
-      if (responseJson.error) {
-        reply.callNotFound()
-      } else {
-        reply.view("studyset.html", {
-          ...themeData(request),
-          studyset: responseJson.data.studyset,
-          apiUrl: apiUrl
-        })
-      }
+    .then(function (response) {
+      response.json().then(function (responseJson) {
+        if (responseJson.error) {
+          reply.callNotFound()
+        } else {
+          reply.view("studyset.html", {
+            ...themeData(request),
+            studyset: responseJson.data.studyset,
+            apiUrl: apiUrl
+          })
+        }
+      });
+    }).catch(function (error) {
+      request.log.error(error)
+      reply.callNotFound();
     });
 })
 
