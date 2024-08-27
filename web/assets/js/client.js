@@ -3,11 +3,11 @@ var client = {
     get: function (path, callback) {
         fetch(client.apiUrl + path).then(
             function (response) {
-                return response.json()
-            }
-        ).then(
-            function(responseJson) {
-                callback(responseJson);
+                response.json().then(
+                    function(responseJson) {
+                        callback(responseJson);
+                    }
+                )
             }
         )
     },
@@ -19,23 +19,29 @@ var client = {
 
         var reqBody = {};
         if (options.body && options.body.session) {
-            reqBody = options.body
-        } else if (options.body && window.localStorage && localStorage.getItem("sessionId") && localStorage.getItem("sessionToken")) {
-            reqBody = {
-                ...options.body,
-                session: {
-                    id: localStorage.getItem("sessionId"),
-                    token: localStorage.getItem("sessionToken")
+            reqBody = options.body;
+        } else if (client.hasSession()) {
+            if (options.body) {
+                reqBody = {
+                    ...options.body,
+                    session: {
+                        id: localStorage.getItem("sessionId"),
+                        token: localStorage.getItem("sessionToken")
+                    }
+                }
+            } else {
+                reqBody = {
+                    session: {
+                        id: localStorage.getItem("sessionId"),
+                        token: localStorage.getItem("sessionToken")
+                    }
                 }
             }
-        } else if (window.localStorage && localStorage.getItem("sessionId") && localStorage.getItem("sessionToken")) {
-            reqBody = {
-                session: {
-                    id: localStorage.getItem("sessionId"),
-                    token: localStorage.getItem("sessionToken")
-                }
-            }
+        } else if (options.body) {
+            console.log(options.body)
+            reqBody = options.body;
         }
+
         fetch(
             client.apiUrl + path,
             {
@@ -47,15 +53,13 @@ var client = {
             }
         ).then(
             function (response) {
-                return response.json()
-            }
-        ).then(
-            function(responseJson) {
-                if (responseJson.data && responseJson.data.session && window.localStorage) {
-                    localStorage.setItem("sessionId", responseJson.data.session.id);
-                    localStorage.setItem("sessionToken", responseJson.data.session.token);
-                }
-                callback(responseJson);
+                response.json().then(function(responseJson) {
+                    if (responseJson.data && responseJson.data.session && window.localStorage) {
+                        localStorage.setItem("sessionId", responseJson.data.session.id);
+                        localStorage.setItem("sessionToken", responseJson.data.session.token);
+                    }
+                    callback(responseJson);
+                })
             }
         )
     },
