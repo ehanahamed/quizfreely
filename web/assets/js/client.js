@@ -11,18 +11,18 @@ var client = {
             }
         )
     },
-    req: function (path, callback, method, body) {
+    req: function (path, options, callback) {
         var reqMethod = "POST";
-        if (method) {
-            reqMethod = method
+        if (options.method) {
+            reqMethod = options.method
         }
 
         var reqBody = {};
-        if (body && body.session) {
-            reqBody = body
-        } else if (body && window.localStorage && localStorage.getItem("sessionId") && localStorage.getItem("sessionToken")) {
+        if (options.body && options.body.session) {
+            reqBody = options.body
+        } else if (options.body && window.localStorage && localStorage.getItem("sessionId") && localStorage.getItem("sessionToken")) {
             reqBody = {
-                ...body,
+                ...options.body,
                 session: {
                     id: localStorage.getItem("sessionId"),
                     token: localStorage.getItem("sessionToken")
