@@ -218,7 +218,7 @@
         document.getElementById("signedin-div").classList.add("hide");
       }
       if (client.hasSession()) {
-        client.req("/user", function (response) {
+        client.req("/user", {}, function (response) {
           if (response.data && response.data.user) {
             showSignedIn()
           }
