@@ -45,7 +45,6 @@ var client = {
                 }
             }
         } else if (options.body) {
-            console.log(options.body)
             reqBody = options.body;
         }
 
