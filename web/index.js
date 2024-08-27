@@ -124,7 +124,6 @@ fastify.get("/sign-up", function (request, reply) {
   reply.view("account.html", {
     signup: true,
     apiUrl: apiUrl,
-    apiPublicKey: apiPublicKey,
     ...themeData(request)
   })
 })
@@ -133,7 +132,6 @@ fastify.get("/sign-in", function (request, reply) {
   reply.view("account.html", {
     signup: false,
     apiUrl: apiUrl,
-    apiPublicKey: apiPublicKey,
     ...themeData(request)
   })
 })
