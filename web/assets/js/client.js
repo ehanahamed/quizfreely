@@ -9,7 +9,14 @@ var client = {
                     }
                 )
             }
-        )
+        ).catch(function (error) {
+            callback({
+                error: {
+                    type: "client-fetch-error",
+                    error: error
+                }
+            })
+        })
     },
     req: function (path, options, callback) {
         var reqMethod = "POST";
@@ -59,6 +66,15 @@ var client = {
                         localStorage.setItem("sessionToken", responseJson.data.session.token);
                     }
                     callback(responseJson);
+                })
+            }
+        ).catch(
+            function (error) {
+                callback({
+                    error: {
+                        type: "client-fetch-error",
+                        error: error
+                    }
                 })
             }
         )
