@@ -45,7 +45,7 @@ fetch(
 
 For client-side js code like in html/eta templates (`web/views/`) or in client js files (`web/assets/js/`)), we made a simple js api client (in `web/assets/js/client.js`)
 
-Client side js needs to store and send session tokens and parse response json, so this js api client does that for us to avoid repetitive code.
+Client side js needs to store and send session tokens, so this js api client does that "automatically" when you use `client.req()`. It also stringifies request json and parses response json.
 
 Here's an example for using `client`:
 ```html
@@ -53,14 +53,32 @@ Here's an example for using `client`:
 <script>
   client.apiUrl = "https://api.quizfreely.com";
   if (client.hasSession()) {
-    client.req("/studysets/create", function (responseJson) {
+    client.req("/studysets/create",
+    {
+      "body": {
+        /*
+        client.req() sends our user's session token for us
+        */
+        studyset: {
+          title: "title goes here!",
+          private: false,
+          data: {
+            terms: [
+              ["term 1", "definition 1"],
+              ["term 2", "definition 2"]
+            ]
+          }
+        }
+      }
+    },
+    function (responseJson) {
       if (responseJson.error) {
         console.log(responseJson.error);
       } else {
         console.log(responseJson.data);
         /*
-        client.req() stores our user's session token for us
-        it also sends the stored session in the request body
+        client.req() also stores our user's session token from responseJson.data.session for us,
+        and it sends it in any future request's body
         */
       }
     })
