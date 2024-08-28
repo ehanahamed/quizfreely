@@ -183,7 +183,7 @@ fastify.get("/settings/themes/:theme", function (request, reply) {
 })
 
 fastify.get("/settings/clear-cookies", function (request, reply) {
-  reply.clearCookie("theme").clearCookie("dashboard").view(
+  reply.clearCookie("theme", cookieOptions()).clearCookie("dashboard", cookieOptions()).view(
     "settings.html",
     {
       ...themeData(request),
