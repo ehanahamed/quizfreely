@@ -34,7 +34,7 @@ await fastify.register(fastifyRateLimit, {
     max: 100,
     timeWindow: "1 minute"
 });
-fastify.register(fastifyOauth2, {
+await fastify.register(fastifyOauth2, {
     name: "googleOAuth2",
     scope: ["openid", "profile", "email"],
     credentials: {
@@ -80,6 +80,10 @@ fastify.setNotFoundHandler(function (request, reply) {
   })
 })
 
+const newSessionQuery = "insert into auth.sessions (user_id) values ($1) returning id, token";
+const clearExpiredSessionsQuery = "delete from auth.sessions where expire_at < clock_timestamp()";
+const verifyAndRefreshSessionQuery = "select id, token, user_id from auth.verify_and_refresh_session($1, $2)";
+
 fastify.get('/oauth/google/callback', function (request, reply) {
     // Note that in this example a "reply" is also passed, it's so that code verifier cookie can be cleaned before
     // token is requested from token endpoint
@@ -102,10 +106,6 @@ fastify.get('/oauth/google/callback', function (request, reply) {
         }
     })
 })
-
-const newSessionQuery = "insert into auth.sessions (user_id) values ($1) returning id, token";
-const clearExpiredSessionsQuery = "delete from auth.sessions where expire_at < clock_timestamp()";
-const verifyAndRefreshSessionQuery = "select id, token, user_id from auth.verify_and_refresh_session($1, $2)";
 
 fastify.post("/sign-up", async function (request, reply) {
     /* check if username and password were sent in sign-up request body */
