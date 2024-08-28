@@ -82,7 +82,7 @@ fastify.setNotFoundHandler(function (request, reply) {
   })
 })
 
-fastify.get('/interaction/callback/google', function (request, reply) {
+fastify.get('/oauth/google/callback', function (request, reply) {
     // Note that in this example a "reply" is also passed, it's so that code verifier cookie can be cleaned before
     // token is requested from token endpoint
     this.googleOAuth2.getAccessTokenFromAuthorizationCodeFlow(request, reply, (err, result) => {
@@ -90,20 +90,18 @@ fastify.get('/interaction/callback/google', function (request, reply) {
         reply.send(err)
         return
       }
-  
-      sget.concat({
-        url: 'https://www.googleapis.com/oauth2/v2/userinfo',
-        method: 'GET',
+      
+      fetch("https://www.googleapis.com/oauth2/v2/userinfo", {
+        method: "GET",
         headers: {
-          Authorization: 'Bearer ' + result.token.access_token
-        },
-        json: true
-      }, function (err, res, data) {
-        if (err) {
-          reply.send(err)
-          return
+            Authorization: "Bearer " + result.token.access_token
         }
-        reply.send(data)
+      }).then(function (response) {
+        response.json().then(function (responseJson) {
+            reply.send(responseJson)
+        })
+      }).catch(function (error) {
+        reply.send(error)
       })
     })
   })
