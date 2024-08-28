@@ -2,16 +2,19 @@ import "dotenv/config";
 import Fastify from "fastify";
 import fastifyCors from "@fastify/cors";
 import fastifyRateLimit from "@fastify/rate-limit";
-import { fastifyOauth2 } from "@fastify/oauth2";
+import fastifyOauth2 from "@fastify/oauth2";
 import pg from "pg";
 const { Pool, Client } = pg;
 import path from "path";
 
 const port = process.env.PORT;
 const host = process.env.HOST;
+const apiUrl = process.env.API_URL;
 const pgConnection = process.env.POSTGRES_URI;
 const corsOrigin = process.env.CORS_ORIGIN;
 const logLevel = process.env.LOG_LEVEL;
+const oauthGoogleId = process.env.OAUTH_GOOGLE_ID
+const oauthGoogleSecret = process.env.OAUTH_GOOGLE_SECRET
 
 const fastify = Fastify({
     logger: {
@@ -31,24 +34,28 @@ await fastify.register(fastifyRateLimit, {
     max: 100,
     timeWindow: "1 minute"
 });
-await fastify.register(fastifyOauth2, {
-  name: "googleOAuth2",
-  scope: ["profile", "email"],
+fastify.register(fastifyOauth2, {
+  name: 'googleOAuth2',
+  scope: ['openid', 'profile', 'email'],
   credentials: {
     client: {
-        id: "",
-        secret: "",
+      id: oauthGoogleId,
+      secret: oauthGoogleSecret,
     },
     auth: fastifyOauth2.GOOGLE_CONFIGURATION
   },
-  startRedirectPath: '/oauth2/google',
-  callbackUri: 'http://localhost:3000/oauth2/google/callback',
+  startRedirectPath: '/oauth/google',
+  callbackUri: apiUrl + "/oauth/google/callback",
   callbackUriParams: {
     // custom query param that will be passed to callbackUri
     access_type: 'offline', // will tell Google to send a refreshToken too
   },
   pkce: 'S256'
-})
+  // check if your provider supports PKCE, 
+  // in case they do, 
+  // use of this parameter is highly encouraged 
+  // in order to prevent authorization code interception attacks
+});
 
 fastify.setErrorHandler(function (error, request, reply) {
   if (error.statusCode == 429) {
@@ -74,6 +81,32 @@ fastify.setNotFoundHandler(function (request, reply) {
     }
   })
 })
+
+fastify.get('/interaction/callback/google', function (request, reply) {
+    // Note that in this example a "reply" is also passed, it's so that code verifier cookie can be cleaned before
+    // token is requested from token endpoint
+    this.googleOAuth2.getAccessTokenFromAuthorizationCodeFlow(request, reply, (err, result) => {
+      if (err) {
+        reply.send(err)
+        return
+      }
+  
+      sget.concat({
+        url: 'https://www.googleapis.com/oauth2/v2/userinfo',
+        method: 'GET',
+        headers: {
+          Authorization: 'Bearer ' + result.token.access_token
+        },
+        json: true
+      }, function (err, res, data) {
+        if (err) {
+          reply.send(err)
+          return
+        }
+        reply.send(data)
+      })
+    })
+  })
 
 const newSessionQuery = "insert into auth.sessions (user_id) values ($1) returning id, token";
 const clearExpiredSessionsQuery = "delete from auth.sessions where expire_at < clock_timestamp()";
