@@ -13,8 +13,8 @@ const apiUrl = process.env.API_URL;
 const pgConnection = process.env.POSTGRES_URI;
 const corsOrigin = process.env.CORS_ORIGIN;
 const logLevel = process.env.LOG_LEVEL;
-const oauthGoogleId = process.env.OAUTH_GOOGLE_ID
-const oauthGoogleSecret = process.env.OAUTH_GOOGLE_SECRET
+const oauthGoogleId = process.env.OAUTH_GOOGLE_CLIENT_ID
+const oauthGoogleSecret = process.env.OAUTH_GOOGLE_CLIENT_SECRET
 
 const fastify = Fastify({
     logger: {
