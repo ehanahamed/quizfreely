@@ -63,5 +63,7 @@ Here is a list that explains these error types.
   - usernames must be 2 or more characters and less than 100 characters
 - `"username-taken"`
   - another account already uses that username (when trying to create an account)
+- `"oauth-error"`
+  - an error happened while trying to generate an authorization uri with oauth2
 - `"server-error"`
   - a 500 error; an error was so bad that the api couldn't even use any of the other error types
