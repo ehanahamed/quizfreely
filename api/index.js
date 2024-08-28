@@ -85,26 +85,25 @@ fastify.setNotFoundHandler(function (request, reply) {
 fastify.get('/oauth/google/callback', function (request, reply) {
     // Note that in this example a "reply" is also passed, it's so that code verifier cookie can be cleaned before
     // token is requested from token endpoint
-    this.googleOAuth2.getAccessTokenFromAuthorizationCodeFlow(request, reply, (err, result) => {
-      if (err) {
-        reply.send(err)
-        return
-      }
-      
-      fetch("https://www.googleapis.com/oauth2/v2/userinfo", {
-        method: "GET",
-        headers: {
-            Authorization: "Bearer " + result.token.access_token
+    this.googleOAuth2.getAccessTokenFromAuthorizationCodeFlow(request, reply, function (error, result) {
+        if (error) {
+            reply.send(error)
+        } else {
+            fetch("https://www.googleapis.com/oauth2/v2/userinfo", {
+              method: "GET",
+              headers: {
+                  Authorization: "Bearer " + result.token.access_token
+              }
+            }).then(function (response) {
+              response.json().then(function (responseJson) {
+                  reply.send(responseJson)
+              })
+            }).catch(function (error) {
+              reply.send(error)
+            })
         }
-      }).then(function (response) {
-        response.json().then(function (responseJson) {
-            reply.send(responseJson)
-        })
-      }).catch(function (error) {
-        reply.send(error)
-      })
     })
-  })
+})
 
 const newSessionQuery = "insert into auth.sessions (user_id) values ($1) returning id, token";
 const clearExpiredSessionsQuery = "delete from auth.sessions where expire_at < clock_timestamp()";
