@@ -35,27 +35,25 @@ await fastify.register(fastifyRateLimit, {
     timeWindow: "1 minute"
 });
 fastify.register(fastifyOauth2, {
-  name: 'googleOAuth2',
-  scope: ['openid', 'profile', 'email'],
-  credentials: {
-    client: {
-      id: oauthGoogleId,
-      secret: oauthGoogleSecret,
+    name: "googleOAuth2",
+    scope: ["openid", "profile", "email"],
+    credentials: {
+      client: {
+        id: oauthGoogleId,
+        secret: oauthGoogleSecret
+      },
+      auth: oauthPlugin.GOOGLE_CONFIGURATION
     },
-    auth: fastifyOauth2.GOOGLE_CONFIGURATION
-  },
-  startRedirectPath: '/oauth/google',
-  callbackUri: apiUrl + "/oauth/google/callback",
-  callbackUriParams: {
-    // custom query param that will be passed to callbackUri
-    access_type: 'offline', // will tell Google to send a refreshToken too
-  },
-  pkce: 'S256'
-  // check if your provider supports PKCE, 
-  // in case they do, 
-  // use of this parameter is highly encouraged 
-  // in order to prevent authorization code interception attacks
-});
+    startRedirectPath: '/oauth/google',
+    callbackUri: apiUrl + "/oauth/google/callback",
+    cookie: {
+        path: "/",
+        secure: true,
+        sameSite: 'lax',
+        httpOnly: true
+    },
+    pkce: 'S256'
+})
 
 fastify.setErrorHandler(function (error, request, reply) {
   if (error.statusCode == 429) {
