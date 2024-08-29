@@ -68,7 +68,6 @@ create table auth.users (
   auth_type text not null default 'username-password',
   oauth_google_id text,
   oauth_google_email text,
-  oauth_google_token jsonb,
   unique (username),
   unique (oauth_google_id)
 );
