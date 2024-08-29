@@ -69,7 +69,8 @@ create table auth.users (
   oauth_google_id text,
   oauth_google_email text,
   oauth_google_token jsonb,
-  unique (username, oauth_google_id)
+  unique (username),
+  unique (oauth_google_id)
 );
 
 grant select on auth.users to quizfreely_auth;
