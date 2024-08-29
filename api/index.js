@@ -82,6 +82,7 @@ fastify.setNotFoundHandler(function (request, reply) {
 })
 
 const newSessionQuery = "insert into auth.sessions (user_id) values ($1) returning id, token";
+const newTempSessionQuery = "insert into auth.sessions (user_id, expire_at) values ($1, clock_timestamp() + '10 seconds'::interval) returning id, token";
 const clearExpiredSessionsQuery = "delete from auth.sessions where expire_at < clock_timestamp()";
 
 async function googleAuthCallback(tokenObj) {
@@ -108,7 +109,7 @@ async function googleAuthCallback(tokenObj) {
                 ]
             );
             let newSession = await client.query(
-                newSessionQuery,
+                newTempSessionQuery,
                 [upsertedUser.rows[0].id]
             )
             await client.query("COMMIT");
@@ -308,6 +309,52 @@ fastify.post("/sign-in", async function (request, reply) {
         }
     } else {
         /* password and/or username missing in request.body */
+        return reply.code(400).send({
+            error: {
+                type: "fields-missing"
+            }
+        })
+    }
+})
+
+fastify.post("/session/refresh", async function (request, reply) {
+    if (request.body && request.body.session && request.body.session.id && request.body.session.token) {
+        let client = await pool.connect();
+        try {
+            await client.query("BEGIN");
+            let session = await client.query(
+                "select id, token, user_id from auth.verify_and_refresh_session($1, $2)",
+                [request.body.session.id, request.body.session.token]
+            );
+            if (session.rows.length == 1) {
+                await client.query("COMMIT")
+                return reply.send({
+                    "error": false,
+                    "data": {
+                        session: {
+                            id: session.rows[0].id,
+                            token: session.rows[0].token
+                        }
+                    }
+                })
+            } else {
+                await client.query("ROLLBACK");
+                return reply.code(401).send({
+                    error: {
+                        type: "session-invalid"
+                    }
+                })
+            }
+        } catch (error) {
+            await client.query("ROLLBACK");
+            request.log.error(error);
+            return reply.code(500).send({
+                error: {
+                    type: "postgres-error"
+                }
+            })
+        }
+    } else {
         return reply.code(400).send({
             error: {
                 type: "fields-missing"
