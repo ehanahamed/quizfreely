@@ -43,7 +43,7 @@ await fastify.register(fastifyOauth2, {
         id: oauthGoogleId,
         secret: oauthGoogleSecret
       },
-      auth: oauthPlugin.GOOGLE_CONFIGURATION
+      auth: fastifyOauth2.GOOGLE_CONFIGURATION
     },
     startRedirectPath: '/oauth/google',
     callbackUri: apiUrl + "/oauth/google/callback",
@@ -100,7 +100,7 @@ async function googleAuthCallback(tokenObj) {
             await client.query("BEGIN");
             let upsertedUser = await client.query(
                 "insert into auth.users (display_name, auth_type, oauth_google_id, oauth_google_email, oauth_google_token) " +
-                "values ($1, 'oauth-google', $2, $3, $4) on conflict (oauth_google_id) do update" +
+                "values ($1, 'oauth-google', $2, $3, $4) on conflict (oauth_google_id) do update " +
                 "set oauth_google_email = $3, oauth_google_token = $4 " +
                 "returning id, display_name",
                 [
@@ -147,7 +147,7 @@ async function googleAuthCallback(tokenObj) {
     }
 }
 
-fastify.get('/oauth/google/callback', async function (request, reply) {
+fastify.get('/oauth/google/callback', function (request, reply) {
     // Note that in this example a "reply" is also passed, it's so that code verifier cookie can be cleaned before
     // token is requested from token endpoint
     fastify.googleOAuth2.getAccessTokenFromAuthorizationCodeFlow(request, reply, function (error, result) {
