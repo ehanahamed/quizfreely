@@ -99,15 +99,13 @@ async function googleAuthCallback(tokenObj) {
         try {
             await client.query("BEGIN");
             let upsertedUser = await client.query(
-                "insert into auth.users (display_name, auth_type, oauth_google_id, oauth_google_email, oauth_google_token) " +
-                "values ($1, 'oauth-google', $2, $3, $4) on conflict (oauth_google_id) do update " +
-                "set oauth_google_email = $3, oauth_google_token = $4 " +
-                "returning id, display_name",
+                "insert into auth.users (display_name, auth_type, oauth_google_id, oauth_google_email) " +
+                "values ($1, 'oauth-google', $2, $3) on conflict (oauth_google_id) do update " +
+                "set oauth_google_email = $3 returning id, display_name",
                 [
                     userinfo.name,
                     userinfo.id,
-                    userinfo.email,
-                    tokenObj
+                    userinfo.email
                 ]
             );
             let newSession = await client.query(
