@@ -84,5 +84,49 @@ var client = {
         } else{
             return false;
         }
+    },
+    refreshSession: function (id, token, callback) {
+        if (id && token) {
+            fetch(
+                client.apiUrl + "/session/refresh",
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        session: {
+                            id: id,
+                            token: token
+                        }
+                    })
+                }
+            ).then(
+                function (response) {
+                    response.json().then(function(responseJson) {
+                        if (responseJson.data && responseJson.data.session && window.localStorage) {
+                            localStorage.setItem("sessionId", responseJson.data.session.id);
+                            localStorage.setItem("sessionToken", responseJson.data.session.token);
+                        }
+                        callback(responseJson);
+                    })
+                }
+            ).catch(
+                function (error) {
+                    callback({
+                        error: {
+                            type: "client-fetch-error",
+                            error: error
+                        }
+                    })
+                }
+            )
+        } else {
+            callback({
+                error: {
+                    type: "client-missing-fields"
+                }
+            })
+        }
     }
 }
