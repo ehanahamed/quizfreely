@@ -83,7 +83,6 @@ fastify.setNotFoundHandler(function (request, reply) {
 
 const newSessionQuery = "insert into auth.sessions (user_id) values ($1) returning id, token";
 const clearExpiredSessionsQuery = "delete from auth.sessions where expire_at < clock_timestamp()";
-const verifyAndRefreshSessionQuery = "select id, token, user_id from auth.verify_and_refresh_session($1, $2)";
 
 async function googleAuthCallback(tokenObj) {
     try {
