@@ -91,6 +91,13 @@ for insert
 to quizfreely_auth
 with check (true);
 
+create policy update_users_for_quizfreely_auth on auth.users
+as permissive
+for update
+to quizfreely_auth
+using (true)
+with check (true);
+
 create policy update_users_for_auth_user_by_user_id on auth.users
 as permissive
 for update
