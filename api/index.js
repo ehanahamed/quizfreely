@@ -45,15 +45,15 @@ await fastify.register(fastifyOauth2, {
       },
       auth: fastifyOauth2.GOOGLE_CONFIGURATION
     },
-    startRedirectPath: '/oauth/google',
+    startRedirectPath: "/oauth/google",
     callbackUri: apiUrl + "/oauth/google/callback",
     cookie: {
         path: "/",
         secure: true,
-        sameSite: 'lax',
+        sameSite: "lax",
         httpOnly: true
     },
-    pkce: 'S256'
+    pkce: "S256"
 })
 
 fastify.setErrorHandler(function (error, request, reply) {
