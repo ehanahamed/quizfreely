@@ -24,7 +24,7 @@
       href="/assets/nerdfonts/webfont.css"
     />
     <style>
-      button.gaccount-button {
+      .button.gaccount-button {
         background-color: #F0F0F0;
         color: #1F1F1F;
         font-family: "roboto";
@@ -33,15 +33,15 @@
         border-radius: 2rem;
         padding: 0.8rem;
       }
-      button.gaccount-button:hover,
-      button.gaccount-button:focus,
-      button.gaccount-button:focus-visible {
+      .button.gaccount-button:hover,
+      .button.gaccount-button:focus,
+      .button.gaccount-button:focus-visible {
         background-color: #E0E0E0;
         color: #1F1F1F;
         border: none;
       }
 
-      button.gaccount-button div.gaccount-container {
+      .button.gaccount-button div.gaccount-container {
         display: flex;
         gap: 1rem;
         align-items: center;
@@ -50,7 +50,7 @@
         justify-content: center;
       }
 
-      button.gaccount-button div.gaccount-container div {
+      .button.gaccount-button div.gaccount-container div {
         margin-top: 0px;
       }
 
@@ -110,7 +110,7 @@
             </div>
             <div class="separator">or</div>
             <div>
-              <button class="fullWidth gaccount-button" id="gaccount-button">
+              <a class="button fullWidth gaccount-button" href="<eta>= data.apiUrl </eta>/oauth/google">
                 <div class="gaccount-container">
                   <div class="gaccount-icon">
                     <svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" xmlns:xlink="http://www.w3.org/1999/xlink" style="display: block;">
@@ -123,7 +123,7 @@
                   </div>
                   <div>Sign up with Google</div>
                 </div>
-              </button>
+              </a>
             </div>
             <div>
               <a href="./dashboard" class="button fullWidth noaccount-button">
@@ -165,7 +165,7 @@
               </div>
               <div class="separator">or</div>
               <div>
-                <button class="fullWidth gaccount-button" id="gaccount-button">
+                <a class="button fullWidth gaccount-button" href="<eta>= data.apiUrl </eta>/oauth/google">
                   <div class="gaccount-container">
                     <div class="gaccount-icon">
                       <svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" xmlns:xlink="http://www.w3.org/1999/xlink" style="display: block;">
@@ -178,7 +178,7 @@
                     </div>
                     <div>Sign in with Google</div>
                   </div>
-                </button>
+                </a>
               </div>
               <div>
                 <a href="./dashboard" class="button fullWidth noaccount-button">
@@ -228,6 +228,12 @@
           provider: "google"
         })
       })*/
+    if (window.location.search.includes("?error")) {
+      var urlParams = new URLSearchParams(window.location.search);
+      showError();
+      document.getElementById("error-text").innerHTML =
+        "<b>Error</b>: " + urlParams.get("error");
+    }
     </script>
     <eta>if (data.signup) { </eta>
     <script>
