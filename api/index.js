@@ -13,8 +13,9 @@ const apiUrl = process.env.API_URL;
 const pgConnection = process.env.POSTGRES_URI;
 const corsOrigin = process.env.CORS_ORIGIN;
 const logLevel = process.env.LOG_LEVEL;
-const oauthGoogleId = process.env.OAUTH_GOOGLE_CLIENT_ID
-const oauthGoogleSecret = process.env.OAUTH_GOOGLE_CLIENT_SECRET
+const oauthGoogleId = process.env.OAUTH_GOOGLE_CLIENT_ID;
+const oauthGoogleSecret = process.env.OAUTH_GOOGLE_CLIENT_SECRET;
+const webOAuthCallback = process.env.WEB_OAUTH_CALLBACK_URL;
 
 const fastify = Fastify({
     logger: {
@@ -84,25 +85,86 @@ const newSessionQuery = "insert into auth.sessions (user_id) values ($1) returni
 const clearExpiredSessionsQuery = "delete from auth.sessions where expire_at < clock_timestamp()";
 const verifyAndRefreshSessionQuery = "select id, token, user_id from auth.verify_and_refresh_session($1, $2)";
 
-fastify.get('/oauth/google/callback', function (request, reply) {
+async function googleAuthCallback(tokenObj) {
+    try {
+        let response = await fetch("https://www.googleapis.com/oauth2/v2/userinfo", {
+            method: "GET",
+            headers: {
+                Authorization: "Bearer " + tokenObj.access_token
+            }
+          }
+        );
+        let userinfo = await response.json();
+        let client = await pool.connect();
+        try {
+            await client.query("BEGIN");
+            let upsertedUser = await client.query(
+                "insert into auth.users (display_name, auth_type, oauth_google_id, oauth_google_email, oauth_google_token) " +
+                "values ($1, 'oauth-google', $2, $3, $4) on conflict (oauth_google_id) do update" +
+                "set oauth_google_email = $3, oauth_google_token = $4 " +
+                "returning id, display_name",
+                [
+                    userinfo.name,
+                    userinfo.id,
+                    userinfo.email,
+                    tokenObj
+                ]
+            );
+            let newSession = await client.query(
+                newSessionQuery,
+                [upsertedUser.rows[0].id]
+            )
+            await client.query("COMMIT");
+            return {
+                error: false,
+                data: {
+                    user: {
+                        id: upsertedUser.rows[0].id,
+                        displayName: upsertedUser.rows[0].id
+                    },
+                    session: {
+                        id: newSession.rows[0].id,
+                        token: newSession.rows[0].token
+                    }
+                }
+            }
+        } catch (error) {
+            await client.query("ROLLBACK");
+            return {
+                error: {
+                    type: "postgres-error",
+                    error: error
+                }
+            }
+        }
+    } catch (error) {
+        return {
+            error: {
+                type: "fetch-error",
+                error: error
+            }
+        }
+    }
+}
+
+fastify.get('/oauth/google/callback', async function (request, reply) {
     // Note that in this example a "reply" is also passed, it's so that code verifier cookie can be cleaned before
     // token is requested from token endpoint
-    this.googleOAuth2.getAccessTokenFromAuthorizationCodeFlow(request, reply, function (error, result) {
+    fastify.googleOAuth2.getAccessTokenFromAuthorizationCodeFlow(request, reply, function (error, result) {
         if (error) {
-            reply.send(error)
+            request.log.error(error);
+            reply.redirect(webOAuthCallback + "?error=oauth-error");
         } else {
-            fetch("https://www.googleapis.com/oauth2/v2/userinfo", {
-              method: "GET",
-              headers: {
-                  Authorization: "Bearer " + result.token.access_token
-              }
-            }).then(function (response) {
-              response.json().then(function (responseJson) {
-                  reply.send(responseJson)
-              })
-            }).catch(function (error) {
-              reply.send(error)
-            })
+            googleAuthCallback(result.token).then(
+                function (result) {
+                    if (result.error) {
+                        request.log.error(result.error.error)
+                        reply.redirect(webOAuthCallback + "?error=oauth-error")
+                    } else {
+                        reply.redirect(webOAuthCallback + new URLSearchParams(result.data.session).toString())
+                    }
+                }
+            )
         }
     })
 })
