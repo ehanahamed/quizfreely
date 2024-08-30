@@ -107,7 +107,8 @@ function dashboard(request, reply) {
     themeDataObj.theme,
     cookieOptionsObj
   ).view("dashboard.html", {
-    ...themeDataObj
+    ...themeDataObj,
+    apiUrl: apiUrl
   })
 }
 
