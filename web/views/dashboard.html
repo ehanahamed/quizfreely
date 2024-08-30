@@ -131,15 +131,11 @@
             document.getElementById("studyset-list").innerHTML = "";
             for (var i = 0; i < result.data.rows.length; i++) {
               var box = document.createElement("div");
-              box.classList.add("box");
-              var title = document.createElement("p");
+              box.classList.add("box", "flex");
+              var title = document.createElement("a");
               title.innerText = result.data.rows[i].title;
-              var openButton = document.createElement("a");
-              openButton.innerText = "Open"
-              openButton.href = "/studysets/" + result.data.rows[i].id
-              openButton.classList.add("button", "alt")
+              title.href = "/studysets/" + result.data.rows[i].id
               box.appendChild(title);
-              box.appendChild(openButton)
               document.getElementById("studyset-list").appendChild(box);
             }
           }
