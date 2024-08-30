@@ -132,9 +132,12 @@
             for (var i = 0; i < result.data.rows.length; i++) {
               var box = document.createElement("div");
               box.classList.add("box", "flex");
-              var title = document.createElement("a");
+              var title = document.createElement("p");
               title.innerText = result.data.rows[i].title;
-              title.href = "/studysets/" + result.data.rows[i].id
+              var openButton = document.createElement("a");
+              openButton.innerText = "Open"
+              openButton.href = "/studysets/" + result.data.rows[i].id
+              openButton.classList.add("button")
               box.appendChild(title);
               document.getElementById("studyset-list").appendChild(box);
             }
