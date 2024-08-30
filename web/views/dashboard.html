@@ -36,13 +36,6 @@
           Starting point ig
           -->
           <div id="mainDashboarddiv">
-            <div class="grid list">
-              <div class="box flex center-h center-v">
-                <div>
-                  Create New
-                </div>
-              </div>
-            </div>
             <p>
               Create a new study set or open a study set file you downloaded.
             </p>
@@ -51,20 +44,23 @@
                 <i class="nf nf-oct-plus"></i>
                 Create new
               </button>
-              <label for="inputImportLocalFile" class="button alt">
+              <!--<label for="inputImportLocalFile" class="button alt">
                 <i class="nf nf-md-import"></i>
                 Open file
-              </label>
-              <input id="inputImportLocalFile" class="invisible" type="file" />
-            </div>
-            <p>You can also import study sets from other apps.</p>
-            <div class="flex">
+              </label>-->
               <button
                 onclick="document.getElementById('mainDashboardImportother').classList.remove('hide')"
+                class="alt"
               >
-                <i class="nf nf-md-content_copy"></i>
+                <i class="nf nf-oct-upload"></i>
                 Import
               </button>
+              <input id="inputImportLocalFile" class="invisible" type="file" />
+            </div>
+            <div class="grid list">
+              <div class="box flex center-h center-v">
+                <div>Tap "create new" to create a studyset</div>
+              </div>
             </div>
             <div id="mainDashboardImportother" class="modal hide">
               <div class="content">
@@ -121,224 +117,6 @@
                 class="grid list"
               ></div>
             </div>
-          </div>
-
-          <!--
-          Action section
-          -->
-          <div id="mainOpendiv" class="hide">
-            <div id="mainActionsSave" class="modal hide">
-              <div class="content">
-                <h2>Save?</h2>
-                <div id="mainOpenActionsSaveNewuserdiv">
-                  <div class="flex">
-                    <a
-                      id="mainOpenActionsSaveNewuserExportLocalDownload"
-                      class="button"
-                      >Download</a
-                    >
-                    <a href="./dashboard.html" class="button red">Cancel</a>
-                  </div>
-                </div>
-                <div id="mainOpenActionsSaveUserdiv" class="flex">
-                  <a class="button" id="mainWorkinprogressSavetoaccountbutton"
-                    >Save to account</a
-                  >
-                  <a
-                    id="mainOpenActionsSaveUserExportLocalDownload"
-                    class="button alt"
-                    >Download</a
-                  >
-                  <a href="./dashboard.html" class="button alt red">Cancel</a>
-                </div>
-                <div id="mainSaveClouderror" class="box red hide">
-                  <p>
-                    An unknown error prevented the study set from saving. Sorry
-                    ¯\_(ツ)_/¯
-                  </p>
-                </div>
-              </div>
-            </div>
-            <h2 id="mainActionsStudysettitle">Untitled Study Set</h2>
-            <p id="mainOpenCreator">
-              Created by <code id="mainOpenCreatorNickname">User</code>
-            </p>
-            <p id="mainOpenSavedone" class="bg3 hide">
-              <i class="nf nf-oct-check"></i>
-              Saved to account
-            </p>
-            <div id="mainOpenFlashcarddiv">
-              <button
-                class="exitFullscreen"
-                onclick="document.getElementById('mainOpenFlashcarddiv').classList.remove('fullscreen')"
-              >
-                Exit Fullscreen
-              </button>
-              <div>
-                <div
-                  class="card double"
-                  id="flashcardsCard"
-                  onclick="buttons.flashcards.flip()"
-                >
-                  <div class="content" id="flashcardsContent">
-                    <div class="front" id="flashcardsFront">front</div>
-                    <div class="back" id="flashcardsBack">back</div>
-                  </div>
-                </div>
-                <div class="caption centerThree">
-                  <p id="mainActionsFlashcardoptionsIndex">1/1</p>
-                  <div class="flex justifyselfcenter">
-                    <button
-                      id="flashcardsPrev"
-                      onclick="buttons.flashcards.prev()"
-                    >
-                      <i class="nf nf-cod-arrow_left"></i>
-                    </button>
-                    <button onclick="buttons.flashcards.flip()">Flip</button>
-                    <button
-                      id="flashcardsNext"
-                      onclick="buttons.flashcards.next()"
-                    >
-                      <i class="nf nf-cod-arrow_right"></i>
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="caption box activityList">
-              <p class="a0 center">Individual Studying</p>
-              <button
-                class="a1"
-                onclick="document.getElementById('mainOpenFlashcarddiv').classList.add('fullscreen')"
-              >
-                Fullscreen Flashcards
-              </button>
-              <button class="a2">Review Game</button>
-              <p class="b0 center">Group Activities</p>
-              <a class="b1 button" id="mainOpenActivitylistHost">
-                <!-- href is set in studySet.open() -->
-                Host Review Game
-              </a>
-              <a class="b2 button" href="./join.html">Join Review Game</a>
-            </div>
-            <!-- Add "this study set is private/public..." thingy here too -->
-            <div class="flex">
-              <button id="mainOpenEditbutton" onclick="buttons.open.edit();">
-                Edit
-              </button>
-              <button
-                onclick="exportLocal.save();document.getElementById(ui.elements.open.save).classList.remove('hide');"
-              >
-                Save or download a copy
-              </button>
-            </div>
-            <table class="outer" id="mainActionsTable">
-              <!--
-                IMPORTANT:
-                the html below is also used in buttons.js, (its copied into a string)
-                if this html is updated, change it there too
-              -->
-              <thead>
-                <tr>
-                  <th>Term</th>
-                  <th>Definition</th>
-                </tr>
-              </thead>
-              <tbody></tbody>
-            </table>
-            <div id="mainOpenBottomdiv">
-              <button
-                id="mainOpenBottomEditbutton"
-                onclick="buttons.open.edit();"
-              >
-                Edit
-              </button>
-              <button
-                id="mainOpenBottomCopybutton"
-                onclick="exportLocal.save();document.getElementById(ui.elements.open.save).classList.remove('hide');"
-              >
-                Save or download a copy
-              </button>
-            </div>
-          </div>
-          <div id="mainEditdiv" class="hide">
-            <div id="mainEditStudySetIsCopy" class="modal hide">
-              <div class="content">
-                <h2>¯\_(ツ)_/¯</h2>
-                <p>
-                  A study set with this name already exists in your account.
-                  <br />
-                  You can update/overwrite the existing copy or go back and
-                  rename this copy.
-                </p>
-                <div class="flex">
-                  <button id="mainEditStudySetIsCopyUpdate">
-                    Update existing
-                  </button>
-                  <button id="mainEditStudySetIsCopyBack">Go back</button>
-                </div>
-              </div>
-            </div>
-            <h2>Edit</h2>
-            <input id="mainEditName" type="text" placeholder="Title" />
-            <table class="outer" id="mainEditTable">
-              <!--
-                IMPORTANT:
-                the html below is also used in buttons.js, (its copied into a string)
-                if this html is updated, change it there too
-              -->
-              <thead>
-                <tr>
-                  <th class="center">Term</th>
-                  <th class="center">Definition</th>
-                  <th class="center">Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>
-                    <div class="flex">
-                      <button onclick="buttons.edit.add();">
-                        <i class="nf nf-oct-plus"></i>
-                        Add row
-                      </button>
-                    </div>
-                  </td>
-                  <td></td>
-                  <td></td>
-                </tr>
-              </tbody>
-            </table>
-            <div id="mainEditSettingsPublic">
-              <div class="radio">
-                <input
-                  type="radio"
-                  name="public"
-                  id="publicFalse"
-                  checked="true"
-                />
-                <label for="publicFalse"
-                  >Private
-                  <span class="bg3"
-                    >(Visible to you and anyone you give the downloadable file
-                    to)</span
-                  ></label
-                >
-              </div>
-              <div class="radio">
-                <input type="radio" name="public" id="publicTrue" />
-                <label for="publicTrue"
-                  >Public
-                  <span class="bg3"
-                    >(Visible to everyone, can only be edited by you)</span
-                  ></label
-                >
-              </div>
-            </div>
-            <button id="buttonEditDone" onclick="buttons.edit.done()">
-              <i class="nf nf-oct-check"></i>
-              Done
-            </button>
           </div>
         </div>
       </div>
