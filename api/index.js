@@ -134,6 +134,8 @@ async function googleAuthCallback(tokenObj) {
                     error: error
                 }
             }
+        } finally {
+            client.release();
         }
     } catch (error) {
         return {
@@ -353,6 +355,8 @@ fastify.post("/session/refresh", async function (request, reply) {
                     type: "postgres-error"
                 }
             })
+        } finally {
+            client.release()
         }
     } else {
         return reply.code(400).send({
@@ -431,6 +435,8 @@ fastify.post("/studysets/create", async function (request, reply) {
                     type: "postgres-error"
                 }
             })
+        } finally {
+            client.release()
         }
     } else {
         return reply.code(400).send({
@@ -490,6 +496,8 @@ fastify.post("/studysets/list", async function (request, reply) {
                     type: "postgres-error"
                 }
             })
+        } finally {
+            client.release()
         }
     } else {
         return reply.code(400).send({
@@ -573,6 +581,8 @@ fastify.post("/studysets/update/:studysetid", async function (request, reply) {
                     type: "postgres-error"
                 }
             })
+        } finally {
+            client.release()
         }
     } else {
         return reply.code(400).send({
@@ -736,6 +746,8 @@ fastify.post("/user", async function (request, reply) {
                     type: "postgres-error"
                 }
             })
+        } finally {
+            client.release()
         }
     } else {
         return reply.code(400).send({
