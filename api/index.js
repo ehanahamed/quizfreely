@@ -433,7 +433,7 @@ fastify.post("/studysets/create", async function (request, reply) {
             })
         }
     } else {
-        reply.code(400).send({
+        return reply.code(400).send({
             error: {
                 type: "fields-missing"
             }
@@ -492,7 +492,7 @@ fastify.post("/studysets/list", async function (request, reply) {
             })
         }
     } else {
-        reply.code(400).send({
+        return reply.code(400).send({
             error: {
                 type: "fields-missing"
             }
@@ -575,7 +575,7 @@ fastify.post("/studysets/update/:studysetid", async function (request, reply) {
             })
         }
     } else {
-        reply.code(400).send({
+        return reply.code(400).send({
             error: {
                 type: "fields-missing"
             }
@@ -738,7 +738,7 @@ fastify.post("/user", async function (request, reply) {
             })
         }
     } else {
-        reply.code(400).send({
+        return reply.code(400).send({
             error: {
                 type: "fields-missing"
             }
