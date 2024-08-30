@@ -65,6 +65,16 @@ fastify.setNotFoundHandler(function (request, reply) {
   })
 })
 
+fastify.get("/favicon.ico", function (request, reply) {
+  reply.sendFile("favicon.ico", import.meta.dirname)
+})
+fastify.get("/icon.svg", function (request, reply) {
+  reply.sendFile("icon.svg", import.meta.dirname)
+})
+fastify.get("/apple-touch-icon.ico", function (request, reply) {
+  reply.sendFile("apple-touch-icon.ico", import.meta.dirname)
+})
+
 function themeData(request) {
   let theme = "auto";
   if (request.cookies.theme !== undefined && themes.includes(request.cookies.theme)) {
