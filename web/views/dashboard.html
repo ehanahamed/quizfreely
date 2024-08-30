@@ -57,7 +57,7 @@
               </button>
               <input id="inputImportLocalFile" class="invisible" type="file" />
             </div>
-            <div class="grid list">
+            <div class="grid list" id="studyset-list">
               <div class="box flex center-h center-v">
                 <div>Tap "create new" to create a studyset</div>
               </div>
@@ -122,6 +122,27 @@
       </div>
     </main>
     <eta>~ include("./partials/footer") </eta>
+    <script src="/assets/js/client.js"></script>
+    <script>
+      if (client.hasSession()) {
+        client.req("/studysets", {}, function (result) {
+          if (result.error) {
+
+          } else if (result.data.rows.length >= 1) {
+            document.getElementById("studyset-list").innerHTML = "";
+            for (var i = 0; i < result.data.rows.length; i++) {
+              var box = document.createElement("div");
+              box.classList.add("box", "flex");
+              var title = document.createElement("a");
+              title.innerText = result.data.rows[i].title;
+              title.href = "/studysets/" + result.data.rows[i].id
+              box.appendChild(title);
+              document.getElementById("studyset-list").appendChild(box);
+            }
+          }
+        })
+      }
+    </script>
     <script>
       function loadDashboard() {
         supabaseClient.auth.getUser().then(function (result) {
