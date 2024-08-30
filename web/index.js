@@ -3,7 +3,6 @@ import Fastify from "fastify";
 import fastifyStatic from "@fastify/static";
 import fastifyView from "@fastify/view";
 import fastifyCookie from "@fastify/cookie";
-import fastifyRateLimit from "@fastify/rate-limit";
 import path from "path";
 import { Eta } from "eta";
 import { createClient } from '@supabase/supabase-js'
@@ -38,10 +37,6 @@ await fastify.register(fastifyView, {
   },
   root: path.join(import.meta.dirname, "views"),
   //defaultContext: {}
-});
-await fastify.register(fastifyRateLimit, {
-  max: 100,
-  timeWindow: "1 minute"
 });
 await fastify.register(fastifyStatic, {
   root: path.join(import.meta.dirname, "assets"),

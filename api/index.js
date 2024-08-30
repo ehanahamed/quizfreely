@@ -1,7 +1,6 @@
 import "dotenv/config";
 import Fastify from "fastify";
 import fastifyCors from "@fastify/cors";
-import fastifyRateLimit from "@fastify/rate-limit";
 import fastifyOauth2 from "@fastify/oauth2";
 import pg from "pg";
 const { Pool, Client } = pg;
@@ -31,10 +30,6 @@ const pool = new Pool({
 await fastify.register(fastifyCors, {
     origin: corsOrigin
 });
-await fastify.register(fastifyRateLimit, {
-    max: 100,
-    timeWindow: "1 minute"
-});
 await fastify.register(fastifyOauth2, {
     name: "googleOAuth2",
     scope: ["openid", "profile", "email"],
@@ -57,20 +52,12 @@ await fastify.register(fastifyOauth2, {
 })
 
 fastify.setErrorHandler(function (error, request, reply) {
-  if (error.statusCode == 429) {
-    reply.code(429).send({
-        error: {
-            type: "rate-limit"
-        }
-    })
-  } else {
     request.log.error(error)
     reply.code(500).send({
         error: {
             type: "server-error"
         }
     })
-  }
 })
 
 fastify.setNotFoundHandler(function (request, reply) {
