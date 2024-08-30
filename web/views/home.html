@@ -113,29 +113,14 @@
       </div>
       <div class="grid page extra">
         <div class="content">
-          <div id="mainExtraNewuserdiv">
+          <div>
             <h2>Try it out!</h2>
             <p>
               It's free, open source, and you don't even need an account, <br />
-              they're <b>optional</b> and free!
+              they're <b>optional</b> AND free!
             </p>
             <div class="flex">
               <a class="button large extra" href="./start.html">Get Started</a>
-            </div>
-          </div>
-          <div id="mainExtraUserdiv">
-            <h2>You're signed in!</h2>
-            <p>
-              Go to the dashboard to create, edit, or review a study set, <br />
-              or find more user-made study sets in the explore page!
-            </p>
-            <div class="flex">
-              <a class="button large extra" href="./dashboard.html"
-                >Dashboard</a
-              >
-              <a class="button large extra alt" href="./explore.html"
-                >Explore</a
-              >
             </div>
           </div>
         </div>
@@ -155,17 +140,5 @@
       </div>
     </main>
     <eta>~ include("./partials/footer") </eta>
-    <script src="./js/states.js"></script>
-    <script>
-      var ui = {
-        elements: {
-          states: {
-            newUser: ["mainHeroContentNewuserdiv", "mainExtraNewuserdiv"],
-            user: ["mainHeroContentUserdiv", "mainExtraUserdiv"],
-          },
-        },
-      };
-    </script>
-    <script src="./js/pocketbase.js"></script>
   </body>
 </html>
