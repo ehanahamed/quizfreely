@@ -124,11 +124,10 @@
     <eta>~ include("./partials/footer") </eta>
     <script src="/assets/js/client.js"></script>
     <script>
+      client.apiUrl = "<eta>= data.apiUrl </eta>"
       if (client.hasSession()) {
-        client.req("/studysets", {}, function (result) {
-          if (result.error) {
-
-          } else if (result.data.rows.length >= 1) {
+        client.req("/studysets/list", {}, function (result) {
+          if (result.data && result.data.rows.length >= 1) {
             document.getElementById("studyset-list").innerHTML = "";
             for (var i = 0; i < result.data.rows.length; i++) {
               var box = document.createElement("div");
@@ -143,7 +142,7 @@
         })
       }
     </script>
-    <script>
+    <!--<script>
       function loadDashboard() {
         supabaseClient.auth.getUser().then(function (result) {
           userId = result.data.user.id;
@@ -449,6 +448,6 @@
         .addEventListener("click", function () {
           document.getElementById(ui.elements.open.save).classList.add("hide");
         });
-    </script>
+    </script>-->
   </body>
 </html>
