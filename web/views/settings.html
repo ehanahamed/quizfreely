@@ -102,63 +102,6 @@
     <script>
       //document.getElementById("theme-<eta>= data.theme </eta>").checked = true
     </script>
-    <script src="./js/states.js"></script>
-    <script>
-      var ui = {
-        elements: {
-          states: {
-            newUser: ["mainNewuserdiv"],
-            user: ["mainUserdiv"],
-          },
-        },
-        states: {
-          newUser: function (isNewUser) {
-            if (isNewUser === false) {
-              getNickname(function (nickname) {
-                document.getElementById("mainUserNickname").innerText =
-                  nickname;
-              });
-              pocketbase
-                .collection("users")
-                .authRefresh()
-                .then(function (result) {
-                  if (
-                    result.data.session.user.app_metadata.provider === "email"
-                  ) {
-                    document
-                      .getElementById("mainUserEmailless")
-                      .classList.remove("hide");
-                    document
-                      .getElementById("mainAccountChangepassword")
-                      .classList.remove("hide");
-                    document
-                      .getElementById("mainUserGoogle")
-                      .classList.add("hide");
-                    document.getElementById("mainUserUsername").innerText =
-                      result.data.session.user.email
-                        .replace("quizfreelyuser", "")
-                        .replace("@ehan.dev", "");
-                  } else if (
-                    result.data.session.user.app_metadata.provider === "google"
-                  ) {
-                    document
-                      .getElementById("mainUserEmailless")
-                      .classList.add("hide");
-                    document
-                      .getElementById("mainAccountChangepassword")
-                      .classList.add("hide");
-                    document
-                      .getElementById("mainUserGoogle")
-                      .classList.remove("hide");
-                    document.getElementById("mainUserGoogleemail").innerText =
-                      result.data.session.user.email;
-                  }
-                });
-            }
-          },
-        },
-      };
-    </script>
     <script>
       document
         .getElementById("signout-button")
