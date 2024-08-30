@@ -441,6 +441,66 @@ fastify.post("/studysets/create", async function (request, reply) {
     }
 })
 
+fastify.post("/studysets/list", async function (request, reply) {
+    if (
+        request.body &&
+        request.body.session &&
+        request.body.session.id &&
+        request.body.session.token
+    ) {
+        let client = await pool.connect();
+        try {
+            await client.query("BEGIN");
+            console.log(
+                request.body.session
+            )
+            let session = await client.query(
+                "select id, token, user_id from auth.verify_and_refresh_session($1, $2)",
+                [request.body.session.id, request.body.session.token]
+            );
+            if (session.rows.length == 1) {
+                await client.query("set role quizfreely_auth_user");
+                await client.query("select set_config('quizfreely_auth.user_id', $1, true)", [session.rows[0].user_id]);
+                let studysets = await client.query(
+                    "select id, user_id, title, private, updated_at from public.studysets"
+                );
+                await client.query("COMMIT")
+                return reply.send({
+                    "error": false,
+                    "data": {
+                        rows: studysets.rows,
+                        session: {
+                            id: session.rows[0].id,
+                            token: session.rows[0].token
+                        }
+                    }
+                })
+            } else {
+                await client.query("ROLLBACK");
+                return reply.code(401).send({
+                    error: {
+                        type: "session-invalid"
+                    }
+                })
+            }
+        } catch (error) {
+            await client.query("ROLLBACK");
+            request.log.error(error);
+            return reply.code(500).send({
+                error: {
+                    type: "postgres-error"
+                }
+            })
+        }
+    } else {
+        reply.code(400).send({
+            error: {
+                type: "fields-missing"
+            }
+        })
+    }
+})
+
 fastify.post("/studysets/update/:studysetid", async function (request, reply) {
     if (
         request.body &&
