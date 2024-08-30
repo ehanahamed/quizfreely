@@ -451,9 +451,6 @@ fastify.post("/studysets/list", async function (request, reply) {
         let client = await pool.connect();
         try {
             await client.query("BEGIN");
-            console.log(
-                request.body.session
-            )
             let session = await client.query(
                 "select id, token, user_id from auth.verify_and_refresh_session($1, $2)",
                 [request.body.session.id, request.body.session.token]
