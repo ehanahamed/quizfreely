@@ -15,7 +15,9 @@ Debian only has older versions of packages (cause it's more stable)
 
 We should install NodeJS v20 LTS "manually" without a package manager for our production server/droplet.
 
-1. Download NodeJS LTS v20 from their [prebuilt binaries](https://nodejs.org/en/download/prebuilt-binaries)
-2. Extract the archive `tar -xf node-v20.17.0-linux-x64.tar.xz`
-3. Install it by copying the folders `sudo cp -r node-v20.17.0-linux-x64/{bin,include,lib,share} /usr/`
-4. NodeJS & npm are installed! Check it with `node --version` and `npm --version`
+- Download NodeJS LTS v20 from their [prebuilt binaries](https://nodejs.org/en/download/prebuilt-binaries)
+  - You can right click the download button/link, and then paste the download url into a curl command in the droplet's console
+  - for example: `curl -O https://nodejs.org/dist/v20.17.0/node-v20.17.0-linux-x64.tar.xz`
+- Extract the archive `tar -xf node-v20.17.0-linux-x64.tar.xz`
+- Install it by copying the folders `sudo cp -r node-v20.17.0-linux-x64/{bin,include,lib,share} /usr/`
+- NodeJS & npm are installed! Check it with `node --version` and `npm --version`
