@@ -1,12 +1,17 @@
-# Production Overview - Dev/Contributor Docs
+# Production Setup - Dev/Contributor Docs
 
-Quizfreely's website, https://quizfreely.com and supabase instance, https://api.quizfreely.com, run on the same server/droplet.
+Right now, Quizfreely's website, https://quizfreely.com and api, https://api.quizfreely.com, run on the same server/droplet.
 
-![production server info overview diagram image](./img/overview.png)
-
-We use a caddy reverse proxy with supabase on port 8000 and the website nodejs process on port 8080, the reverse proxy lets us serve both domains with valid https from the same server/droplet.
-
-Supabase uses docker, caddy has a systemd service, and quizfreely's web nodejs process has a systemd service.
+- `/root/quizfreely/api/`
+  - `.env`
+  - `quizfreely-api.service`
+  - Quizfreely's API runs on port `:8008`
+- `/root/quizfreely/web/`
+  - `.env`
+  - `quizfreely-web.service`
+  - Quizfreely's website runs on port `:8080`
+- `/etc/caddy/Caddyfile`
+  - Caddy serves Quizfreely's api AND website with a reverse proxy and it also automatically renews SSL certificates for https
 
 ## Droplet Specs
 
@@ -23,4 +28,6 @@ With those specs, we usually have:
 
 ## Setup/Maintenance Instructions
 
-For Quizfreely's web nodejs server, see [web-setup.md](./web-setup.md)
+For Quizfreely's website see [web-setup.md](./web-setup.md)
+
+For Quizfreely's API see [api-setup.md](./api-setup.md)
