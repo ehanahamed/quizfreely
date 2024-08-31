@@ -28,6 +28,6 @@ With those specs, we usually have:
 
 ## Setup/Maintenance Instructions
 
-For Quizfreely's website see [web-setup.md](./web-setup.md)
+To setup Quizfreely's website see [web-setup.md](./web-setup.md)
 
-For Quizfreely's API see [api-setup.md](./api-setup.md)
+To setup Quizfreely's API see [api-setup.md](./api-setup.md)
