@@ -154,6 +154,12 @@ fastify.get("/privacy", function (request, reply) {
   })
 })
 
+fastify.get("/terms", function (request, reply) {
+  reply.view("terms.html", {
+    ...themeData(request)
+  })
+})
+
 function cookieOptions() {
   let time = new Date();
   /* 100 days * 24h * 60m * 60s = 8640000 sec for 100 days */
