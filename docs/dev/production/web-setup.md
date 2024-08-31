@@ -42,7 +42,21 @@ Copy the .env.example file:
 cp .env.example .env
 ```
 
-Now edit the .env file, see 
+1. Change `HOST=0.0.0.0` to `HOST=localhost`
+2. Change `API_URL=http://localhost:8008` to `API_URL=https://api.quizfreely.com`
+3. Change `COOKIES_DOMAIN=localhost` to `COOKIES_DOMAIN=quizfreely.com`
+
+When you're done, the edited .env file should look similar to this:
+```sh
+PORT=8080
+HOST=localhost
+API_URL=https://api.quizfreely.com
+COOKIES_DOMAIN=quizfreely.com
+# error, warn, info
+LOG_LEVEL=warn
+```
+
+For more details about the .env file, see [web-dotenv.md](./web-dotenv.md)
 
 ### Service file
 
@@ -53,7 +67,7 @@ sudo cp ./quizfreely-web.service /etc/systemd/system/
 
 The systemd service file runs quizfreely-web from `/root/quizfreely/web/`. If you have `quizfreely/web/` under a different path, change the path in the `WorkingDir=` line of the systemd file.
 
-After you create or edit the service file, reload systemd thingies:
+After you create and/or edit the service file, reload systemd thingies:
 ```sh
 systemctl daemon-reload
 ```
@@ -69,4 +83,4 @@ systemctl start quizfreely-web
 
 If the systemd service is running successfully, quizfreely's website should be on port `:8080` by default.
 
-We use Caddy to let the quizfreely-web process on port `:8080` be accessed from `quizfreely.com` with https. See [caddy-setup.md](./caddy-setup.md) to set it up.
+We use Caddy to let the quizfreely-web process on port `:8080` be accessed from `quizfreely.com` with https. See [caddy-setup.md](./caddy-setup.md) to finish setting up Quizfreely's website.
