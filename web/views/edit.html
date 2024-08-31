@@ -32,7 +32,6 @@
     <main>
       <div class="grid page">
         <div class="content">
-          <div id="mainEditdiv">
             <div id="mainEditStudySetIsCopy" class="modal hide">
               <div class="content">
                 <h2>¯\_(ツ)_/¯</h2>
@@ -105,11 +104,17 @@
                 >
               </div>
             </div>
-            <button id="buttonEditDone" onclick="buttons.edit.done()">
+            <eta> if (data.new) { </eta>
+            <button id="create-button">
               <i class="nf nf-oct-check"></i>
-              Done
+              Create
             </button>
-          </div>
+            <eta> } else { </eta>
+            <button id="save-button">
+              <i class="nf nf-oct-check"></i>
+              Save Changes
+            </button>
+            <eta> } </eta>
         </div>
       </div>
     </main>
