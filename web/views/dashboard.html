@@ -123,19 +123,37 @@
     </main>
     <eta>~ include("./partials/footer") </eta>
     <script src="/assets/js/client.js"></script>
+    <script src="/assets/js/dayjs.min.js"></script>
+    <script src="/assets/js/calendar.js"></script>
     <script>
       client.apiUrl = "<eta>= data.apiUrl </eta>"
+      dayjs.extend(window.dayjs_plugin_calendar);
+      var dayjsCalendarOptions = {
+        sameDay: "[Today at] H:mm", // Today at 23:22
+        nextDay: "[Tomorrow at] H:mm", // Tomorrow at 23:22
+        nextWeek: "dddd [at] H:mm", // Sunday at 23:22
+        lastDay: "[Yesterday at] H:mm", // Yesterday at 23:22
+        lastWeek: "[Last] dddd [at] H:mm", // Last Friday at 23:22
+        sameElse: "ddd, MMM D (YYYY-MM-DD)", // Fri, Aug 30 (2024-08-30)
+      };
       if (client.hasSession()) {
         client.req("/studysets/list", {}, function (result) {
           if (result.data && result.data.rows.length >= 1) {
             document.getElementById("studyset-list").innerHTML = "";
             for (var i = 0; i < result.data.rows.length; i++) {
               var box = document.createElement("div");
-              box.classList.add("box", "flex");
+              box.classList.add("box");
               var title = document.createElement("a");
               title.innerText = result.data.rows[i].title;
               title.href = "/studysets/" + result.data.rows[i].id
+              var time = document.createElement("p");
+              time.innerText = dayjs(result.data.rows[i].updated_at).calendar(
+                null,
+                dayjsCalendarOptions
+              )
+              time.classList.add("h6")
               box.appendChild(title);
+              box.appendChild(time);
               document.getElementById("studyset-list").appendChild(box);
             }
           }
