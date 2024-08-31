@@ -167,6 +167,26 @@ fastify.get("/studysets/create", function (request, reply) {
   })
 })
 
+fastify.get("/studysets/:studyset", function (request, reply) {
+  fetch(apiUrl + "/studysets/public/" + request.params.studyset)
+    .then(function (response) {
+      response.json().then(function (responseJson) {
+        if (responseJson.error) {
+          reply.callNotFound()
+        } else {
+          reply.view("studyset.html", {
+            ...themeData(request),
+            studyset: responseJson.data.studyset,
+            apiUrl: apiUrl
+          })
+        }
+      });
+    }).catch(function (error) {
+      request.log.error(error)
+      reply.callNotFound();
+    });
+})
+
 function cookieOptions() {
   let time = new Date();
   /* 100 days * 24h * 60m * 60s = 8640000 sec for 100 days */
@@ -209,26 +229,6 @@ fastify.get("/settings/clear-cookies", function (request, reply) {
       modal: "clearedCookies"
     }
   )
-})
-
-fastify.get("/studysets/:studyset", function (request, reply) {
-  fetch(apiUrl + "/studysets/public/" + request.params.studyset)
-    .then(function (response) {
-      response.json().then(function (responseJson) {
-        if (responseJson.error) {
-          reply.callNotFound()
-        } else {
-          reply.view("studyset.html", {
-            ...themeData(request),
-            studyset: responseJson.data.studyset,
-            apiUrl: apiUrl
-          })
-        }
-      });
-    }).catch(function (error) {
-      request.log.error(error)
-      reply.callNotFound();
-    });
 })
 
 fastify.listen({
