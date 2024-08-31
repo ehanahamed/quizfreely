@@ -120,207 +120,114 @@
     </main>
     <eta>~ include("./partials/footer") </eta>
     <script>
-      function loadDashboard() {
-        supabaseClient.auth.getUser().then(function (result) {
-          userId = result.data.user.id;
-        });
-        supabaseClient
-          .from("studyset")
-          .select()
-          .then(function (result) {
-            studysetlist = result.data;
-            if (studysetlist.length === 0) {
-              var box = document.createElement("div");
-              box.setAttribute("class", "box");
-              box.setAttribute("id", "mainDashboardUserStudysetlistEmpty");
-              document
-                .getElementById("mainDashboardUserStudysetlistdiv")
-                .appendChild(box);
-              document.getElementById(
-                "mainDashboardUserStudysetlistEmpty",
-              ).innerHTML = "<p>No study sets are saved to your account.</p>";
-            } else {
-              for (var i = 0; i < studysetlist.length; i++) {
-                /* the html structure below needs to be copied to reference 11 when changed */
-                var box = document.createElement("div");
-                box.setAttribute("class", "box");
-                box.setAttribute(
-                  "id",
-                  "mainDashboardUserStudysetlist" + i.toString(),
-                );
-                document
-                  .getElementById("mainDashboardUserStudysetlistdiv")
-                  .appendChild(box);
-                document.getElementById(
-                  "mainDashboardUserStudysetlist" + i.toString(),
-                ).innerHTML =
-                  "<p>" +
-                  studysetlist[i].name +
-                  "</p> <div class='flex'> <button id='mainDashboardUserStudysetlist" +
-                  i.toString() +
-                  "Openbutton'> Open </button> <button id='mainDashboardUserStudysetlist" +
-                  i.toString() +
-                  "Deletebutton' class='red'> Delete </button>";
-                document
-                  .getElementById(
-                    "mainDashboardUserStudysetlist" +
-                      i.toString() +
-                      "Openbutton",
-                  )
-                  .addEventListener("click", function (event) {
-                    sessionData.studySetData =
-                      /* studysetlist.ID.json */
-                      /* to get the selected ID, take event.target.id and remove the extra text like "mainDashboard..." and "Openbutton..." */
-                      studysetlist[
-                        event.target.id
-                          .replace("mainDashboardUserStudysetlist", "")
-                          .replace("Openbutton", "")
-                      ].json;
-                    studySet.open();
-                    document
-                      .getElementById("mainActionsSave")
-                      .classList.add("hide");
-                  });
-                document
-                  .getElementById(
-                    "mainDashboardUserStudysetlist" +
-                      i.toString() +
-                      "Deletebutton",
-                  )
-                  .addEventListener("click", function (event) {
-                    var thisId =
-                      studysetlist[
-                        event.target.id
-                          .replace("mainDashboardUserStudysetlist", "")
-                          .replace("Deletebutton", "")
-                      ].id;
-                    supabaseClient
-                      .from("studyset")
-                      .select()
-                      .eq("id", thisId)
-                      .then(function (result) {
-                        var thisName = result.data[0].name;
-                        supabaseClient
-                          .from("explore")
-                          .delete()
-                          .eq("user_id", userId)
-                          .eq("name", thisName)
-                          .then(function () {
-                            /*
-                            here we delete from studyset table
-                            AFTER we delete from explore
-                            (which is why this is in a .then())
-
-                            because we need to get the name from studyset table
-                            to be able to delete from explore table
-                            if we delete from studyset first, we cant delete from explore anymore
-                          */
-                            supabaseClient
-                              .from("studyset")
-                              .delete()
-                              .eq("id", thisId)
-                              .then(function () {
-                                /* remove self (and parent) from ui list */
-                                /* needs to change when structure changes (reference 11) */
-                                event.target.parentElement.parentElement.remove();
-                              });
-                          });
-                      });
-                  });
-              }
-            }
-          });
-      }
-
-      function saveEditedStudySet() {
-        if (states.current.isNewUser === false) {
-          supabaseClient
-            .from("studyset")
-            .insert({
-              user_id: userId,
-              name: sessionData.studySetData.name,
-              json: sessionData.studySetData,
-            })
-            .then(function (result) {
-              if (result.status === 201) {
-                document
-                  .getElementById(ui.elements.open.saveDone)
-                  .classList.remove("hide");
-                document
-                  .getElementById(ui.elements.open.save)
-                  .classList.add("hide");
-                document
-                  .getElementById("mainSaveClouderror")
-                  .classList.add("hide");
-              } else if (result.status !== 201) {
-                document
-                  .getElementById(ui.elements.open.saveDone)
-                  .classList.add("hide");
-                document
-                  .getElementById("mainSaveClouderror")
-                  .classList.remove("hide");
-              }
-            });
-          if (sessionData.studySetData.settings.public === true) {
-            getNickname(function (nickname) {
-              supabaseClient
-                .from("explore")
-                .insert({
-                  user_id: userId,
-                  user_nickname: nickname,
-                  name: sessionData.studySetData.name,
-                  json: sessionData.studySetData,
-                })
-                .then();
-            });
-          } else {
-            /* if its not public in settings, but the set is in explore from a previous save, delete it from explore */
-            supabaseClient
-              .from("explore")
-              .delete()
-              .eq("user_id", userId)
-              .eq("name", sessionData.studySetData.name)
-              .then();
-          }
-        } else if (states.current.isNewUser === true) {
-          alert(
-            "work in progress, states.current.isNewUser is true (20230908224800)",
+      var editTermsTable = {
+      insert: function (index) {
+        var newRow = document
+          .getElementById("edit-terms-table")
+          .insertRow(index);
+        newRow.insertCell(0).innerHTML = "<input type='text' placeholder='Term' />";
+        newRow.insertCell(1).innerHTML =
+          "<textarea class='vertical' rows='2' placeholder='Definition'></textarea>";
+        var actions = newRow.insertCell(2);
+        actions.innerHTML =
+          "<div class='flex center'><button> <i class='nf nf-cod-arrow_up'></i> Move Up </button><button> <i class='nf nf-cod-arrow_down'></i> Move Down </button><button class='red'> <i class='nf nf-fa-trash_o'></i> Remove </button></div>";
+        actions.children[0].children[0].addEventListener("click", function (event) {
+          edit.move(
+            event.target.parentElement.parentElement.parentElement.rowIndex,
+            event.target.parentElement.parentElement.parentElement.rowIndex - 1,
           );
+        });
+        actions.children[0].children[1].addEventListener("click", function (event) {
+          edit.move(
+            event.target.parentElement.parentElement.parentElement.rowIndex,
+            event.target.parentElement.parentElement.parentElement.rowIndex + 2,
+          );
+        });
+        actions.children[0].children[2].addEventListener("click", function (event) {
+          edit.remove(
+            event.target.parentElement.parentElement.parentElement.rowIndex,
+          );
+        });
+      },
+      add: function () {
+        edit.insert(
+          document.getElementById(ui.elements.inputs.edit.table).rows.length - 1,
+        );
+      },
+      save: function () {
+        if (document.getElementById(ui.elements.inputs.edit.name).value) {
+          sessionData.studySetData.name = document.getElementById(
+            ui.elements.inputs.edit.name,
+          ).value;
+        } else {
+          sessionData.studySetData.name = "Untitled Study Set";
         }
-      }
-    </script>
-    <script>
-      /* functionality of studySetIsCopy buttons below */
-      document
-        .getElementById(ui.elements.edit.studySetIsCopyButtons.update)
-        .addEventListener("click", function () {
-          /* updateStudySet() & isStudySetCopy() are in js/supabase.js */
-          updateStudySet();
-          studySet.open();
-          document
-            .getElementById(ui.elements.edit.studySetIsCopy)
-            .classList.add("hide");
-        });
-      document
-        .getElementById(ui.elements.edit.studySetIsCopyButtons.back)
-        .addEventListener("click", function () {
-          document
-            .getElementById(ui.elements.edit.studySetIsCopy)
-            .classList.add("hide");
-        });
-      /*
-    Make download button also hide the modal when clicked (just like save to acc button)
-    */
-      document
-        .getElementById(ui.elements.links.exportLocal.newUserDownload)
-        .addEventListener("click", function () {
-          document.getElementById(ui.elements.open.save).classList.add("hide");
-        });
-      document
-        .getElementById(ui.elements.links.exportLocal.userDownload)
-        .addEventListener("click", function () {
-          document.getElementById(ui.elements.open.save).classList.add("hide");
-        });
+        sessionData.studySetData.data = edit.makeArrayFromTable(
+          document.getElementById(ui.elements.inputs.edit.table),
+        );
+        /* temporarily disabled: */
+        // exportLocal.save();
+      },
+      remove: function (index) {
+        document.getElementById(ui.elements.inputs.edit.table).deleteRow(index);
+      },
+      move: function (index, newIndex) {
+        /*
+            Note to self: make this readable later
+            */
+        if (
+          index !== newIndex &&
+          ((index > newIndex && index !== 1) || index < newIndex) &&
+          ((index < newIndex &&
+            index <
+              document.getElementById(ui.elements.inputs.edit.table).rows.length -
+                2) ||
+            index > newIndex)
+        ) {
+          edit.insert(newIndex);
+          var newOldIndex;
+          if (index > newIndex) {
+            newOldIndex = index + 1;
+          } else if (index < newIndex) {
+            newOldIndex = index;
+          }
+          document.getElementById(ui.elements.inputs.edit.table).rows[
+            newIndex
+          ].children[0].children[0].value = document.getElementById(
+            ui.elements.inputs.edit.table,
+          ).rows[newOldIndex].children[0].children[0].value;
+          document.getElementById(ui.elements.inputs.edit.table).rows[
+            newIndex
+          ].children[1].children[0].value = document.getElementById(
+            ui.elements.inputs.edit.table,
+          ).rows[newOldIndex].children[1].children[0].value;
+          edit.remove(newOldIndex);
+        }
+      },
+      makeArrayFromTable: function (element) {
+        var tableArray = [];
+        for (var i = 1; i < element.rows.length - 1; i++) {
+          var row = [];
+          var tableCells = element.rows[i].children;
+        
+          row.push(tableCells[0].children[0].value);
+          row.push(tableCells[1].children[0].value);
+        
+          tableArray.push(row);
+        }
+        return tableArray;
+      },
+      makeTableFromArray: function (array, table) {
+        for (var i = 0; i < array.length; i++) {
+          var row = array[i];
+        
+          edit.add();
+        
+          table.rows[i + 1].children[0].children[0].value = row[0];
+          table.rows[i + 1].children[1].children[0].value = row[1];
+        }
+      },
+    };
     </script>
   </body>
 </html>
