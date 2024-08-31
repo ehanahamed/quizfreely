@@ -160,6 +160,13 @@ fastify.get("/terms", function (request, reply) {
   })
 })
 
+fastify.get("/studysets/create", function (request, reply) {
+  reply.view("edit.html", {
+    new: true,
+    ...themeData(request)
+  })
+})
+
 function cookieOptions() {
   let time = new Date();
   /* 100 days * 24h * 60m * 60s = 8640000 sec for 100 days */
