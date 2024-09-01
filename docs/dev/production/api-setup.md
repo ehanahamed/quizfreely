@@ -35,6 +35,41 @@ Install node modules
 npm install
 ```
 
+### Postgres setup
+
+Install PostgreSQL from your/our package manager
+```sh
+sudo apt install postgresql
+# or
+# sudo pacman -S postgresql
+```
+
+Check if `postgresql.service` is running
+```sh
+sudo systemctl status postgresql.service
+# if it's not running, run:
+# sudo systemctl start postgresql.service
+```
+
+Then switch to the `postgres` linux user:
+```sh
+sudo su postgres
+```
+
+Now create the database:
+```sh
+createdb quizfreely-db
+```
+
+Now, while still being the `postgres` linux user, access the database shell:
+```sh
+psql -d quizfreely-db
+```
+
+Now, you should be in a different looking shell. This is a database shell, it's where you run SQL commands and stuff.
+
+
+
 ### Dotenv config
 
 Copy the .env.example file:
@@ -72,22 +107,22 @@ Copy the systemd service file into its correct location (usually `/etc/systemd/s
 sudo cp ./quizfreely-api.service /etc/systemd/system/
 ```
 
-The systemd service file runs quizfreely-api from `/root/quizfreely/web/`. If you have `quizfreely/web/` under a different path, change the path in the `WorkingDir=` line of the systemd file.
+The systemd service file runs quizfreely-api from `/root/quizfreely/api/`. If you have `quizfreely/api/` under a different path, change the path in the `WorkingDir=` line of the systemd file.
 
-After you create or edit the service file, reload systemd thingies:
+After you create and/or edit the service file, reload systemd thingies:
 ```sh
 sudo systemctl daemon-reload
 ```
 
-To run quizfreely-web, start the systemd service
+To run quizfreely-api, start the systemd service
 ```sh
-sudo systemctl start quizfreely-web
-# check if quizfreely/web is running:
-# systemctl status quizfreely-web
+sudo systemctl start quizfreely-api
+# check if quizfreely/api is running:
+# systemctl status quizfreely-api
 # to stop it, do:
-# sudo systemctl stop quizfreely-web
+# sudo systemctl stop quizfreely-api
 ```
 
-If the systemd service is running successfully, quizfreely's website should be on port `:8080` by default.
+If the systemd service is running successfully, quizfreely-api should be on port `:8008` by default.
 
-We use Caddy to let the quizfreely-web process on port `:8080` be accessed from `quizfreely.com` with https. See [caddy-setup.md](./caddy-setup.md) to set it up.
+We use Caddy to let the quizfreely-api process on port `:8008` be accessed from `api.quizfreely.com` with https. See [caddy-setup.md](./caddy-setup.md)

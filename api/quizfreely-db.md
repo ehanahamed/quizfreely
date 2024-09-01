@@ -1,32 +1,3 @@
-Install postgres
-```sh
-sudo apt install postgresql
-# or
-# sudo pacman -S postgresql
-```
-
-Check if `postgresql.service` is running
-```sh
-sudo systemctl status postgresql.service
-# if it's not, run:
-# sudo systemctl start postgresql.service
-```
-
-Then switch to the `postgres` linux user:
-```sh
-sudo su postgres
-```
-
-Now create the database:
-```sh
-createdb quizfreely-db
-```
-
-Now, while still being the `postgres` linux user, access the database shell:
-```sh
-psql -d quizfreely-db
-```
-
 You should be using the postgresql database shell as the `postgres` postgressql user. The roles we create below are for the api, we will not log in to them here.
 
 Install extensions and create roles:
