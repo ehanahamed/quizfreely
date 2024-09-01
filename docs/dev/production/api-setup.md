@@ -42,7 +42,28 @@ Copy the .env.example file:
 cp .env.example .env
 ```
 
-Now edit the .env file, see 
+1. Change `HOST=0.0.0.0` to `HOST=localhost`
+2. Change `API_URL=http://localhost:8008` to `API_URL=https://api.quizfreely.com`
+3. Replace "PASSWORD" with your/our postgres password in `POSTGRES_URI=postgres://quizfreely_auth:PASSWORD@localhost/quizfreely-db`
+4. Change `CORS_ORIGIN=http://localhost:8080` to `CORS_ORIGIN=https://quizfreely.com`
+5. Change `WEB_OAUTH_CALLBACK_URL=http://localhost:8080/sign-up` to `WEB_OAUTH_CALLBACK_URL=https://quizfreely.com/sign-up`
+
+When you're done, the edited .env file should look similar to this:
+```sh
+PORT=8008
+HOST=localhost
+API_URL=https://api.quizfreely.com
+POSTGRES_URI=postgres://quizfreely_auth:PASSWORD@localhost/quizfreely-db
+COOKIES_DOMAIN=api.quizfreely.com
+CORS_ORIGIN=https://quizfreely.com
+# error, warn, info
+LOG_LEVEL=warn
+# OAUTH_GOOGLE_CLIENT_ID=
+# OAUTH_GOOGLE_CLIENT_SECRET=
+WEB_OAUTH_CALLBACK_URL=https://quizfreely.com/sign-up
+```
+
+For more details about quizfreely-api's .env file, see [api-dotenv.md](../api/api-dotenv.md)
 
 ### Service file
 
