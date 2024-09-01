@@ -69,16 +69,16 @@ The systemd service file runs quizfreely-web from `/root/quizfreely/web/`. If yo
 
 After you create and/or edit the service file, reload systemd thingies:
 ```sh
-systemctl daemon-reload
+sudo systemctl daemon-reload
 ```
 
 To run quizfreely-web, start the systemd service
 ```sh
-systemctl start quizfreely-web
+sudo systemctl start quizfreely-web
 # check if quizfreely/web is running:
 # systemctl status quizfreely-web
 # to stop it, do:
-# systemctl stop quizfreely-web
+# sudo systemctl stop quizfreely-web
 ```
 
 If the systemd service is running successfully, quizfreely's website should be on port `:8080` by default.
