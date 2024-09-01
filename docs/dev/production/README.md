@@ -2,16 +2,28 @@
 
 Right now, Quizfreely's website, https://quizfreely.com and api, https://api.quizfreely.com, run on the same server/droplet.
 
+Important thingies:
 - `/root/quizfreely/api/`
   - `.env`
   - `quizfreely-api.service`
-  - Quizfreely's API runs on port `:8008`
 - `/root/quizfreely/web/`
   - `.env`
   - `quizfreely-web.service`
-  - Quizfreely's website runs on port `:8080`
 - `/etc/caddy/Caddyfile`
-  - Caddy serves Quizfreely's api AND website with a reverse proxy and it also automatically renews SSL certificates for https
+- `/etc/systemd/system/`
+  - `quizfreely-web.service`
+  - `quizfreely-api.service`
+  - `caddy.service`
+- `/usr/bin/`
+  - `caddy`
+  - `node`
+  - `npm`
+
+Quizfreely's API (`/root/quizfreely/api/`, "quizfreely-api") runs on port `:8008`. See [web-setup.md](./web-setup.md)
+
+Quizfreely's website (`/root/quizfreely/web/`, "quizfreely-web") runs on port `:8080`. See [api-setup.md](./api-setup.md)
+
+Caddy lets quizfreely-web and quizfreely-api be accessed from https://quizfreely.com and https://api.quizfreely.com with valid https. See [caddy-setup.md](./caddy-setup.md)
 
 ## Droplet Specs
 
@@ -25,9 +37,3 @@ With those specs, we usually have:
 - 30% cpu usage
 - 85% memory usage
 - 15% disk usage
-
-## Setup/Maintenance Instructions
-
-To setup Quizfreely's website see [web-setup.md](./web-setup.md)
-
-To setup Quizfreely's API see [api-setup.md](./api-setup.md)
