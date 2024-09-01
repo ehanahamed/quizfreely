@@ -56,7 +56,7 @@ COOKIES_DOMAIN=quizfreely.com
 LOG_LEVEL=warn
 ```
 
-For more details about the .env file, see [web-dotenv.md](./web-dotenv.md)
+For more details about the .env file, see [web-dotenv.md](../web/web-dotenv.md)
 
 ### Service file
 
