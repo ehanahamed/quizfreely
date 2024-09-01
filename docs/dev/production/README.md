@@ -17,9 +17,9 @@ Right now, Quizfreely's website, https://quizfreely.com and api, https://api.qui
 
 Right now our digitalocean droplet has:
 - Debian 12 x64
-- 2GB memory
+- 1GB memory
 - 1 vCPU
-- 50GB storage SSD
+- 25GB storage SSD
 
 With those specs, we usually have:
 - 30% cpu usage
