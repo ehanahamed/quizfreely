@@ -1,14 +1,15 @@
 create extension if not exists pgcrypto;
 
-create role quizfreely_auth noinherit login;
-create role quizfreely_public nologin noinherit;
+create role quizfreely_api noinherit login;
+create role quizfreely_auth nologin noinherit;
 create role quizfreely_auth_user nologin noinherit;
 
-grant quizfreely_public, quizfreely_auth_user to quizfreely_auth;
+grant quizfreely_auth to quizfreely_api;
+grant quizfreely_auth_user to quizfreely_auth;
 
 create schema auth;
 
-grant usage on schema auth to quizfreely_auth, quizfreely_public, quizfreely_auth_user;
+grant usage on schema auth to quizfreely_api, quizfreely_auth, quizfreely_auth_user;
 
 create function auth.get_user_id() returns uuid
 as $$ select current_setting('quizfreely_auth.user_id')::uuid $$
@@ -68,7 +69,7 @@ using ((select auth.get_user_id()) = id);
 create view public.profiles as select
 id, username, display_name from auth.users;
 
-grant select on public.profiles to quizfreely_public, quizfreely_auth_user, quizfreely_auth;
+grant select on public.profiles to quizfreely_api, quizfreely_auth, quizfreely_auth_user;
 
 create table auth.sessions (
   id uuid primary key default gen_random_uuid(),
@@ -80,7 +81,7 @@ create table auth.sessions (
 grant select on auth.sessions to quizfreely_auth, quizfreely_auth_user;
 grant insert on auth.sessions to quizfreely_auth, quizfreely_auth_user;
 grant update on auth.sessions to quizfreely_auth, quizfreely_auth_user;
-grant delete on auth.sessions to quizfreely_auth, quizfreely_auth_user, quizfreely_public;
+grant delete on auth.sessions to quizfreely_api, quizfreely_auth, quizfreely_auth_user;
 
 alter table auth.sessions enable row level security;
 
@@ -124,7 +125,7 @@ using ((select auth.get_user_id()) = user_id);
 create policy delete_expired_sessions on auth.sessions
 as permissive
 for delete
-to quizfreely_auth, quizfreely_public, quizfreely_auth_user
+to quizfreely_api, quizfreely_auth, quizfreely_auth_user
 using (expire_at < clock_timestamp());
 
 create function auth.verify_and_refresh_session(session_id uuid, session_token text)
@@ -145,17 +146,17 @@ create table public.studysets (
   updated_at timestamptz default clock_timestamp()
 );
 
-grant select on public.studysets to quizfreely_auth_user, quizfreely_public, quizfreely_auth;
+grant select on public.studysets to quizfreely_api, quizfreely_auth, quizfreely_auth_user;
 grant insert on public.studysets to quizfreely_auth_user;
 grant update on public.studysets to quizfreely_auth_user;
 grant delete on public.studysets to quizfreely_auth_user;
 
 alter table public.studysets enable row level security;
 
-create policy select_studysets_for_public_and_auth_by_private on public.studysets
+create policy select_studysets__by_not_private on public.studysets
 as permissive
 for select
-to quizfreely_public, quizfreely_auth
+to quizfreely_api, quizfreely_auth
 using (private = false);
 
 create policy select_studysets_for_auth_user_by_private_or_user_id on
