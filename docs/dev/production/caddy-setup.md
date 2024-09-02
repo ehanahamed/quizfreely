@@ -46,6 +46,10 @@ Reload systemctl thingies:
 sudo systemctl daemon-reload
 ```
 
+Before you start caddy, check the DNS settings for `quizfreely.com` to make sure api.quizfreely.com and quizfreely.com point to the correct droplet(s)/server(s) that you/we are running quizfreely-web and/or quizfreely-api on.
+
+Also make sure the server processes of quizfreely-web and/or quizfreely-api are running (`sudo systemctl status quizfreely-web`, `sudo systemctl status quizfreely-api`) See [web-setup.md](./web-setup.md) and/or [api-setup.md](./api-setup.md) for details.
+
 Now start caddy:
 ```sh
 sudo systemctl start caddy
@@ -57,5 +61,3 @@ sudo systemctl start caddy
 # to reload caddy after changing /etc/caddy/Caddyfile:
 # sudo systemctl reload caddy
 ```
-
-Make sure quizfreely-web and/or quizfreely-api are running for caddy to be able to serve them lol (see [web-setup.md](./web-setup.md) and/or [api-setup.md](./api-setup.md))
