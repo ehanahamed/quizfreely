@@ -152,4 +152,4 @@ sudo systemctl start quizfreely-api
 
 If the systemd service is running successfully, quizfreely-api should be on port `:8008` by default.
 
-We use Caddy to let the quizfreely-api process on port `:8008` be accessed from `api.quizfreely.com` with https. See [caddy-setup.md](./caddy-setup.md)
+We use Caddy to let the quizfreely-api process on port `:8008` be accessed from `api.quizfreely.com` with https. See [caddy-setup.md](./caddy-setup.md) to finish setting up quizfreely-api.
