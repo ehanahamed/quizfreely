@@ -66,9 +66,34 @@ Now, while still being the `postgres` linux user, access the database shell:
 psql -d quizfreely-db
 ```
 
-Now, you should be in a different looking shell. This is a database shell, it's where you run SQL commands and stuff.
+Now, you should be in a different looking shell. This is the database shell, it's where you run SQL commands and stuff.
 
+Set a secure password for the `postgres` user:
+```sh
+\password postgres
+```
 
+Run the commands in `quizfreely-db-setup.sql` to setup all the users, schemas, tables, & functions:
+```sh
+\i /root/quizfreely/api/quizfreely-db-setup.sql
+```
+
+`quizfreely-db-setup.sql` created a user named `quizfreely_auth`, set its password:
+```sh
+\password quizfreely_auth
+```
+
+We will use this password in `POSTGRES_URI=` in the `.env` file that we will configure next.
+
+Now, when you're done with SQL commands, exit the database shell:
+```sh
+\q
+```
+
+And stop being the `postgres` linux user:
+```sh
+exit
+```
 
 ### Dotenv config
 
@@ -79,7 +104,7 @@ cp .env.example .env
 
 1. Change `HOST=0.0.0.0` to `HOST=localhost`
 2. Change `API_URL=http://localhost:8008` to `API_URL=https://api.quizfreely.com`
-3. Replace "PASSWORD" with your/our postgres password in `POSTGRES_URI=postgres://quizfreely_auth:PASSWORD@localhost/quizfreely-db`
+3. Replace `PASSWORD` with your/our password for the "quizfreely_auth" postgres user in `POSTGRES_URI=postgres://quizfreely_auth:PASSWORD@localhost/quizfreely-db`
 4. Change `CORS_ORIGIN=http://localhost:8080` to `CORS_ORIGIN=https://quizfreely.com`
 5. Change `WEB_OAUTH_CALLBACK_URL=http://localhost:8080/sign-up` to `WEB_OAUTH_CALLBACK_URL=https://quizfreely.com/sign-up`
 
