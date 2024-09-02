@@ -101,6 +101,7 @@ cd /root/quizfreely/api/
 cp .env.example .env
 ```
 
+Now edit `.env`:
 1. Change `HOST=0.0.0.0` to `HOST=localhost`
 2. Change `API_URL=http://localhost:8008` to `API_URL=https://api.quizfreely.com`
 3. Replace `PASSWORD` with your/our password for the "quizfreely_api" postgres user in `POSTGRES_URI=postgres://quizfreely_api:PASSWORD@localhost/quizfreely-db`
