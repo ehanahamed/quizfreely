@@ -52,9 +52,10 @@ sudo systemctl status postgresql.service
 # sudo systemctl start postgresql.service
 ```
 
-Then switch to the `postgres` linux user:
+Then switch to the `postgres` linux user: (and go to its home dir)
 ```sh
 sudo su postgres
+cd ~
 ```
 
 Now create the database:
