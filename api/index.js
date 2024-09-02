@@ -82,6 +82,7 @@ fastify.post("/sign-up", async function (request, reply) {
                 let client = await pool.connect();
                 try {
                     await client.query("BEGIN");
+                    await client.query("set role quizfreely_auth");
                     let result = await client.query(
                         "select username from auth.users where username = $1 limit 1",
                         [username]
@@ -168,6 +169,7 @@ fastify.post("/sign-in", async function (request, reply) {
         let client = await pool.connect();
         try {
             await client.query("BEGIN");
+            await client.query("set role quizfreely_auth");
             let result = await client.query(
                 "select id, username, display_name from auth.users " +
                 "where username = $1 and encrypted_password = crypt($2, encrypted_password) limit 1",
@@ -235,6 +237,7 @@ async function googleAuthCallback(tokenObj) {
         let client = await pool.connect();
         try {
             await client.query("BEGIN");
+            await client.query("set role quizfreely_auth");
             let upsertedUser = await client.query(
                 "insert into auth.users (display_name, auth_type, oauth_google_id, oauth_google_email) " +
                 "values ($1, 'oauth-google', $2, $3) on conflict (oauth_google_id) do update " +
@@ -311,6 +314,7 @@ fastify.post("/session/refresh", async function (request, reply) {
         let client = await pool.connect();
         try {
             await client.query("BEGIN");
+            await client.query("set role quizfreely_auth");
             let session = await client.query(
                 "select id, token, user_id from auth.verify_and_refresh_session($1, $2)",
                 [request.body.session.id, request.body.session.token]
@@ -364,6 +368,7 @@ fastify.post("/user", async function (request, reply) {
         let client = await pool.connect();
         try {
             await client.query("BEGIN");
+            await client.query("set role quizfreely_auth");
             let session = await client.query(
                 "select id, token, user_id from auth.verify_and_refresh_session($1, $2)",
                 [request.body.session.id, request.body.session.token]
@@ -442,6 +447,7 @@ fastify.post("/studysets/create", async function (request, reply) {
         let client = await pool.connect();
         try {
             await client.query("BEGIN");
+            await client.query("set role quizfreely_auth");
             let session = await client.query(
                 "select id, token, user_id from auth.verify_and_refresh_session($1, $2)",
                 [request.body.session.id, request.body.session.token]
@@ -522,6 +528,7 @@ fastify.post("/studysets/update/:studysetid", async function (request, reply) {
         let client = await pool.connect();
         try {
             await client.query("BEGIN");
+            await client.query("set role quizfreely_auth");
             let session = await client.query(
                 "select id, token, user_id from auth.verify_and_refresh_session($1, $2)",
                 [request.body.session.id, request.body.session.token]
@@ -663,6 +670,7 @@ fastify.post("/studysets/list", async function (request, reply) {
         let client = await pool.connect();
         try {
             await client.query("BEGIN");
+            await client.query("set role quizfreely_auth");
             let session = await client.query(
                 "select id, token, user_id from auth.verify_and_refresh_session($1, $2)",
                 [request.body.session.id, request.body.session.token]
