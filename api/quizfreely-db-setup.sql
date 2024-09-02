@@ -1,10 +1,17 @@
 create extension if not exists pgcrypto;
 
+/* we (and the api's js code) connects to the database as quizfreely_api
+we can log in/connect as quizfreely_api using the password we set
+we can not log in to quizfreely_auth or quizfreely_auth_user
+we must switch to/become those users after logging in/connecting as quizfreely_api */
 create role quizfreely_api noinherit login;
 create role quizfreely_auth nologin noinherit;
 create role quizfreely_auth_user nologin noinherit;
 
+/* let quizfreely_api become quizfreely_auth */
 grant quizfreely_auth to quizfreely_api;
+/* let quizfreely_auth become quizfreely_auth_user
+quizfreely_api has to become quizfreely_auth before becoming quizfreely_auth_user */
 grant quizfreely_auth_user to quizfreely_auth;
 
 create schema auth;
