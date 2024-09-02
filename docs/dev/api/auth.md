@@ -8,7 +8,7 @@ Quizfreely's website's client javascript code stores the user's session id & tok
 
 These sessions expire after 5 days. Any action the user does generates a new token and extends the expire time. If a user's session is expired, they just log in again to get a new session. When they log in with a username and password, the api checks if the password is correct by comparing the inputted password's hash with the hashed/encrypted password stored in the database. If they match, the user is given a new session.
 
-Hasing/encryption uses postgres' cryptographic functions (`pgcrypto`), so it's reliable & secure :3
+Hashing/encryption uses postgres' cryptographic functions (`pgcrypto`), so it's reliable & secure :3
 
 ## OAuth (Google, etc)
 
