@@ -75,7 +75,7 @@ Set a secure password for the `postgres` user:
 \password postgres
 ```
 
-Run the commands in `/root/quizfreely/api/quizfreely-db-setup.sql` to setup all the users, schemas, tables, & functions. You can just copy and paste all the commands from the file into the database shell.
+Run the commands in [quizfreely/api/quizfreely-db-setup.sql](../../../api/quizfreely-db-setup.sql) to setup all the users, schemas, tables, & functions. You can just copy and paste all the commands from the file into the database shell.
 
 After you run those commands, there will be a user named `quizfreely_api`. We need to set its password:
 ```sh
