@@ -17,3 +17,25 @@ Quizfreely Web (SSR and client js and website) (source code in `web/`) links to 
 Users' session id and token are stored in localstorage, just like username and password auth, and are sent whenever a user tries to do an action. These sessions expire after 5 days, and the user will have to sign in again (using the same process).
 
 Session expiry is "controlled by" postgres; when the api tries to validate a session it check's the expire_at time stored in postgres with postgres' current time. Expired sessions are also deleted for storage space, but they still expire even if they don't get deleted. (maximum secuirity fr)
+
+## Postgres roles
+
+When we setup our PostgreSQL database we create three roles: `quizfreely_api`, `quizfreely_auth`, and `quizfreely_auth_user`. (The commands to setup the database are in [`api/quizfreely-db-setup.sql`](../../../api/quizfreely-db-setup.sql) and the process is explained in [developer docs > production > api-setup.md > Postgres setup](../production/api-setup.md#postgres-setup))
+
+- `quizfreely_api` role
+  - can be logged in/connected as
+  - has a password (set it using `\password quizfreely_api` in the database shell (`psql -d quizfreely-db`))
+  - can view public information
+- `quizfreely_auth` role
+  - can NOT be logged in/connected as
+  - can view and edit sensitive information
+    - can view and edit `auth.users`
+    - can view and edit `auth.sessions`
+    - we use this role to manage users' accounts, so this role needs permissions for account data and encrypted/hashed passwords to let users log in or sign up
+- `quizfreely_auth_user` role
+  - can NOT be logged in/connected as
+  - can view public information
+  - sets `quizfreely_auth.user_id` to the specific quizfreely user's id, so they can only get permission to access their own data
+  - can view & edit their own account data, sessions, and studysetes
+
+work in progress, this is still being written
