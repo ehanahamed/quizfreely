@@ -73,17 +73,14 @@ Set a secure password for the `postgres` user:
 \password postgres
 ```
 
-Run the commands in `quizfreely-db-setup.sql` to setup all the users, schemas, tables, & functions:
+Run the commands in `/root/quizfreely/api/quizfreely-db-setup.sql` to setup all the users, schemas, tables, & functions. You can just copy and paste all the commands from the file into the database shell.
+
+After you run those commands, there will be a user named `quizfreely_api`, set its password:
 ```sh
-\i /root/quizfreely/api/quizfreely-db-setup.sql
+\password quizfreely_api
 ```
 
-`quizfreely-db-setup.sql` created a user named `quizfreely_auth`, set its password:
-```sh
-\password quizfreely_auth
-```
-
-We will use this password in `POSTGRES_URI=` in the `.env` file that we will configure next.
+We will use this password in `POSTGRES_URI=` in the `.env` file that we will configure next. (This `quizfreely_api` user is how the api server process/js code connects to the database)
 
 Now, when you're done with SQL commands, exit the database shell:
 ```sh
@@ -104,7 +101,7 @@ cp .env.example .env
 
 1. Change `HOST=0.0.0.0` to `HOST=localhost`
 2. Change `API_URL=http://localhost:8008` to `API_URL=https://api.quizfreely.com`
-3. Replace `PASSWORD` with your/our password for the "quizfreely_auth" postgres user in `POSTGRES_URI=postgres://quizfreely_auth:PASSWORD@localhost/quizfreely-db`
+3. Replace `PASSWORD` with your/our password for the "quizfreely_api" postgres user in `POSTGRES_URI=postgres://quizfreely_api:PASSWORD@localhost/quizfreely-db`
 4. Change `CORS_ORIGIN=http://localhost:8080` to `CORS_ORIGIN=https://quizfreely.com`
 5. Change `WEB_OAUTH_CALLBACK_URL=http://localhost:8080/sign-up` to `WEB_OAUTH_CALLBACK_URL=https://quizfreely.com/sign-up`
 
@@ -113,7 +110,8 @@ When you're done, the edited .env file should look similar to this:
 PORT=8008
 HOST=localhost
 API_URL=https://api.quizfreely.com
-POSTGRES_URI=postgres://quizfreely_auth:PASSWORD@localhost/quizfreely-db
+# there's still "@localhost" in POSTGRES_URI= because the server process connects to the database throgh localhost cause it's on the same machine
+POSTGRES_URI=postgres://quizfreely_api:PASSWORD@localhost/quizfreely-db
 COOKIES_DOMAIN=api.quizfreely.com
 CORS_ORIGIN=https://quizfreely.com
 # error, warn, info
