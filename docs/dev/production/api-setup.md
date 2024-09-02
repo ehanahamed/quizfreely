@@ -32,6 +32,7 @@ For more nodejs installation info, see [install-nodejs.md](./install-nodejs.md)
 
 Install node modules
 ```sh
+cd /root/quizfreely/api/
 npm install
 ```
 
@@ -96,6 +97,7 @@ exit
 
 Copy the .env.example file:
 ```sh
+cd /root/quizfreely/api/
 cp .env.example .env
 ```
 
@@ -127,6 +129,7 @@ For more details about quizfreely-api's .env file, see [api-dotenv.md](../api/ap
 
 Copy the systemd service file into its correct location (usually `/etc/systemd/system/`)
 ```sh
+cd /root/quizfreely/api/
 sudo cp ./quizfreely-api.service /etc/systemd/system/
 ```
 
