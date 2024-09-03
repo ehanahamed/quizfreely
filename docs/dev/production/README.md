@@ -28,12 +28,14 @@ Caddy lets quizfreely-web and quizfreely-api be accessed from https://quizfreely
 ## Droplet Specs
 
 Right now our digitalocean droplet has:
-- Debian 12 x64
+- Debian 12 x64 (Linux)
 - 1GB memory
-- 1 vCPU
-- 25GB storage SSD
+- 1 AMD vCPU
+- 25GB NVMe SSD storage
 
-With those specs, we usually have:
-- 30% cpu usage
-- 85% memory usage
-- 15% disk usage
+With those specs, while quizfreely-web, quizfreely-api, and caddy are all running and reciving traffic, we usually have:
+- 1% or less cpu usage (usually less)
+- 40% memory usage
+- 8% disk usage
+
+Stress-testing with hundreds of requests raises all of those by less than 1% (and 99% of those requests took less than 240ms to respond/load (that's faster than 1/4th of a second))
