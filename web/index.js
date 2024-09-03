@@ -162,8 +162,9 @@ fastify.get("/terms", function (request, reply) {
 
 fastify.get("/studysets/create", function (request, reply) {
   reply.view("edit.html", {
+    ...themeData(request),
     new: true,
-    ...themeData(request)
+    apiUrl: apiUrl
   })
 })
 
