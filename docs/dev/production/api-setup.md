@@ -116,7 +116,6 @@ HOST=localhost
 API_URL=https://api.quizfreely.com
 # there's still "@localhost" in POSTGRES_URI= because the server process connects to the database throgh localhost cause it's on the same machine
 POSTGRES_URI=postgres://quizfreely_api:PASSWORD@localhost/quizfreely-db
-COOKIES_DOMAIN=api.quizfreely.com
 CORS_ORIGIN=https://quizfreely.com
 # error, warn, info
 LOG_LEVEL=warn
