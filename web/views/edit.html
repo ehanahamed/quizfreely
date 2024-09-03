@@ -49,8 +49,8 @@
                 </div>
               </div>
             </div>
-            <input id="mainEditName" type="text" placeholder="Title" />
-            <table class="outer" id="mainEditTable">
+            <input id="edit-title" type="text" placeholder="Title" />
+            <table class="outer" id="edit-terms-table">
               <!--
                 IMPORTANT:
                 the html below is also used in buttons.js, (its copied into a string)
@@ -60,14 +60,13 @@
                 <tr>
                   <th class="center">Term</th>
                   <th class="center">Definition</th>
-                  <th class="center">Actions</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
                   <td>
                     <div class="flex">
-                      <button onclick="buttons.edit.add();">
+                      <button id="edit-terms-add-row-button">
                         <i class="nf nf-oct-plus"></i>
                         Add row
                       </button>
@@ -130,28 +129,45 @@
           "<textarea class='vertical' rows='2' placeholder='Definition'></textarea>";
         var actions = newRow.insertCell(2);
         actions.innerHTML =
-          "<div class='flex center'><button> <i class='nf nf-cod-arrow_up'></i> Move Up </button><button> <i class='nf nf-cod-arrow_down'></i> Move Down </button><button class='red'> <i class='nf nf-fa-trash_o'></i> Remove </button></div>";
-        actions.children[0].children[0].addEventListener("click", function (event) {
-          edit.move(
-            event.target.parentElement.parentElement.parentElement.rowIndex,
-            event.target.parentElement.parentElement.parentElement.rowIndex - 1,
+          "<div class='flex center'><div class='dropdown'>" +
+          "  <button class='dropdown-toggle'><i class='nf nf-md-dots_horizontal'></i></button>" +
+          "  <div class='content'>" +
+          "    <button><i class='nf nf-cod-arrow_up'></i> Move Up </button>" +
+          "    <button><i class='nf nf-cod-arrow_down'></i> Move Down </button>" +
+          "    <button class='ohno'><i class='nf nf-fa-trash_o'></i> Delete </button>" +
+          "  </div>" +
+          "</div></div>";
+        actions.children[0].children[0].children[1].children[0].addEventListener("click", function (event) {
+          editTermsTable.move(
+            event.target.parentElement.parentElement
+              .parentElement.parentElement
+              .parentElement.rowIndex,
+            event.target.parentElement.parentElement
+              .parentElement.parentElement
+              .parentElement.rowIndex - 1,
           );
         });
-        actions.children[0].children[1].addEventListener("click", function (event) {
-          edit.move(
-            event.target.parentElement.parentElement.parentElement.rowIndex,
-            event.target.parentElement.parentElement.parentElement.rowIndex + 2,
+        actions.children[0].children[0].children[1].children[1].addEventListener("click", function (event) {
+          editTermsTable.move(
+            event.target.parentElement.parentElement
+              .parentElement.parentElement
+              .parentElement.rowIndex,
+            event.target.parentElement.parentElement
+              .parentElement.parentElement
+              .parentElement.rowIndex + 2,
           );
         });
-        actions.children[0].children[2].addEventListener("click", function (event) {
-          edit.remove(
-            event.target.parentElement.parentElement.parentElement.rowIndex,
+        actions.children[0].children[0].children[1].children[2].addEventListener("click", function (event) {
+          editTermsTable.remove(
+            event.target.parentElement.parentElement
+              .parentElement.parentElement
+              .parentElement.rowIndex,
           );
         });
       },
       add: function () {
-        edit.insert(
-          document.getElementById(ui.elements.inputs.edit.table).rows.length - 1,
+        editTermsTable.insert(
+          document.getElementById("edit-terms-table").rows.length - 1,
         );
       },
       save: function () {
@@ -228,6 +244,10 @@
         }
       },
     };
+    editTermsTable.add();
+    document.getElementById("edit-terms-add-row-button").addEventListener("click", function () {
+      editTermsTable.add();
+    })
     </script>
   </body>
 </html>
