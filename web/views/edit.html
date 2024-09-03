@@ -77,30 +77,14 @@
                 </tr>
               </tbody>
             </table>
-            <div id="mainEditSettingsPublic">
+            <div id="edit-private-div">
               <div class="radio">
-                <input
-                  type="radio"
-                  name="public"
-                  id="publicFalse"
-                  checked="true"
-                />
-                <label for="publicFalse"
-                  >Private
-                  <span class="bg3"
-                    >(Visible to you and anyone you give the downloadable file
-                    to)</span
-                  ></label
-                >
+                <input type="radio" name="edit-private" id="edit-private-false" checked="true" />
+                <label for="privateFalse">Public</label>
               </div>
               <div class="radio">
-                <input type="radio" name="public" id="publicTrue" />
-                <label for="publicTrue"
-                  >Public
-                  <span class="bg3"
-                    >(Visible to everyone, can only be edited by you)</span
-                  ></label
-                >
+                <input type="radio" name="edit-private" id="edit-private-true" />
+                <label for="privateTrue">Private</label>
               </div>
             </div>
             <eta> if (data.new) { </eta>
@@ -169,20 +153,6 @@
         editTermsTable.insert(
           document.getElementById("edit-terms-table").rows.length - 1,
         );
-      },
-      save: function () {
-        if (document.getElementById(ui.elements.inputs.edit.name).value) {
-          sessionData.studySetData.name = document.getElementById(
-            ui.elements.inputs.edit.name,
-          ).value;
-        } else {
-          sessionData.studySetData.name = "Untitled Study Set";
-        }
-        sessionData.studySetData.data = edit.makeArrayFromTable(
-          document.getElementById(ui.elements.inputs.edit.table),
-        );
-        /* temporarily disabled: */
-        // exportLocal.save();
       },
       delete: function (index) {
         document.getElementById("edit-terms-table").deleteRow(index);
@@ -256,16 +226,23 @@
     <script>
       if (client.hasSession()) {
         document.getElementById("create-button").addEventListener("click", function () {
-          /*client.req("/studysets/create", {
+          client.req("/studysets/create", {
             body: {
-              title: document.getElementById("edit-title").value,
-              private: false,
-              data: {
-                terms: editTermsTable.arrayFromTable()
+              studyset: {
+                title: document.getElementById("edit-title").value,
+                private: document.getElementById("edit-private-true").checked,
+                data: {
+                  terms: editTermsTable.arrayFromTable()
+                }
               }
             }
-          })*/
-          console.log(editTermsTable.arrayFromTable())
+          }, function (result) {
+            if (result.error) {
+              alert("error:" + result.error.type);
+            } else {
+              alert("no error, yay")
+            }
+          })
         })
       } else {
       }
