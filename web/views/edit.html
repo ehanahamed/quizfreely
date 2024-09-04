@@ -213,7 +213,6 @@
         }
       },
     };
-    editTermsTable.add();
     document.getElementById("edit-terms-add-row-button").addEventListener("click", function () {
       editTermsTable.add();
     })
@@ -224,6 +223,7 @@
     </script>
     <eta> if (data.new) { </eta>
     <script>
+      editTermsTable.add();
       if (client.hasSession()) {
         document.getElementById("create-button").addEventListener("click", function () {
           client.req("/studysets/create", {
@@ -245,6 +245,18 @@
           })
         })
       } else {
+      }
+    </script>
+    <eta> } else if (data.studysetId) { </eta>
+    <script>
+      if (client.hasSession()) {
+        client.req("/studysets/view/<eta>= data.studysetId </eta>", {}, function (result) {
+          if (result.error) {
+            alert("error, could not load studyset while trying to edit")
+          } else {
+            editTermsTable.tableFromArray(result.data.studyset.data.terms)
+          }
+        })
       }
     </script>
     <eta> } </eta>
