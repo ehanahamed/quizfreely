@@ -136,7 +136,7 @@
         lastWeek: "ddd, MMM D [at] h:mm A", // Fri, Aug 30 at 11:22 PM
         sameElse: "ddd, MMM D (YYYY-MM-DD)", // Fri, Aug 30 (2024-08-30)
       };
-      if (window.localStorage && localStorage.getItem("setting24HourTime")) {
+      if (window.localStorage && (localStorage.getItem("settingTimeHour") == "24h")) {
         dayjsCalendarOptions = {
           sameDay: "[Today at] H:mm", // Today at 23:22
           nextDay: "[Tomorrow at] H:mm", // Tomorrow at 23:22
