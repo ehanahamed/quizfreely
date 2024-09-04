@@ -160,7 +160,7 @@ grant delete on public.studysets to quizfreely_auth_user;
 
 alter table public.studysets enable row level security;
 
-create policy select_studysets__by_not_private on public.studysets
+create policy select_studysets_by_not_private on public.studysets
 as permissive
 for select
 to quizfreely_api, quizfreely_auth
