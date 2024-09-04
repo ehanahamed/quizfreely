@@ -153,3 +153,36 @@ sudo systemctl start quizfreely-api
 If the systemd service is running successfully, quizfreely-api should be on port `:8008` by default.
 
 We use Caddy to let the quizfreely-api process on port `:8008` be accessed from `api.quizfreely.com` with https. See [caddy-setup.md](./caddy-setup.md) to finish setting up quizfreely-api.
+
+## Updating
+
+Temporarily stop quizfreely-api:
+```sh
+sudo systemctl stop quizfreely-api
+```
+
+Pull changes with git:
+```sh
+cd /root/quizfreely/api
+git pull
+# if there are changes to .env
+# see api-setup.md > Dotenv config, and run:
+# cp .env.example .env
+
+# if there are changes to quizfreely-api.service:
+# see api-setup.md > Service file, and run:
+# cp quizfreely-api.service /etc/systemd/system/
+```
+
+Check `api/logfile.log`, and delete/clear it if needed. (a new `logfile.log` will be created when the server process starts if you/we delete the whole file)
+
+If there are changes to [api/quizfreely-db-setup.sql](../../../api/quizfreely-db-setup.sql), we will manually update the production database to match all the changes to roles, schemas, tables, or functions in `quizfreely-db-setup.sql`.
+
+After all changes are made, start quizfreely-api again:
+```sh
+sudo systemctl start quizfreely-api
+# if there were any changes to caddy,
+# see developer docs > production > caddy-setup.md
+# and when you're/we're done run:
+# sudo systemctl reload caddy
+```

@@ -88,3 +88,34 @@ sudo systemctl start quizfreely-web
 If the systemd service is running successfully, quizfreely's website should be on port `:8080` by default.
 
 We use Caddy to let the quizfreely-web process on port `:8080` be accessed from `quizfreely.com` with https. See [caddy-setup.md](./caddy-setup.md) to finish setting up Quizfreely's website.
+
+## Updating
+
+Temporarily stop quizfreely-web:
+```sh
+sudo systemctl stop quizfreely-web
+```
+
+Pull changes with git:
+```sh
+cd /root/quizfreely/web
+git pull
+# if there are changes to .env
+# see web-setup.md > Dotenv config, and run:
+# cp .env.example .env
+
+# if there are changes to quizfreely-web.service:
+# see web-setup.md > Service file, and run:
+# cp quizfreely-web.service /etc/systemd/system/
+```
+
+Check `web/logfile.log`, and delete/clear it if needed. (a new `logfile.log` will be created when the server starts if you/we delete the whole file)
+
+After all changes are made, start quizfreely-web again:
+```sh
+sudo systemctl start quizfreely-web
+# if there were any changes to caddy,
+# see developer docs > production > caddy-setup.md
+# and when you're/we're done run:
+# sudo systemctl reload caddy
+```
