@@ -159,13 +159,15 @@ We use Caddy to let the quizfreely-api process on port `:8008` be accessed from 
 Temporarily stop quizfreely-api:
 ```sh
 sudo systemctl stop quizfreely-api
+# and if it's running, stop quizfreely-web:
+# sudo systemctl stop quizfreely-web
 ```
 
 Pull changes with git:
 ```sh
 cd /root/quizfreely/api
 git pull
-# if there are changes to .env
+# if there are changes to .env.example
 # see api-setup.md > Dotenv config, and run:
 # cp .env.example .env
 
