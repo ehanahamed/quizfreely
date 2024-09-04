@@ -123,7 +123,8 @@ fastify.get("/dashboard", dashboard);
 fastify.get("/settings", function (request, reply) {
   reply.view("settings.html", {
     ...themeData(request),
-    modal: "none"
+    modal: "none",
+    apiUrl: apiUrl
   })
 });
 fastify.get("/sign-up", function (request, reply) {
