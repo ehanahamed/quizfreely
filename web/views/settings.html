@@ -68,7 +68,7 @@
           <div id="account-signedin-div" class="box hide">
             <p>Display name: <code id="account-display-name">...</code></p>
             <input type="text" id="account-display-name-edit" placeholder="Display Name" class="hide "/>
-            <div id="account-username-div" class="hide">
+            <div id="account-username-password-div" class="hide">
               <p>Username: <code id="account-username">...</code></p>
             </div>
             <div id="account-oauth-google-div" class="hide">
@@ -129,11 +129,11 @@
             document.getElementById("account-not-signedin-div").classList.add("hide");
             document.getElementById("account-signedin-div").classList.remove("hide");
             if (response.data.user.authType == "oauth-google") {
-              document.getElementById("account-username-password").classList.add("hide");
-              document.getElementById("account-oauth-google").classList.remove("hide");
+              document.getElementById("account-username-password-div").classList.add("hide");
+              document.getElementById("account-oauth-google-div").classList.remove("hide");
             } else /* response.data.user.authType == "username-password" */ {
-              document.getElementById("account-username-password").classList.remove("hide");
-              document.getElementById("account-oauth-google").classList.add("hide");
+              document.getElementById("account-username-password-div").classList.remove("hide");
+              document.getElementById("account-oauth-google-div").classList.add("hide");
             }
           }
         })
