@@ -66,28 +66,17 @@
             </p>
           </div>
           <div id="account-signedin-div" class="box hide">
-            <p>Display name:</p>
-            <input type="text" id="display-name" placeholder="Display Name" />
+            <p>Display name: <code id="account-display-name">...</code></p>
+            <input type="text" id="account-display-name-edit" placeholder="Display Name" class="hide "/>
             <div id="account-username-div" class="hide">
-              <p>Username: <code id="mainUserUsername">username</code></p>
+              <p>Username: <code id="account-username">...</code></p>
             </div>
-            <!--<div id="gaccount-div" class="hide">
-              <p class="bg3">Signed in with Google</p>
-              <p>Google account: <code id="mainUserGoogleemail">email</code></p>
+            <div id="account-oauth-google-div" class="hide">
+              <p class="fg0">Signed in with Google</p>
+              <p>Google account: <code id="account-oauth-google-email">email</code></p>
             </div>
             <div class="flex">
-              <a class="button" href="./setdisplayname.html"
-                >Change display name</a
-              >
-              <a
-                class="button hide"
-                id="mainAccountChangepassword"
-                href="./changepassword.html"
-                >Change password</a
-              >
-            </div>-->
-            <div class="flex">
-              <button id="sign-out-button" class="ohno">Sign out</button>
+              <button id="account-sign-out-button" class="ohno">Sign out</button>
             </div>
           </div>
           <h3>Data & Privacy</h3>
@@ -149,6 +138,10 @@
           }
         })
       }
+      document.getElementById("account-sign-out-button").addEventListener("click", function () {
+        client.deleteLocalSession();
+        window.location.reload();
+      })
     </script>
   </body>
 </html>
