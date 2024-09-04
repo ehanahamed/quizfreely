@@ -129,13 +129,23 @@
       client.apiUrl = "<eta>= data.apiUrl </eta>"
       dayjs.extend(window.dayjs_plugin_calendar);
       var dayjsCalendarOptions = {
-        sameDay: "[Today at] H:mm", // Today at 23:22
-        nextDay: "[Tomorrow at] H:mm", // Tomorrow at 23:22
-        nextWeek: "dddd [at] H:mm", // Sunday at 23:22
-        lastDay: "[Yesterday at] H:mm", // Yesterday at 23:22
-        lastWeek: "[Last] dddd [at] H:mm", // Last Friday at 23:22
+        sameDay: "[Today at] h:mm A", // Today at 11:22 PM
+        nextDay: "[Tomorrow at] h:mm A", // Tomorrow at 11:22 PM
+        nextWeek: "ddd, MMM D [at] h:mm A", // Fri, Aug 30 at 11:22 PM
+        lastDay: "[Yesterday at] h:mm A", // Yesterday at 11:22 PM
+        lastWeek: "ddd, MMM D [at] h:mm A", // Fri, Aug 30 at 11:22 PM
         sameElse: "ddd, MMM D (YYYY-MM-DD)", // Fri, Aug 30 (2024-08-30)
       };
+      if (window.localStorage && localStorage.getItem("setting24HourTime")) {
+        dayjsCalendarOptions = {
+          sameDay: "[Today at] H:mm", // Today at 23:22
+          nextDay: "[Tomorrow at] H:mm", // Tomorrow at 23:22
+          nextWeek: "ddd, MMM D [at] H:mm", // Fri, Aug 30 at 23:22
+          lastDay: "[Yesterday at] H:mm", // Yesterday at 23:22
+          lastWeek: "ddd, MMM D [at] H:mm", // Fri, Aug 30 at 23:22
+          sameElse: "ddd, MMM D (YYYY-MM-DD)", // Fri, Aug 30 (2024-08-30)
+        }
+      }
       if (client.hasSession()) {
         client.req("/studysets/list", {}, function (result) {
           if (result.data && result.data.rows.length >= 1) {
