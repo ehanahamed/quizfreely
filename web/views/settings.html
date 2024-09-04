@@ -66,12 +66,18 @@
             </p>
           </div>
           <div id="account-signedin-div" class="box hide">
-            <p>
-              <span class="h6">Display name:</span><br />
-              <span id="account-display-name">...</span>
-            </p>
-            <div id="account-display-name-edit-div" class="hide">
-              <input type="text" id="account-display-name-edit" placeholder="Display Name"/>
+            <div class="flex compact-gap align-end" id="account-display-name-view-div">
+              <p>
+                <span class="h6">Display name:</span><br />
+                <span id="account-display-name">...</span>
+              </p>
+              <button class="icon-only-button" id="display-name-edit-button"><i class="nf nf-fa-pencil"></i></button>
+            </div>
+            <div id="display-name-edit-div" class="hide">
+              <p class="h6">Display Name:</p>
+              <div class="flex">
+                <input type="text" id="display-name-edit" placeholder="Display Name"/>
+              </div>
             </div>
             <div id="account-username-password-div" class="hide">
               <p>
