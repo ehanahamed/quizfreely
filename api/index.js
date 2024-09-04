@@ -669,6 +669,82 @@ fastify.post("/studysets/update/:studysetid", async function (request, reply) {
     }
 })
 
+fastify.post("/studysets/view/:studysetid", async function (request, reply) {
+    if (
+        request.body &&
+        request.body.session &&
+        request.body.session.id &&
+        request.body.session.token
+    ) {
+        let client = await pool.connect();
+        try {
+            await client.query("BEGIN");
+            await client.query("set role quizfreely_auth");
+            let session = await client.query(
+                "select id, token, user_id from auth.verify_and_refresh_session($1, $2)",
+                [request.body.session.id, request.body.session.token]
+            );
+            if (session.rows.length == 1) {
+                await client.query("set role quizfreely_auth_user");
+                await client.query("select set_config('quizfreely_auth.user_id', $1, true)", [session.rows[0].user_id]);
+                let selectedStudyset = await client.query(
+                    "select id, user_id, title, private, data, updated_at from public.studysets " +
+                    "where id = $1",
+                    [
+                        request.params.studysetid
+                    ]
+                );
+                if (selectedStudyset.rows.length == 1) {
+                    await client.query("COMMIT")
+                    return reply.send({
+                        "error": false,
+                        "data": {
+                            studyset: {
+                                id: selectedStudyset.rows[0].id,
+                                userId: selectedStudyset.rows[0].user_id,
+                                title: selectedStudyset.rows[0].title,
+                                data: selectedStudyset.rows[0].data,
+                                private: selectedStudyset.rows[0].private,
+                                updatedAt: selectedStudyset.rows[0].updated_at
+                            },
+                            session: {
+                                id: session.rows[0].id,
+                                token: session.rows[0].token
+                            }
+                        }
+                    })
+                } else {
+                    await client.query("ROLLBACK");
+                    return reply.callNotFound();
+                }
+            } else {
+                await client.query("ROLLBACK");
+                return reply.code(401).send({
+                    error: {
+                        type: "session-invalid"
+                    }
+                })
+            }
+        } catch (error) {
+            await client.query("ROLLBACK");
+            request.log.error(error);
+            return reply.code(500).send({
+                error: {
+                    type: "postgres-error"
+                }
+            })
+        } finally {
+            client.release()
+        }
+    } else {
+        return reply.code(400).send({
+            error: {
+                type: "fields-missing"
+            }
+        })
+    }
+})
+
 fastify.get("/studysets/public/:studysetid", async function (request, reply) {
     try {
         let result = await pool.query(
