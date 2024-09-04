@@ -85,6 +85,12 @@ var client = {
             return false;
         }
     },
+    deleteLocalSession: function () {
+        if (window.localStorage) {
+            localStorage.removeItem("sessionId")
+            localStorage.removeItem("sessionToken")
+        }
+    },
     refreshSession: function (id, token, callback) {
         if (id && token) {
             fetch(
