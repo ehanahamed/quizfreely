@@ -429,6 +429,77 @@ fastify.post("/user", async function (request, reply) {
     }
 })
 
+fastify.post("/user-auth-info", async function (request, reply) {
+    if (
+        request.body &&
+        request.body.session &&
+        request.body.session.id &&
+        request.body.session.token
+    ) {
+        let client = await pool.connect();
+        try {
+            await client.query("BEGIN");
+            await client.query("set role quizfreely_auth");
+            let session = await client.query(
+                "select id, token, user_id from auth.verify_and_refresh_session($1, $2)",
+                [request.body.session.id, request.body.session.token]
+            );
+            if (session.rows.length == 1) {
+                let userData = await client.query(
+                    "select id, username, display_name, auth_type, from auth.users " +
+                    "where id = $1",
+                    [
+                        session.rows[0].user_id
+                    ]
+                );
+                if (userData.rows.length == 1) {
+                    await client.query("COMMIT");
+                    return reply.send({
+                        "error": false,
+                        "data": {
+                            user: {
+                                id: userData.rows[0].id,
+                                username: userData.rows[0].username,
+                                displayName: userData.rows[0].display_name
+                            },
+                            session: {
+                                id: session.rows[0].id,
+                                token: session.rows[0].token
+                            }
+                        }
+                    })
+                } else {
+                    await client.query("ROLLBACK");
+                    return reply.callNotFound();
+                }
+            } else {
+                await client.query("ROLLBACK");
+                return reply.code(401).send({
+                    error: {
+                        type: "session-invalid"
+                    }
+                })
+            }
+        } catch (error) {
+            await client.query("ROLLBACK");
+            request.log.error(error);
+            return reply.code(500).send({
+                error: {
+                    type: "postgres-error"
+                }
+            })
+        } finally {
+            client.release()
+        }
+    } else {
+        return reply.code(400).send({
+            error: {
+                type: "fields-missing"
+            }
+        })
+    }
+})
+
 fastify.post("/studysets/create", async function (request, reply) {
     if (
         request.body &&

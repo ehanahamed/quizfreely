@@ -59,19 +59,19 @@
             </div>
           </div>
           <h3>Account</h3>
-          <div id="mainNewuserdiv" class="box">
+          <div id="account-no-signin" class="box">
             <p>
               You're not signed in.<br />
               Do you want to <a href="./sign-in">sign in</a> or <a href="./sign-up">create an account</a>?
             </p>
           </div>
-          <div id="signedin-div" class="box hide">
+          <div id="account-signin" class="box hide">
             <p>Display name:</p>
             <input type="text" id="display-name" placeholder="Display Name" />
-            <div id="emailless-div" class="hide">
+            <div id="account-username-div" class="hide">
               <p>Username: <code id="mainUserUsername">username</code></p>
             </div>
-            <div id="gaccount-div" class="hide">
+            <!--<div id="gaccount-div" class="hide">
               <p class="bg3">Signed in with Google</p>
               <p>Google account: <code id="mainUserGoogleemail">email</code></p>
             </div>
@@ -85,9 +85,9 @@
                 href="./changepassword.html"
                 >Change password</a
               >
-            </div>
+            </div>-->
             <div class="flex">
-              <button id="signout-button" class="red">Sign out</button>
+              <button id="sign-out-button" class="ohno">Sign out</button>
             </div>
           </div>
           <h3>Data & Privacy</h3>
@@ -131,7 +131,13 @@
         document.getElementById("time-12h").checked = true;
       }
     </script>
+    <script src="/assets/js/client.js"></script>
     <script>
+      if (client.hasSession()) {
+        client.req("/user", {}, function () {
+
+        })
+      }
       document
         .getElementById("signout-button")
         .addEventListener("click", function () {
