@@ -59,13 +59,13 @@
             </div>
           </div>
           <h3>Account</h3>
-          <div id="account-no-signin" class="box">
+          <div id="account-not-signedin-div" class="box">
             <p>
               You're not signed in.<br />
               Do you want to <a href="./sign-in">sign in</a> or <a href="./sign-up">create an account</a>?
             </p>
           </div>
-          <div id="account-signin" class="box hide">
+          <div id="account-signedin-div" class="box hide">
             <p>Display name:</p>
             <input type="text" id="display-name" placeholder="Display Name" />
             <div id="account-username-div" class="hide">
@@ -133,17 +133,22 @@
     </script>
     <script src="/assets/js/client.js"></script>
     <script>
+      client.apiUrl = "<eta>= data.apiUrl </eta>";
       if (client.hasSession()) {
-        client.req("/user", {}, function () {
-
+        client.req("/user-auth-info", {}, function (response) {
+          if (response.data && response.data.user) {
+            document.getElementById("account-not-signedin-div").classList.add("hide");
+            document.getElementById("account-signedin-div").classList.remove("hide");
+            if (response.data.user.authType == "oauth-google") {
+              document.getElementById("account-username-password").classList.add("hide");
+              document.getElementById("account-oauth-google").classList.remove("hide");
+            } else /* response.data.user.authType == "username-password" */ {
+              document.getElementById("account-username-password").classList.remove("hide");
+              document.getElementById("account-oauth-google").classList.add("hide");
+            }
+          }
         })
       }
-      document
-        .getElementById("signout-button")
-        .addEventListener("click", function () {
-          /* sign out then change signed in state without reload */
-          
-        });
     </script>
   </body>
 </html>
