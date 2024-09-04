@@ -216,7 +216,8 @@ fastify.get("/settings/themes/:theme", function (request, reply) {
       cookieOptions()
     ).view("settings.html", {
       ...themeData({ cookies: { theme: request.params.theme }}),
-      modal: "none"
+      modal: "none",
+      apiUrl: apiUrl
     })
   } else {
     reply.callNotFound()
@@ -228,7 +229,8 @@ fastify.get("/settings/clear-cookies", function (request, reply) {
     "settings.html",
     {
       ...themeData(request),
-      modal: "clearedCookies"
+      modal: "clearedCookies",
+      apiUrl: apiUrl
     }
   )
 })
