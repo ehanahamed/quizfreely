@@ -115,7 +115,7 @@
       function changeSettingTimeHour() {
         if (document.getElementById("time-24h").checked == true && window.localStorage) {
           localStorage.setItem("settingTimeHour", "24h")
-        } else if (document.getElementById("time-24h").checked == true && window.localStorage) {
+        } else if (document.getElementById("time-12h").checked == true && window.localStorage) {
           localStorage.setItem("settingTimeHour", "12h")
         }
       }
@@ -125,6 +125,11 @@
       document.getElementById("time-12h").addEventListener("change", function () {
         changeSettingTimeHour()
       })
+      if (window.localStorage && (localStorage.getItem("settingTimeHour") == "24h")) {
+        document.getElementById("time-24h").checked = true;
+      } else if (window.localStorage && (localStorage.getItem("settingTimeHour") == "12h")) {
+        document.getElementById("time-12h").checked = true;
+      }
     </script>
     <script>
       document
