@@ -169,8 +169,10 @@
       })
       document.getElementById("display-name-edit-save-button").addEventListener("click", function () {
         client.req("/user/update", {
-          user: {
-            displayName: document.getElementById("display-name-edit").value
+          body: {
+            user: {
+              displayName: document.getElementById("display-name-edit").value
+            }
           }
         }, function (response) {
           if (response.data && response.data.user) {
