@@ -461,8 +461,8 @@ fastify.post("/user-auth-info", async function (request, reply) {
                                 id: userData.rows[0].id,
                                 username: userData.rows[0].username,
                                 displayName: userData.rows[0].display_name,
-                                authType: user.rows[0].auth_type,
-                                oauthGoogleEmail: user.rows[0].oauth_google_email
+                                authType: userData.rows[0].auth_type,
+                                oauthGoogleEmail: userData.rows[0].oauth_google_email
                             },
                             session: {
                                 id: session.rows[0].id,
