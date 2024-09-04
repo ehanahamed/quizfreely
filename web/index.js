@@ -189,6 +189,15 @@ fastify.get("/studysets/:studyset", function (request, reply) {
     });
 })
 
+fastify.get("/studyset/edit/:studyset", function (request, reply) {
+  reply.view("edit.html", {
+    ...themeData(request),
+    new: false,
+    studysetId: request.params.studyset,
+    apiUrl: apiUrl
+  })
+})
+
 function cookieOptions() {
   let time = new Date();
   /* 100 days * 24h * 60m * 60s = 8640000 sec for 100 days */
