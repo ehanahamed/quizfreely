@@ -826,6 +826,86 @@ fastify.get("/users/:userid", async function (request, reply) {
     }
 })
 
+fastify.post("/user/update", async function (request, reply) {
+    if (
+        request.body &&
+        request.body.session &&
+        request.body.session.id &&
+        request.body.session.token &&
+        request.body.user &&
+        (request.body.user.displayName /* || request.body.user. */)
+    ) {
+        let client = await pool.connect();
+        try {
+            await client.query("BEGIN");
+            await client.query("set role quizfreely_auth");
+            let session = await client.query(
+                "select id, token, user_id from auth.verify_and_refresh_session($1, $2)",
+                [request.body.session.id, request.body.session.token]
+            );
+            if (session.rows.length == 1) {
+                if (request.body.user.displayName) {
+                    let userData = await client.query(
+                        "update auth.users set display_name = $2 " +
+                        "where id = $1 returning id, username, display_name",
+                        [
+                            session.rows[0].user_id,
+                            request.body.user.displayName
+                        ]
+                    );
+                    if (userData.rows.length == 1) {
+                        await client.query("COMMIT");
+                        return reply.send({
+                            "error": false,
+                            "data": {
+                                user: {
+                                    id: userData.rows[0].id,
+                                    username: userData.rows[0].username,
+                                    displayName: userData.rows[0].display_name
+                                },
+                                session: {
+                                    id: session.rows[0].id,
+                                    token: session.rows[0].token
+                                }
+                            }
+                        })
+                    } else {
+                        await client.query("ROLLBACK");
+                        return reply.callNotFound();
+                    }
+                }
+                /* using if, NOT using else, so we can update multiple OR just one value in a reqeust */
+                // if (request.body.user. ) {
+                //
+                // }
+            } else {
+                await client.query("ROLLBACK");
+                return reply.code(401).send({
+                    error: {
+                        type: "session-invalid"
+                    }
+                })
+            }
+        } catch (error) {
+            await client.query("ROLLBACK");
+            request.log.error(error);
+            return reply.code(500).send({
+                error: {
+                    type: "postgres-error"
+                }
+            })
+        } finally {
+            client.release()
+        }
+    } else {
+        return reply.code(400).send({
+            error: {
+                type: "fields-missing"
+            }
+        })
+    }
+})
+
 fastify.listen({
     port: port,
     host: host
