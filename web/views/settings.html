@@ -112,6 +112,19 @@
     <eta>~ include("./partials/footer") </eta>
     <script>
       //document.getElementById("theme-<eta>= data.theme </eta>").checked = true
+      function changeSettingTimeHour() {
+        if (document.getElementById("time-24h").checked == true && window.localStorage) {
+          localStorage.setItem("settingTimeHour", "24h")
+        } else if (document.getElementById("time-24h").checked == true && window.localStorage) {
+          localStorage.setItem("settingTimeHour", "12h")
+        }
+      }
+      document.getElementById("time-24h").addEventListener("change", function () {
+        changeSettingTimeHour()
+      })
+      document.getElementById("time-12h").addEventListener("change", function () {
+        changeSettingTimeHour()
+      })
     </script>
     <script>
       document
