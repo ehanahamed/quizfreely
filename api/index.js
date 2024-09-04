@@ -446,7 +446,7 @@ fastify.post("/user-auth-info", async function (request, reply) {
             );
             if (session.rows.length == 1) {
                 let userData = await client.query(
-                    "select id, username, display_name, auth_type, from auth.users " +
+                    "select id, username, display_name, auth_type, oauth_google_email from auth.users " +
                     "where id = $1",
                     [
                         session.rows[0].user_id
@@ -460,7 +460,9 @@ fastify.post("/user-auth-info", async function (request, reply) {
                             user: {
                                 id: userData.rows[0].id,
                                 username: userData.rows[0].username,
-                                displayName: userData.rows[0].display_name
+                                displayName: userData.rows[0].display_name,
+                                authType: user.rows[0].auth_type,
+                                oauthGoogleEmail: user.rows[0].oauth_google_email
                             },
                             session: {
                                 id: session.rows[0].id,
