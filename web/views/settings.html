@@ -66,14 +66,25 @@
             </p>
           </div>
           <div id="account-signedin-div" class="box hide">
-            <p>Display name: <code id="account-display-name">...</code></p>
-            <input type="text" id="account-display-name-edit" placeholder="Display Name" class="hide "/>
+            <p>
+              <span class="h6">Display name:</span><br />
+              <span id="account-display-name">...</span>
+            </p>
+            <div id="account-display-name-edit-div" class="hide">
+              <input type="text" id="account-display-name-edit" placeholder="Display Name"/>
+            </div>
             <div id="account-username-password-div" class="hide">
-              <p>Username: <code id="account-username">...</code></p>
+              <p>
+                <span class="h6">Username:</span><br />
+                <span id="account-username">...</span>
+              </p>
             </div>
             <div id="account-oauth-google-div" class="hide">
               <p class="fg0">Signed in with Google</p>
-              <p>Google account: <code id="account-oauth-google-email">email</code></p>
+              <p>
+                <span class="h6">Google account:</span><br />
+                <span id="account-oauth-google-email">email</span>
+              </p>
             </div>
             <div class="flex">
               <button id="account-sign-out-button" class="ohno">Sign out</button>
@@ -128,12 +139,15 @@
           if (response.data && response.data.user) {
             document.getElementById("account-not-signedin-div").classList.add("hide");
             document.getElementById("account-signedin-div").classList.remove("hide");
+            document.getElementById("account-display-name").innerText = response.data.user.displayName;
             if (response.data.user.authType == "oauth-google") {
               document.getElementById("account-username-password-div").classList.add("hide");
               document.getElementById("account-oauth-google-div").classList.remove("hide");
+              document.getElementById("account-oauth-google-email").innerText = response.data.user.oauthGoogleEmail;
             } else /* response.data.user.authType == "username-password" */ {
               document.getElementById("account-username-password-div").classList.remove("hide");
               document.getElementById("account-oauth-google-div").classList.add("hide");
+              document.getElementById("account-username").innerText = response.data.user.username;
             }
           }
         })
