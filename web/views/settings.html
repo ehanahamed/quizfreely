@@ -66,17 +66,21 @@
             </p>
           </div>
           <div id="account-signedin-div" class="box hide">
-            <div class="flex compact-gap align-end" id="account-display-name-view-div">
+            <div class="flex compact-gap align-end" id="display-name-view-div">
               <p>
                 <span class="h6">Display name:</span><br />
                 <span id="account-display-name">...</span>
               </p>
               <button class="icon-only-button" id="display-name-edit-button"><i class="nf nf-fa-pencil"></i></button>
             </div>
-            <div id="display-name-edit-div" class="hide">
-              <p class="h6">Display Name:</p>
-              <div class="flex">
+            <div id="display-name-edit-div" class="hide" style="margin-top:0px">
+              <p class="h6" style="margin-bottom:0.6rem">Display Name:</p>
+              <div class="flex" style="margin-top:0px">
                 <input type="text" id="display-name-edit" placeholder="Display Name"/>
+              </div>
+              <div class="flex">
+                <button id="display-name-edit-save-button">Save</button>
+                <button id="display-name-edit-cancel-button" class="alt">Cancel</button>
               </div>
             </div>
             <div id="account-username-password-div" class="hide">
@@ -158,6 +162,28 @@
           }
         })
       }
+      document.getElementById("display-name-edit-button").addEventListener("click", function () {
+        document.getElementById("display-name-edit").value = document.getElementById("account-display-name").innerText;
+        document.getElementById("display-name-edit-div").classList.remove("hide");
+        document.getElementById("display-name-view-div").classList.add("hide");
+      })
+      document.getElementById("display-name-edit-save-button").addEventListener("click", function () {
+        client.req("/user/update", {
+          user: {
+            displayName: document.getElementById("display-name-edit").value
+          }
+        }, function (response) {
+          if (response.data && response.data.user) {
+            document.getElementById("account-display-name").innerText = response.data.user.displayName;
+          }
+          document.getElementById("display-name-view-div").classList.remove("hide");
+          document.getElementById("display-name-edit-div").classList.add("hide");
+        })
+      })
+      document.getElementById("display-name-edit-cancel-button").addEventListener("click", function () {
+        document.getElementById("display-name-view-div").classList.remove("hide");
+        document.getElementById("display-name-edit-div").classList.add("hide");
+      })
       document.getElementById("account-sign-out-button").addEventListener("click", function () {
         client.deleteLocalSession();
         window.location.reload();
