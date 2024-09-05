@@ -825,6 +825,8 @@ fastify.post("/studysets/list", async function (request, reply) {
                 [request.body.session.id, request.body.session.token]
             );
             if (session.rows.length == 1) {
+                await client.query("set role quizfreely_auth_user");
+                await client.query("select set_config('quizfreely_auth.user_id', $1, true)", [session.rows[0].user_id]);
                 let studysets = await client.query(
                     "select id, user_id, title, private, updated_at from public.studysets " +
                     "where user_id = $1",
