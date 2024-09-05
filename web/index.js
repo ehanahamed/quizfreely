@@ -173,12 +173,21 @@ fastify.get("/studysets/:studyset", function (request, reply) {
   fetch(apiUrl + "/studysets/public/" + request.params.studyset)
     .then(function (response) {
       response.json().then(function (responseJson) {
-        if (responseJson.error) {
+        if (responseJson.error && responseJson.error.type == "not-found") {
+          reply.view("studyset.html", {
+            ...themeData(request),
+            ssr: false,
+            studysetId: request.params.studyset,
+            apiUrl: apiUrl
+          })
+        } else if (responseJson.error) {
           reply.callNotFound()
         } else {
           reply.view("studyset.html", {
             ...themeData(request),
+            ssr: true,
             studyset: responseJson.data.studyset,
+            studysetId: request.params.studyset,
             apiUrl: apiUrl
           })
         }

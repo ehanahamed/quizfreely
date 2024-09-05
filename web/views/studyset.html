@@ -69,18 +69,22 @@
                 </div>
               </div>
             </div>
+            <eta> if (data.ssr) {</eta>
             <h2 id="mainActionsStudysettitle"><eta>= data.studyset.title </eta></h2>
-            <eta> if (data.studyset.user) { </eta>
+            <eta> } else { </eta>
+            <h2 id="studyset-title">Title</h2>
+            <eta> } </eta>
+            <eta> if (data.studyset && data.studyset.user) { </eta>
             <p>
               Created by <a href="/users/<eta>= data.studyset.user.id</eta>"><eta>= data.studyset.user.displayName </eta></a>
             </p>
             <eta> } </eta>
             <div id="edit-menu" class="flex hide">
-              <a href="/studyset/edit/<eta>= data.studyset.id </eta>" class="button">
+              <a href="/studyset/edit/<eta>= data.studysetId </eta>" class="button">
                 <i class="nf nf-fa-pencil"></i>
                 Edit
               </a>
-              <a href="/studyset/edit/<eta>= data.studyset.id </eta>" class="button alt">
+              <a href="/studyset/edit/<eta>= data.studysetId </eta>" class="button alt">
                 <i class="nf nf-md-cog"></i>
                 Settings
               </a>
@@ -101,6 +105,7 @@
                   class="card double"
                   id="flashcard"
                 >
+                  <eta> if (data.ssr) { </eta>
                   <div class="content">
                     <div class="front" id="flashcard-front">
                       <eta>= data.studyset.data.terms[0][0] </eta>
@@ -109,11 +114,27 @@
                       <eta>= data.studyset.data.terms[0][1] </eta>
                     </div>
                   </div>
+                  <eta> } else { </eta>
+                  <div class="content">
+                    <div class="front" id="flashcard-front">
+                      ...
+                    </div>
+                    <div class="back" id="flashcard-back">
+                      ...
+                    </div>
+                  </div>
+                  <eta> } </eta>
                 </div>
                 <div class="caption centerThree">
+                  <eta> if (data.ssr) { </eta>
                   <p id="flashcards-count">
                     1/<eta>= data.studyset.data.terms.length </eta>
                   </p>
+                  <eta> } else { </eta>
+                  <p id="flashcards-count">
+                    ...
+                  </p>
+                  <eta> } </eta>
                   <div class="flex justifyselfcenter">
                     <button
                       id="flashcards-prev-button"
@@ -140,23 +161,23 @@
                 <i class="nf nf-md-card_multiple"></i>
                 Flashcards
               </button>
-              <a href="/studysets/<eta>= data.studyset.id </eta>/review" class="button alt">
+              <a href="/studysets/<eta>= data.studysetId </eta>/review" class="button alt">
                 <i class="nf nf-fa-book"></i>
                 Review Mode
               </a>
-              <a href="/studysets/<eta>= data.studyset.id </eta>/test" class="button alt">
+              <a href="/studysets/<eta>= data.studysetId </eta>/test" class="button alt">
                 <i class="nf nf-md-list_status"></i>
                 Practice Test
               </a>
             </div>
             <!-- Add "this study set is private/public..." thingy here too -->
-            <table class="outer caption box">
+            <table class="outer caption box" id="terms-table">
               <tbody>
                 <tr>
                   <th>Term</th>
                   <th>Definition</th>
                 </tr>
-                <eta> data.studyset.data.terms.forEach(function (term) { </eta>
+                <eta> if (data.ssr) { data.studyset.data.terms.forEach(function (term) { </eta>
                 <tr>
                   <td>
                     <eta>= term[0]</eta>
@@ -165,88 +186,9 @@
                     <eta>= term[1]</eta>
                   </td>
                 </tr>
-                <eta>})</eta>
+                <eta>}) } </eta>
               </tbody>
             </table>
-          </div>
-          <div id="mainEditdiv" class="hide">
-            <div id="mainEditStudySetIsCopy" class="modal hide">
-              <div class="content">
-                <h2>¯\_(ツ)_/¯</h2>
-                <p>
-                  A study set with this name already exists in your account.
-                  <br />
-                  You can update/overwrite the existing copy or go back and
-                  rename this copy.
-                </p>
-                <div class="flex">
-                  <button id="mainEditStudySetIsCopyUpdate">
-                    Update existing
-                  </button>
-                  <button id="mainEditStudySetIsCopyBack">Go back</button>
-                </div>
-              </div>
-            </div>
-            <h2>Edit</h2>
-            <input id="mainEditName" type="text" placeholder="Title" />
-            <table class="outer" id="mainEditTable">
-              <!--
-                IMPORTANT:
-                the html below is also used in buttons.js, (its copied into a string)
-                if this html is updated, change it there too
-              -->
-              <thead>
-                <tr>
-                  <th class="center">Term</th>
-                  <th class="center">Definition</th>
-                  <th class="center">Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>
-                    <div class="flex">
-                      <button onclick="buttons.edit.add();">
-                        <i class="nf nf-oct-plus"></i>
-                        Add row
-                      </button>
-                    </div>
-                  </td>
-                  <td></td>
-                  <td></td>
-                </tr>
-              </tbody>
-            </table>
-            <div id="mainEditSettingsPublic">
-              <div class="radio">
-                <input
-                  type="radio"
-                  name="public"
-                  id="publicFalse"
-                  checked="true"
-                />
-                <label for="publicFalse"
-                  >Private
-                  <span class="bg3"
-                    >(Visible to you and anyone you give the downloadable file
-                    to)</span
-                  ></label
-                >
-              </div>
-              <div class="radio">
-                <input type="radio" name="public" id="publicTrue" />
-                <label for="publicTrue"
-                  >Public
-                  <span class="bg3"
-                    >(Visible to everyone, can only be edited by you)</span
-                  ></label
-                >
-              </div>
-            </div>
-            <button id="buttonEditDone" onclick="buttons.edit.done()">
-              <i class="nf nf-oct-check"></i>
-              Done
-            </button>
           </div>
         </div>
       </div>
@@ -255,6 +197,10 @@
     <script src="/assets/js/client.js"></script>
     <script>
       client.apiUrl = "<eta>= data.apiUrl </eta>"
+    </script>
+    <eta> if (data.ssr && data.studyset && data.studyset.user) {</eta>
+    <script>
+      var studyset = JSON.parse("<eta>~ JSON.stringify(data.studyset).replaceAll('\\', '\\\\').replaceAll('\"', '\\\"') </eta>")
       if (client.hasSession()) {
         client.req("/user", {}, function (response) {
           if (response.data && response.data.user.id == "<eta>= data.studyset.user.id </eta>") {
@@ -263,8 +209,30 @@
         })
       }
     </script>
+    <eta> } else {</eta>
     <script>
-      var studyset = JSON.parse("<eta>~ JSON.stringify(data.studyset).replaceAll('\\', '\\\\').replaceAll('\"', '\\\"') </eta>")
+      var studyset = {};
+      client.req("/studysets/view/<eta>= data.studysetId </eta>", {}, function (response) {
+        if (response.data) {
+          studyset = response.data.studyset
+          console.log(studyset)
+          showIfEditable()
+        } else {
+          alert("error while loading non-public studyset")
+        }
+      })
+      function showIfEditable() { 
+        if (client.hasSession()) {
+          client.req("/user", {}, function (response) {
+            if (response.data && response.data.user.id == studyset.userId) {
+              document.getElementById("edit-menu").classList.remove("hide");
+            }
+          })
+        }
+      }
+    </script>
+    <eta> } </eta>
+    <script>
       var flashcardsIndex = 0;
       function flashcardsFlip() {
         document.getElementById("flashcard").classList.toggle("flip");
