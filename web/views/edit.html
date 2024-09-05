@@ -254,8 +254,28 @@
           if (result.error) {
             alert("error, could not load studyset while trying to edit")
           } else {
-            editTermsTable.tableFromArray(result.data.studyset.data.terms)
+            document.getElementById("edit-title").value = result.data.studyset.title;
+            editTermsTable.tableFromArray(result.data.studyset.data.terms);
           }
+        })
+        document.getElementById("save-button").addEventListener("click", function () {
+          client.req("/studysets/update/<eta>= data.studysetId </eta>", {
+            body: {
+              studyset: {
+                title: document.getElementById("edit-title").value,
+                private: document.getElementById("edit-private-true").checked,
+                data: {
+                  terms: editTermsTable.arrayFromTable()
+                }
+              }
+            }
+          }, function (result) {
+            if (result.error) {
+              alert("error while trying to update studyset")
+            } else {
+              alert("no error, studyset updated (yay) :3")
+            }
+          })
         })
       } else {
         alert("not signed in :(")
