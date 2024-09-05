@@ -173,19 +173,13 @@ fastify.get("/studysets/:studyset", function (request, reply) {
   fetch(apiUrl + "/studysets/public/" + request.params.studyset)
     .then(function (response) {
       response.json().then(function (responseJson) {
-        if (responseJson.error && responseJson.error.type == "not-found") {
-          reply.view("studyset.html", {
-            ...themeData(request),
-            ssr: false,
-            studysetId: request.params.studyset,
-            apiUrl: apiUrl
-          })
-        } else if (responseJson.error) {
+        if (responseJson.error) {
           reply.callNotFound()
         } else {
           reply.view("studyset.html", {
             ...themeData(request),
             ssr: true,
+            local: false,
             studyset: responseJson.data.studyset,
             studysetId: request.params.studyset,
             apiUrl: apiUrl
@@ -196,6 +190,26 @@ fastify.get("/studysets/:studyset", function (request, reply) {
       request.log.error(error)
       reply.callNotFound();
     });
+})
+
+fastify.get("/studyset/private/:studyset", function (request, reply) {
+  reply.view("studyset.html", {
+    ...themeData(request),
+    ssr: false,
+    local: false,
+    studysetId: request.params.studyset,
+    apiUrl: apiUrl
+  })
+})
+
+fastify.get("/studyset/local/:studyset", function (request, reply) {
+  reply.view("studyset.html", {
+    ...themeData(request),
+    ssr: false,
+    local: true,
+    studysetId: request.params.studyset,
+    apiUrl: apiUrl
+  })
 })
 
 fastify.get("/studyset/edit/:studyset", function (request, reply) {

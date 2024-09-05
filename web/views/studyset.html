@@ -28,7 +28,9 @@
   <body>
     <eta>~ include("./partials/body-start", { theme: data.theme }) </eta>
     <eta>~ include("./partials/navbar", { page: "studyset" }) </eta>
+    <eta> if (data.ssr == false) {</eta>
     <eta>~ include("./partials/noscript") </eta>
+    <eta> } </eta>
     <main>
       <div class="grid page">
         <div class="content">
@@ -209,7 +211,7 @@
         })
       }
     </script>
-    <eta> } else {</eta>
+    <eta> } else if (data.local) {</eta>
     <script>
       var studyset = {};
       client.req("/studysets/view/<eta>= data.studysetId </eta>", {}, function (response) {
@@ -221,15 +223,27 @@
           alert("error while loading non-public studyset")
         }
       })
-      function showIfEditable() { 
-        if (client.hasSession()) {
-          client.req("/user", {}, function (response) {
-            if (response.data && response.data.user.id == studyset.userId) {
-              document.getElementById("edit-menu").classList.remove("hide");
-            }
-          })
+      document.getElementById("edit-menu").classList.remove("hide");
+    </script>
+    <eta> } else {</eta>
+    <script>
+      var studyset = {};
+      client.req("/studysets/view/<eta>= data.studysetId </eta>", {}, function (response) {
+        if (response.data) {
+          studyset = response.data.studyset
+          for (var i = 0; i < studyset.data.terms.length; i++) {
+            var newRow = document.getElementById("terms-table").insertRow();
+            var cell0 = newRow.insertCell()
+            cell0.innerText = studyset.data.terms[i][0]
+            var cell1 = newRow.insertCell()
+            cell1.innerText = studyset.data.terms[i][1]
+          }
+        } else {
+          console.log(response)
+          alert("error while loading non-public studyset")
         }
-      }
+      })
+      document.getElementById("edit-menu").classList.remove("hide");
     </script>
     <eta> } </eta>
     <script>
