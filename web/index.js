@@ -156,7 +156,13 @@ fastify.get("/privacy", function (request, reply) {
 })
 
 fastify.get("/terms", function (request, reply) {
-  reply.view("terms.html", {
+  reply.view("tos.html", {
+    ...themeData(request)
+  })
+})
+
+fastify.get("/tos", function (request, reply) {
+  reply.view("tos.html", {
     ...themeData(request)
   })
 })
