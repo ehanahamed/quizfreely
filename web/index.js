@@ -107,7 +107,7 @@ function dashboard(request, reply) {
   })
 }
 
-function homepage(request, reply) {
+function home(request, reply) {
   if (request.cookies.dashboard == "true") {
     dashboard(request, reply);
   } else {
@@ -117,9 +117,14 @@ function homepage(request, reply) {
   }
 }
 
-fastify.get("/", homepage);
-fastify.get("/home", homepage);
+fastify.get("/", home);
+fastify.get("/home", home);
 fastify.get("/dashboard", dashboard);
+fastify.get("/homepage", function (request, reply) {
+  reply.view("home.html", {
+    ...themeData(request)
+  });
+});
 fastify.get("/settings", function (request, reply) {
   reply.view("settings.html", {
     ...themeData(request),
