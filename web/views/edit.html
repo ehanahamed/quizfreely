@@ -226,21 +226,33 @@
       editTermsTable.add();
       if (client.hasSession()) {
         document.getElementById("create-button").addEventListener("click", function () {
+          var private = document.getElementById("edit-private-true").checked
           client.req("/studysets/create", {
             body: {
               studyset: {
                 title: document.getElementById("edit-title").value,
-                private: document.getElementById("edit-private-true").checked,
+                private: private,
                 data: {
                   terms: editTermsTable.arrayFromTable()
                 }
               }
             }
           }, function (result) {
-            if (result.error) {
-              alert("error:" + result.error.type);
+            if (result.data && result.data.studyset) {
+              if (private) {
+                window.location.replace("/studyset/private/" + result.data.studyset.id)
+              } else {
+                window.location.replace("/studysets/" + result.data.studyset.id)
+              }
+            } else if (result.error) {
+              var errorModal = document.createElement("div");
+              errorModal.classList.add("modal")
+              errorModal.id = "create-error-modal"
+              var errorModalContent = document.createElement("div");
+              errorModalContent.classList.add("content");
+
             } else {
-              alert("no error, yay")
+              alert("big error")
             }
           })
         })
