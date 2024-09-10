@@ -285,7 +285,11 @@
             if (result.error) {
               alert("error while trying to update studyset")
             } else {
-              alert("no error, studyset updated (yay) :3")
+              if (private) {
+                window.location.replace("/studyset/private/" + result.data.studyset.id)
+              } else {
+                window.location.replace("/studysets/" + result.data.studyset.id)
+              }
             }
           })
         })
