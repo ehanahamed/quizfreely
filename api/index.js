@@ -984,6 +984,32 @@ fastify.post("/user/update", async function (request, reply) {
     }
 })
 
+fastify.get("/featured/list", async function (request, reply) {
+    try {
+        let result = await pool.query(
+            "select id, user_id, title, updated_at from public.studysets " +
+            "where featured = true limit 6"
+        )
+        if (result.rows.length >= 1) {
+            return reply.send({
+                error: false,
+                data: {
+                    rows: result.rows
+                }
+            })
+        } else {
+            return reply.callNotFound();
+        }
+    } catch (error) {
+        request.log.error(error);
+        return reply.code(500).send({
+            error: {
+                type: "postgres-error"
+            }
+        })
+    }
+})
+
 fastify.listen({
     port: port,
     host: host
