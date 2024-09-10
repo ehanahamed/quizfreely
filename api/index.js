@@ -687,28 +687,23 @@ fastify.post("/studysets/delete/:studysetid", async function (request, reply) {
             if (session.rows.length == 1) {
                 await client.query("set role quizfreely_auth_user");
                 await client.query("select set_config('quizfreely_auth.user_id', $1, true)", [session.rows[0].user_id]);
-                let updatedStudyset = await client.query(
+                await client.query(
                     "delete from public.studysets " +
                     "where id = $1",
                     [
                         request.params.studysetid
                     ]
                 );
-                if (updatedStudyset.rows.length == 1) {
-                    await client.query("COMMIT")
-                    return reply.send({
-                        "error": false,
-                        "data": {
-                            session: {
-                                id: session.rows[0].id,
-                                token: session.rows[0].token
-                            }
+                await client.query("COMMIT")
+                return reply.send({
+                    "error": false,
+                    "data": {
+                        session: {
+                            id: session.rows[0].id,
+                            token: session.rows[0].token
                         }
-                    })
-                } else {
-                    await client.query("ROLLBACK");
-                    return reply.callNotFound();
-                }
+                    }
+                })
             } else {
                 await client.query("ROLLBACK");
                 return reply.code(401).send({
