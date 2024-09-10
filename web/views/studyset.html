@@ -229,7 +229,9 @@
     <script>
       var studyset = {};
       client.req("/studysets/view/<eta>= data.studysetId </eta>", {}, function (response) {
-        if (response.data) {
+        if (response.data && response.data.studyset.private) {
+          /* if successful response and studyset is private,
+          load studyset data into elements */
           studyset = response.data.studyset
           for (var i = 0; i < studyset.data.terms.length; i++) {
             var newRow = document.getElementById("terms-table").insertRow();
@@ -238,6 +240,12 @@
             var cell1 = newRow.insertCell()
             cell1.innerText = studyset.data.terms[i][1]
           }
+          document.getElementById("studyset-title").innerText = response.data.studyset.title;
+          flashcardsChange();
+        } else if (response.data) {
+          /* if successful response but studyset is public,
+          redirect to public url to avoid confusion */
+          window.location.replace("/studysets/" + response.data.studyset.id);
         } else {
           console.log(response)
           alert("error while loading non-public studyset")
