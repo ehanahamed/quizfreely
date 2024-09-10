@@ -194,6 +194,7 @@ fastify.get("/studysets/:studyset", function (request, reply) {
             studyset: responseJson.data.studyset,
             studysetId: request.params.studyset,
             studysetPage: "/studysets/" + request.params.studyset,
+            studysetEditPage: "/studyset/edit/" + request.params.studyset,
             apiUrl: apiUrl
           })
         }
@@ -211,6 +212,7 @@ fastify.get("/studyset/private/:studyset", function (request, reply) {
     local: false,
     studysetId: request.params.studyset,
     studysetPage: "/studyset/private/" + request.params.studyset,
+    studysetEditPage: "/studyset/edit/" + request.params.studyset,
     apiUrl: apiUrl
   })
 })
@@ -222,6 +224,7 @@ fastify.get("/studyset/local/:studyset", function (request, reply) {
     local: true,
     studysetId: request.params.studyset,
     studysetPage: "/studyset/local/" + request.params.studyset,
+    studysetEditPage: "/studyset/edit-local/" + request.params.studyset,
     apiUrl: apiUrl
   })
 })
