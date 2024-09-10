@@ -58,6 +58,10 @@
         <div class="content">
           <eta> if (data.featuredRows) { </eta>
           <h2 class="h4">Featured Studysets</h2>
+          <p>
+            Quizfreely has <s>hundreds of</s> <i class="fg0">(a few)</i> sets created by teachers and students.<br />
+            You can study with flashcards, review mode, practice tests, & more!
+          </p>
           <div class="grid list">
             <eta> data.featuredRows.forEach(function (featuredStudyset) { </eta>
               <div class="box">
@@ -70,6 +74,20 @@
               </div>
             <eta> }) </eta>
           </div>
+          <p>Find <a href="/explore">more studysets</a></p>
+          <br />
+          <eta> } else { </eta>
+          <h2 class="h4">Featured Studysets</h2>
+          <p>
+            Quizfreely has <s>hundreds of</s> <i class="fg0">(a few)</i> sets created by teachers and students.<br />
+            You can study with flashcards, review mode, practice tests, & more!
+          </p>
+          <div class="flex">
+            <a href="/explore" class="button">
+              Explore
+            </a>
+          </div>
+          <br />
           <eta> } </eta>
           <h2 class="h4">Create & study your own sets</h2>
           <div class="flex">
