@@ -225,13 +225,14 @@
       })
       document.getElementById("edit-menu").classList.remove("hide");
     </script>
-    <eta> } else {</eta>
+    <eta> } else { </eta>
     <script>
       var studyset = {};
       client.req("/studysets/view/<eta>= data.studysetId </eta>", {}, function (response) {
         if (response.data && response.data.studyset.private) {
           /* if successful response and studyset is private,
           load studyset data into elements */
+          document.getElementById("edit-menu").classList.remove("hide");
           studyset = response.data.studyset
           for (var i = 0; i < studyset.data.terms.length; i++) {
             var newRow = document.getElementById("terms-table").insertRow();
@@ -251,7 +252,6 @@
           alert("error while loading non-public studyset")
         }
       })
-      document.getElementById("edit-menu").classList.remove("hide");
     </script>
     <eta> } </eta>
     <script>
