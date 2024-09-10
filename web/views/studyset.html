@@ -90,6 +90,14 @@
                 <i class="nf nf-md-cog"></i>
                 Settings
               </a>
+              <div class="dropdown">
+                <button class="dropdown-toggle">
+                  <i class="nf nf-md-dots_horizontal"></i>
+                </button>
+                <div class="content">
+                  <button class="ohno" id="delete-button"><i class="nf nf-fa-trash_o"></i> Delete </button>
+                </div>
+              </div>
             </div>
             <p id="mainOpenSavedone" class="bg3 hide">
               <i class="nf nf-oct-check"></i>
@@ -192,6 +200,15 @@
               </tbody>
             </table>
           </div>
+          <div class="modal hide" id="delete-modal">
+            <div class="content">
+              <p>Are you sure you want to delete this studyset?</p>
+              <div class="flex">
+                <button id="delete-confirm-button" class="ohno">Delete</button>
+                <button id="delete-cancel-button" class="alt">Cancel</button>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </main>
@@ -288,6 +305,32 @@
       document.getElementById("fullscreen-flashcards-button").addEventListener("click", function () {
         document.getElementById('mainOpenFlashcarddiv').classList.add('fullscreen')
       })
+
+      document.getElementById("delete-button").addEventListener("click", function () {
+        document.getElementById("delete-modal").classList.remove("hide");
+      })
+
+      document.getElementById("delete-cancel-button").addEventListener("click", function () {
+        document.getElementById("delete-modal").classList.add("hide");
+      })
     </script>
+    <eta> if (data.local) { </eta>
+    <eta> } else { </eta>
+    <script>
+      document.getElementById("delete-confirm-button").addEventListener("click", function () {
+        client.req(
+          "/studysets/delete/<eta>= data.studysetId </eta>", {},
+          function (response) {
+            if (response.error) {
+              console.log(response)
+              alert(response.error)
+            } else {
+              window.location.replace("/dashboard");
+            }
+          }
+        )
+      })
+    </script>
+    <eta> } </eta>
   </body>
 </html>
