@@ -85,6 +85,12 @@ function themeData(request) {
   }
 }
 
+function homepage(request, reply) {
+  reply.view("home.html", {
+    ...themeData(request)
+  });
+}
+
 function dashboard(request, reply) {
   let themeDataObj = themeData(request);
   let cookieOptionsObj = cookieOptions();
@@ -111,9 +117,7 @@ function home(request, reply) {
   if (request.cookies.dashboard == "true") {
     dashboard(request, reply);
   } else {
-    reply.view("home.html", {
-      ...themeData(request)
-    });
+    homepage(request, reply)
   }
 }
 
