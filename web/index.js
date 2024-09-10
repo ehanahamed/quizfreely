@@ -86,9 +86,27 @@ function themeData(request) {
 }
 
 function homepage(request, reply) {
-  reply.view("home.html", {
-    ...themeData(request)
-  });
+  fetch(apiUrl + "/featured/list")
+    .then(function (response) {
+      response.json().then(function (responseJson) {
+        if (responseJson.error) {
+          reply.view("home.html", {
+            ...themeData(request),
+            featuredRows: false
+          });
+        } else {
+          reply.view("home.html", {
+            ...themeData(request),
+            featuredRows: responseJson.data.rows
+          });
+        }
+      });
+    }).catch(function (error) {
+      reply.view("home.html", {
+        ...themeData(request),
+        featuredRows: false
+      });
+    });
 }
 
 function dashboard(request, reply) {
@@ -124,11 +142,7 @@ function home(request, reply) {
 fastify.get("/", home);
 fastify.get("/home", home);
 fastify.get("/dashboard", dashboard);
-fastify.get("/homepage", function (request, reply) {
-  reply.view("home.html", {
-    ...themeData(request)
-  });
-});
+fastify.get("/homepage", homepage);
 fastify.get("/settings", function (request, reply) {
   reply.view("settings.html", {
     ...themeData(request),
