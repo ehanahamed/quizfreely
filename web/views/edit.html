@@ -268,14 +268,20 @@
           } else {
             document.getElementById("edit-title").value = result.data.studyset.title;
             editTermsTable.tableFromArray(result.data.studyset.data.terms);
+            if (result.data.studyset.private) {
+              document.getElementById("edit-private-true").checked = true;
+            } else {
+              document.getElementById("edit-private-false").checked = true;
+            }
           }
         })
         document.getElementById("save-button").addEventListener("click", function () {
+          var private = document.getElementById("edit-private-true").checked;
           client.req("/studysets/update/<eta>= data.studysetId </eta>", {
             body: {
               studyset: {
                 title: document.getElementById("edit-title").value,
-                private: document.getElementById("edit-private-true").checked,
+                private: private,
                 data: {
                   terms: editTermsTable.arrayFromTable()
                 }
