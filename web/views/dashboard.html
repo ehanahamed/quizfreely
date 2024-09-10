@@ -155,7 +155,11 @@
               box.classList.add("box");
               var title = document.createElement("a");
               title.innerText = result.data.rows[i].title;
-              title.href = "/studysets/" + result.data.rows[i].id
+              if (result.data.rows[i].private) {
+                title.href = "/studyset/private/" + result.data.rows[i].id
+              } else {
+                title.href = "/studysets/" + result.data.rows[i].id
+              }
               var time = document.createElement("p");
               time.innerText = dayjs(result.data.rows[i].updated_at).calendar(
                 null,
