@@ -56,6 +56,31 @@
       </div>
       <div class="grid page">
         <div class="content">
+          <eta> if (data.featuredRows) { </eta>
+          <h2 class="h4">Featured Studysets</h2>
+          <div class="grid list">
+            <eta> data.featuredRows.forEach(function (featuredStudyset) { </eta>
+              <div class="box">
+                <a href="/studysets/<eta>= featuredStudyset.id </eta>">
+                  <eta>= featuredStudyset.title </eta>
+                </a>
+                <p class="h6">
+                  <eta>= featuredStudyset.termsCount </eta> Terms
+                </p>
+              </div>
+            <eta> }) </eta>
+          </div>
+          <eta> } </eta>
+          <h2 class="h4">Create & study your own sets</h2>
+          <div class="flex">
+            <a href="/sign-up" class="button">
+              Create account
+            </a>
+            <a href="/dashboard" class="button alt">
+              Study without an account
+            </a>
+          </div>
+          <p>Already have an account? <a href="/sign-in">Sign in</a></p>
         </div>
       </div>
       <div style="margin-top: 1rem; margin-bottom: 0px">
