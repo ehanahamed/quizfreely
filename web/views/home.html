@@ -68,13 +68,16 @@
                 <a href="/studysets/<eta>= featuredStudyset.id </eta>">
                   <eta>= featuredStudyset.title </eta>
                 </a>
+                <eta> if (featuredStudyset.terms_count !== undefined) { </eta>
                 <p class="h6">
-                  <eta>= featuredStudyset.termsCount </eta> Terms
+                  <eta>= featuredStudyset.terms_count </eta> Terms
                 </p>
+                <eta> } </eta>
               </div>
             <eta> }) </eta>
           </div>
-          <p>Find <a href="/explore">more studysets</a>?</p>
+          <p>Find <a href="/explore">more studysets</a></p>
+          <br />
           <br />
           <eta> } else { </eta>
           <h2 class="h4">Featured Studysets</h2>
@@ -87,6 +90,7 @@
               Explore
             </a>
           </div>
+          <br />
           <br />
           <eta> } </eta>
           <h2 class="h4">Create & study your own sets</h2>
