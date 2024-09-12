@@ -60,10 +60,10 @@
       <div class="grid page">
         <div class="content">
           <eta> if (data.featuredRows) { </eta>
-          <h2 class="h3">Featured Studysets</h2>
+          <h2 class="h3">Find & Share Studysets</h2>
           <p>
-            Quizfreely has <s>hundreds of</s> <i class="fg0">(a few)</i> sets created by teachers and students.<br />
-            Find <a href="/explore">more studysets</a>
+            Quizfreely has <s>hundreds of</s> <i class="fg0">(a few)</i> sets made by teachers & students.<br />
+            <a href="/explore">Explore more studysets</a>
           </p>
           <div class="grid list">
             <eta> data.featuredRows.forEach(function (featuredStudyset) { </eta>
@@ -71,7 +71,7 @@
                 <a href="/studysets/<eta>= featuredStudyset.id </eta>">
                   <eta>= featuredStudyset.title </eta>
                 </a>
-                <eta> if (featuredStudyset.terms_count !== undefined) { </eta>
+                <eta> if (featuredStudyset.terms_count >= 1) { </eta>
                 <p class="h6">
                   <eta>= featuredStudyset.terms_count </eta> Terms
                 </p>
@@ -80,10 +80,10 @@
             <eta> }) </eta>
           </div>
           <eta> } else { </eta>
-          <h2 class="h3">Explore Studysets</
+          <h2 class="h3">Find & Share Studysets</h2>
           <p>
-            Quizfreely has <s>hundreds of</s> <i class="fg0">(a few)</i> sets created by teachers and students.<br />
-          </p>
+            Quizfreely has <s>hundreds of</s> <i class="fg0">(a few)</i> sets made by teachers & students.
+          <br />
           <div class="flex">
             <a href="/explore" class="button">
               Explore
@@ -92,7 +92,7 @@
           <br />
           <br />
           <eta> } </eta>
-          <h2 class="h3">Create & study your own sets</h2>
+          <h2 class="h3">Create & Study Your Own Sets</h2>
           <div class="flex">
             <a href="/sign-up" class="button">
               Create account
