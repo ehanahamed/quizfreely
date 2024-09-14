@@ -6,6 +6,7 @@ Important thingies:
 - `/root/quizfreely/api/`
   - `.env`
   - `quizfreely-api.service`
+  - `quizfreely-db-setup.sql`
 - `/root/quizfreely/web/`
   - `.env`
   - `quizfreely-web.service`
@@ -19,11 +20,13 @@ Important thingies:
   - `node`
   - `npm`
 
-Quizfreely's API (`/root/quizfreely/api/`, "quizfreely-api") runs on port `:8008`. See [web-setup.md](./web-setup.md)
+Quizfreely's website (`/root/quizfreely/web/`, "quizfreely-web") runs on port `:8080`. See [web-setup.md](./web-setup.md)
 
-Quizfreely's website (`/root/quizfreely/web/`, "quizfreely-web") runs on port `:8080`. See [api-setup.md](./api-setup.md)
+Quizfreely's API (`/root/quizfreely/api/`, "quizfreely-api") runs on port `:8008`. See [api-setup.md](./api-setup.md)
 
 Caddy lets quizfreely-web and quizfreely-api be accessed from https://quizfreely.com and https://api.quizfreely.com with valid https. See [caddy-setup.md](./caddy-setup.md)
+
+Quizfreely's API connects to Quizfreely's PostgreSQL database to store all our data. See [api-setup.md](./api-setup.md) to setup the database (and api). See [db.md](./db.md) to manage the database.
 
 ## Droplet Specs
 
