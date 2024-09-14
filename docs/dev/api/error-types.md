@@ -36,7 +36,7 @@ The api's responses look like this on error:
 }
 ```
 
-Instead of giving sending full error messages/descriptions from the api, the client shows users error messages based on the simple/consistent error type that the response has.
+Instead of sending full error messages/descriptions from the api, the client shows error messages based on the simple/consistent error type from the api response.
 
 Here is a list that explains these error types.
 - `"not-found"`
