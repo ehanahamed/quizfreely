@@ -18,7 +18,9 @@ Users' session id and token are stored in localstorage, just like username and p
 
 Session expiry is "controlled by" postgres; when the api tries to validate a session it check's the expire_at time stored in postgres with postgres' current time. Expired sessions are also deleted for storage space, but they still expire even if they don't get deleted. (maximum secuirity fr)
 
-## Postgres roles
+## Technical Info
+
+### Postgres roles
 
 When we setup our PostgreSQL database we create three roles: `quizfreely_api`, `quizfreely_auth`, and `quizfreely_auth_user`. (The commands to setup the database are in [`api/quizfreely-db-setup.sql`](../../../api/quizfreely-db-setup.sql) and the process is explained in [developer docs > production > api-setup.md > Postgres setup](../production/api-setup.md#postgres-setup))
 
