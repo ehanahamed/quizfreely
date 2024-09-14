@@ -2,7 +2,7 @@
 
 ## SSR
 
-For SSR (server side rendering) code, like in `web/index.js`, we use `fetch()`.
+For SSR (server side rendering), like in `web/index.js`, we use `fetch()`.
 
 An example is below
 ```js
