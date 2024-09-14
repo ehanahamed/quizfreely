@@ -15,5 +15,8 @@ pg_dump quizfreely-db > quizfreely-db-backup.sql
 To restore the backed up data into a freshly created database, use the sql file:
 ```sh
 sudo su postgres
+createdb quizfreely-db
 psql -d quizfreely-db -f quizfreely-db-backup.sql
 ```
+
+pg_dump backs up all the data and all the schemas, tables, and functions, so we don't need to set those up when we restore backed up data.
