@@ -613,8 +613,8 @@ fastify.post("/studysets/update/:studysetid", async function (request, reply) {
                 await client.query("set role quizfreely_auth_user");
                 await client.query("select set_config('quizfreely_auth.user_id', $1, true)", [session.rows[0].user_id]);
                 let updatedStudyset = await client.query(
-                    "update public.studysets set title = $2, private = $3, data = $4, terms_count = 5, updated_at = clock_timestamp() " +
-                    "where id = $1 returning id, user_id, title, private, updated_at",
+                    "update public.studysets set title = $2, private = $3, data = $4, terms_count = $5, updated_at = clock_timestamp() " +
+                    "where id = $1 returning id, user_id, title, private, terms_count, updated_at",
                     [
                         request.params.studysetid,
                         studysetTitle,
@@ -634,6 +634,7 @@ fastify.post("/studysets/update/:studysetid", async function (request, reply) {
                                 userId: updatedStudyset.rows[0].user_id,
                                 title: updatedStudyset.rows[0].title,
                                 private: updatedStudyset.rows[0].private,
+                                termsCount: updatedStudyset.rows[0].terms_count,
                                 updatedAt: updatedStudyset.rows[0].updated_at
                             },
                             session: {
