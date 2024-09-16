@@ -78,7 +78,7 @@ fastify.post("/sign-up", async function (request, reply) {
         if (request.body.password.length >= 8) {
             let username = request.body.username;
              /* regex to check if username has letters (any alphabet, but no uppercase) or numbers (any alphabet) or dot, underscore, or dash */
-            if (/^(?!.*\p{Lu})[\p{L}\p{M}\p{N}\-\_\.]+$/u.test(username) && username.length >= 2 && username.length < 100) {
+            if (/^(?!.*\p{Lu})[\p{L}\p{M}\p{N}._-]+$/u.test(username) && username.length >= 2 && username.length < 100) {
                 let client = await pool.connect();
                 try {
                     await client.query("BEGIN");
