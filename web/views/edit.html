@@ -78,13 +78,15 @@
               </tbody>
             </table>
             <div id="edit-private-div">
-              <div class="radio">
-                <input type="radio" name="edit-private" id="edit-private-false" checked="true" />
-                <label for="privateFalse">Public</label>
-              </div>
-              <div class="radio">
-                <input type="radio" name="edit-private" id="edit-private-true" />
-                <label for="privateTrue">Private</label>
+              <div class="combo-select">
+                <button class="left selected" id="edit-private-false">
+                  <i class="combo-selected-icon nf nf-fa-check"></i>
+                  Public
+                </button>
+                <button class="right" id="edit-private-true">
+                  <i class="combo-selected-icon nf nf-fa-check"></i>
+                  Private
+                </button>
               </div>
             </div>
             <eta> if (data.new) { </eta>
@@ -221,12 +223,26 @@
     <script>
       client.apiUrl = "<eta>= data.apiUrl </eta>"
     </script>
+    <script>
+      document.getElementById("edit-private-false").addEventListener("click",
+        function () {
+          document.getElementById("edit-private-false").classList.add("selected");
+          document.getElementById("edit-private-true").classList.remove("selected");
+        }
+      )
+      document.getElementById("edit-private-true").addEventListener("click",
+        function () {
+          document.getElementById("edit-private-false").classList.remove("selected");
+          document.getElementById("edit-private-true").classList.add("selected");
+        }
+      )
+    </script>
     <eta> if (data.new) { </eta>
     <script>
       editTermsTable.add();
       if (client.hasSession()) {
         document.getElementById("create-button").addEventListener("click", function () {
-          var private = document.getElementById("edit-private-true").checked
+          var private = document.getElementById("edit-private-true").classList.contains("selected");
           client.req("/studysets/create", {
             body: {
               studyset: {
@@ -269,14 +285,16 @@
             document.getElementById("edit-title").value = result.data.studyset.title;
             editTermsTable.tableFromArray(result.data.studyset.data.terms);
             if (result.data.studyset.private) {
-              document.getElementById("edit-private-true").checked = true;
+              document.getElementById("edit-private-false").classList.remove("selected");
+              document.getElementById("edit-private-true").classList.add("selected");
             } else {
-              document.getElementById("edit-private-false").checked = true;
+              document.getElementById("edit-private-false").classList.add("selected");
+              document.getElementById("edit-private-true").classList.remove("selected");
             }
           }
         })
         document.getElementById("save-button").addEventListener("click", function () {
-          var private = document.getElementById("edit-private-true").checked;
+          var private = document.getElementById("edit-private-true").classList.contains("selected");
           client.req("/studysets/update/<eta>= data.studysetId </eta>", {
             body: {
               studyset: {
