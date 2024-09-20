@@ -50,6 +50,18 @@
               </div>
             </div>
             <input id="edit-title" type="text" placeholder="Title" />
+            <div id="edit-private-div">
+              <div class="combo-select">
+                <button class="left selected" id="edit-private-false">
+                  <i class="combo-selected-icon nf nf-fa-check"></i>
+                  Public
+                </button>
+                <button class="right" id="edit-private-true">
+                  <i class="combo-selected-icon nf nf-fa-check"></i>
+                  Private
+                </button>
+              </div>
+            </div>
             <table class="outer" id="edit-terms-table">
               <!--
                 IMPORTANT:
@@ -77,18 +89,6 @@
                 </tr>
               </tbody>
             </table>
-            <div id="edit-private-div">
-              <div class="combo-select">
-                <button class="left selected" id="edit-private-false">
-                  <i class="combo-selected-icon nf nf-fa-check"></i>
-                  Public
-                </button>
-                <button class="right" id="edit-private-true">
-                  <i class="combo-selected-icon nf nf-fa-check"></i>
-                  Private
-                </button>
-              </div>
-            </div>
             <eta> if (data.new) { </eta>
             <button id="create-button">
               <i class="nf nf-oct-check"></i>
