@@ -54,7 +54,11 @@
                 <i class="combo-selected-icon nf nf-fa-check"></i>
                 24 Hour
               </button>
-              <button id="time-12h" class="right">
+              <!--
+                12h has selected class by default before being modified by js with localStorage
+                because everywhere else also defaults to 12h if the setting isn't set in localStorage
+              -->
+              <button id="time-12h" class="right selected">
                 <i class="combo-selected-icon nf nf-fa-check"></i>
                 12 Hour (AM/PM)
               </button>
