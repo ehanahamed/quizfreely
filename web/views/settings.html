@@ -49,13 +49,15 @@
           </div>
           <p>Date & Time</p>
           <div>
-            <div class="radio">
-              <input type="radio" name="time-hour" id="time-24h" />
-              <label for="time-24hour">24 Hour</label>
-            </div>
-            <div class="radio">
-              <input type="radio" name="time-hour" id="time-12h" checked="true" />
-              <label for="time-12h">12 Hour (AM/PM)</label>
+            <div class="combo-select">
+              <button id="time-24h">
+                <i class="combo-selected-icon nf nf-fa-check"></i>
+                24 Hour
+              </button>
+              <button id="time-12h">
+                <i class="combo-selected-icon nf nf-fa-check"></i>
+                12 Hour (AM/PM)
+              </button>
             </div>
           </div>
           <h3>Account</h3>
@@ -122,23 +124,20 @@
     <eta>~ include("./partials/footer") </eta>
     <script>
       //document.getElementById("theme-<eta>= data.theme </eta>").checked = true
-      function changeSettingTimeHour() {
-        if (document.getElementById("time-24h").checked == true && window.localStorage) {
-          localStorage.setItem("settingTimeHour", "24h")
-        } else if (document.getElementById("time-12h").checked == true && window.localStorage) {
-          localStorage.setItem("settingTimeHour", "12h")
-        }
-      }
       document.getElementById("time-24h").addEventListener("change", function () {
-        changeSettingTimeHour()
+        if (window.localStorage) {
+          localStorage.setItem("settingTimeHour", "24h")
+        }
       })
       document.getElementById("time-12h").addEventListener("change", function () {
-        changeSettingTimeHour()
+        if (window.localStorage) {
+          localStorage.setItem("settingTimeHour", "12h")
+        }
       })
       if (window.localStorage && (localStorage.getItem("settingTimeHour") == "24h")) {
-        document.getElementById("time-24h").checked = true;
+        document.getElementById("time-24h").classList.add("checked")
       } else if (window.localStorage && (localStorage.getItem("settingTimeHour") == "12h")) {
-        document.getElementById("time-12h").checked = true;
+        document.getElementById("time-12h").classList.add("checked")
       }
     </script>
     <script src="/assets/js/client.js"></script>
