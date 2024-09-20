@@ -1,0 +1,487 @@
+<!doctype html>
+<html lang="en">
+  <!--
+    Quizfreely
+    Copyright (c) Ehan Ahamed and contributors
+    Licensed under the UPL-1.0 License
+    https://quizfreely.com/LICENSE.txt
+  -->
+
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=10, user-scalable=1"
+    />
+    <title>Explore & Search</title>
+    <meta name="description" content="Quizfreely is a free and open source learning app with flashcards, practice tests, and more tools to help you study." />
+    <meta name=”robots” content="index, follow" />
+    <link rel="canonical" href="https://quizfreely.com" />
+    <link rel="icon" href="/favicon.ico" sizes="32x32">
+    <link rel="icon" href="/icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    <eta>~ data.themeCss </eta>
+    <link rel="stylesheet" href="/assets/fonts/fonts.css" />
+    <link
+      rel="stylesheet"
+      href="/assets/nerdfonts/webfont.css"
+    />
+  </head>
+  <body>
+    <eta>~ include("./partials/body-start", { theme: data.theme }) </eta>
+    <eta>~ include("./partials/navbar", { page: "home" }) </eta>
+    <eta>~ include("./partials/noscript") </eta>
+    <main>
+      <div class="grid page">
+        <div class="content">
+          <!--
+          Starting point ig
+          -->
+          <div id="mainDashboarddiv">
+            <p>
+              Create a new study set or open a study set file you downloaded.
+            </p>
+            <div class="flex">
+              <a href="/studyset/create" class="button">
+                <i class="nf nf-oct-plus"></i>
+                Create new
+              </a>
+              <!--<label for="inputImportLocalFile" class="button alt">
+                <i class="nf nf-md-import"></i>
+                Open file
+              </label>-->
+              <button
+                onclick="document.getElementById('mainDashboardImportother').classList.remove('hide')"
+                class="alt"
+              >
+                <i class="nf nf-oct-upload"></i>
+                Import
+              </button>
+              <input id="inputImportLocalFile" class="invisible" type="file" />
+            </div>
+            <div class="grid list" id="studyset-list">
+              <div class="box flex center-h center-v">
+                <div>Tap "create new" to create a studyset</div>
+              </div>
+            </div>
+            <div id="mainDashboardImportother" class="modal hide">
+              <div class="content">
+                <h2>Import from another app</h2>
+                <p>Delimiter/Seperator between term and definition</p>
+                <input
+                  type="text"
+                  placeholder="Term delimiter"
+                  id="mainDashboardImportotherTermdelimiter"
+                />
+                <p>
+                  Delimiter/Seperator between rows, leave blank to use a
+                  newline/enter
+                </p>
+                <input
+                  type="text"
+                  placeholder="Row delimiter"
+                  id="mainDashboardImportotherRowdelimiter"
+                />
+                <textarea
+                  id="mainDashboardImportotherData"
+                  class="fullWidth"
+                  rows="10"
+                  placeholder="Paste data here"
+                ></textarea>
+                <div class="flex">
+                  <button id="mainDashboardImportotherImportbutton">
+                    Import
+                  </button>
+                  <button
+                    class="red"
+                    onclick="document.getElementById('mainDashboardImportother').classList.add('hide')"
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div id="mainDashboardNewuserdiv" class="hide">
+              <p>
+                You are not signed in. You can continue using Quizfreely without
+                an account, <br />
+                or you can <a href="./start.html">get started</a> to save study
+                sets to an account instead of manually saving them.
+              </p>
+            </div>
+            <div id="mainDashboardUserdiv" class="hide">
+              <p>
+                You are signed in. Study sets saved to your account are shown
+                below.
+              </p>
+              <div
+                id="mainDashboardUserStudysetlistdiv"
+                class="grid list"
+              ></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+    <eta>~ include("./partials/footer") </eta>
+    <script src="/assets/js/client.js"></script>
+    <script src="/assets/js/dayjs.min.js"></script>
+    <script src="/assets/js/calendar.js"></script>
+    <script>
+      client.apiUrl = "<eta>= data.apiUrl </eta>"
+      dayjs.extend(window.dayjs_plugin_calendar);
+      var dayjsCalendarOptions = {
+        sameDay: "[Today at] h:mm A", // Today at 11:22 PM
+        nextDay: "[Tomorrow at] h:mm A", // Tomorrow at 11:22 PM
+        nextWeek: "ddd, MMM D [at] h:mm A", // Fri, Aug 30 at 11:22 PM
+        lastDay: "[Yesterday at] h:mm A", // Yesterday at 11:22 PM
+        lastWeek: "ddd, MMM D [at] h:mm A", // Fri, Aug 30 at 11:22 PM
+        sameElse: "ddd, MMM D (YYYY-MM-DD)", // Fri, Aug 30 (2024-08-30)
+      };
+      if (window.localStorage && (localStorage.getItem("settingTimeHour") == "24h")) {
+        dayjsCalendarOptions = {
+          sameDay: "[Today at] H:mm", // Today at 23:22
+          nextDay: "[Tomorrow at] H:mm", // Tomorrow at 23:22
+          nextWeek: "ddd, MMM D [at] H:mm", // Fri, Aug 30 at 23:22
+          lastDay: "[Yesterday at] H:mm", // Yesterday at 23:22
+          lastWeek: "ddd, MMM D [at] H:mm", // Fri, Aug 30 at 23:22
+          sameElse: "ddd, MMM D (YYYY-MM-DD)", // Fri, Aug 30 (2024-08-30)
+        }
+      }
+      if (client.hasSession()) {
+        client.req("/studysets/list", {}, function (result) {
+          if (result.data && result.data.rows.length >= 1) {
+            document.getElementById("studyset-list").innerHTML = "";
+            for (var i = 0; i < result.data.rows.length; i++) {
+              var box = document.createElement("div");
+              box.classList.add("box");
+              var title = document.createElement("a");
+              title.innerText = result.data.rows[i].title;
+              if (result.data.rows[i].private) {
+                title.href = "/studyset/private/" + result.data.rows[i].id
+              } else {
+                title.href = "/studysets/" + result.data.rows[i].id
+              }
+              var time = document.createElement("p");
+              time.innerText = dayjs(result.data.rows[i].updated_at).calendar(
+                null,
+                dayjsCalendarOptions
+              )
+              time.classList.add("h6")
+              box.appendChild(title);
+              box.appendChild(time);
+              document.getElementById("studyset-list").appendChild(box);
+            }
+          }
+        })
+      }
+    </script>
+    <!--<script>
+      function loadDashboard() {
+        supabaseClient.auth.getUser().then(function (result) {
+          userId = result.data.user.id;
+        });
+        supabaseClient
+          .from("studyset")
+          .select()
+          .then(function (result) {
+            studysetlist = result.data;
+            if (studysetlist.length === 0) {
+              var box = document.createElement("div");
+              box.setAttribute("class", "box");
+              box.setAttribute("id", "mainDashboardUserStudysetlistEmpty");
+              document
+                .getElementById("mainDashboardUserStudysetlistdiv")
+                .appendChild(box);
+              document.getElementById(
+                "mainDashboardUserStudysetlistEmpty",
+              ).innerHTML = "<p>No study sets are saved to your account.</p>";
+            } else {
+              for (var i = 0; i < studysetlist.length; i++) {
+                /* the html structure below needs to be copied to reference 11 when changed */
+                var box = document.createElement("div");
+                box.setAttribute("class", "box");
+                box.setAttribute(
+                  "id",
+                  "mainDashboardUserStudysetlist" + i.toString(),
+                );
+                document
+                  .getElementById("mainDashboardUserStudysetlistdiv")
+                  .appendChild(box);
+                document.getElementById(
+                  "mainDashboardUserStudysetlist" + i.toString(),
+                ).innerHTML =
+                  "<p>" +
+                  studysetlist[i].name +
+                  "</p> <div class='flex'> <button id='mainDashboardUserStudysetlist" +
+                  i.toString() +
+                  "Openbutton'> Open </button> <button id='mainDashboardUserStudysetlist" +
+                  i.toString() +
+                  "Deletebutton' class='red'> Delete </button>";
+                document
+                  .getElementById(
+                    "mainDashboardUserStudysetlist" +
+                      i.toString() +
+                      "Openbutton",
+                  )
+                  .addEventListener("click", function (event) {
+                    sessionData.studySetData =
+                      /* studysetlist.ID.json */
+                      /* to get the selected ID, take event.target.id and remove the extra text like "mainDashboard..." and "Openbutton..." */
+                      studysetlist[
+                        event.target.id
+                          .replace("mainDashboardUserStudysetlist", "")
+                          .replace("Openbutton", "")
+                      ].json;
+                    studySet.open();
+                    document
+                      .getElementById("mainActionsSave")
+                      .classList.add("hide");
+                  });
+                document
+                  .getElementById(
+                    "mainDashboardUserStudysetlist" +
+                      i.toString() +
+                      "Deletebutton",
+                  )
+                  .addEventListener("click", function (event) {
+                    var thisId =
+                      studysetlist[
+                        event.target.id
+                          .replace("mainDashboardUserStudysetlist", "")
+                          .replace("Deletebutton", "")
+                      ].id;
+                    supabaseClient
+                      .from("studyset")
+                      .select()
+                      .eq("id", thisId)
+                      .then(function (result) {
+                        var thisName = result.data[0].name;
+                        supabaseClient
+                          .from("explore")
+                          .delete()
+                          .eq("user_id", userId)
+                          .eq("name", thisName)
+                          .then(function () {
+                            /*
+                            here we delete from studyset table
+                            AFTER we delete from explore
+                            (which is why this is in a .then())
+
+                            because we need to get the name from studyset table
+                            to be able to delete from explore table
+                            if we delete from studyset first, we cant delete from explore anymore
+                          */
+                            supabaseClient
+                              .from("studyset")
+                              .delete()
+                              .eq("id", thisId)
+                              .then(function () {
+                                /* remove self (and parent) from ui list */
+                                /* needs to change when structure changes (reference 11) */
+                                event.target.parentElement.parentElement.remove();
+                              });
+                          });
+                      });
+                  });
+              }
+            }
+          });
+      }
+
+      function saveEditedStudySet() {
+        if (states.current.isNewUser === false) {
+          supabaseClient
+            .from("studyset")
+            .insert({
+              user_id: userId,
+              name: sessionData.studySetData.name,
+              json: sessionData.studySetData,
+            })
+            .then(function (result) {
+              if (result.status === 201) {
+                document
+                  .getElementById(ui.elements.open.saveDone)
+                  .classList.remove("hide");
+                document
+                  .getElementById(ui.elements.open.save)
+                  .classList.add("hide");
+                document
+                  .getElementById("mainSaveClouderror")
+                  .classList.add("hide");
+              } else if (result.status !== 201) {
+                document
+                  .getElementById(ui.elements.open.saveDone)
+                  .classList.add("hide");
+                document
+                  .getElementById("mainSaveClouderror")
+                  .classList.remove("hide");
+              }
+            });
+          if (sessionData.studySetData.settings.public === true) {
+            getNickname(function (nickname) {
+              supabaseClient
+                .from("explore")
+                .insert({
+                  user_id: userId,
+                  user_nickname: nickname,
+                  name: sessionData.studySetData.name,
+                  json: sessionData.studySetData,
+                })
+                .then();
+            });
+          } else {
+            /* if its not public in settings, but the set is in explore from a previous save, delete it from explore */
+            supabaseClient
+              .from("explore")
+              .delete()
+              .eq("user_id", userId)
+              .eq("name", sessionData.studySetData.name)
+              .then();
+          }
+        } else if (states.current.isNewUser === true) {
+          alert(
+            "work in progress, states.current.isNewUser is true (20230908224800)",
+          );
+        }
+      }
+    </script>
+    <script src="./js/states.js"></script>
+    <script>
+      var ui = {
+        elements: {
+          sections: {
+            dashboard: "mainDashboarddiv",
+            open: "mainOpendiv",
+            edit: "mainEditdiv",
+            /* flashcards: document.getElementById("sectionFlashcards"), */
+          },
+          buttons: {
+            create: "mainDashboardCreate",
+            importOptions: "buttonImportOptions",
+          },
+          inputs: {
+            importLocal: {
+              file: "inputImportLocalFile",
+            },
+            edit: {
+              name: "mainEditName",
+              table: "mainEditTable",
+            },
+          },
+          links: {
+            exportLocal: {
+              newUserDownload: "mainOpenActionsSaveNewuserExportLocalDownload",
+              userDownload: "mainOpenActionsSaveUserExportLocalDownload",
+            },
+          },
+          alerts: {
+            successImport: "alertSuccessImport",
+            errorImport: "alertErrorImport",
+            flashcardsEnd: "alertFlashcardsEnd",
+          },
+          open: {
+            save: "mainActionsSave",
+            saveDone: "mainOpenSavedone",
+          },
+          edit: {
+            table: "mainEditTable",
+            settings: {
+              public: {
+                true: "publicTrue",
+                false: "publicFalse",
+              },
+            },
+            studySetIsCopy: "mainEditStudySetIsCopy",
+            studySetIsCopyButtons: {
+              update: "mainEditStudySetIsCopyUpdate",
+              back: "mainEditStudySetIsCopyBack",
+            },
+          },
+          flashcards: {
+            card: "flashcardsCard",
+            content: "flashcardsContent",
+            front: "flashcardsFront",
+            back: "flashcardsBack",
+          },
+          importOther: {
+            button: "mainDashboardImportotherImportbutton",
+            data: "mainDashboardImportotherData",
+            termDelimiter: "mainDashboardImportotherTermdelimiter",
+            rowDelimiter: "mainDashboardImportotherRowdelimiter",
+          },
+          activities: {
+            host: "mainOpenActivitylistHost",
+          },
+          states: {
+            newUser: [
+              "mainDashboardNewuserdiv",
+              "mainOpenActionsSaveNewuserdiv",
+            ],
+            user: [
+              "mainDashboardUserdiv",
+              "mainOpenActionsSaveUserdiv",
+              "mainEditSettingsPublic",
+            ],
+            setIsMine: ["mainOpenEditbutton", "mainOpenBottomEditbutton"],
+            setIsNotMine: ["mainOpenBottomCopybutton", "mainOpenCreator"],
+            setIsLarge: ["mainOpenBottomdiv"],
+          },
+        },
+        states: {
+          newUser: function (isNewUser) {
+            if (isNewUser === false) {
+              loadDashboard();
+            }
+          },
+        },
+      };
+    </script>
+    <script src="https://ehui.ehan.dev/js/ehUi.js"></script>
+    <script src="./js/sections.js"></script>
+    <script src="./js/buttons.js"></script>
+    <script src="./js/studySet.js"></script>
+    <script src="./js/sessionData.js"></script>
+    <script src="./js/importLocal.js"></script>
+    <script src="./js/edit.js"></script>
+    <script src="./js/exportLocal.js"></script>
+    <script src="./js/flashcards.js"></script>
+    <script src="./pocketbase/pocketbase.umd.js"></script>
+    <script src="./js/pocketbase.js"></script>
+    <script src="./js/exploreToDashboard.js"></script>
+    <script src="./js/importOther.js"></script>
+    <script>
+      /* functionality of studySetIsCopy buttons below */
+      document
+        .getElementById(ui.elements.edit.studySetIsCopyButtons.update)
+        .addEventListener("click", function () {
+          /* updateStudySet() & isStudySetCopy() are in js/supabase.js */
+          updateStudySet();
+          studySet.open();
+          document
+            .getElementById(ui.elements.edit.studySetIsCopy)
+            .classList.add("hide");
+        });
+      document
+        .getElementById(ui.elements.edit.studySetIsCopyButtons.back)
+        .addEventListener("click", function () {
+          document
+            .getElementById(ui.elements.edit.studySetIsCopy)
+            .classList.add("hide");
+        });
+      /*
+    Make download button also hide the modal when clicked (just like save to acc button)
+    */
+      document
+        .getElementById(ui.elements.links.exportLocal.newUserDownload)
+        .addEventListener("click", function () {
+          document.getElementById(ui.elements.open.save).classList.add("hide");
+        });
+      document
+        .getElementById(ui.elements.links.exportLocal.userDownload)
+        .addEventListener("click", function () {
+          document.getElementById(ui.elements.open.save).classList.add("hide");
+        });
+    </script>-->
+  </body>
+</html>

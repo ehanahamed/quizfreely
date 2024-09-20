@@ -190,6 +190,12 @@ fastify.get("/tos", function (request, reply) {
   })
 })
 
+fastify.get("/explore", function (request, reply) {
+  reply.view("explore.html", {
+    ...themeData(request)
+  })
+})
+
 fastify.get("/studyset/create", function (request, reply) {
   reply.view("edit.html", {
     ...themeData(request),
