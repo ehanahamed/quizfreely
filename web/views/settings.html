@@ -50,11 +50,11 @@
           <p>Date & Time</p>
           <div>
             <div class="combo-select">
-              <button id="time-24h">
+              <button id="time-24h" class="left">
                 <i class="combo-selected-icon nf nf-fa-check"></i>
                 24 Hour
               </button>
-              <button id="time-12h">
+              <button id="time-12h" class="right">
                 <i class="combo-selected-icon nf nf-fa-check"></i>
                 12 Hour (AM/PM)
               </button>
@@ -124,20 +124,26 @@
     <eta>~ include("./partials/footer") </eta>
     <script>
       //document.getElementById("theme-<eta>= data.theme </eta>").checked = true
-      document.getElementById("time-24h").addEventListener("change", function () {
+      document.getElementById("time-24h").addEventListener("click", function () {
+        document.getElementById("time-24h").classList.add("selected")
+        document.getElementById("time-12h").classList.remove("selected")
         if (window.localStorage) {
           localStorage.setItem("settingTimeHour", "24h")
         }
       })
-      document.getElementById("time-12h").addEventListener("change", function () {
+      document.getElementById("time-12h").addEventListener("click", function () {
+        document.getElementById("time-24h").classList.remove("selected")
+        document.getElementById("time-12h").classList.add("selected")
         if (window.localStorage) {
           localStorage.setItem("settingTimeHour", "12h")
         }
       })
       if (window.localStorage && (localStorage.getItem("settingTimeHour") == "24h")) {
-        document.getElementById("time-24h").classList.add("checked")
+        document.getElementById("time-24h").classList.add("selected")
+        document.getElementById("time-12h").classList.remove("selected")
       } else if (window.localStorage && (localStorage.getItem("settingTimeHour") == "12h")) {
-        document.getElementById("time-12h").classList.add("checked")
+        document.getElementById("time-24h").classList.remove("selected")
+        document.getElementById("time-12h").classList.add("selected")
       }
     </script>
     <script src="/assets/js/client.js"></script>
