@@ -287,11 +287,7 @@ fastify.get("/settings/themes/:theme", function (request, reply) {
       "theme",
       request.params.theme,
       cookieOptions()
-    ).view("settings.html", {
-      ...themeData({ cookies: { theme: request.params.theme }}),
-      modal: "none",
-      apiUrl: apiUrl
-    })
+    ).redirect("/settings");
   } else {
     reply.callNotFound()
   }
