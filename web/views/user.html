@@ -1,0 +1,336 @@
+<!doctype html>
+<html lang="en">
+  <!--
+    Quizfreely
+    Copyright (c) Ehan Ahamed and contributors
+    Licensed under the UPL-1.0 License
+    https://quizfreely.com/LICENSE.txt
+  -->
+
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=10, user-scalable=1"
+    />
+    <title>Quizfreely</title>
+    <link rel="icon" href="/favicon.ico" sizes="32x32">
+    <link rel="icon" href="/icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    <eta>~ data.themeCss </eta>
+    <link rel="stylesheet" href="/assets/fonts/fonts.css" />
+    <link
+      rel="stylesheet"
+      href="/assets/nerdfonts/webfont.css"
+    />
+  </head>
+
+  <body>
+    <eta>~ include("./partials/body-start", { theme: data.theme }) </eta>
+    <eta>~ include("./partials/navbar", { page: "studyset" }) </eta>
+    <eta> if (data.ssr == false) {</eta>
+    <eta>~ include("./partials/noscript") </eta>
+    <eta> } </eta>
+    <main>
+      <div class="grid page">
+        <div class="content">
+
+          <!--
+          Action section
+          -->
+          <div id="mainOpendiv">
+            <div id="mainActionsSave" class="modal hide">
+              <div class="content">
+                <h2>Save?</h2>
+                <div id="mainOpenActionsSaveNewuserdiv">
+                  <div class="flex">
+                    <a
+                      id="mainOpenActionsSaveNewuserExportLocalDownload"
+                      class="button"
+                      >Download</a
+                    >
+                    <a href="./dashboard.html" class="button red">Cancel</a>
+                  </div>
+                </div>
+                <div id="mainOpenActionsSaveUserdiv" class="flex">
+                  <a class="button" id="mainWorkinprogressSavetoaccountbutton"
+                    >Save to account</a
+                  >
+                  <a
+                    id="mainOpenActionsSaveUserExportLocalDownload"
+                    class="button alt"
+                    >Download</a
+                  >
+                  <a href="./dashboard.html" class="button alt red">Cancel</a>
+                </div>
+                <div id="mainSaveClouderror" class="box red hide">
+                  <p>
+                    An unknown error prevented the study set from saving. Sorry
+                    ¯\_(ツ)_/¯
+                  </p>
+                </div>
+              </div>
+            </div>
+            <eta> if (data.ssr) {</eta>
+            <h2 id="mainActionsStudysettitle"><eta>= data.studyset.title </eta></h2>
+            <eta> } else { </eta>
+            <h2 id="studyset-title">Title</h2>
+            <eta> } </eta>
+            <eta> if (data.studyset && data.studyset.user) { </eta>
+            <p>
+              Created by <a href="/users/<eta>= data.studyset.user.id</eta>"><eta>= data.studyset.user.displayName </eta></a>
+            </p>
+            <eta> } </eta>
+            <div id="edit-menu" class="flex hide">
+              <a href="<eta>= data.studysetEditPage </eta>" class="button">
+                <i class="nf nf-fa-pencil"></i>
+                Edit
+              </a>
+              <a href="<eta>= data.studysetEditPage </eta>" class="button alt">
+                <i class="nf nf-md-cog"></i>
+                Settings
+              </a>
+              <div class="dropdown">
+                <button class="dropdown-toggle">
+                  <i class="nf nf-md-dots_horizontal"></i>
+                </button>
+                <div class="content">
+                  <button class="ohno" id="delete-button"><i class="nf nf-fa-trash_o"></i> Delete </button>
+                </div>
+              </div>
+            </div>
+            <p id="mainOpenSavedone" class="bg3 hide">
+              <i class="nf nf-oct-check"></i>
+              Saved to account
+            </p>
+            <div id="mainOpenFlashcarddiv">
+              <button
+                class="exitFullscreen"
+                onclick="document.getElementById('mainOpenFlashcarddiv').classList.remove('fullscreen')"
+              >
+                Exit Fullscreen
+              </button>
+              <div>
+                <div
+                  class="card double"
+                  id="flashcard"
+                >
+                  <eta> if (data.ssr) { </eta>
+                  <div class="content">
+                    <div class="front" id="flashcard-front">
+                      <eta>= data.studyset.data.terms[0][0] </eta>
+                    </div>
+                    <div class="back" id="flashcard-back">
+                      <eta>= data.studyset.data.terms[0][1] </eta>
+                    </div>
+                  </div>
+                  <eta> } else { </eta>
+                  <div class="content">
+                    <div class="front" id="flashcard-front">
+                      ...
+                    </div>
+                    <div class="back" id="flashcard-back">
+                      ...
+                    </div>
+                  </div>
+                  <eta> } </eta>
+                </div>
+                <div class="caption centerThree">
+                  <eta> if (data.ssr) { </eta>
+                  <p id="flashcards-count">
+                    1/<eta>= data.studyset.data.terms.length </eta>
+                  </p>
+                  <eta> } else { </eta>
+                  <p id="flashcards-count">
+                    ...
+                  </p>
+                  <eta> } </eta>
+                  <div class="flex justifyselfcenter">
+                    <button
+                      id="flashcards-prev-button"
+                    >
+                      <i class="nf nf-cod-arrow_left"></i>
+                    </button>
+                    <button id="flashcards-flip-button">Flip</button>
+                    <button
+                      id="flashcards-next-button"
+                    >
+                      <i class="nf nf-cod-arrow_right"></i>
+                    </button>
+                  </div>
+                  <div class="flex end">
+                    <button>
+                      <i class="nf nf-md-fullscreen"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="caption grid list">
+              <button id="fullscreen-flashcards-button" class="alt">
+                <i class="nf nf-md-card_multiple"></i>
+                Flashcards
+              </button>
+              <a href="<eta>= data.studysetPage </eta>/review" class="button alt">
+                <i class="nf nf-fa-book"></i>
+                Review Mode
+              </a>
+              <a href="<eta>= data.studysetPage </eta>/test" class="button alt">
+                <i class="nf nf-md-list_status"></i>
+                Practice Test
+              </a>
+            </div>
+            <!-- Add "this study set is private/public..." thingy here too -->
+            <table class="outer caption box" id="terms-table">
+              <tbody>
+                <tr>
+                  <th>Term</th>
+                  <th>Definition</th>
+                </tr>
+                <eta> if (data.ssr) { data.studyset.data.terms.forEach(function (term) { </eta>
+                <tr>
+                  <td>
+                    <eta>= term[0]</eta>
+                  </td>
+                  <td>
+                    <eta>= term[1]</eta>
+                  </td>
+                </tr>
+                <eta>}) } </eta>
+              </tbody>
+            </table>
+          </div>
+          <div class="modal hide" id="delete-modal">
+            <div class="content">
+              <p>Are you sure you want to delete this studyset?</p>
+              <div class="flex">
+                <button id="delete-confirm-button" class="ohno">Delete</button>
+                <button id="delete-cancel-button" class="alt">Cancel</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+    <eta>~ include("./partials/footer") </eta>
+    <script src="/assets/js/client.js"></script>
+    <script>
+      client.apiUrl = "<eta>= data.apiUrl </eta>"
+    </script>
+    <eta> if (data.ssr && data.studyset && data.studyset.user) {</eta>
+    <script>
+      var studyset = JSON.parse("<eta>~ JSON.stringify(data.studyset).replaceAll('\\', '\\\\').replaceAll('\"', '\\\"') </eta>")
+      if (client.hasSession()) {
+        client.req("/user", {}, function (response) {
+          if (response.data && response.data.user.id == "<eta>= data.studyset.user.id </eta>") {
+            document.getElementById("edit-menu").classList.remove("hide");
+          }
+        })
+      }
+    </script>
+    <eta> } else if (data.local) {</eta>
+    <script>
+      var studyset = {};
+      client.req("/studysets/view/<eta>= data.studysetId </eta>", {}, function (response) {
+        if (response.data) {
+          studyset = response.data.studyset
+          console.log(studyset)
+          showIfEditable()
+        } else {
+          alert("error while loading non-public studyset")
+        }
+      })
+      document.getElementById("edit-menu").classList.remove("hide");
+    </script>
+    <eta> } else { </eta>
+    <script>
+      var studyset = {};
+      client.req("/studysets/view/<eta>= data.studysetId </eta>", {}, function (response) {
+        if (response.data && response.data.studyset.private) {
+          /* if successful response and studyset is private,
+          load studyset data into elements */
+          document.getElementById("edit-menu").classList.remove("hide");
+          studyset = response.data.studyset
+          for (var i = 0; i < studyset.data.terms.length; i++) {
+            var newRow = document.getElementById("terms-table").insertRow();
+            var cell0 = newRow.insertCell()
+            cell0.innerText = studyset.data.terms[i][0]
+            var cell1 = newRow.insertCell()
+            cell1.innerText = studyset.data.terms[i][1]
+          }
+          document.getElementById("studyset-title").innerText = response.data.studyset.title;
+          flashcardsChange();
+        } else if (response.data) {
+          /* if successful response but studyset is public,
+          redirect to public url to avoid confusion */
+          window.location.replace("/studysets/" + response.data.studyset.id);
+        } else {
+          console.log(response)
+          alert("error while loading non-public studyset")
+        }
+      })
+    </script>
+    <eta> } </eta>
+    <script>
+      var flashcardsIndex = 0;
+      function flashcardsFlip() {
+        document.getElementById("flashcard").classList.toggle("flip");
+      }
+      document.getElementById("flashcard").addEventListener("click", flashcardsFlip);
+      document.getElementById("flashcards-flip-button").addEventListener("click", flashcardsFlip);
+      
+      function flashcardsChange() {
+        document.getElementById("flashcard-front").innerText = studyset.data.terms[flashcardsIndex][0]
+        document.getElementById("flashcard-back").innerText = studyset.data.terms[flashcardsIndex][1]
+        let flashcardsCount = flashcardsIndex + 1
+        document.getElementById("flashcards-count").innerText = flashcardsCount + "/" + studyset.data.terms.length;
+      }
+
+      function flashcardsNext() {
+        if (flashcardsIndex < (studyset.data.terms.length - 1)) {
+          flashcardsIndex += 1
+          flashcardsChange()
+        }
+      }
+      document.getElementById("flashcards-next-button").addEventListener("click", flashcardsNext);
+
+      function flashcardsPrev() {
+        if (flashcardsIndex > 0) {
+          flashcardsIndex -= 1
+          flashcardsChange()
+        }
+      }
+      document.getElementById("flashcards-prev-button").addEventListener("click", flashcardsPrev);
+
+      document.getElementById("fullscreen-flashcards-button").addEventListener("click", function () {
+        document.getElementById('mainOpenFlashcarddiv').classList.add('fullscreen')
+      })
+
+      document.getElementById("delete-button").addEventListener("click", function () {
+        document.getElementById("delete-modal").classList.remove("hide");
+      })
+
+      document.getElementById("delete-cancel-button").addEventListener("click", function () {
+        document.getElementById("delete-modal").classList.add("hide");
+      })
+    </script>
+    <eta> if (data.local) { </eta>
+    <eta> } else { </eta>
+    <script>
+      document.getElementById("delete-confirm-button").addEventListener("click", function () {
+        client.req(
+          "/studysets/delete/<eta>= data.studysetId </eta>", {},
+          function (response) {
+            if (response.error) {
+              console.log(response)
+              alert(response.error)
+            } else {
+              window.location.replace("/dashboard");
+            }
+          }
+        )
+      })
+    </script>
+    <eta> } </eta>
+  </body>
+</html>
