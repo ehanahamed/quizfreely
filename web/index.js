@@ -262,6 +262,26 @@ fastify.get("/studyset/edit/:studyset", function (request, reply) {
   })
 })
 
+fastify.get("/users/:userid", function (request, reply) {
+  fetch(apiUrl + "/users/" + request.params.userid)
+    .then(function (response) {
+      response.json().then(function (responseJson) {
+        if (responseJson.error) {
+          reply.callNotFound()
+        } else {
+          reply.view("user.html", {
+            ...themeData(request),
+            user: responseJson.data.user,
+            apiUrl: apiUrl
+          })
+        }
+      });
+    }).catch(function (error) {
+      request.log.error(error)
+      reply.callNotFound();
+    });
+})
+
 function cookieOptions() {
   let time = new Date();
   /* 100 days * 24h * 60m * 60s = 8640000 sec for 100 days */
