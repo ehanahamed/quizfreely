@@ -14,6 +14,14 @@ const apiUrl = process.env.API_URL
 const cookiesDomain = process.env.COOKIES_DOMAIN
 const logLevel = process.env.LOG_LEVEL
 
+if (port == undefined || host == undefined) {
+  console.error(
+    "quizfreely/web/.env is missing or invalid \n" +
+    "copy .example.env to .env"
+  );
+  process.exit(1);
+}
+
 const fastify = Fastify({
   logger: {
     level: logLevel,
