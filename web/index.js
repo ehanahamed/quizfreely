@@ -282,6 +282,13 @@ fastify.get("/users/:userid", function (request, reply) {
     });
 })
 
+fastify.get("/search", function (request, reply) {
+  reply.view("search.html", {
+    ...themeData(request),
+    apiUrl: apiUrl
+  })
+})
+
 function cookieOptions() {
   let time = new Date();
   /* 100 days * 24h * 60m * 60s = 8640000 sec for 100 days */
