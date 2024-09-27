@@ -150,8 +150,13 @@ create table public.studysets (
   title text not null,
   private boolean not null,
   data jsonb not null,
-  updated_at timestamptz default clock_timestamp()
+  updated_at timestamptz default clock_timestamp(),
+  terms_count int,
+  featured boolean default false,
+  tsvector_title tsvector generated always as (to_tsvector('english', title)) stored
 );
+
+create index textsearch_title_idx on public.studysets using GIN (tsvector_title);
 
 grant select on public.studysets to quizfreely_api, quizfreely_auth, quizfreely_auth_user;
 grant insert on public.studysets to quizfreely_auth_user;
