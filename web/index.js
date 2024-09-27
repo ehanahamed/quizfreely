@@ -5,7 +5,6 @@ import fastifyView from "@fastify/view";
 import fastifyCookie from "@fastify/cookie";
 import path from "path";
 import { Eta } from "eta";
-import { createClient } from '@supabase/supabase-js'
 import { themes } from "./themes.js";
 
 const port = process.env.PORT

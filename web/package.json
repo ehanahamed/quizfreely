@@ -13,7 +13,6 @@
     "@fastify/cookie": "^9.3.1",
     "@fastify/static": "^7.0.4",
     "@fastify/view": "^9.1.0",
-    "@supabase/supabase-js": "^2.45.1",
     "dotenv": "^16.4.5",
     "eta": "^3.4.0",
     "fastify": "^4.28.1"
