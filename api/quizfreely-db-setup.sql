@@ -146,7 +146,7 @@ language sql;
 
 create table public.studysets (
   id uuid primary key default gen_random_uuid(),
-  user_id uuid not null,
+  user_id uuid references auth.users (id) on delete cascade,
   title text not null,
   private boolean not null,
   data jsonb not null,
