@@ -4,6 +4,7 @@ import fastifyStatic from "@fastify/static";
 import fastifyView from "@fastify/view";
 import fastifyCookie from "@fastify/cookie";
 import path from "path";
+import querystring from "querystring";
 import { Eta } from "eta";
 import { themes } from "./themes.js";
 
@@ -198,9 +199,27 @@ fastify.get("/tos", function (request, reply) {
 })
 
 fastify.get("/explore", function (request, reply) {
-  reply.view("explore.html", {
-    ...themeData(request)
-  })
+  fetch(apiUrl + "/featured/list")
+    .then(function (response) {
+      response.json().then(function (responseJson) {
+        if (responseJson.error) {
+          reply.view("explore.html", {
+            ...themeData(request),
+            featuredRows: false
+          });
+        } else {
+          reply.view("explore.html", {
+            ...themeData(request),
+            featuredRows: responseJson.data.rows
+          });
+        }
+      });
+    }).catch(function (error) {
+      reply.view("explore.html", {
+        ...themeData(request),
+        featuredRows: false
+      });
+    });
 })
 
 fastify.get("/studyset/create", function (request, reply) {
@@ -291,24 +310,20 @@ fastify.get("/users/:userid", function (request, reply) {
 
 fastify.get("/search", function (request, reply) {
   if (request.query && request.query.q) {
-    fetch(apiUrl + "/studysets" + request.url)
-      .then(function (response) {
-        response.json().then(function (responseJson) {
-          if (responseJson.error) {
-            reply.callNotFound();
-          } else {
-            reply.view("search.html", {
-              ...themeData(request),
-              query: request.query.q,
-              results: responseJson.data.rows,
-              apiUrl: apiUrl
-            })
-          }
-        })
-      }).catch(function (error) {
-        request.log.error(error);
-        reply.callNotFound();
-      })
+    fetch(apiUrl + "/studysets/search?q=" + querystring.stringify({ q: request.query.q }))
+    .then(function (response) {
+      response.json().then(function (responseJson) {
+        if (responseJson.error) {
+          console.log(responseJson);
+          reply.send("oh no")
+        } else {
+          reply.send("yay");
+        }
+      });
+    }).catch(function (error) {
+      request.log.error(error)
+      reply.callNotFound();
+    });
   } else {
     reply.view("search.html", {
       ...themeData(request),
