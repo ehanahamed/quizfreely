@@ -817,54 +817,18 @@ fastify.post("/studysets/view/:studysetid", async function (request, reply) {
 fastify.get("/studysets/public/:studysetid", async function (request, reply) {
     try {
         let result = await pool.query(
-            "select id, user_id, title, private, data, updated_at from public.studysets " +
-            "where id = $1 and private = false limit 1",
+            "select s.id, s.user_id, u.display_name, s.title, s.data, s.updated_at, s.terms_count " +
+            "from public.studysets s join public.profiles u on s.user_id = u.id " +
+            "where s.id = $1 and s.private = false limit 1",
             [request.params.studysetid]
         )
         if (result.rows.length == 1) {
-            let user = await pool.query(
-                "select id, username, display_name from public.profiles " +
-                "where id = $1",
-                [result.rows[0].user_id]
-            )
-            if (user.rows.length == 1) {
-                return reply.send({
-                    error: false,
-                    data: {
-                        studyset: {
-                            id: result.rows[0].id,
-                            userId: result.rows[0].user_id,
-                            title: result.rows[0].title,
-                            private: result.rows[0].private,
-                            updatedAt: result.rows[0].updated_at,
-                            data: result.rows[0].data,
-                            user: {
-                                id: user.rows[0].id,
-                                username: user.rows[0].username,
-                                displayName: user.rows[0].display_name
-                            }
-                        }
-                    }
-                })
-            } else {
-                /* if querying for the user returns no rows,
-                then the user was deleted or for some reason not found,
-                but we found the studyset, so return the studyset
-                with the user set to false,
-                which means the studyset was found, but the user was not found */
-                return reply.send({
-                    error: false,
-                    data: {
-                        studyset: {
-                            id: result.rows[0].id,
-                            userId: result.rows[0].user_id,
-                            title: result.rows[0].title,
-                            private: result.rows[0].private,
-                            user: false
-                        }
-                    }
-                })
-            }
+            return reply.send({
+                error: false,
+                data: {
+                    studyset: result.rows[0]
+                }
+            })
         } else {
             return reply.callNotFound();
         }
@@ -1054,41 +1018,35 @@ fastify.post("/user/update", async function (request, reply) {
 })
 
 fastify.get("/studysets/search", async function (request, reply) {
-    if (request.query && request.query.q) {
-        try {
-            let result = await pool.query(
-                "select id, user_id, title, updated_at, terms_count from public.studysets " +
-                "where tsvector_title @@ websearch_to_tsquery('english', $1) limit 100",
-                [ request.query.q ]
-            )
-            return reply.send({
-                error: false,
-                data: {
-                    rows: result.rows
-                }
-            })
-        } catch (error) {
-            request.log.error(error);
-            return reply.code(500).send({
-                error: {
-                    type: "postgres-error"
-                }
-            })
-        }
-    } else {
-        return reply.code(400).send({
-            error: {
-                type: "fields-missing"
+    try {
+        let result = await pool.query(
+            "select id, user_id, title, updated_at, terms_count " +
+            "from public.studysets " +
+            "where tsvector_title @@ websearch_to_tsquery('english', $1)",
+            [ request.query.q ]
+        )
+        return reply.send({
+            error: false,
+            data: {
+                rows: result.rows
             }
-        });
+        })
+    } catch (error) {
+        request.log.error(error);
+        return reply.code(500).send({
+            error: {
+                type: "postgres-error"
+            }
+        })
     }
 })
 
 fastify.get("/featured/list", async function (request, reply) {
     try {
         let result = await pool.query(
-            "select id, user_id, title, updated_at, terms_count from public.studysets " +
-            "where featured = true limit 6"
+            "select s.id, s.user_id, u.display_name, s.title, s.updated_at, s.terms_count " +
+            "from public.studysets s join public.profiles u on s.user_id = u.id " +
+            "where s.featured = true limit 6"
         )
         if (result.rows.length >= 1) {
             return reply.send({
