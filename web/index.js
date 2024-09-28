@@ -290,10 +290,32 @@ fastify.get("/users/:userid", function (request, reply) {
 })
 
 fastify.get("/search", function (request, reply) {
-  reply.view("search.html", {
-    ...themeData(request),
-    apiUrl: apiUrl
-  })
+  if (request.query && request.query.q) {
+    fetch(apiUrl + "/studysets" + request.url)
+      .then(function (response) {
+        response.json().then(function (responseJson) {
+          if (responseJson.error) {
+            reply.callNotFound();
+          } else {
+            reply.view("search.html", {
+              ...themeData(request),
+              query: request.query.q,
+              results: responseJson.data.rows,
+              apiUrl: apiUrl
+            })
+          }
+        })
+      }).catch(function (error) {
+        request.log.error(error);
+        reply.callNotFound();
+      })
+  } else {
+    reply.view("search.html", {
+      ...themeData(request),
+      query: false,
+      apiUrl: apiUrl
+    })
+  }
 })
 
 function cookieOptions() {
