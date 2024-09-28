@@ -310,20 +310,23 @@ fastify.get("/users/:userid", function (request, reply) {
 
 fastify.get("/search", function (request, reply) {
   if (request.query && request.query.q) {
-    fetch(apiUrl + "/studysets/search?q=" + querystring.stringify({ q: request.query.q }))
-    .then(function (response) {
+    fetch(
+      apiUrl + "/studysets/search?" + querystring.stringify({ q: request.query.q })
+    ).then(function (response) {
       response.json().then(function (responseJson) {
         if (responseJson.error) {
-          console.log(responseJson);
-          reply.send("oh no")
+          request.log.error(responseJson.error);
+          reply.callNotFound();
         } else {
-          reply.send("yay");
+          reply.view("search.html", {
+            ...themeData(request),
+            query: request.query.q,
+            results: responseJson.data.rows,
+            apiUrl: apiUrl
+          })
         }
-      });
-    }).catch(function (error) {
-      request.log.error(error)
-      reply.callNotFound();
-    });
+      })
+    })
   } else {
     reply.view("search.html", {
       ...themeData(request),
