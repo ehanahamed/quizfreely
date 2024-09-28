@@ -23,6 +23,14 @@ const fastify = Fastify({
     }
 })
 
+if (port == undefined || host == undefined) {
+  console.error(
+    "quizfreely/api/.env is missing or invalid \n" +
+    "copy .env.example to .env"
+  );
+  process.exit(1);
+}
+
 const pool = new Pool({
     connectionString: pgConnection
 })

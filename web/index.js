@@ -17,7 +17,7 @@ const logLevel = process.env.LOG_LEVEL
 if (port == undefined || host == undefined) {
   console.error(
     "quizfreely/web/.env is missing or invalid \n" +
-    "copy .example.env to .env"
+    "copy .env.example to .env"
   );
   process.exit(1);
 }
