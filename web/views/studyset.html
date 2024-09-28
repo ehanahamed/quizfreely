@@ -80,9 +80,9 @@
             <eta> } else { </eta>
             <h2 id="studyset-title">Title</h2>
             <eta> } </eta>
-            <eta> if (data.studyset && data.studyset.user) { </eta>
+            <eta> if (data.studyset) { </eta>
             <p>
-              Created by <a href="/users/<eta>= data.studyset.user.id</eta>"><eta>= data.studyset.user.displayName </eta></a>
+              Created by <a href="/users/<eta>= data.studyset.user_id</eta>"><eta>= data.studyset.display_name </eta></a>
             </p>
             <eta> } </eta>
             <div id="edit-menu" class="flex hide">
@@ -221,12 +221,12 @@
     <script>
       client.apiUrl = "<eta>= data.apiUrl </eta>"
     </script>
-    <eta> if (data.ssr && data.studyset && data.studyset.user) {</eta>
+    <eta> if (data.ssr && data.studyset) {</eta>
     <script>
       var studyset = JSON.parse("<eta>~ JSON.stringify(data.studyset).replaceAll('\\', '\\\\').replaceAll('\"', '\\\"') </eta>")
       if (client.hasSession()) {
         client.req("/user", {}, function (response) {
-          if (response.data && response.data.user.id == "<eta>= data.studyset.user.id </eta>") {
+          if (response.data && response.data.user.id == "<eta>= data.studyset.user_id </eta>") {
             document.getElementById("edit-menu").classList.remove("hide");
           }
         })
