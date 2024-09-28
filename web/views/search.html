@@ -34,7 +34,12 @@
     <main>
       <div class="grid page">
         <div class="content">
+          <eta> if (data.query) { </eta>
+          <p><eta>= data.query </eta></p>
+          <p><eta>= JSON.stringify(data.results, undefined, 2) </eta></p>
+          <eta> } else { </eta>
           <input type="text" placeholder="search" />
+          <eta> } </eta>
         </div>
       </div>
     </main>
