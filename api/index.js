@@ -16,20 +16,20 @@ const oauthGoogleId = process.env.OAUTH_GOOGLE_CLIENT_ID;
 const oauthGoogleSecret = process.env.OAUTH_GOOGLE_CLIENT_SECRET;
 const webOAuthCallback = process.env.WEB_OAUTH_CALLBACK_URL;
 
+if (port == undefined || host == undefined) {
+    console.error(
+        "quizfreely/api/.env is missing or invalid \n" +
+        "copy .env.example to .env"
+    );
+    process.exit(1);
+}
+
 const fastify = Fastify({
     logger: {
         level: logLevel,
         file: path.join(import.meta.dirname, "logfile.log")
     }
 })
-
-if (port == undefined || host == undefined) {
-  console.error(
-    "quizfreely/api/.env is missing or invalid \n" +
-    "copy .env.example to .env"
-  );
-  process.exit(1);
-}
 
 const pool = new Pool({
     connectionString: pgConnection
