@@ -34,6 +34,40 @@
     <main>
       <div class="grid page">
         <div class="content">
+          <eta> if (data.featuredRows) { </eta>
+          <h2 class="h4">Featured Studysets</h2>
+          <div class="grid list">
+            <eta> data.featuredRows.forEach(function (featuredStudyset) { </eta>
+              <div class="box">
+                <a href="/studysets/<eta>= featuredStudyset.id </eta>">
+                  <eta>= featuredStudyset.title </eta>
+                </a>
+                <eta> if (featuredStudyset.terms_count >= 1) { </eta>
+                <p class="h6">
+                  <eta>= featuredStudyset.terms_count </eta> Terms
+                </p>
+                <eta> } </eta>
+              </div>
+            <eta> }) </eta>
+          </div>
+          <eta> } </eta>
+          <eta> if (data.recentRows) { </eta>
+          <h2 class="h4">Recently Created or Updated</h2>
+          <div class="grid list">
+            <eta> data.featuredRows.forEach(function (featuredStudyset) { </eta>
+              <div class="box">
+                <a href="/studysets/<eta>= featuredStudyset.id </eta>">
+                  <eta>= featuredStudyset.title </eta>
+                </a>
+                <eta> if (featuredStudyset.terms_count >= 1) { </eta>
+                <p class="h6">
+                  <eta>= featuredStudyset.terms_count </eta> Terms
+                </p>
+                <eta> } </eta>
+              </div>
+            <eta> }) </eta>
+          </div>
+          <eta> } </eta>
           <!--
           Starting point ig
           -->
