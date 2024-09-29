@@ -28,8 +28,8 @@
   </head>
 
   <body>
-    <eta>~ include("./partials/body-start", { theme: data.theme }) </eta>
-    <eta>~ include("./partials/navbar", { page: "404" }) </eta>
+    <eta>~ include("./partials/body-start.eta", { theme: data.theme }) </eta>
+    <eta>~ include("./partials/navbar.eta", { page: "404" }) </eta>
     <main>
       <div class="grid page">
         <div class="content">
@@ -55,6 +55,6 @@
         </div>
       </div>
     </main>
-    <eta>~ include("./partials/footer") </eta>
+    <eta>~ include("./partials/footer.eta") </eta>
   </body>
 </html>
