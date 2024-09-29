@@ -42,8 +42,11 @@
                 <a href="/studysets/<eta>= featuredStudyset.id </eta>">
                   <eta>= featuredStudyset.title </eta>
                 </a>
+                <p class="h6" style="margin-top:0.4rem;margin-bottom:0px">
+                  <i class="nf nf-fa-user_circle"></i> <eta>= featuredStudyset.display_name </eta>
+                </p>
                 <eta> if (featuredStudyset.terms_count >= 1) { </eta>
-                <p class="h6">
+                <p class="h6" style="margin-top:0.2rem;margin-bottom:0.2rem">
                   <eta>= featuredStudyset.terms_count </eta> Terms
                 </p>
                 <eta> } </eta>
@@ -53,107 +56,24 @@
           <eta> } </eta>
           <eta> if (data.recentRows) { </eta>
           <h2 class="h4">Recently Created or Updated</h2>
-          <div class="grid list">
-            <eta> data.featuredRows.forEach(function (featuredStudyset) { </eta>
-              <div class="box">
-                <a href="/studysets/<eta>= featuredStudyset.id </eta>">
-                  <eta>= featuredStudyset.title </eta>
-                </a>
-                <eta> if (featuredStudyset.terms_count >= 1) { </eta>
-                <p class="h6">
-                  <eta>= featuredStudyset.terms_count </eta> Terms
-                </p>
-                <eta> } </eta>
-              </div>
-            <eta> }) </eta>
-          </div>
-          <eta> } </eta>
-          <!--
-          Starting point ig
-          -->
-          <div id="mainDashboarddiv">
-            <p>
-              Create a new study set or open a study set file you downloaded.
-            </p>
-            <div class="flex">
-              <a href="/studyset/create" class="button">
-                <i class="nf nf-oct-plus"></i>
-                Create new
-              </a>
-              <!--<label for="inputImportLocalFile" class="button alt">
-                <i class="nf nf-md-import"></i>
-                Open file
-              </label>-->
-              <button
-                onclick="document.getElementById('mainDashboardImportother').classList.remove('hide')"
-                class="alt"
-              >
-                <i class="nf nf-oct-upload"></i>
-                Import
-              </button>
-              <input id="inputImportLocalFile" class="invisible" type="file" />
-            </div>
-            <div class="grid list" id="studyset-list">
-              <div class="box flex center-h center-v">
-                <div>Tap "create new" to create a studyset</div>
-              </div>
-            </div>
-            <div id="mainDashboardImportother" class="modal hide">
-              <div class="content">
-                <h2>Import from another app</h2>
-                <p>Delimiter/Seperator between term and definition</p>
-                <input
-                  type="text"
-                  placeholder="Term delimiter"
-                  id="mainDashboardImportotherTermdelimiter"
-                />
-                <p>
-                  Delimiter/Seperator between rows, leave blank to use a
-                  newline/enter
-                </p>
-                <input
-                  type="text"
-                  placeholder="Row delimiter"
-                  id="mainDashboardImportotherRowdelimiter"
-                />
-                <textarea
-                  id="mainDashboardImportotherData"
-                  class="fullWidth"
-                  rows="10"
-                  placeholder="Paste data here"
-                ></textarea>
-                <div class="flex">
-                  <button id="mainDashboardImportotherImportbutton">
-                    Import
-                  </button>
-                  <button
-                    class="red"
-                    onclick="document.getElementById('mainDashboardImportother').classList.add('hide')"
-                  >
-                    Cancel
-                  </button>
+            <div class="grid list">
+              <eta> data.featuredRows.forEach(function (featuredStudyset) { </eta>
+                <div class="box">
+                  <a href="/studysets/<eta>= featuredStudyset.id </eta>">
+                    <eta>= featuredStudyset.title </eta>
+                  </a>
+                  <p class="h6" style="margin-top:0.4rem;margin-bottom:0px">
+                    <i class="nf nf-fa-user_circle"></i> <eta>= featuredStudyset.display_name </eta>
+                  </p>
+                  <eta> if (featuredStudyset.terms_count >= 1) { </eta>
+                  <p class="h6" style="margin-top:0.2rem;margin-bottom:0.2rem">
+                    <eta>= featuredStudyset.terms_count </eta> Terms
+                  </p>
+                  <eta> } </eta>
                 </div>
-              </div>
+              <eta> }) </eta>
             </div>
-            <div id="mainDashboardNewuserdiv" class="hide">
-              <p>
-                You are not signed in. You can continue using Quizfreely without
-                an account, <br />
-                or you can <a href="./start.html">get started</a> to save study
-                sets to an account instead of manually saving them.
-              </p>
-            </div>
-            <div id="mainDashboardUserdiv" class="hide">
-              <p>
-                You are signed in. Study sets saved to your account are shown
-                below.
-              </p>
-              <div
-                id="mainDashboardUserStudysetlistdiv"
-                class="grid list"
-              ></div>
-            </div>
-          </div>
+          <eta> } </eta>
         </div>
       </div>
     </main>
