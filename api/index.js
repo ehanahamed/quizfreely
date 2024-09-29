@@ -1026,24 +1026,34 @@ fastify.post("/user/update", async function (request, reply) {
 })
 
 fastify.get("/studysets/search", async function (request, reply) {
-    try {
-        let result = await pool.query(
-            "select id, user_id, title, updated_at, terms_count " +
-            "from public.studysets " +
-            "where tsvector_title @@ websearch_to_tsquery('english', $1)",
-            [ request.query.q ]
-        )
-        return reply.send({
-            error: false,
-            data: {
-                rows: result.rows
-            }
-        })
-    } catch (error) {
-        request.log.error(error);
-        return reply.code(500).send({
+    if (request.query && request.query.q) {
+        try {
+            let result = await pool.query(
+                "select id, user_id, title, updated_at, terms_count " +
+                "from public.studysets " +
+                "where tsvector_title @@ websearch_to_tsquery('english', $1)",
+                [
+                    request.query.q
+                ]
+            )
+            return reply.send({
+                error: false,
+                data: {
+                    rows: result.rows
+                }
+            })
+        } catch (error) {
+            request.log.error(error);
+            return reply.code(500).send({
+                error: {
+                    type: "postgres-error"
+                }
+            })
+        }
+    } else {
+        return reply.code(400).send({
             error: {
-                type: "postgres-error"
+                type: "fields-missing"
             }
         })
     }
