@@ -13,9 +13,13 @@
       name="viewport"
       content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=10, user-scalable=1"
     />
-    <title>Search - Quizfreely</title>
+    <eta> if (data.query) { </eta>
+    <title>Search "<eta>= data.query </eta>" - Quizfreely</title>
+    <eta> } else { </eta>
+    <title>Search Quizfreely</title>
+    <eta> } </eta>
     <meta name="description" content="Quizfreely is a free and open source learning app with flashcards, practice tests, and more tools to help you study." />
-    <meta name=”robots” content="index, follow" />
+    <meta name=”robots” content="noindex" />
     <link rel="canonical" href="https://quizfreely.com/explore" />
     <link rel="icon" href="/favicon.ico" sizes="32x32">
     <link rel="icon" href="/icon.svg" type="image/svg+xml">
@@ -29,14 +33,27 @@
   </head>
   <body>
     <eta>~ include("./partials/body-start", { theme: data.theme }) </eta>
-    <eta>~ include("./partials/navbar", { page: "explore" }) </eta>
+    <eta>~ include("./partials/navbar", { page: "explore", searchQuery: data.query }) </eta>
     <eta>~ include("./partials/noscript") </eta>
     <main>
       <div class="grid page">
         <div class="content">
           <eta> if (data.query) { </eta>
-          <p><eta>= data.query </eta></p>
-          <p><eta>= JSON.stringify(data.results, undefined, 2) </eta></p>
+          <p>Results for "<eta>= data.query </eta>"</p>
+          <div class="grid list">
+          <eta> data.results.forEach(function (studyset) { </eta>
+          <div class="box">
+            <a href="/studysets/<eta>= studyset.id </eta>">
+              <eta>= studyset.title </eta>
+            </a>
+            <eta> if (studyset.terms_count >= 1) { </eta>
+            <p class="h6">
+              <eta>= studyset.terms_count </eta> Terms
+            </p>
+            <eta> } </eta>
+          </div>
+          <eta> }) </eta>
+          </div>
           <eta> } else { </eta>
           <input type="text" placeholder="search" />
           <eta> } </eta>
