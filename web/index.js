@@ -54,11 +54,16 @@ await fastify.register(fastifyStatic, {
 fastify.setErrorHandler(function (error, request, reply) {
   request.log.error("500 at " + request.url)
   request.log.error(error)
-  reply.status(500).send(
-    "500 Internal Server Error\n" +
-    ":(\n" +
-    "Report this at https://github.com/ehanahamed/quizfreely/issues"
-  )
+  try {
+    reply.status(500).sendFile("500.html", path.join(import.meta.dirname, "views"));
+  } catch (error) {
+    reply.status(500).send(
+      "500 Internal Server Error \n" +
+      ":( \n" +
+      "Report this problem at https://github.com/ehanahamed/quizfreely/issues \n" +
+      "or on Quizfreely's discord server at https://discord.gg/H4mUJnBJDd "
+    )
+  }
 })
 
 fastify.setNotFoundHandler(function (request, reply) {
@@ -334,6 +339,10 @@ fastify.get("/search", function (request, reply) {
       apiUrl: apiUrl
     })
   }
+})
+
+fastify.get("/discord", function (request, reply) {
+  reply.redirect("https://discord.gg/H4mUJnBJDd")
 })
 
 function cookieOptions() {
