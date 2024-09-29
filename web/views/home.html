@@ -63,7 +63,7 @@
           <eta> if (data.featuredRows) { </eta>
           <h2 class="h3">Find & share studysets</h2>
           <p>
-            Quizfreely has <s>hundreds of</s> <i class="fg0">(a few)</i> sets made by teachers & students.<br />
+            Quizfreely has hundreds of sets made by teachers & students.<br />
             <a href="/explore">Explore more studysets</a>
           </p>
           <div class="grid list">
@@ -72,8 +72,11 @@
                 <a href="/studysets/<eta>= featuredStudyset.id </eta>">
                   <eta>= featuredStudyset.title </eta>
                 </a>
+                <p class="h6" style="margin-top:0.4rem;margin-bottom:0px">
+                  <i class="nf nf-fa-user_circle"></i> <eta>= featuredStudyset.display_name </eta>
+                </p>
                 <eta> if (featuredStudyset.terms_count >= 1) { </eta>
-                <p class="h6">
+                <p class="h6" style="margin-top:0.2rem;margin-bottom:0.2rem">
                   <eta>= featuredStudyset.terms_count </eta> Terms
                 </p>
                 <eta> } </eta>
@@ -83,7 +86,7 @@
           <eta> } else { </eta>
           <h2 class="h3">Find & share studysets</h2>
           <p>
-            Quizfreely has <s>hundreds of</s> <i class="fg0">(a few)</i> sets made by teachers & students.
+            Quizfreely has hundreds of sets made by teachers & students.
           <br />
           <div class="flex">
             <a href="/explore" class="button">
