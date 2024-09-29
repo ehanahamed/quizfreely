@@ -16,5 +16,8 @@
     "dotenv": "^16.4.5",
     "eta": "^3.5.0",
     "fastify": "^5.0.0"
+  },
+  "devDependencies": {
+    "html-minifier-terser": "^7.2.0"
   }
 }
