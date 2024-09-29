@@ -1,8 +1,0 @@
-{
-  "name": "quizfreely",
-  "version": "1.0.0",
-  "description": "Quizfreely is a free and open source studying tool",
-  "main": "index.js",
-  "author": "Ehan Ahamed",
-  "license": "MIT"
-}
