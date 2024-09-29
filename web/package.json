@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "start": "node index.js",
-    "minify-html": "npx html-minifier-terser --config-file config/html-min-terser.json --input-dir views/ --output-dir views-min/ --file-ext html"
+    "minify-html": "npx html-minifier-terser --config-file config/html-min-terser.json --input-dir views/ --output-dir views/ --file-ext html"
   },
   "author": "Ehan Ahamed and contributors",
   "license": "MIT",
