@@ -93,7 +93,7 @@ function themeData(request) {
   }
 }
 
-function homepage(request, reply) {
+function landingPage(request, reply) {
   fetch(apiUrl + "/featured/list")
     .then(function (response) {
       response.json().then(function (responseJson) {
@@ -143,14 +143,14 @@ function home(request, reply) {
   if (request.cookies.dashboard == "true") {
     dashboard(request, reply);
   } else {
-    homepage(request, reply)
+    landingPage(request, reply)
   }
 }
 
 fastify.get("/", home);
 fastify.get("/home", home);
 fastify.get("/dashboard", dashboard);
-fastify.get("/homepage", homepage);
+fastify.get("/landing-page", landingPage);
 fastify.get("/settings", function (request, reply) {
   reply.view("settings.html", {
     ...themeData(request),
