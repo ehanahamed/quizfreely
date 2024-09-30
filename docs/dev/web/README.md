@@ -39,14 +39,16 @@ See [developer docs > api](../api/README.md) to set up quizfreely-api.
 
 ## Extra Info for GitHub Codespaces
 
-If your Codespaces url is `https://abc-def-123456.github.dev/`, its `localhost:8080` is at `https://abc-def-123456-8080.app.github.dev/`.
+If your Codespaces url is `https://abc-example-123456.github.dev/`, its `localhost:8080` is at `https://abc-example-123456-8080.app.github.dev/`.
 
-On Codespaces, quizfreely-web's dotenv file (`.env`) should have `COOKIES_DOMAIN=` set to that `...app.github.dev` url:
+Codespaces also will show you a little pop-up/button/link thingy when you start a process on any port so you can easily get to that url.
+
+On Codespaces, edit quizfreely-web's dotenv file (`.env`) to have `COOKIES_DOMAIN=` set to our `...app.github.dev` url:
 ```sh
 PORT=8080
 HOST=0.0.0.0
 # ...
-COOKIES_DOMAIN=abc-def-123456-8080.app.github.dev
+COOKIES_DOMAIN=abc-example-123456-8080.app.github.dev
 # ...
 ```
 
