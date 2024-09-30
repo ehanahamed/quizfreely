@@ -1059,6 +1059,29 @@ fastify.get("/studysets/search", async function (request, reply) {
     }
 })
 
+fastify.get("/studysets/list-recent", async function (request, reply) {
+    try {
+        let result = await pool.query(
+            "select s.id, s.user_id, u.display_name, s.title, s.updated_at, s.terms_count " +
+            "from public.studysets s join public.profiles u on s.user_id = u.id " +
+            "order by updated_at desc limit 6"
+        )
+        return reply.send({
+            error: false,
+            data: {
+                rows: result.rows
+            }
+        })
+    } catch (error) {
+        request.log.error(error);
+        return reply.code(500).send({
+            error: {
+                type: "postgres-error"
+            }
+        })
+    }
+})
+
 fastify.get("/featured/list", async function (request, reply) {
     try {
         let result = await pool.query(
