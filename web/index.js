@@ -213,45 +213,27 @@ fastify.get("/tos", function (request, reply) {
 
 fastify.get("/explore", async function (request, reply) {
   try {
-    let featuredResponseRaw = await fetch(apiUrl + "/featured/list");
-    let featuredResponse = await featuredResponseRaw.json();
-    let recentsResponseRaw = await fetch(apiUrl + "/studysets/list-recent");
-    let recentsResponse = await recentsResponseRaw.json();
-    if (featuredResponse.error) {
-      
-    }
-        
-    .then(function (response) {
-      response.json().then(function (responseJson) {
-        fetch(apiUrl + "/studysets/list-recent")
-          .then(function (response2) {
-            response2.json().then(function (responseJson2) {
-              let featuredRows;
-              let recentRows;
-              if (responseJson.error) {
-                featuredRows = false;
-              } else {
-                featuredRows = responseJson.data.rows;
-              }
-              if (responseJson2.error) {
-                recentRows = false;
-              } else {
-                recentRows = responseJson2.data.rows;
-              }
-              reply.view("explore.html", {
-                ...themeData(request),
-                featuredRows: featuredRows,
-                recentRows: recentRows
-              });
-            })
-          }).catch(function (error) {
-            reply.view("explore.html", {
-              ...themeData(request),
-              featuredRows: false,
-              recentRows: false
-            });
-          });
-      });
+    let featuredRows = false;
+    let featuredResponse = await (
+      await fetch(apiUrl + "/featured/list")
+    ).json();
+    if (featuredResponse.error == false && featuredResponse.data) {
+      featuredRows = featuredResponse.data.rows;
+    } /* else, if featuredResponse.error, featuredRows will stay false */
+    let recentRows = false;
+    let recentsResponse = await (
+      await fetch(apiUrl + "/studysets/list-recent")
+    ).json();
+    if (recentsResponse.error == false && recentsResponse.data) {
+      recentRows = recentsResponse.data.rows;
+    } /* else, if recentsResponse.error, recentRows will stay false */
+    reply.view("explore.html", {
+        ...themeData(request),
+        featuredRows: featuredRows,
+        recentRows: recentRows
+    });
+    //
+    
     }).catch(function (error) {
       reply.view("explore.html", {
         ...themeData(request),
