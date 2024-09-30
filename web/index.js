@@ -212,6 +212,7 @@ fastify.get("/tos", function (request, reply) {
 })
 
 fastify.get("/explore", async function (request, reply) {
+  /* this is async, remember to use `return reply.send()` instead of just `reply.send()` */
   try {
     let featuredRows = false;
     let featuredResponse = await (
@@ -229,14 +230,14 @@ fastify.get("/explore", async function (request, reply) {
       recentRows = recentsResponse.data.rows;
     } /* else, like if recentsResponse.error, recentRows will stay false */
     
-    reply.view("explore.html", {
+    return reply.view("explore.html", {
         ...themeData(request),
         featuredRows: featuredRows,
         recentRows: recentRows
     });
   } catch (error) {
     request.log.error(error);
-    reply.callNotFound();
+    return reply.callNotFound();
   }
 })
 
