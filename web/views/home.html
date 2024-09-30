@@ -28,8 +28,8 @@
     />
   </head>
   <body>
-    <eta>~ include("./partials/body-start.eta", { theme: data.theme }) </eta>
-    <eta>~ include("./partials/navbar.eta", { page: "home" }) </eta>
+    <eta>~ include("./partials/body-start", { theme: data.theme }) </eta>
+    <eta>~ include("./partials/navbar", { page: "home" }) </eta>
     <main>
     <div class="grid intro" style="margin-bottom: 0px; padding-bottom: 0px; border:none">
         <div class="logotype">
@@ -124,6 +124,6 @@
         </div>
       </div>
     </main>
-    <eta>~ include("./partials/footer.eta") </eta>
+    <eta>~ include("./partials/footer") </eta>
   </body>
 </html>

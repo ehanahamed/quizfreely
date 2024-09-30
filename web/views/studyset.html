@@ -30,10 +30,10 @@
   </head>
 
   <body>
-    <eta>~ include("./partials/body-start.eta", { theme: data.theme }) </eta>
-    <eta>~ include("./partials/navbar.eta", { page: "studyset" }) </eta>
+    <eta>~ include("./partials/body-start", { theme: data.theme }) </eta>
+    <eta>~ include("./partials/navbar", { page: "studyset" }) </eta>
     <eta> if (data.ssr == false) {</eta>
-    <eta>~ include("./partials/noscript.eta") </eta>
+    <eta>~ include("./partials/noscript") </eta>
     <eta> } </eta>
     <main>
       <div class="grid page">
@@ -216,7 +216,7 @@
         </div>
       </div>
     </main>
-    <eta>~ include("./partials/footer.eta") </eta>
+    <eta>~ include("./partials/footer") </eta>
     <script src="/assets/js/client.js"></script>
     <script>
       client.apiUrl = "<eta>= data.apiUrl </eta>"

@@ -73,9 +73,9 @@
   </head>
 
   <body>
-    <eta>~ include("./partials/body-start.eta", { theme: data.theme }) </eta>
-    <eta>~ include("./partials/navbar.eta", { page: "account" }) </eta>
-    <eta>~ include("./partials/noscript.eta") </eta>
+    <eta>~ include("./partials/body-start", { theme: data.theme }) </eta>
+    <eta>~ include("./partials/navbar", { page: "account" }) </eta>
+    <eta>~ include("./partials/noscript") </eta>
     <main>
       <div id="error-div" class="grid page hide">
         <div class="content">
@@ -208,7 +208,7 @@
           </div>
         </div>
     </main>
-    <eta>~ include("./partials/footer.eta") </eta>
+    <eta>~ include("./partials/footer") </eta>
     <script src="/assets/js/client.js"></script>
     <script>
       client.apiUrl = "<eta>= data.apiUrl </eta>";

@@ -28,9 +28,9 @@
     />
   </head>
   <body>
-    <eta>~ include("./partials/body-start.eta", { theme: data.theme }) </eta>
-    <eta>~ include("./partials/navbar.eta", { page: "explore" }) </eta>
-    <eta>~ include("./partials/noscript.eta") </eta>
+    <eta>~ include("./partials/body-start", { theme: data.theme }) </eta>
+    <eta>~ include("./partials/navbar", { page: "explore" }) </eta>
+    <eta>~ include("./partials/noscript") </eta>
     <main>
       <div class="grid page">
         <div class="content">
@@ -77,7 +77,7 @@
         </div>
       </div>
     </main>
-    <eta>~ include("./partials/footer.eta") </eta>
+    <eta>~ include("./partials/footer") </eta>
     <script src="/assets/js/client.js"></script>
     <script src="/assets/js/dayjs.min.js"></script>
     <script src="/assets/js/calendar.js"></script>
@@ -102,7 +102,7 @@
           sameElse: "ddd, MMM D (YYYY-MM-DD)", // Fri, Aug 30 (2024-08-30)
         }
       }
-      if (client.hasSession()) {
+      /*if (client.hasSession()) {
         client.req("/studysets/list", {}, function (result) {
           if (result.data && result.data.rows.length >= 1) {
             document.getElementById("studyset-list").innerHTML = "";
@@ -128,7 +128,7 @@
             }
           }
         })
-      }
+      }*/
     </script>
     <!--<script>
       function loadDashboard() {
