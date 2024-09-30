@@ -178,7 +178,7 @@ git pull
 # cp quizfreely-api.service /etc/systemd/system/
 ```
 
-Check `api/logfile.log`, and delete/clear it if needed. (a new `logfile.log` will be created when the server process starts if you/we delete the whole file)
+Check `api/quizfreely-api.log`, and delete/clear it if needed. (a new `quizfreely-api.log` will be created when the server process starts if you/we delete the whole file)
 
 If there are changes to [api/quizfreely-db-setup.sql](../../../api/quizfreely-db-setup.sql), we will manually update the production database to match all the changes to roles, schemas, tables, or functions in `quizfreely-db-setup.sql`.
 

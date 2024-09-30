@@ -111,7 +111,7 @@ git pull
 # cp quizfreely-web.service /etc/systemd/system/
 ```
 
-Check `web/logfile.log`, and delete/clear it if needed. (a new `logfile.log` will be created when the server starts if you/we delete the whole file)
+Check `web/quizfreely-web.log`, and delete/clear it if needed. (a new `quizfreely-web.log` will be created when the server starts if you/we delete the whole file)
 
 After all changes are made, start quizfreely-web again:
 ```sh
