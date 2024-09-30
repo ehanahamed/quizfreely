@@ -36,3 +36,18 @@ npm run start
 quizfreely-web runs on http://localhost:8080 by default. You can change this in `.env`
 
 See [developer docs > api](../api/README.md) to set up quizfreely-api.
+
+## Extra Info for GitHub Codespaces
+
+If your Codespaces url is `https://abc-def-123456.github.dev/`, its `localhost:8080` is at `https://abc-def-123456-8080.app.github.dev/`.
+
+On Codespaces, quizfreely-web's dotenv file (`.env`) should have `COOKIES_DOMAIN=` set to that `...app.github.dev` url:
+```sh
+PORT=8080
+HOST=0.0.0.0
+# ...
+COOKIES_DOMAIN=abc-def-123456-8080.app.github.dev
+# ...
+```
+
+All the other dotenv default values for local development already work perfectly with Codespaces. See [developer docs > web > web-dotenv.md](./web-dotenv.md) for all dotenv options and more details.
