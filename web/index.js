@@ -219,28 +219,25 @@ fastify.get("/explore", async function (request, reply) {
     ).json();
     if (featuredResponse.error == false && featuredResponse.data) {
       featuredRows = featuredResponse.data.rows;
-    } /* else, if featuredResponse.error, featuredRows will stay false */
+    } /* else, like if featuredResponse.error, featuredRows will stay false */
+    
     let recentRows = false;
     let recentsResponse = await (
       await fetch(apiUrl + "/studysets/list-recent")
     ).json();
     if (recentsResponse.error == false && recentsResponse.data) {
       recentRows = recentsResponse.data.rows;
-    } /* else, if recentsResponse.error, recentRows will stay false */
+    } /* else, like if recentsResponse.error, recentRows will stay false */
+    
     reply.view("explore.html", {
         ...themeData(request),
         featuredRows: featuredRows,
         recentRows: recentRows
     });
-    //
-    
-    }).catch(function (error) {
-      reply.view("explore.html", {
-        ...themeData(request),
-        featuredRows: false,
-        recentRows: false
-      });
-    });
+  } catch (error) {
+    request.log.error(error);
+    reply.callNotFound();
+  }
 })
 
 fastify.get("/studyset/create", function (request, reply) {
