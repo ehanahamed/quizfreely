@@ -26,7 +26,7 @@ if (port == undefined || host == undefined) {
 const fastify = Fastify({
   logger: {
     level: logLevel,
-    file: path.join(import.meta.dirname, "logfile.log")
+    file: path.join(import.meta.dirname, "quizfreely-web.log")
   }
 })
 
