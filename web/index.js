@@ -211,8 +211,16 @@ fastify.get("/tos", function (request, reply) {
   })
 })
 
-fastify.get("/explore", function (request, reply) {
-  fetch(apiUrl + "/featured/list")
+fastify.get("/explore", async function (request, reply) {
+  try {
+    let featuredResponseRaw = await fetch(apiUrl + "/featured/list");
+    let featuredResponse = await featuredResponseRaw.json();
+    let recentsResponseRaw = await fetch(apiUrl + "/studysets/list-recent");
+    let recentsResponse = await recentsResponseRaw.json();
+    if (featuredResponse.error) {
+      
+    }
+        
     .then(function (response) {
       response.json().then(function (responseJson) {
         fetch(apiUrl + "/studysets/list-recent")
