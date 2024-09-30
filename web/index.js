@@ -215,22 +215,40 @@ fastify.get("/explore", function (request, reply) {
   fetch(apiUrl + "/featured/list")
     .then(function (response) {
       response.json().then(function (responseJson) {
-        if (responseJson.error) {
-          reply.view("explore.html", {
-            ...themeData(request),
-            featuredRows: false
+        fetch(apiUrl + "/studysets/list-recent")
+          .then(function (response2) {
+            response2.json().then(function (responseJson2) {
+              let featuredRows;
+              let recentRows;
+              if (responseJson.error) {
+                featuredRows = false;
+              } else {
+                featuredRows = responseJson.data.rows;
+              }
+              if (responseJson2.error) {
+                recentRows = false;
+              } else {
+                recentRows = responseJson2.data.rows;
+              }
+              reply.view("explore.html", {
+                ...themeData(request),
+                featuredRows: featuredRows,
+                recentRows: recentRows
+              });
+            })
+          }).catch(function (error) {
+            reply.view("explore.html", {
+              ...themeData(request),
+              featuredRows: false,
+              recentRows: false
+            });
           });
-        } else {
-          reply.view("explore.html", {
-            ...themeData(request),
-            featuredRows: responseJson.data.rows
-          });
-        }
       });
     }).catch(function (error) {
       reply.view("explore.html", {
         ...themeData(request),
-        featuredRows: false
+        featuredRows: false,
+        recentRows: false
       });
     });
 })
