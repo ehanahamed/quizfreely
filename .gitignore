@@ -1,3 +1,4 @@
 node_modules/
 .env
-logfile.log
+api/quizfreely-api.log
+web/quizfreely-web.log
