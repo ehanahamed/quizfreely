@@ -4,8 +4,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "start": "node index.js",
-    "minify-html": "npx html-minifier-terser --config-file config/html-min-terser.json --input-dir views/ --output-dir views/ --file-ext html"
+    "start": "node index.js"
   },
   "author": "Ehan Ahamed and contributors",
   "license": "MIT",
@@ -17,8 +16,5 @@
     "dotenv": "^16.4.5",
     "eta": "^3.5.0",
     "fastify": "^5.0.0"
-  },
-  "devDependencies": {
-    "html-minifier-terser": "^7.2.0"
   }
 }
