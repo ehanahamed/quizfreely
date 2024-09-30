@@ -1,5 +1,6 @@
 import "dotenv/config"
 import Fastify from "fastify";
+import fastifyCompress from "@fastify/compress";
 import fastifyStatic from "@fastify/static";
 import fastifyView from "@fastify/view";
 import fastifyCookie from "@fastify/cookie";
@@ -38,6 +39,13 @@ const eta = new Eta({
   defaultExtension: ".html"
 })
 
+/*
+  "Important note! If you are using @fastify/compress plugin together with @fastify/static plugin,
+  you must register the @fastify/compress (with global hook) before registering @fastify/static"
+*/
+await fastify.register(
+  fastifyCompress
+);
 await fastify.register(fastifyCookie);
 await fastify.register(fastifyView, {
   engine: {
