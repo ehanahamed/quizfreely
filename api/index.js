@@ -1063,8 +1063,8 @@ fastify.get("/studysets/list-recent", async function (request, reply) {
     try {
         let result = await pool.query(
             "select s.id, s.user_id, u.display_name, s.title, s.updated_at, s.terms_count " +
-            "from public.studysets s join public.profiles u on s.user_id = u.id " +
-            "where s.featured = true limit 3"
+            "from public.studysets s inner join public.profiles u on s.user_id = u.id " +
+            "order by s.updated_at desc limit 3"
         )
         return reply.send({
             error: false,
