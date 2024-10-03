@@ -6,17 +6,17 @@ import pg from "pg";
 const { Pool, Client } = pg;
 import path from "path";
 
-const port = process.env.PORT;
-const host = process.env.HOST;
-const apiUrl = process.env.API_URL;
-const pgConnection = process.env.POSTGRES_URI;
-const corsOrigin = process.env.CORS_ORIGIN;
-const logLevel = process.env.LOG_LEVEL;
-const oauthGoogleId = process.env.OAUTH_GOOGLE_CLIENT_ID;
-const oauthGoogleSecret = process.env.OAUTH_GOOGLE_CLIENT_SECRET;
-const webOAuthCallback = process.env.WEB_OAUTH_CALLBACK_URL;
+const PORT = process.env.PORT;
+const HOST = process.env.HOST;
+const API_URL = process.env.API_URL;
+const POSTGRES_URI = process.env.POSTGRES_URI;
+const CORS_ORIGIN = process.env.CORS_ORIGIN;
+const LOG_LEVEL = process.env.LOG_LEVEL;
+const OAUTH_GOOGLE_ID = process.env.OAUTH_GOOGLE_CLIENT_ID;
+const OAUTH_GOOGLE_SECRET = process.env.OAUTH_GOOGLE_CLIENT_SECRET;
+const WEB_OAUTH_CALLBACK = process.env.WEB_OAUTH_CALLBACK_URL;
 
-if (port == undefined || host == undefined) {
+if (PORT == undefined || HOST == undefined) {
     console.error(
         "quizfreely/api/.env is missing or invalid \n" +
         "copy .env.example to .env"
@@ -26,30 +26,30 @@ if (port == undefined || host == undefined) {
 
 const fastify = Fastify({
     logger: {
-        level: logLevel,
+        level: LOG_LEVEL,
         file: path.join(import.meta.dirname, "quizfreely-api.log")
     }
 })
 
 const pool = new Pool({
-    connectionString: pgConnection
+    connectionString: POSTGRES_URI
 })
 
 await fastify.register(fastifyCors, {
-    origin: corsOrigin
+    origin: CORS_ORIGIN
 });
 await fastify.register(fastifyOauth2, {
     name: "googleOAuth2",
     scope: ["openid", "profile", "email"],
     credentials: {
       client: {
-        id: oauthGoogleId,
-        secret: oauthGoogleSecret
+        id: OAUTH_GOOGLE_ID,
+        secret: OAUTH_GOOGLE_SECRET
       },
       auth: fastifyOauth2.GOOGLE_CONFIGURATION
     },
     startRedirectPath: "/oauth/google",
-    callbackUri: apiUrl + "/oauth/google/callback",
+    callbackUri: API_URL + "/oauth/google/callback",
     cookie: {
         path: "/",
         secure: true,
@@ -301,15 +301,15 @@ fastify.get('/oauth/google/callback', function (request, reply) {
     fastify.googleOAuth2.getAccessTokenFromAuthorizationCodeFlow(request, reply, function (error, result) {
         if (error) {
             request.log.error(error);
-            reply.redirect(webOAuthCallback + "?error=oauth-error");
+            reply.redirect(WEB_OAUTH_CALLBACK + "?error=oauth-error");
         } else {
             googleAuthCallback(result.token).then(
                 function (result) {
                     if (result.error) {
                         request.log.error(result.error.error)
-                        reply.redirect(webOAuthCallback + "?error=oauth-error")
+                        reply.redirect(WEB_OAUTH_CALLBACK + "?error=oauth-error")
                     } else {
-                        reply.redirect(webOAuthCallback + "?" + (new URLSearchParams(result.data.session).toString()))
+                        reply.redirect(WEB_OAUTH_CALLBACK + "?" + (new URLSearchParams(result.data.session).toString()))
                     }
                 }
             )
@@ -1143,6 +1143,6 @@ fastify.get("/featured/list", async function (request, reply) {
 })
 
 fastify.listen({
-    port: port,
-    host: host
+    port: PORT,
+    host: HOST
 })
