@@ -226,17 +226,9 @@ fastify.get("/explore", async function (request, reply) {
     let recentsResponse = await (
       await fetch(apiUrl + "/studysets/list-recent")
     ).json();
-    if (recentsResponse.error) {
-      /* if error, try again (once) */
-      recentsResponse = await (
-        await fetch(apiUrl + "/studysets/list-recent")
-      ).json();
-      if (recentsResponse.error == false && recentsResponse.data) {
-        recentRows = recentsResponse.data.rows;
-      }  /* if recentsResponse.error == true, recentRows will stay false */
-    } else if (recentsResponse.data) {
+    if (recentsResponse.error == false && recentsResponse.data) {
       recentRows = recentsResponse.data.rows;
-    }
+    }  /* if recentsResponse.error == true, recentRows will stay false */
     
     return reply.view("explore.html", {
         ...themeData(request),
