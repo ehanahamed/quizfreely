@@ -76,7 +76,7 @@ fastify.setNotFoundHandler(function (request, reply) {
   })
 })
 
-const newSessionQuery = "insert into auth.sessions (user_id) values ($1) returning id, token";
+const newSessionQuery = "insert into auth.sessions (user_id) values ($1) returning token, user_id";
 const newTempSessionQuery = "insert into auth.sessions (user_id, expire_at) values ($1, clock_timestamp() + '10 seconds'::interval) returning id, token";
 const clearExpiredSessionsQuery = "delete from auth.sessions where expire_at < clock_timestamp()";
 
@@ -118,10 +118,7 @@ fastify.post("/sign-up", async function (request, reply) {
                                     username: username,
                                     displayName: username
                                 },
-                                session: {
-                                    id: session.rows[0].id,
-                                    token: session.rows[0].token
-                                }
+                                auth: session.rows[0].token
                             }
                         })
                     } else {
