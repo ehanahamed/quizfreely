@@ -437,20 +437,20 @@ fastify.post("/user", async function (request, reply) {
     }
 })
 
-fastify.post("/user-auth-info", async function (request, reply) {
+fastify.get("/user-auth-info", async function (request, reply) {
     if (
-        request.body &&
-        request.body.session &&
-        request.body.session.id &&
-        request.body.session.token
+        request.headers.authorization &&
+        request.headers.authorization.toLowerCase().startsWith("bearer ")
     ) {
+        /* "Bearer " (with space) is 6 characters, so 7 is where our token starts */
+        let authToken = request.headers.authorization.substring(7)
         let client = await pool.connect();
         try {
             await client.query("BEGIN");
             await client.query("set role quizfreely_auth");
             let session = await client.query(
-                "select id, token, user_id from auth.verify_and_refresh_session($1, $2)",
-                [request.body.session.id, request.body.session.token]
+                "select token, user_id from auth.verify_and_refresh_session($1)",
+                [ authToken ]
             );
             if (session.rows.length == 1) {
                 let userData = await client.query(
@@ -472,10 +472,7 @@ fastify.post("/user-auth-info", async function (request, reply) {
                                 authType: userData.rows[0].auth_type,
                                 oauthGoogleEmail: userData.rows[0].oauth_google_email
                             },
-                            session: {
-                                id: session.rows[0].id,
-                                token: session.rows[0].token
-                            }
+                            auth: session.rows[0].token
                         }
                     })
                 } else {
@@ -504,7 +501,7 @@ fastify.post("/user-auth-info", async function (request, reply) {
     } else {
         return reply.code(400).send({
             error: {
-                type: "fields-missing"
+                type: "auth-header-missing"
             }
         })
     }
