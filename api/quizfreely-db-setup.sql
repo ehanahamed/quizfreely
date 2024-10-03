@@ -79,8 +79,7 @@ id, username, display_name from auth.users;
 grant select on public.profiles to quizfreely_api, quizfreely_auth, quizfreely_auth_user;
 
 create table auth.sessions (
-  id uuid primary key default gen_random_uuid(),
-  token text not null default encode(gen_random_bytes(32), 'base64'),
+  token text primary key default encode(gen_random_bytes(32), 'base64'),
   user_id uuid not null,
   expire_at timestamptz default clock_timestamp() + '5 days'::interval
 );
@@ -135,13 +134,13 @@ for delete
 to quizfreely_api, quizfreely_auth, quizfreely_auth_user
 using (expire_at < clock_timestamp());
 
-create function auth.verify_and_refresh_session(session_id uuid, session_token text)
-returns table(id uuid, token text, user_id uuid)
+create function auth.verify_and_refresh_session(session_token text)
+returns table(token text, user_id uuid)
 as $$ update auth.sessions
 set token = encode(gen_random_bytes(32), 'base64'),
 expire_at = clock_timestamp() + '5 days'::interval
-where id = $1 and token = $2
-returning id, token, user_id $$
+where token = $1
+returning token, user_id $$
 language sql;
 
 create table public.studysets (
