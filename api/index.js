@@ -826,7 +826,7 @@ fastify.get("/studysets/public/:studysetid", async function (request, reply) {
     try {
         let result = await pool.query(
             "select s.id, s.user_id, u.display_name, s.title, s.data, s.updated_at, s.terms_count " +
-            "from public.studysets s join public.profiles u on s.user_id = u.id " +
+            "from public.studysets s inner join public.profiles u on s.user_id = u.id " +
             "where s.id = $1 and s.private = false limit 1",
             [request.params.studysetid]
         )
@@ -1029,8 +1029,8 @@ fastify.get("/studysets/search", async function (request, reply) {
     if (request.query && request.query.q) {
         try {
             let result = await pool.query(
-                "select id, user_id, title, updated_at, terms_count " +
-                "from public.studysets " +
+                "select s.id, s.user_id, u.display_name, s.title, s.updated_at, s.terms_count " +
+                "from public.studysets s inner join public.profiles u on s.user_id = u.id " +
                 "where tsvector_title @@ websearch_to_tsquery('english', $1)",
                 [
                     request.query.q
@@ -1043,12 +1043,30 @@ fastify.get("/studysets/search", async function (request, reply) {
                 }
             })
         } catch (error) {
-            request.log.error(error);
-            return reply.code(500).send({
-                error: {
-                    type: "postgres-error"
-                }
-            })
+            /* on error, try again before actually error-ing */
+            try {
+                let result = await pool.query(
+                    "select s.id, s.user_id, u.display_name, s.title, s.updated_at, s.terms_count " +
+                    "from public.studysets s inner join public.profiles u on s.user_id = u.id " +
+                    "where tsvector_title @@ websearch_to_tsquery('english', $1)",
+                    [
+                        request.query.q
+                    ]
+                )
+                return reply.send({
+                    error: false,
+                    data: {
+                        rows: result.rows
+                    }
+                })
+            } catch (error2) {
+                request.log.error(error2);
+                return reply.code(500).send({
+                    error: {
+                        type: "postgres-error"
+                    }
+                })
+            }
         }
     } else {
         return reply.code(400).send({
@@ -1073,12 +1091,27 @@ fastify.get("/studysets/list-recent", async function (request, reply) {
             }
         })
     } catch (error) {
-        request.log.error(error);
-        return reply.code(500).send({
-            error: {
-                type: "postgres-error"
-            }
-        })
+        /* try again (once) */
+        try {
+            let result = await pool.query(
+                "select s.id, s.user_id, u.display_name, s.title, s.updated_at, s.terms_count " +
+                "from public.studysets s inner join public.profiles u on s.user_id = u.id " +
+                "order by s.updated_at desc limit 3"
+            )
+            return reply.send({
+                error: false,
+                data: {
+                    rows: result.rows
+                }
+            })
+        } catch (error2) {
+            request.log.error(error2);
+            return reply.code(500).send({
+                error: {
+                    type: "postgres-error"
+                }
+            })
+        }
     }
 })
 
@@ -1086,7 +1119,7 @@ fastify.get("/featured/list", async function (request, reply) {
     try {
         let result = await pool.query(
             "select s.id, s.user_id, u.display_name, s.title, s.updated_at, s.terms_count " +
-            "from public.studysets s join public.profiles u on s.user_id = u.id " +
+            "from public.studysets s inner join public.profiles u on s.user_id = u.id " +
             "where s.featured = true limit 3"
         )
         if (result.rows.length >= 1) {
