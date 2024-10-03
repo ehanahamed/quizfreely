@@ -870,7 +870,7 @@ fastify.post("/studysets/list", async function (request, reply) {
                 await client.query("select set_config('quizfreely_auth.user_id', $1, true)", [session.rows[0].user_id]);
                 let studysets = await client.query(
                     "select id, user_id, title, private, updated_at from public.studysets " +
-                    "where user_id = $1",
+                    "where user_id = $1 order by updated_at desc limit 100",
                     [
                         session.rows[0].user_id
                     ]
@@ -1120,7 +1120,7 @@ fastify.get("/featured/list", async function (request, reply) {
         let result = await pool.query(
             "select s.id, s.user_id, u.display_name, s.title, s.updated_at, s.terms_count " +
             "from public.studysets s inner join public.profiles u on s.user_id = u.id " +
-            "where s.featured = true limit 3"
+            "where s.featured = true order by s.updated_at desc limit 3"
         )
         if (result.rows.length >= 1) {
             return reply.send({
