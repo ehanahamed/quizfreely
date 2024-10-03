@@ -2,6 +2,7 @@ import "dotenv/config";
 import Fastify from "fastify";
 import fastifyCors from "@fastify/cors";
 import fastifyOauth2 from "@fastify/oauth2";
+import * as jose from "jose";
 import pg from "pg";
 const { Pool, Client } = pg;
 import path from "path";
@@ -12,6 +13,10 @@ const apiUrl = process.env.API_URL;
 const pgConnection = process.env.POSTGRES_URI;
 const corsOrigin = process.env.CORS_ORIGIN;
 const logLevel = process.env.LOG_LEVEL;
+const jwtSecret = new TextEncoder().encode(process.env.JWT_SECRET);
+const jwtAlg = process.env.JWT_ALG;
+const jwtIssuer = process.env.JWT_ISSUER;
+const jwtAudience = process.env.JWT_AUDIENCE;
 const oauthGoogleId = process.env.OAUTH_GOOGLE_CLIENT_ID;
 const oauthGoogleSecret = process.env.OAUTH_GOOGLE_CLIENT_SECRET;
 const webOAuthCallback = process.env.WEB_OAUTH_CALLBACK_URL;
@@ -1140,6 +1145,26 @@ fastify.get("/featured/list", async function (request, reply) {
             }
         })
     }
+})
+
+fastify.get("/test-bearer", function (request, reply) {
+    let authBearerPrefix = "Bearer ";
+    reply.send({
+        read: request.headers.authorization.substring(authBearerPrefix.length)
+    })
+})
+
+fastify.get("/test-jwt", async function (request, reply) {
+    const jwt = await new jose.SignJWT({ 'urn:example:claim': "abc" })
+        .setProtectedHeader({ alg: jwtAlg })
+        .setIssuedAt()
+        .setIssuer(jwtIssuer)
+        .setAudience(jwtAudience)
+        .setExpirationTime('2h')
+        .setSubject()
+        .sign(jwtSecret)
+    console.log(jwt);
+    reply.send("abc");
 })
 
 fastify.listen({
