@@ -19,8 +19,10 @@ create schema auth;
 grant usage on schema auth to quizfreely_api, quizfreely_auth, quizfreely_auth_user;
 
 create function auth.get_user_id() returns uuid
-as $$ select current_setting('quizfreely_auth.user_id')::uuid $$
-language sql;
+language sql
+as $$
+select current_setting('quizfreely_auth.user_id')::uuid
+$$;
 
 create table auth.users (
   id uuid primary key default gen_random_uuid(),
