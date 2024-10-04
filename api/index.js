@@ -127,7 +127,7 @@ fastify.post("/sign-up", async function (request, reply) {
                     request.log.error(error);
                     return reply.code(500).send({
                         error: {
-                            type: "postgres-error"
+                            type: "db-error"
                         }
                     })
                 } finally {
@@ -203,7 +203,7 @@ fastify.post("/sign-in", async function (request, reply) {
             request.log.error(error);
             return reply.code(500).send({
                 error: {
-                    type: "postgres-error"
+                    type: "db-error"
                 }
             })
         } finally {
@@ -263,7 +263,7 @@ async function googleAuthCallback(tokenObj) {
             await client.query("ROLLBACK");
             return {
                 error: {
-                    type: "postgres-error",
+                    type: "db-error",
                     error: error
                 }
             }
@@ -337,7 +337,7 @@ fastify.post("/session/refresh", async function (request, reply) {
             request.log.error(error);
             return reply.code(500).send({
                 error: {
-                    type: "postgres-error"
+                    type: "db-error"
                 }
             })
         } finally {
@@ -410,7 +410,7 @@ fastify.post("/user", async function (request, reply) {
             request.log.error(error);
             return reply.code(500).send({
                 error: {
-                    type: "postgres-error"
+                    type: "db-error"
                 }
             })
         } finally {
@@ -485,7 +485,7 @@ fastify.post("/user-auth-info", async function (request, reply) {
             request.log.error(error);
             return reply.code(500).send({
                 error: {
-                    type: "postgres-error"
+                    type: "db-error"
                 }
             })
         } finally {
@@ -574,7 +574,7 @@ fastify.post("/studysets/create", async function (request, reply) {
                 request.log.error(error);
                 return reply.code(500).send({
                     error: {
-                        type: "postgres-error"
+                        type: "db-error"
                     }
                 })
             } finally {
@@ -675,7 +675,7 @@ fastify.post("/studysets/update/:studysetid", async function (request, reply) {
                 request.log.error(error);
                 return reply.code(500).send({
                     error: {
-                        type: "postgres-error"
+                        type: "db-error"
                     }
                 })
             } finally {
@@ -746,7 +746,7 @@ fastify.post("/studysets/delete/:studysetid", async function (request, reply) {
             request.log.error(error);
             return reply.code(500).send({
                 error: {
-                    type: "postgres-error"
+                    type: "db-error"
                 }
             })
         } finally {
@@ -819,7 +819,7 @@ fastify.post("/studysets/view/:studysetid", async function (request, reply) {
             request.log.error(error);
             return reply.code(500).send({
                 error: {
-                    type: "postgres-error"
+                    type: "db-error"
                 }
             })
         } finally {
@@ -856,7 +856,7 @@ fastify.get("/studysets/public/:studysetid", async function (request, reply) {
         request.log.error(error);
         return reply.status(500).send({
             error: {
-                type: "postgres-error"
+                type: "db-error"
             }
         })
     }
@@ -908,7 +908,7 @@ fastify.post("/studysets/list", async function (request, reply) {
             request.log.error(error);
             return reply.code(500).send({
                 error: {
-                    type: "postgres-error"
+                    type: "db-error"
                 }
             })
         } finally {
@@ -948,7 +948,7 @@ fastify.get("/users/:userid", async function (request, reply) {
         request.log.error(error);
         return reply.code(500).send({
             error: {
-                type: "postgres-error"
+                type: "db-error"
             }
         })
     }
@@ -1019,7 +1019,7 @@ fastify.post("/user/update", async function (request, reply) {
                 request.log.error(error);
                 return reply.code(500).send({
                     error: {
-                        type: "postgres-error"
+                        type: "db-error"
                     }
                 })
             } finally {
@@ -1079,7 +1079,7 @@ fastify.get("/studysets/search", async function (request, reply) {
                 request.log.error(error2);
                 return reply.code(500).send({
                     error: {
-                        type: "postgres-error"
+                        type: "db-error"
                     }
                 })
             }
@@ -1124,7 +1124,7 @@ fastify.get("/studysets/list-recent", async function (request, reply) {
             request.log.error(error2);
             return reply.code(500).send({
                 error: {
-                    type: "postgres-error"
+                    type: "db-error"
                 }
             })
         }
@@ -1152,7 +1152,7 @@ fastify.get("/featured/list", async function (request, reply) {
         request.log.error(error);
         return reply.code(500).send({
             error: {
-                type: "postgres-error"
+                type: "db-error"
             }
         })
     }
