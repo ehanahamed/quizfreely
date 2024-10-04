@@ -137,9 +137,6 @@ fastify.post("/sign-up", async function (request, reply) {
                 } finally {
                     /* finally block will execute even though we put return statements in try block or catch block
                     which is good for our use case :D */
-                    await client.query(
-                        "delete from auth.sessions where expire_at < clock_timestamp()"
-                    );
                     client.release();
                 }
             } else {
@@ -214,9 +211,6 @@ fastify.post("/sign-in", async function (request, reply) {
                 }
             })
         } finally {
-            await client.query(
-                "delete from auth.sessions where expire_at < clock_timestamp()"
-            );
             client.release();
         }
     } else {
