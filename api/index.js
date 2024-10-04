@@ -106,7 +106,7 @@ fastify.post("/sign-up", async function (request, reply) {
                             clearExpiredSessionsQuery
                         );
                         let session = await client.query(
-                            newSessionQuery,
+                            "insert into auth.sessions (user_id) values ($1) returning token, user_id",
                             [userId]
                         );
                         await client.query("COMMIT");
@@ -118,8 +118,8 @@ fastify.post("/sign-up", async function (request, reply) {
                                     username: username,
                                     displayName: username
                                 },
-                                auth: session.rows[0].token
-                            }
+                            },
+                            auth: session.rows[0].token
                         })
                     } else {
                         await client.query("ROLLBACK");
@@ -182,7 +182,7 @@ fastify.post("/sign-in", async function (request, reply) {
             )
             if (result.rows.length == 1) {
                 let session = await client.query(
-                    newSessionQuery,
+                    "insert into auth.sessions (user_id) values ($1) returning token, user_id",
                     [result.rows[0].id]
                 )
                 await client.query("COMMIT");
@@ -194,11 +194,8 @@ fastify.post("/sign-in", async function (request, reply) {
                             username: result.rows[0].username,
                             displayName: result.rows[0].display_name
                         },
-                        session: {
-                            id: session.rows[0].id,
-                            token: session.rows[0].token
-                        }
-                    }
+                    },
+                    auth: session.rows[0].token
                 })
             } else {
                 await client.query("ROLLBACK");
@@ -265,11 +262,8 @@ async function googleAuthCallback(tokenObj) {
                         id: upsertedUser.rows[0].id,
                         displayName: upsertedUser.rows[0].id
                     },
-                    session: {
-                        id: newSession.rows[0].id,
-                        token: newSession.rows[0].token
-                    }
-                }
+                },
+                auth: newSession.rows[0].token
             }
         } catch (error) {
             await client.query("ROLLBACK");
@@ -315,25 +309,26 @@ fastify.get('/oauth/google/callback', function (request, reply) {
 })
 
 fastify.post("/session/refresh", async function (request, reply) {
-    if (request.body && request.body.session && request.body.session.id && request.body.session.token) {
+    if (
+        request.headers.authorization &&
+        request.headers.authorization.toLowerCase().startsWith("bearer ")
+    ) {
+        /* "Bearer " (with space) is 6 characters, so 7 is where our token starts */
+        let authToken = request.headers.authorization.substring(7);
         let client = await pool.connect();
         try {
             await client.query("BEGIN");
             await client.query("set role quizfreely_auth");
             let session = await client.query(
-                "select id, token, user_id from auth.verify_and_refresh_session($1, $2)",
-                [request.body.session.id, request.body.session.token]
+                "select token, user_id from auth.verify_and_refresh_session($1)",
+                [ authToken ]
             );
             if (session.rows.length == 1) {
                 await client.query("COMMIT")
                 return reply.send({
                     "error": false,
-                    "data": {
-                        session: {
-                            id: session.rows[0].id,
-                            token: session.rows[0].token
-                        }
-                    }
+                    "data": {}, 
+                    auth: session.rows[0].token
                 })
             } else {
                 await client.query("ROLLBACK");
@@ -355,9 +350,14 @@ fastify.post("/session/refresh", async function (request, reply) {
             client.release()
         }
     } else {
-        return reply.code(400).send({
+        /*
+            401 Unauthorized means the client is NOT logged in or authenticated
+            403 Forbidden means the client is logged in but not allowed,
+            so in this case we're responding with a 401 if our Authentication header is missing
+        */
+        return reply.code(401).send({
             error: {
-                type: "fields-missing"
+                type: "auth-header-missing"
             }
         })
     }
@@ -365,18 +365,18 @@ fastify.post("/session/refresh", async function (request, reply) {
 
 fastify.post("/user", async function (request, reply) {
     if (
-        request.body &&
-        request.body.session &&
-        request.body.session.id &&
-        request.body.session.token
+        request.headers.authorization &&
+        request.headers.authorization.toLowerCase().startsWith("bearer ")
     ) {
+        /* "Bearer " (with space) is 6 characters, so 7 is where our token starts */
+        let authToken = request.headers.authorization.substring(7);
         let client = await pool.connect();
         try {
             await client.query("BEGIN");
             await client.query("set role quizfreely_auth");
             let session = await client.query(
-                "select id, token, user_id from auth.verify_and_refresh_session($1, $2)",
-                [request.body.session.id, request.body.session.token]
+                "select token, user_id from auth.verify_and_refresh_session($1)",
+                [ authToken ]
             );
             if (session.rows.length == 1) {
                 let userData = await client.query(
@@ -396,11 +396,8 @@ fastify.post("/user", async function (request, reply) {
                                 username: userData.rows[0].username,
                                 displayName: userData.rows[0].display_name
                             },
-                            session: {
-                                id: session.rows[0].id,
-                                token: session.rows[0].token
-                            }
-                        }
+                        },
+                        auth: session.rows[0].token
                     })
                 } else {
                     await client.query("ROLLBACK");
@@ -426,9 +423,14 @@ fastify.post("/user", async function (request, reply) {
             client.release()
         }
     } else {
-        return reply.code(400).send({
+        /*
+            401 Unauthorized means the client is NOT logged in or authenticated
+            403 Forbidden means the client is logged in but not allowed,
+            so in this case we're responding with a 401 if our Authentication header is missing
+        */
+        return reply.code(401).send({
             error: {
-                type: "fields-missing"
+                type: "auth-header-missing"
             }
         })
     }
@@ -440,7 +442,7 @@ fastify.get("/user-auth-info", async function (request, reply) {
         request.headers.authorization.toLowerCase().startsWith("bearer ")
     ) {
         /* "Bearer " (with space) is 6 characters, so 7 is where our token starts */
-        let authToken = request.headers.authorization.substring(7)
+        let authToken = request.headers.authorization.substring(7);
         let client = await pool.connect();
         try {
             await client.query("BEGIN");
@@ -496,7 +498,12 @@ fastify.get("/user-auth-info", async function (request, reply) {
             client.release()
         }
     } else {
-        return reply.code(400).send({
+        /*
+            401 Unauthorized means the client is NOT logged in or authenticated
+            403 Forbidden means the client is logged in but not allowed,
+            so in this case we're responding with a 401 if our Authentication header is missing
+        */
+        return reply.code(401).send({
             error: {
                 type: "auth-header-missing"
             }
@@ -506,83 +513,95 @@ fastify.get("/user-auth-info", async function (request, reply) {
 
 fastify.post("/studysets/create", async function (request, reply) {
     if (
-        request.body &&
-        request.body.session &&
-        request.body.session.id &&
-        request.body.session.token &&
-        request.body.studyset &&
-        request.body.studyset.title &&
-        (
-            request.body.studyset.private === true || 
-            request.body.studyset.private === false
-        ) &&
-        request.body.studyset.data
+        request.headers.authorization &&
+        request.headers.authorization.toLowerCase().startsWith("bearer ")
     ) {
-        let studysetTitle = request.body.studyset.title || "Untitled Studyset";
-        let client = await pool.connect();
-        try {
-            await client.query("BEGIN");
-            await client.query("set role quizfreely_auth");
-            let session = await client.query(
-                "select id, token, user_id from auth.verify_and_refresh_session($1, $2)",
-                [request.body.session.id, request.body.session.token]
-            );
-            if (session.rows.length == 1) {
-                await client.query("set role quizfreely_auth_user");
-                await client.query("select set_config('quizfreely_auth.user_id', $1, true)", [session.rows[0].user_id]);
-                let insertedStudyset = await client.query(
-                    "insert into public.studysets (user_id, title, private, data, terms_count) " +
-                    "values ($1, $2, $3, $4, $5) returning id, user_id, title, private, terms_count, updated_at",
-                    [
-                        session.rows[0].user_id,
-                        studysetTitle,
-                        request.body.studyset.private,
-                        request.body.studyset.data,
-                        /* we use optional chaining (that .?) and nullish coalescing (that ??) to default to 0 (without throwing an error) if terms or terms.length are undefined */
-                        request.body.studyset.data?.terms?.length ?? 0
-                    ]
+        /* "Bearer " (with space) is 6 characters, so 7 is where our token starts */
+        let authToken = request.headers.authorization.substring(7);
+        if (
+            request.body &&
+            request.body.studyset &&
+            request.body.studyset.title &&
+            (
+                request.body.studyset.private === true || 
+                request.body.studyset.private === false
+            ) &&
+            request.body.studyset.data
+        ) {
+            let studysetTitle = request.body.studyset.title || "Untitled Studyset";
+            let client = await pool.connect();
+            try {
+                await client.query("BEGIN");
+                await client.query("set role quizfreely_auth");
+                let session = await client.query(
+                    "select token, user_id from auth.verify_and_refresh_session($1)",
+                    [ authToken ]
                 );
-                await client.query("COMMIT")
-                return reply.send({
-                    "error": false,
-                    "data": {
-                        studyset: {
-                            id: insertedStudyset.rows[0].id,
-                            userId: insertedStudyset.rows[0].user_id,
-                            title: insertedStudyset.rows[0].title,
-                            private: insertedStudyset.rows[0].private,
-                            termsCount: insertedStudyset.rows[0].terms_count,
-                            updatedAt: insertedStudyset.rows[0].updated_at
+                if (session.rows.length == 1) {
+                    await client.query("set role quizfreely_auth_user");
+                    await client.query("select set_config('quizfreely_auth.user_id', $1, true)", [session.rows[0].user_id]);
+                    let insertedStudyset = await client.query(
+                        "insert into public.studysets (user_id, title, private, data, terms_count) " +
+                        "values ($1, $2, $3, $4, $5) returning id, user_id, title, private, terms_count, updated_at",
+                        [
+                            session.rows[0].user_id,
+                            studysetTitle,
+                            request.body.studyset.private,
+                            request.body.studyset.data,
+                            /* we use optional chaining (that .?) and nullish coalescing (that ??) to default to 0 (without throwing an error) if terms or terms.length are undefined */
+                            request.body.studyset.data?.terms?.length ?? 0
+                        ]
+                    );
+                    await client.query("COMMIT")
+                    return reply.send({
+                        "error": false,
+                        "data": {
+                            studyset: {
+                                id: insertedStudyset.rows[0].id,
+                                userId: insertedStudyset.rows[0].user_id,
+                                title: insertedStudyset.rows[0].title,
+                                private: insertedStudyset.rows[0].private,
+                                termsCount: insertedStudyset.rows[0].terms_count,
+                                updatedAt: insertedStudyset.rows[0].updated_at
+                            },
                         },
-                        session: {
-                            id: session.rows[0].id,
-                            token: session.rows[0].token
+                        auth: session.rows[0].token
+                    })
+                } else {
+                    await client.query("ROLLBACK");
+                    return reply.code(401).send({
+                        error: {
+                            type: "session-invalid"
                         }
-                    }
-                })
-            } else {
+                    })
+                }
+            } catch (error) {
                 await client.query("ROLLBACK");
-                return reply.code(401).send({
+                request.log.error(error);
+                return reply.code(500).send({
                     error: {
-                        type: "session-invalid"
+                        type: "postgres-error"
                     }
                 })
+            } finally {
+                client.release()
             }
-        } catch (error) {
-            await client.query("ROLLBACK");
-            request.log.error(error);
-            return reply.code(500).send({
+        } else {
+            return reply.code(400).send({
                 error: {
-                    type: "postgres-error"
+                    type: "fields-missing"
                 }
             })
-        } finally {
-            client.release()
         }
     } else {
-        return reply.code(400).send({
+        /*
+            401 Unauthorized means the client is NOT logged in or authenticated
+            403 Forbidden means the client is logged in but not allowed,
+            so in this case we're responding with a 401 if our Authentication header is missing
+        */
+        return reply.code(401).send({
             error: {
-                type: "fields-missing"
+                type: "auth-header-missing"
             }
         })
     }
@@ -590,88 +609,100 @@ fastify.post("/studysets/create", async function (request, reply) {
 
 fastify.post("/studysets/update/:studysetid", async function (request, reply) {
     if (
-        request.body &&
-        request.body.session &&
-        request.body.session.id &&
-        request.body.session.token &&
-        request.body.studyset &&
-        request.body.studyset.title &&
-        (
-            request.body.studyset.private === true || 
-            request.body.studyset.private === false
-        ) &&
-        request.body.studyset.data
+        request.headers.authorization &&
+        request.headers.authorization.toLowerCase().startsWith("bearer ")
     ) {
-        let studysetTitle = request.body.studyset.title || "Untitled Studyset";
-        let client = await pool.connect();
-        try {
-            await client.query("BEGIN");
-            await client.query("set role quizfreely_auth");
-            let session = await client.query(
-                "select id, token, user_id from auth.verify_and_refresh_session($1, $2)",
-                [request.body.session.id, request.body.session.token]
-            );
-            if (session.rows.length == 1) {
-                await client.query("set role quizfreely_auth_user");
-                await client.query("select set_config('quizfreely_auth.user_id', $1, true)", [session.rows[0].user_id]);
-                let updatedStudyset = await client.query(
-                    "update public.studysets set title = $2, private = $3, data = $4, terms_count = $5, updated_at = clock_timestamp() " +
-                    "where id = $1 returning id, user_id, title, private, terms_count, updated_at",
-                    [
-                        request.params.studysetid,
-                        studysetTitle,
-                        request.body.studyset.private,
-                        request.body.studyset.data,
-                        /* we use optional chaining (that .?) and nullish coalescing (that ??) to default to 0 (without throwing an error) if terms or terms.length are undefined */
-                        request.body.studyset.data?.terms?.length ?? 0
-                    ]
+        /* "Bearer " (with space) is 6 characters, so 7 is where our token starts */
+        let authToken = request.headers.authorization.substring(7);
+        if (
+            request.body &&
+            request.body.studyset &&
+            request.body.studyset.title &&
+            (
+                request.body.studyset.private === true || 
+                request.body.studyset.private === false
+            ) &&
+            request.body.studyset.data
+        ) {
+            let studysetTitle = request.body.studyset.title || "Untitled Studyset";
+            let client = await pool.connect();
+            try {
+                await client.query("BEGIN");
+                await client.query("set role quizfreely_auth");
+                let session = await client.query(
+                    "select token, user_id from auth.verify_and_refresh_session($1)",
+                    [ authToken ]
                 );
-                if (updatedStudyset.rows.length == 1) {
-                    await client.query("COMMIT")
-                    return reply.send({
-                        "error": false,
-                        "data": {
-                            studyset: {
-                                id: updatedStudyset.rows[0].id,
-                                userId: updatedStudyset.rows[0].user_id,
-                                title: updatedStudyset.rows[0].title,
-                                private: updatedStudyset.rows[0].private,
-                                termsCount: updatedStudyset.rows[0].terms_count,
-                                updatedAt: updatedStudyset.rows[0].updated_at
+                if (session.rows.length == 1) {
+                    await client.query("set role quizfreely_auth_user");
+                    await client.query("select set_config('quizfreely_auth.user_id', $1, true)", [session.rows[0].user_id]);
+                    let updatedStudyset = await client.query(
+                        "update public.studysets set title = $2, private = $3, data = $4, terms_count = $5, updated_at = clock_timestamp() " +
+                        "where id = $1 returning id, user_id, title, private, terms_count, updated_at",
+                        [
+                            request.params.studysetid,
+                            studysetTitle,
+                            request.body.studyset.private,
+                            request.body.studyset.data,
+                            /* we use optional chaining (that .?) and nullish coalescing (that ??) to default to 0 (without throwing an error) if terms or terms.length are undefined */
+                            request.body.studyset.data?.terms?.length ?? 0
+                        ]
+                    );
+                    if (updatedStudyset.rows.length == 1) {
+                        await client.query("COMMIT")
+                        return reply.send({
+                            "error": false,
+                            "data": {
+                                studyset: {
+                                    id: updatedStudyset.rows[0].id,
+                                    userId: updatedStudyset.rows[0].user_id,
+                                    title: updatedStudyset.rows[0].title,
+                                    private: updatedStudyset.rows[0].private,
+                                    termsCount: updatedStudyset.rows[0].terms_count,
+                                    updatedAt: updatedStudyset.rows[0].updated_at
+                                }
                             },
-                            session: {
-                                id: session.rows[0].id,
-                                token: session.rows[0].token
-                            }
-                        }
-                    })
+                            auth: session.rows[0].token
+                        })
+                    } else {
+                        await client.query("ROLLBACK");
+                        return reply.callNotFound();
+                    }
                 } else {
                     await client.query("ROLLBACK");
-                    return reply.callNotFound();
+                    return reply.code(401).send({
+                        error: {
+                            type: "session-invalid"
+                        }
+                    })
                 }
-            } else {
+            } catch (error) {
                 await client.query("ROLLBACK");
-                return reply.code(401).send({
+                request.log.error(error);
+                return reply.code(500).send({
                     error: {
-                        type: "session-invalid"
+                        type: "postgres-error"
                     }
                 })
+            } finally {
+                client.release()
             }
-        } catch (error) {
-            await client.query("ROLLBACK");
-            request.log.error(error);
-            return reply.code(500).send({
+        } else {
+            return reply.code(400).send({
                 error: {
-                    type: "postgres-error"
+                    type: "fields-missing"
                 }
             })
-        } finally {
-            client.release()
         }
     } else {
-        return reply.code(400).send({
+        /*
+            401 Unauthorized means the client is NOT logged in or authenticated
+            403 Forbidden means the client is logged in but not allowed,
+            so in this case we're responding with a 401 if our Authentication header is missing
+        */
+        return reply.code(401).send({
             error: {
-                type: "fields-missing"
+                type: "auth-header-missing"
             }
         })
     }
@@ -679,18 +710,18 @@ fastify.post("/studysets/update/:studysetid", async function (request, reply) {
 
 fastify.post("/studysets/delete/:studysetid", async function (request, reply) {
     if (
-        request.body &&
-        request.body.session &&
-        request.body.session.id &&
-        request.body.session.token
+        request.headers.authorization &&
+        request.headers.authorization.toLowerCase().startsWith("bearer ")
     ) {
+        /* "Bearer " (with space) is 6 characters, so 7 is where our token starts */
+        let authToken = request.headers.authorization.substring(7);
         let client = await pool.connect();
         try {
             await client.query("BEGIN");
             await client.query("set role quizfreely_auth");
             let session = await client.query(
-                "select id, token, user_id from auth.verify_and_refresh_session($1, $2)",
-                [request.body.session.id, request.body.session.token]
+                "select token, user_id from auth.verify_and_refresh_session($1)",
+                [ authToken ]
             );
             if (session.rows.length == 1) {
                 await client.query("set role quizfreely_auth_user");
@@ -705,12 +736,8 @@ fastify.post("/studysets/delete/:studysetid", async function (request, reply) {
                 await client.query("COMMIT")
                 return reply.send({
                     "error": false,
-                    "data": {
-                        session: {
-                            id: session.rows[0].id,
-                            token: session.rows[0].token
-                        }
-                    }
+                    "data": {},
+                    auth: session.rows[0].token
                 })
             } else {
                 await client.query("ROLLBACK");
@@ -732,9 +759,9 @@ fastify.post("/studysets/delete/:studysetid", async function (request, reply) {
             client.release()
         }
     } else {
-        return reply.code(400).send({
+        return reply.code(401).send({
             error: {
-                type: "fields-missing"
+                type: "auth-header-missing"
             }
         })
     }
@@ -742,18 +769,18 @@ fastify.post("/studysets/delete/:studysetid", async function (request, reply) {
 
 fastify.post("/studysets/view/:studysetid", async function (request, reply) {
     if (
-        request.body &&
-        request.body.session &&
-        request.body.session.id &&
-        request.body.session.token
+        request.headers.authorization &&
+        request.headers.authorization.toLowerCase().startsWith("bearer ")
     ) {
+        /* "Bearer " (with space) is 6 characters, so 7 is where our token starts */
+        let authToken = request.headers.authorization.substring(7);
         let client = await pool.connect();
         try {
             await client.query("BEGIN");
             await client.query("set role quizfreely_auth");
             let session = await client.query(
-                "select id, token, user_id from auth.verify_and_refresh_session($1, $2)",
-                [request.body.session.id, request.body.session.token]
+                "select token, user_id from auth.verify_and_refresh_session($1)",
+                [ authToken ]
             );
             if (session.rows.length == 1) {
                 await client.query("set role quizfreely_auth_user");
@@ -777,12 +804,9 @@ fastify.post("/studysets/view/:studysetid", async function (request, reply) {
                                 data: selectedStudyset.rows[0].data,
                                 private: selectedStudyset.rows[0].private,
                                 updatedAt: selectedStudyset.rows[0].updated_at
-                            },
-                            session: {
-                                id: session.rows[0].id,
-                                token: session.rows[0].token
                             }
-                        }
+                        },
+                        auth: session.rows[0].token
                     })
                 } else {
                     await client.query("ROLLBACK");
@@ -810,7 +834,7 @@ fastify.post("/studysets/view/:studysetid", async function (request, reply) {
     } else {
         return reply.code(400).send({
             error: {
-                type: "fields-missing"
+                type: "auth-header-missing"
             }
         })
     }
@@ -846,18 +870,18 @@ fastify.get("/studysets/public/:studysetid", async function (request, reply) {
 
 fastify.post("/studysets/list", async function (request, reply) {
     if (
-        request.body &&
-        request.body.session &&
-        request.body.session.id &&
-        request.body.session.token
+        request.headers.authorization &&
+        request.headers.authorization.toLowerCase().startsWith("bearer ")
     ) {
+        /* "Bearer " (with space) is 6 characters, so 7 is where our token starts */
+        let authToken = request.headers.authorization.substring(7);
         let client = await pool.connect();
         try {
             await client.query("BEGIN");
             await client.query("set role quizfreely_auth");
             let session = await client.query(
-                "select id, token, user_id from auth.verify_and_refresh_session($1, $2)",
-                [request.body.session.id, request.body.session.token]
+                "select token, user_id from auth.verify_and_refresh_session($1)",
+                [ authToken ]
             );
             if (session.rows.length == 1) {
                 await client.query("set role quizfreely_auth_user");
@@ -874,11 +898,8 @@ fastify.post("/studysets/list", async function (request, reply) {
                     "error": false,
                     "data": {
                         rows: studysets.rows,
-                        session: {
-                            id: session.rows[0].id,
-                            token: session.rows[0].token
-                        }
-                    }
+                    },
+                    auth: session.rows[0].token
                 })
             } else {
                 await client.query("ROLLBACK");
@@ -900,9 +921,9 @@ fastify.post("/studysets/list", async function (request, reply) {
             client.release()
         }
     } else {
-        return reply.code(400).send({
+        return reply.code(401).send({
             error: {
-                type: "fields-missing"
+                type: "auth-header-missing"
             }
         })
     }
@@ -941,79 +962,89 @@ fastify.get("/users/:userid", async function (request, reply) {
 
 fastify.post("/user/update", async function (request, reply) {
     if (
-        request.body &&
-        request.body.session &&
-        request.body.session.id &&
-        request.body.session.token &&
-        request.body.user &&
-        (request.body.user.displayName /* || request.body.user. */)
+        request.headers.authorization &&
+        request.headers.authorization.toLowerCase().startsWith("bearer ")
     ) {
-        let client = await pool.connect();
-        try {
-            await client.query("BEGIN");
-            await client.query("set role quizfreely_auth");
-            let session = await client.query(
-                "select id, token, user_id from auth.verify_and_refresh_session($1, $2)",
-                [request.body.session.id, request.body.session.token]
-            );
-            if (session.rows.length == 1) {
-                if (request.body.user.displayName) {
-                    let userData = await client.query(
-                        "update auth.users set display_name = $2 " +
-                        "where id = $1 returning id, username, display_name",
-                        [
-                            session.rows[0].user_id,
-                            request.body.user.displayName
-                        ]
-                    );
-                    if (userData.rows.length == 1) {
-                        await client.query("COMMIT");
-                        return reply.send({
-                            "error": false,
-                            "data": {
-                                user: {
-                                    id: userData.rows[0].id,
-                                    username: userData.rows[0].username,
-                                    displayName: userData.rows[0].display_name
-                                },
-                                session: {
-                                    id: session.rows[0].id,
-                                    token: session.rows[0].token
+        /* "Bearer " (with space) is 6 characters, so 7 is where our token starts */
+        let authToken = request.headers.authorization.substring(7);
+        if (
+            request.body &&
+            request.body.user &&
+            (request.body.user.displayName /* || request.body.user. */)
+        ) {
+            let client = await pool.connect();
+            try {
+                await client.query("BEGIN");
+                await client.query("set role quizfreely_auth");
+                let session = await client.query(
+                    "select token, user_id from auth.verify_and_refresh_session($1)",
+                    [ authToken ]
+                );
+                if (session.rows.length == 1) {
+                    if (request.body.user.displayName) {
+                        let userData = await client.query(
+                            "update auth.users set display_name = $2 " +
+                            "where id = $1 returning id, username, display_name",
+                            [
+                                session.rows[0].user_id,
+                                request.body.user.displayName
+                            ]
+                        );
+                        if (userData.rows.length == 1) {
+                            await client.query("COMMIT");
+                            return reply.send({
+                                "error": false,
+                                "data": {
+                                    user: {
+                                        id: userData.rows[0].id,
+                                        username: userData.rows[0].username,
+                                        displayName: userData.rows[0].display_name
+                                    },
+                                    session: {
+                                        id: session.rows[0].id,
+                                        token: session.rows[0].token
+                                    }
                                 }
-                            }
-                        })
-                    } else {
-                        await client.query("ROLLBACK");
-                        return reply.callNotFound();
+                            })
+                        } else {
+                            await client.query("ROLLBACK");
+                            return reply.callNotFound();
+                        }
                     }
+                    /* using if, NOT using else, so we can update multiple OR just one value in a reqeust */
+                    // if (request.body.user. ) {
+                    //
+                    // }
+                } else {
+                    await client.query("ROLLBACK");
+                    return reply.code(401).send({
+                        error: {
+                            type: "session-invalid"
+                        }
+                    })
                 }
-                /* using if, NOT using else, so we can update multiple OR just one value in a reqeust */
-                // if (request.body.user. ) {
-                //
-                // }
-            } else {
+            } catch (error) {
                 await client.query("ROLLBACK");
-                return reply.code(401).send({
+                request.log.error(error);
+                return reply.code(500).send({
                     error: {
-                        type: "session-invalid"
+                        type: "postgres-error"
                     }
                 })
+            } finally {
+                client.release()
             }
-        } catch (error) {
-            await client.query("ROLLBACK");
-            request.log.error(error);
-            return reply.code(500).send({
+        } else {
+            return reply.code(400).send({
                 error: {
-                    type: "postgres-error"
+                    type: "fields-missing"
                 }
             })
-        } finally {
-            client.release()
         }
     } else {
-        return reply.code(400).send({
+        return reply.code(401).send({
             error: {
-                type: "fields-missing"
+                type: "auth-header-missing"
             }
         })
     }
