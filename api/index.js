@@ -1,5 +1,6 @@
 import "dotenv/config";
 import Fastify from "fastify";
+import fastifyCompress from "@fastify/compress";
 import fastifyCors from "@fastify/cors";
 import fastifyOauth2 from "@fastify/oauth2";
 import pg from "pg";
@@ -36,6 +37,9 @@ const pool = new Pool({
     connectionString: POSTGRES_URI
 })
 
+await fastify.register(
+    fastifyCompress
+);
 await fastify.register(fastifyCors, {
     origin: CORS_ORIGIN
 });
