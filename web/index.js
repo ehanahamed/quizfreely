@@ -5,7 +5,6 @@ import fastifyStatic from "@fastify/static";
 import fastifyView from "@fastify/view";
 import fastifyCookie from "@fastify/cookie";
 import path from "path";
-import querystring from "querystring";
 import { Eta } from "eta";
 import { themes } from "./themes.js";
 
@@ -330,7 +329,7 @@ fastify.get("/users/:userid", function (request, reply) {
 fastify.get("/search", function (request, reply) {
   if (request.query && request.query.q) {
     fetch(
-      apiUrl + "/studysets/search?" + querystring.stringify({ q: request.query.q })
+      apiUrl + "/studysets/search?" + (new URLSearchParams({ q: request.query.q })).toString()
     ).then(function (response) {
       response.json().then(function (responseJson) {
         if (responseJson.error) {
