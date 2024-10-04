@@ -76,10 +76,6 @@ fastify.setNotFoundHandler(function (request, reply) {
   })
 })
 
-const newSessionQuery = "insert into auth.sessions (user_id) values ($1) returning token, user_id";
-const newTempSessionQuery = "insert into auth.sessions (user_id, expire_at) values ($1, clock_timestamp() + '10 seconds'::interval) returning id, token";
-const clearExpiredSessionsQuery = "delete from auth.sessions where expire_at < clock_timestamp()";
-
 fastify.post("/sign-up", async function (request, reply) {
     /* check if username and password were sent in sign-up request body */
     if (request.body && request.body.username && request.body.password) {
