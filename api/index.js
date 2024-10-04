@@ -1158,6 +1158,10 @@ fastify.get("/featured/list", async function (request, reply) {
     }
 })
 
+Cron("0 0 * * *", function () {
+    pool.query("call auth.delete_expired_sessions()");
+});
+
 fastify.listen({
     port: PORT,
     host: HOST
