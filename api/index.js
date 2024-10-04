@@ -465,8 +465,8 @@ fastify.post("/user-auth-info", async function (request, reply) {
                                 authType: userData.rows[0].auth_type,
                                 oauthGoogleEmail: userData.rows[0].oauth_google_email
                             },
-                            auth: session.rows[0].token
-                        }
+                        },
+                        auth: session.rows[0].token
                     })
                 } else {
                     await client.query("ROLLBACK");
