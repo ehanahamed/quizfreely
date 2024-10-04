@@ -102,9 +102,6 @@ fastify.post("/sign-up", async function (request, reply) {
                             [username, request.body.password]
                         );
                         let userId = result2.rows[0].id;
-                        await client.query(
-                            clearExpiredSessionsQuery
-                        );
                         let session = await client.query(
                             "insert into auth.sessions (user_id) values ($1) returning token, user_id",
                             [userId]
@@ -140,6 +137,9 @@ fastify.post("/sign-up", async function (request, reply) {
                 } finally {
                     /* finally block will execute even though we put return statements in try block or catch block
                     which is good for our use case :D */
+                    await client.query(
+                        "delete from auth.sessions where expire_at < clock_timestamp()"
+                    );
                     client.release();
                 }
             } else {
@@ -214,6 +214,9 @@ fastify.post("/sign-in", async function (request, reply) {
                 }
             })
         } finally {
+            await client.query(
+                "delete from auth.sessions where expire_at < clock_timestamp()"
+            );
             client.release();
         }
     } else {
@@ -251,7 +254,7 @@ async function googleAuthCallback(tokenObj) {
                 ]
             );
             let newSession = await client.query(
-                newTempSessionQuery,
+                "insert into auth.sessions (user_id, expire_at) values ($1, clock_timestamp() + '10 seconds'::interval) returning id, token",
                 [upsertedUser.rows[0].id]
             )
             await client.query("COMMIT");
@@ -999,12 +1002,9 @@ fastify.post("/user/update", async function (request, reply) {
                                         id: userData.rows[0].id,
                                         username: userData.rows[0].username,
                                         displayName: userData.rows[0].display_name
-                                    },
-                                    session: {
-                                        id: session.rows[0].id,
-                                        token: session.rows[0].token
                                     }
-                                }
+                                },
+                                auth: session.rows[0].token
                             })
                         } else {
                             await client.query("ROLLBACK");
