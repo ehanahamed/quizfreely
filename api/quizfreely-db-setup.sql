@@ -136,12 +136,20 @@ using (expire_at < clock_timestamp());
 
 create function auth.verify_and_refresh_session(session_token text)
 returns table(token text, user_id uuid)
-as $$ update auth.sessions
+language sql
+as $$
+update auth.sessions
 set token = encode(gen_random_bytes(32), 'base64'),
 expire_at = clock_timestamp() + '5 days'::interval
 where token = $1 and expire_at > clock_timestamp()
-returning token, user_id $$
-language sql;
+returning token, user_id
+$$;
+
+create procedure auth.delete_expired_sessions()
+language sql
+as $$
+delete from auth.sessions where expire_at < clock_timestamp()
+$$;
 
 create table public.studysets (
   id uuid primary key default gen_random_uuid(),
