@@ -8,13 +8,13 @@ import path from "path";
 import { Eta } from "eta";
 import { themes } from "./themes.js";
 
-const port = process.env.PORT
-const host = process.env.HOST
-const apiUrl = process.env.API_URL
-const cookiesDomain = process.env.COOKIES_DOMAIN
-const logLevel = process.env.LOG_LEVEL
+const PORT = process.env.PORT
+const HOST = process.env.HOST
+const API_URL = process.env.API_URL
+const COOKIES_DOMAIN = process.env.COOKIES_DOMAIN
+const LOG_LEVEL = process.env.LOG_LEVEL
 
-if (port == undefined || host == undefined) {
+if (PORT == undefined || HOST == undefined) {
   console.error(
     "quizfreely/web/.env is missing or invalid \n" +
     "copy .env.example to .env"
@@ -24,7 +24,7 @@ if (port == undefined || host == undefined) {
 
 const fastify = Fastify({
   logger: {
-    level: logLevel,
+    level: LOG_LEVEL,
     file: path.join(import.meta.dirname, "quizfreely-web.log")
   }
 })
@@ -106,7 +106,7 @@ function themeData(request) {
 }
 
 function landingPage(request, reply) {
-  fetch(apiUrl + "/featured/list")
+  fetch(API_URL + "/featured/list")
     .then(function (response) {
       response.json().then(function (responseJson) {
         if (responseJson.error) {
@@ -147,7 +147,7 @@ function dashboard(request, reply) {
     cookieOptionsObj
   ).view("dashboard.html", {
     ...themeDataObj,
-    apiUrl: apiUrl
+    apiUrl: API_URL
   })
 }
 
@@ -167,13 +167,13 @@ fastify.get("/settings", function (request, reply) {
   reply.view("settings.html", {
     ...themeData(request),
     modal: "none",
-    apiUrl: apiUrl
+    apiUrl: API_URL
   })
 });
 fastify.get("/sign-up", function (request, reply) {
   reply.view("account.html", {
     signup: true,
-    apiUrl: apiUrl,
+    apiUrl: API_URL,
     ...themeData(request)
   })
 })
@@ -181,7 +181,7 @@ fastify.get("/sign-up", function (request, reply) {
 fastify.get("/sign-in", function (request, reply) {
   reply.view("account.html", {
     signup: false,
-    apiUrl: apiUrl,
+    apiUrl: API_URL,
     ...themeData(request)
   })
 })
@@ -215,7 +215,7 @@ fastify.get("/explore", async function (request, reply) {
   try {
     let featuredRows = false;
     let featuredResponse = await (
-      await fetch(apiUrl + "/featured/list")
+      await fetch(API_URL + "/featured/list")
     ).json();
     if (featuredResponse.error == false && featuredResponse.data) {
       featuredRows = featuredResponse.data.rows;
@@ -223,7 +223,7 @@ fastify.get("/explore", async function (request, reply) {
     
     let recentRows = false;
     let recentsResponse = await (
-      await fetch(apiUrl + "/studysets/list-recent")
+      await fetch(API_URL + "/studysets/list-recent")
     ).json();
     if (recentsResponse.error == false && recentsResponse.data) {
       recentRows = recentsResponse.data.rows;
@@ -244,12 +244,12 @@ fastify.get("/studyset/create", function (request, reply) {
   reply.view("edit.html", {
     ...themeData(request),
     new: true,
-    apiUrl: apiUrl
+    apiUrl: API_URL
   })
 })
 
 fastify.get("/studysets/:studyset", function (request, reply) {
-  fetch(apiUrl + "/studysets/public/" + request.params.studyset)
+  fetch(API_URL + "/studysets/public/" + request.params.studyset)
     .then(function (response) {
       response.json().then(function (responseJson) {
         if (responseJson.error) {
@@ -263,7 +263,7 @@ fastify.get("/studysets/:studyset", function (request, reply) {
             studysetId: request.params.studyset,
             studysetPage: "/studysets/" + request.params.studyset,
             studysetEditPage: "/studyset/edit/" + request.params.studyset,
-            apiUrl: apiUrl
+            apiUrl: API_URL
           })
         }
       });
@@ -281,7 +281,7 @@ fastify.get("/studyset/private/:studyset", function (request, reply) {
     studysetId: request.params.studyset,
     studysetPage: "/studyset/private/" + request.params.studyset,
     studysetEditPage: "/studyset/edit/" + request.params.studyset,
-    apiUrl: apiUrl
+    apiUrl: API_URL
   })
 })
 
@@ -293,7 +293,7 @@ fastify.get("/studyset/local/:studyset", function (request, reply) {
     studysetId: request.params.studyset,
     studysetPage: "/studyset/local/" + request.params.studyset,
     studysetEditPage: "/studyset/edit-local/" + request.params.studyset,
-    apiUrl: apiUrl
+    apiUrl: API_URL
   })
 })
 
@@ -302,12 +302,12 @@ fastify.get("/studyset/edit/:studyset", function (request, reply) {
     ...themeData(request),
     new: false,
     studysetId: request.params.studyset,
-    apiUrl: apiUrl
+    apiUrl: API_URL
   })
 })
 
 fastify.get("/users/:userid", function (request, reply) {
-  fetch(apiUrl + "/users/" + request.params.userid)
+  fetch(API_URL + "/users/" + request.params.userid)
     .then(function (response) {
       response.json().then(function (responseJson) {
         if (responseJson.error) {
@@ -316,7 +316,7 @@ fastify.get("/users/:userid", function (request, reply) {
           reply.view("user.html", {
             ...themeData(request),
             user: responseJson.data.user,
-            apiUrl: apiUrl
+            apiUrl: API_URL
           })
         }
       });
@@ -329,7 +329,7 @@ fastify.get("/users/:userid", function (request, reply) {
 fastify.get("/search", function (request, reply) {
   if (request.query && request.query.q) {
     fetch(
-      apiUrl + "/studysets/search?" + (new URLSearchParams({ q: request.query.q })).toString()
+      API_URL + "/studysets/search?" + (new URLSearchParams({ q: request.query.q })).toString()
     ).then(function (response) {
       response.json().then(function (responseJson) {
         if (responseJson.error) {
@@ -340,7 +340,7 @@ fastify.get("/search", function (request, reply) {
             ...themeData(request),
             query: request.query.q,
             results: responseJson.data.rows,
-            apiUrl: apiUrl
+            apiUrl: API_URL
           })
         }
       })
@@ -349,7 +349,7 @@ fastify.get("/search", function (request, reply) {
     reply.view("search.html", {
       ...themeData(request),
       query: false,
-      apiUrl: apiUrl
+      apiUrl: API_URL
     })
   }
 })
@@ -363,7 +363,7 @@ function cookieOptions() {
   /* 100 days * 24h * 60m * 60s = 8640000 sec for 100 days */
   time.setSeconds(time.getSeconds() + 8640000)
   return {
-    domain: cookiesDomain,
+    domain: COOKIES_DOMAIN,
     path: "/",
     signed: false,
     expires: time,
@@ -395,12 +395,12 @@ fastify.get("/settings/clear-cookies", function (request, reply) {
     {
       ...themeData(request),
       modal: "clearedCookies",
-      apiUrl: apiUrl
+      apiUrl: API_URL
     }
   )
 })
 
 fastify.listen({
-  port: port,
-  host: host
+  port: PORT,
+  host: HOST
 })
