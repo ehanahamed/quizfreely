@@ -119,7 +119,7 @@
                   class="card double"
                   id="flashcard"
                 >
-                  <eta> if (data.ssr) { </eta>
+                  <eta> if (data.ssr && data.studyset && data.studyset.data && data.studyset.data.terms && data.studyset.data.terms.length >= 1) { </eta>
                   <div class="content">
                     <div class="front" id="flashcard-front">
                       <eta>= data.studyset.data.terms[0][0] </eta>
@@ -140,7 +140,7 @@
                   <eta> } </eta>
                 </div>
                 <div class="caption centerThree">
-                  <eta> if (data.ssr) { </eta>
+                  <eta> if (data.ssr && data.studyset && data.studyset.data && data.studyset.data.terms) { </eta>
                   <p id="flashcards-count">
                     1/<eta>= data.studyset.data.terms.length </eta>
                   </p>
@@ -191,7 +191,7 @@
                   <th>Term</th>
                   <th>Definition</th>
                 </tr>
-                <eta> if (data.ssr) { data.studyset.data.terms.forEach(function (term) { </eta>
+                <eta> if (data.ssr && data.studyset && data.studyset.data && data.studyset.data.terms) { data.studyset.data.terms.forEach(function (term) { </eta>
                 <tr>
                   <td>
                     <eta>= term[0]</eta>
