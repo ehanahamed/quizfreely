@@ -80,6 +80,7 @@ var client = {
         }
     },
     refreshSession: function (token, callback) {
+        /* when the API updates the token, the old token becomes invalid */
         if (token) {
             fetch(
                 client.apiUrl + "/session/refresh",
