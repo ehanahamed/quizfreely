@@ -248,6 +248,7 @@ async function googleAuthCallback(tokenObj) {
                 ]
             );
             let newSession = await client.query(
+                /* 10-second-expiry token sent in url query to let client request a new normal-expiry token */
                 "insert into auth.sessions (user_id, expire_at) values ($1, clock_timestamp() + '10 seconds'::interval) returning id, token",
                 [upsertedUser.rows[0].id]
             )
