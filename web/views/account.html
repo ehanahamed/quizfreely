@@ -242,7 +242,6 @@
     } else if (window.location.search.includes("?id")) {
       var urlParams = new URLSearchParams(window.location.search);
       client.refreshSession(
-        urlParams.get("id"),
         urlParams.get("token"),
         function (result) {
           if (result.error) {
