@@ -20,49 +20,38 @@ var client = {
     },
     req: function (path, options, callback) {
         var reqMethod = "POST";
+        var reqBody = {};
+        var reqHeaders = {}
         if (options.method) {
             reqMethod = options.method
         }
+        if (options.body) {
+            reqBody = options.body;
+        }
 
-        var reqBody = {};
-        if (options.body && options.body.session) {
-            reqBody = options.body;
-        } else if (client.hasSession()) {
-            if (options.body) {
-                reqBody = {
-                    ...options.body,
-                    session: {
-                        id: localStorage.getItem("sessionId"),
-                        token: localStorage.getItem("sessionToken")
-                    }
-                }
-            } else {
-                reqBody = {
-                    session: {
-                        id: localStorage.getItem("sessionId"),
-                        token: localStorage.getItem("sessionToken")
-                    }
-                }
+        if (client.hasSession()) {
+            reqHeaders = {
+                "Content-Type": "application/json",
+                "Authorization": "Bearer " + localStorage.getItem("auth")
             }
-        } else if (options.body) {
-            reqBody = options.body;
+        } else {
+            reqHeaders = {
+                "Content-Type": "application/json"
+            }
         }
 
         fetch(
             client.apiUrl + path,
             {
                 method: reqMethod,
-                headers: {
-                    "Content-Type": "application/json",
-                },
+                headers: reqHeaders,
                 body: JSON.stringify(reqBody)
             }
         ).then(
             function (response) {
                 response.json().then(function(responseJson) {
-                    if (responseJson.data && responseJson.data.session && window.localStorage) {
-                        localStorage.setItem("sessionId", responseJson.data.session.id);
-                        localStorage.setItem("sessionToken", responseJson.data.session.token);
+                    if (responseJson.auth && window.localStorage) {
+                        localStorage.setItem("auth", responseJson.auth);
                     }
                     callback(responseJson);
                 })
@@ -79,7 +68,7 @@ var client = {
         )
     },
     hasSession: function () {
-        if (window.localStorage && localStorage.getItem("sessionId") && localStorage.getItem("sessionToken")) {
+        if (window.localStorage && localStorage.getItem("auth")) {
             return true;
         } else{
             return false;
@@ -87,32 +76,26 @@ var client = {
     },
     deleteLocalSession: function () {
         if (window.localStorage) {
-            localStorage.removeItem("sessionId")
-            localStorage.removeItem("sessionToken")
+            localStorage.removeItem("auth")
         }
     },
-    refreshSession: function (id, token, callback) {
-        if (id && token) {
+    refreshSession: function (token, callback) {
+        if (token) {
             fetch(
                 client.apiUrl + "/session/refresh",
                 {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
+                        "Authorization": "Bearer " + token
                     },
-                    body: JSON.stringify({
-                        session: {
-                            id: id,
-                            token: token
-                        }
-                    })
+                    body: JSON.stringify({})
                 }
             ).then(
                 function (response) {
                     response.json().then(function(responseJson) {
-                        if (responseJson.data && responseJson.data.session && window.localStorage) {
-                            localStorage.setItem("sessionId", responseJson.data.session.id);
-                            localStorage.setItem("sessionToken", responseJson.data.session.token);
+                        if (responseJson.auth && window.localStorage) {
+                            localStorage.setItem("auth", responseJson.auth);
                         }
                         callback(responseJson);
                     })
