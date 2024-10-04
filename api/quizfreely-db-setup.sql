@@ -139,7 +139,7 @@ returns table(token text, user_id uuid)
 as $$ update auth.sessions
 set token = encode(gen_random_bytes(32), 'base64'),
 expire_at = clock_timestamp() + '5 days'::interval
-where token = $1
+where token = $1 and expire_at > clock_timestamp()
 returning token, user_id $$
 language sql;
 
