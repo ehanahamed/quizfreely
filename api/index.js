@@ -5,6 +5,7 @@ import fastifyOauth2 from "@fastify/oauth2";
 import pg from "pg";
 const { Pool, Client } = pg;
 import path from "path";
+import { Cron } from "croner";
 
 const PORT = process.env.PORT;
 const HOST = process.env.HOST;
