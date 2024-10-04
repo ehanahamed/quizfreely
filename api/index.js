@@ -294,7 +294,7 @@ fastify.get('/oauth/google/callback', function (request, reply) {
                         request.log.error(result.error.error)
                         reply.redirect(WEB_OAUTH_CALLBACK + "?error=oauth-error")
                     } else {
-                        reply.redirect(WEB_OAUTH_CALLBACK + "?" + (new URLSearchParams(result.data.session).toString()))
+                        reply.redirect(WEB_OAUTH_CALLBACK + "?" + (new URLSearchParams({ token: result.auth }).toString()))
                     }
                 }
             )
