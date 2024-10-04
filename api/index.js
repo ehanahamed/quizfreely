@@ -430,7 +430,7 @@ fastify.post("/user", async function (request, reply) {
     }
 })
 
-fastify.get("/user-auth-info", async function (request, reply) {
+fastify.post("/user-auth-info", async function (request, reply) {
     if (
         request.headers.authorization &&
         request.headers.authorization.toLowerCase().startsWith("bearer ")
