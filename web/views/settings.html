@@ -163,7 +163,7 @@
     <script>
       client.apiUrl = "<eta>= data.apiUrl </eta>";
       if (client.hasSession()) {
-        client.req("/user-auth-info", {}, function (response) {
+        client.req({ method: "GET", path: "/user" }, function (response) {
           if (response.data && response.data.user) {
             document.getElementById("account-not-signedin-div").classList.add("hide");
             document.getElementById("account-signedin-div").classList.remove("hide");
@@ -186,7 +186,9 @@
         document.getElementById("display-name-view-div").classList.add("hide");
       })
       document.getElementById("display-name-edit-save-button").addEventListener("click", function () {
-        client.req("/user/update", {
+        client.req({
+          method: "PATCH",
+          path: "/user",
           body: {
             user: {
               displayName: document.getElementById("display-name-edit").value
