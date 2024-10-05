@@ -225,7 +225,7 @@
     <script>
       var studyset = JSON.parse("<eta>~ JSON.stringify(data.studyset).replaceAll('\\', '\\\\').replaceAll('\"', '\\\"') </eta>")
       if (client.hasSession()) {
-        client.req("/user", {}, function (response) {
+        client.req({ method: "GET", path: "/user" }, function (response) {
           if (response.data && response.data.user.id == "<eta>= data.studyset.user_id </eta>") {
             document.getElementById("edit-menu").classList.remove("hide");
           }
@@ -235,21 +235,24 @@
     <eta> } else if (data.local) {</eta>
     <script>
       var studyset = {};
-      client.req("/studysets/view/<eta>= data.studysetId </eta>", {}, function (response) {
-        if (response.data) {
-          studyset = response.data.studyset
-          console.log(studyset)
-          showIfEditable()
-        } else {
-          alert("error while loading non-public studyset")
-        }
+      client.req({
+          method: "GET",
+          path: "/studysets/<eta>= data.studysetId </eta>"
+        }, function (response) {
+          if (response.data) {
+            studyset = response.data.studyset
+            console.log(studyset)
+            showIfEditable()
+          } else {
+            alert("error while loading non-public studyset")
+          }
       })
       document.getElementById("edit-menu").classList.remove("hide");
     </script>
     <eta> } else { </eta>
     <script>
       var studyset = {};
-      client.req("/studysets/view/<eta>= data.studysetId </eta>", {}, function (response) {
+      client.req({ method: "GET", path: "/studysets/<eta>= data.studysetId </eta>" }, function (response) {
         if (response.data && response.data.studyset.private) {
           /* if successful response and studyset is private,
           load studyset data into elements */
@@ -322,8 +325,10 @@
     <eta> } else { </eta>
     <script>
       document.getElementById("delete-confirm-button").addEventListener("click", function () {
-        client.req(
-          "/studysets/delete/<eta>= data.studysetId </eta>", {},
+        client.req({
+            method: "DELETE",
+            path: "/studysets/<eta>= data.studysetId </eta>"
+          },
           function (response) {
             if (response.error) {
               console.log(response)
