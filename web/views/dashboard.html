@@ -147,7 +147,7 @@
         }
       }
       if (client.hasSession()) {
-        client.req("/studysets/list", {}, function (result) {
+        client.req({ method: "GET", path: "/list/my-studysets" }, function (result) {
           if (result.data && result.data.rows.length >= 1) {
             document.getElementById("studyset-list").innerHTML = "";
             for (var i = 0; i < result.data.rows.length; i++) {
