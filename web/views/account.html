@@ -223,7 +223,7 @@
         document.getElementById("signedin-div").classList.add("hide");
       }
       if (client.hasSession()) {
-        client.req("/user", {}, function (response) {
+        client.req({ method: "GET", path: "/user" }, function (response) {
           if (response.data && response.data.user) {
             showSignedIn()
           }
@@ -241,8 +241,11 @@
         "<b>Error</b>: " + urlParams.get("error");
     } else if (window.location.search.includes("?token")) {
       var urlParams = new URLSearchParams(window.location.search);
-      client.refreshSession(
-        urlParams.get("token"),
+      client.req({
+          method: "POST",
+          path: "/auth/session/refresh",
+          token: urlParams.get("token")
+        },
         function (result) {
           if (result.error) {
             showError();
@@ -263,7 +266,9 @@
         ) {
           document.getElementById("error-div").classList.add("hide");
           var username = document.getElementById("signupUsernameInput").value
-          client.req("/sign-up", {
+          client.req({
+            method: "POST",
+            path: "/auth/sign-up",
             body: {
               username: username,
               password: document.getElementById("signupPasswordInput").value
@@ -288,7 +293,9 @@
     <eta> } else { </eta>
     <script>
       document.getElementById("signinButton").addEventListener("click", function () {
-        client.req("/sign-in", {
+        client.req({
+          method: "POST",
+          path: "/auth/sign-in",
           body: {
             username: document.getElementById("signinUsernameInput").value,
             password: document.getElementById("signinPasswordInput").value
