@@ -106,7 +106,7 @@ function themeData(request) {
 }
 
 function landingPage(request, reply) {
-  fetch(API_URL + "/featured/list")
+  fetch(API_URL + "/public/list/featured")
     .then(function (response) {
       response.json().then(function (responseJson) {
         if (responseJson.error) {
@@ -215,7 +215,7 @@ fastify.get("/explore", async function (request, reply) {
   try {
     let featuredRows = false;
     let featuredResponse = await (
-      await fetch(API_URL + "/featured/list")
+      await fetch(API_URL + "/public/list/featured")
     ).json();
     if (featuredResponse.error == false && featuredResponse.data) {
       featuredRows = featuredResponse.data.rows;
@@ -223,7 +223,7 @@ fastify.get("/explore", async function (request, reply) {
     
     let recentRows = false;
     let recentsResponse = await (
-      await fetch(API_URL + "/studysets/list-recent")
+      await fetch(API_URL + "/public/list/recent")
     ).json();
     if (recentsResponse.error == false && recentsResponse.data) {
       recentRows = recentsResponse.data.rows;
@@ -249,7 +249,7 @@ fastify.get("/studyset/create", function (request, reply) {
 })
 
 fastify.get("/studysets/:studyset", function (request, reply) {
-  fetch(API_URL + "/studysets/public/" + request.params.studyset)
+  fetch(API_URL + "/public/studysets/" + request.params.studyset)
     .then(function (response) {
       response.json().then(function (responseJson) {
         if (responseJson.error) {
@@ -307,7 +307,7 @@ fastify.get("/studyset/edit/:studyset", function (request, reply) {
 })
 
 fastify.get("/users/:userid", function (request, reply) {
-  fetch(API_URL + "/users/" + request.params.userid)
+  fetch(API_URL + "/public/users/" + request.params.userid)
     .then(function (response) {
       response.json().then(function (responseJson) {
         if (responseJson.error) {
@@ -329,7 +329,7 @@ fastify.get("/users/:userid", function (request, reply) {
 fastify.get("/search", function (request, reply) {
   if (request.query && request.query.q) {
     fetch(
-      API_URL + "/studysets/search?" + (new URLSearchParams({ q: request.query.q })).toString()
+      API_URL + "/public/search/studysets?" + (new URLSearchParams({ q: request.query.q })).toString()
     ).then(function (response) {
       response.json().then(function (responseJson) {
         if (responseJson.error) {
