@@ -243,7 +243,9 @@
       if (client.hasSession()) {
         document.getElementById("create-button").addEventListener("click", function () {
           var private = document.getElementById("edit-private-true").classList.contains("selected");
-          client.req("/studysets/create", {
+          client.req({
+            method: "POST",
+            path: "/studysets",
             body: {
               studyset: {
                 title: document.getElementById("edit-title").value,
@@ -278,7 +280,7 @@
     <eta> } else if (data.studysetId) { </eta>
     <script>
       if (client.hasSession()) {
-        client.req("/studysets/view/<eta>= data.studysetId </eta>", {}, function (result) {
+        client.req({ method: "GET", path: "/studysets/<eta>= data.studysetId </eta>" }, function (result) {
           if (result.error) {
             alert("error, could not load studyset while trying to edit")
           } else {
@@ -295,7 +297,9 @@
         })
         document.getElementById("save-button").addEventListener("click", function () {
           var private = document.getElementById("edit-private-true").classList.contains("selected");
-          client.req("/studysets/update/<eta>= data.studysetId </eta>", {
+          client.req({
+            method: "PUT",
+            path: "/studysets/<eta>= data.studysetId </eta>",
             body: {
               studyset: {
                 title: document.getElementById("edit-title").value,
