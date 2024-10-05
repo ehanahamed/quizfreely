@@ -81,7 +81,7 @@ fastify.setNotFoundHandler(function (request, reply) {
   })
 })
 
-fastify.post("/sign-up", async function (request, reply) {
+fastify.post("/auth/sign-up", async function (request, reply) {
     /* check if username and password were sent in sign-up request body */
     if (request.body && request.body.username && request.body.password) {
         if (request.body.password.length >= 8) {
@@ -167,7 +167,7 @@ fastify.post("/sign-up", async function (request, reply) {
     }
 })
 
-fastify.post("/sign-in", async function (request, reply) {
+fastify.post("/auth/sign-in", async function (request, reply) {
     if (request.body && request.body.username && request.body.password) {
         let client = await pool.connect();
         try {
@@ -219,6 +219,51 @@ fastify.post("/sign-in", async function (request, reply) {
         return reply.code(400).send({
             error: {
                 type: "fields-missing"
+            }
+        })
+    }
+})
+
+fastify.post("/auth/sign-out", async function (request, reply) {
+    if (
+        request.headers.authorization &&
+        request.headers.authorization.toLowerCase().startsWith("bearer ")
+    ) {
+        /* "Bearer " (with space) is 6 characters, so 7 is where our token starts */
+        let authToken = request.headers.authorization.substring(7);
+        let client = await pool.connect();
+        try {
+            await client.query("BEGIN");
+            await client.query("set role quizfreely_auth");
+            await client.query(
+                "delete from auth.sessions where token = $1",
+                [ authToken ]
+            );
+            await client.query("COMMIT")
+            return reply.send({
+                "error": false,
+                "data": {}
+            })
+        } catch (error) {
+            await client.query("ROLLBACK");
+            request.log.error(error);
+            return reply.code(500).send({
+                error: {
+                    type: "db-error"
+                }
+            })
+        } finally {
+            client.release()
+        }
+    } else {
+        /*
+            401 Unauthorized means the client is NOT logged in or authenticated
+            403 Forbidden means the client is logged in but not allowed,
+            so in this case we're responding with a 401 if our Authentication header is missing
+        */
+        return reply.code(401).send({
+            error: {
+                type: "auth-header-missing"
             }
         })
     }
@@ -307,7 +352,7 @@ fastify.get('/oauth/google/callback', function (request, reply) {
     })
 })
 
-fastify.post("/session/refresh", async function (request, reply) {
+fastify.get("/auth/session/refresh", async function (request, reply) {
     if (
         request.headers.authorization &&
         request.headers.authorization.toLowerCase().startsWith("bearer ")
@@ -362,80 +407,7 @@ fastify.post("/session/refresh", async function (request, reply) {
     }
 })
 
-fastify.post("/user", async function (request, reply) {
-    if (
-        request.headers.authorization &&
-        request.headers.authorization.toLowerCase().startsWith("bearer ")
-    ) {
-        /* "Bearer " (with space) is 6 characters, so 7 is where our token starts */
-        let authToken = request.headers.authorization.substring(7);
-        let client = await pool.connect();
-        try {
-            await client.query("BEGIN");
-            await client.query("set role quizfreely_auth");
-            let session = await client.query(
-                "select token, user_id from auth.verify_and_refresh_session($1)",
-                [ authToken ]
-            );
-            if (session.rows.length == 1) {
-                let userData = await client.query(
-                    "select id, username, display_name from public.profiles " +
-                    "where id = $1",
-                    [
-                        session.rows[0].user_id
-                    ]
-                );
-                if (userData.rows.length == 1) {
-                    await client.query("COMMIT");
-                    return reply.send({
-                        "error": false,
-                        "data": {
-                            user: {
-                                id: userData.rows[0].id,
-                                username: userData.rows[0].username,
-                                displayName: userData.rows[0].display_name
-                            },
-                        },
-                        auth: session.rows[0].token
-                    })
-                } else {
-                    await client.query("ROLLBACK");
-                    return reply.callNotFound();
-                }
-            } else {
-                await client.query("ROLLBACK");
-                return reply.code(401).send({
-                    error: {
-                        type: "session-invalid"
-                    }
-                })
-            }
-        } catch (error) {
-            await client.query("ROLLBACK");
-            request.log.error(error);
-            return reply.code(500).send({
-                error: {
-                    type: "db-error"
-                }
-            })
-        } finally {
-            client.release()
-        }
-    } else {
-        /*
-            401 Unauthorized means the client is NOT logged in or authenticated
-            403 Forbidden means the client is logged in but not allowed,
-            so in this case we're responding with a 401 if our Authentication header is missing
-        */
-        return reply.code(401).send({
-            error: {
-                type: "auth-header-missing"
-            }
-        })
-    }
-})
-
-fastify.post("/user-auth-info", async function (request, reply) {
+fastify.get("/user", async function (request, reply) {
     if (
         request.headers.authorization &&
         request.headers.authorization.toLowerCase().startsWith("bearer ")
@@ -510,7 +482,125 @@ fastify.post("/user-auth-info", async function (request, reply) {
     }
 })
 
-fastify.post("/studysets/create", async function (request, reply) {
+fastify.patch("/user", async function (request, reply) {
+    if (
+        request.headers.authorization &&
+        request.headers.authorization.toLowerCase().startsWith("bearer ")
+    ) {
+        /* "Bearer " (with space) is 6 characters, so 7 is where our token starts */
+        let authToken = request.headers.authorization.substring(7);
+        if (
+            request.body &&
+            request.body.user &&
+            (request.body.user.displayName /* || request.body.user. */)
+        ) {
+            let client = await pool.connect();
+            try {
+                await client.query("BEGIN");
+                await client.query("set role quizfreely_auth");
+                let session = await client.query(
+                    "select token, user_id from auth.verify_and_refresh_session($1)",
+                    [ authToken ]
+                );
+                if (session.rows.length == 1) {
+                    if (request.body.user.displayName) {
+                        let userData = await client.query(
+                            "update auth.users set display_name = $2 " +
+                            "where id = $1 returning id, username, display_name",
+                            [
+                                session.rows[0].user_id,
+                                request.body.user.displayName
+                            ]
+                        );
+                        if (userData.rows.length == 1) {
+                            await client.query("COMMIT");
+                            return reply.send({
+                                "error": false,
+                                "data": {
+                                    user: {
+                                        id: userData.rows[0].id,
+                                        username: userData.rows[0].username,
+                                        displayName: userData.rows[0].display_name
+                                    }
+                                },
+                                auth: session.rows[0].token
+                            })
+                        } else {
+                            await client.query("ROLLBACK");
+                            return reply.callNotFound();
+                        }
+                    }
+                    /* using if, NOT using else, so we can update multiple OR just one value in a reqeust */
+                    // if (request.body.user. ) {
+                    //
+                    // }
+                } else {
+                    await client.query("ROLLBACK");
+                    return reply.code(401).send({
+                        error: {
+                            type: "session-invalid"
+                        }
+                    })
+                }
+            } catch (error) {
+                await client.query("ROLLBACK");
+                request.log.error(error);
+                return reply.code(500).send({
+                    error: {
+                        type: "db-error"
+                    }
+                })
+            } finally {
+                client.release()
+            }
+        } else {
+            return reply.code(400).send({
+                error: {
+                    type: "fields-missing"
+                }
+            })
+        }
+    } else {
+        return reply.code(401).send({
+            error: {
+                type: "auth-header-missing"
+            }
+        })
+    }
+})
+
+fastify.get("/public/users/:userid", async function (request, reply) {
+    try {
+        let result = await pool.query(
+            "select id, username, display_name from public.profiles " +
+            "where id = $1",
+            [request.params.userid]
+        )
+        if (result.rows.length == 1) {
+            return reply.send({
+                error: false,
+                data: {
+                    user: {
+                        id: result.rows[0].id,
+                        username: result.rows[0].username,
+                        displayName: result.rows[0].display_name
+                    }
+                }
+            })
+        } else {
+            return reply.callNotFound();
+        }
+    } catch (error) {
+        request.log.error(error);
+        return reply.code(500).send({
+            error: {
+                type: "db-error"
+            }
+        })
+    }
+})
+
+fastify.post("/studysets", async function (request, reply) {
     if (
         request.headers.authorization &&
         request.headers.authorization.toLowerCase().startsWith("bearer ")
@@ -606,7 +696,7 @@ fastify.post("/studysets/create", async function (request, reply) {
     }
 })
 
-fastify.post("/studysets/update/:studysetid", async function (request, reply) {
+fastify.put("/studysets/:studysetid", async function (request, reply) {
     if (
         request.headers.authorization &&
         request.headers.authorization.toLowerCase().startsWith("bearer ")
@@ -707,7 +797,7 @@ fastify.post("/studysets/update/:studysetid", async function (request, reply) {
     }
 })
 
-fastify.post("/studysets/delete/:studysetid", async function (request, reply) {
+fastify.delete("/studysets/:studysetid", async function (request, reply) {
     if (
         request.headers.authorization &&
         request.headers.authorization.toLowerCase().startsWith("bearer ")
@@ -766,7 +856,7 @@ fastify.post("/studysets/delete/:studysetid", async function (request, reply) {
     }
 })
 
-fastify.post("/studysets/view/:studysetid", async function (request, reply) {
+fastify.get("/studysets/:studysetid", async function (request, reply) {
     if (
         request.headers.authorization &&
         request.headers.authorization.toLowerCase().startsWith("bearer ")
@@ -839,7 +929,7 @@ fastify.post("/studysets/view/:studysetid", async function (request, reply) {
     }
 })
 
-fastify.get("/studysets/public/:studysetid", async function (request, reply) {
+fastify.get("/public/studysets/:studysetid", async function (request, reply) {
     try {
         let result = await pool.query(
             "select s.id, s.user_id, u.display_name, s.title, s.data, s.updated_at, s.terms_count " +
@@ -867,7 +957,7 @@ fastify.get("/studysets/public/:studysetid", async function (request, reply) {
     }
 })
 
-fastify.post("/studysets/list", async function (request, reply) {
+fastify.get("/user/list/my-studysets", async function (request, reply) {
     if (
         request.headers.authorization &&
         request.headers.authorization.toLowerCase().startsWith("bearer ")
@@ -928,125 +1018,11 @@ fastify.post("/studysets/list", async function (request, reply) {
     }
 })
 
-fastify.get("/users/:userid", async function (request, reply) {
-    try {
-        let result = await pool.query(
-            "select id, username, display_name from public.profiles " +
-            "where id = $1",
-            [request.params.userid]
-        )
-        if (result.rows.length == 1) {
-            return reply.send({
-                error: false,
-                data: {
-                    user: {
-                        id: result.rows[0].id,
-                        username: result.rows[0].username,
-                        displayName: result.rows[0].display_name
-                    }
-                }
-            })
-        } else {
-            return reply.callNotFound();
-        }
-    } catch (error) {
-        request.log.error(error);
-        return reply.code(500).send({
-            error: {
-                type: "db-error"
-            }
-        })
-    }
-})
+/*fastify.get("/user/list/recent", async function (request, reply) {
+    
+})*/
 
-fastify.post("/user/update", async function (request, reply) {
-    if (
-        request.headers.authorization &&
-        request.headers.authorization.toLowerCase().startsWith("bearer ")
-    ) {
-        /* "Bearer " (with space) is 6 characters, so 7 is where our token starts */
-        let authToken = request.headers.authorization.substring(7);
-        if (
-            request.body &&
-            request.body.user &&
-            (request.body.user.displayName /* || request.body.user. */)
-        ) {
-            let client = await pool.connect();
-            try {
-                await client.query("BEGIN");
-                await client.query("set role quizfreely_auth");
-                let session = await client.query(
-                    "select token, user_id from auth.verify_and_refresh_session($1)",
-                    [ authToken ]
-                );
-                if (session.rows.length == 1) {
-                    if (request.body.user.displayName) {
-                        let userData = await client.query(
-                            "update auth.users set display_name = $2 " +
-                            "where id = $1 returning id, username, display_name",
-                            [
-                                session.rows[0].user_id,
-                                request.body.user.displayName
-                            ]
-                        );
-                        if (userData.rows.length == 1) {
-                            await client.query("COMMIT");
-                            return reply.send({
-                                "error": false,
-                                "data": {
-                                    user: {
-                                        id: userData.rows[0].id,
-                                        username: userData.rows[0].username,
-                                        displayName: userData.rows[0].display_name
-                                    }
-                                },
-                                auth: session.rows[0].token
-                            })
-                        } else {
-                            await client.query("ROLLBACK");
-                            return reply.callNotFound();
-                        }
-                    }
-                    /* using if, NOT using else, so we can update multiple OR just one value in a reqeust */
-                    // if (request.body.user. ) {
-                    //
-                    // }
-                } else {
-                    await client.query("ROLLBACK");
-                    return reply.code(401).send({
-                        error: {
-                            type: "session-invalid"
-                        }
-                    })
-                }
-            } catch (error) {
-                await client.query("ROLLBACK");
-                request.log.error(error);
-                return reply.code(500).send({
-                    error: {
-                        type: "db-error"
-                    }
-                })
-            } finally {
-                client.release()
-            }
-        } else {
-            return reply.code(400).send({
-                error: {
-                    type: "fields-missing"
-                }
-            })
-        }
-    } else {
-        return reply.code(401).send({
-            error: {
-                type: "auth-header-missing"
-            }
-        })
-    }
-})
-
-fastify.get("/studysets/search", async function (request, reply) {
+fastify.get("/search/studysets", async function (request, reply) {
     if (request.query && request.query.q) {
         try {
             let result = await pool.query(
@@ -1098,7 +1074,7 @@ fastify.get("/studysets/search", async function (request, reply) {
     }
 })
 
-fastify.get("/studysets/list-recent", async function (request, reply) {
+fastify.get("/public/list/recent", async function (request, reply) {
     try {
         let result = await pool.query(
             "select s.id, s.user_id, u.display_name, s.title, s.updated_at, s.terms_count " +
@@ -1136,7 +1112,7 @@ fastify.get("/studysets/list-recent", async function (request, reply) {
     }
 })
 
-fastify.get("/featured/list", async function (request, reply) {
+fastify.get("/public/list/featured", async function (request, reply) {
     try {
         let result = await pool.query(
             "select s.id, s.user_id, u.display_name, s.title, s.updated_at, s.terms_count " +
