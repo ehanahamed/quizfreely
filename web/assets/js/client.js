@@ -1,18 +1,26 @@
 var client = {
     apiUrl: "https://api.quizfreely.com",
     req: function (options, callback) {
-        var reqHeaders;
-        if (options.token) {
+        var reqHeaders = {};
+        if (options.token && options.body) {
             reqHeaders = {
-                "Content-Type": "application/json",
+                "Authorization": "Bearer " + options.token,
+                "Content-Type": "application/json"
+            }
+        } else if (options.token) {
+            reqHeaders = {
                 "Authorization": "Bearer " + options.token
+            }
+        } else if (options.public == false && client.hasSession() && options.body) {
+            reqHeaders = {
+                "Authorization": "Bearer " + localStorage.getItem("auth"),
+                "Content-Type": "application/json"
             }
         } else if (options.public == false && client.hasSession()) {
             reqHeaders = {
-                "Content-Type": "application/json",
                 "Authorization": "Bearer " + localStorage.getItem("auth")
             }
-        } else {
+        } else if (options.body) {
             reqHeaders = {
                 "Content-Type": "application/json"
             }
