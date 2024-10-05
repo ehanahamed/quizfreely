@@ -352,7 +352,7 @@ fastify.get('/oauth/google/callback', function (request, reply) {
     })
 })
 
-fastify.get("/auth/session/refresh", async function (request, reply) {
+fastify.post("/auth/session/refresh", async function (request, reply) {
     if (
         request.headers.authorization &&
         request.headers.authorization.toLowerCase().startsWith("bearer ")
