@@ -68,7 +68,7 @@ fastify.setErrorHandler(function (error, request, reply) {
       "500 Internal Server Error \n" +
       ":( \n" +
       "Report this problem at https://github.com/ehanahamed/quizfreely/issues \n" +
-      "or on Quizfreely's discord server at https://discord.gg/H4mUJnBJDd "
+      "or on Quizfreely's discord server at https://discord.gg/6qQrybf6kG "
     )
   }
 })
@@ -355,7 +355,7 @@ fastify.get("/search", function (request, reply) {
 })
 
 fastify.get("/discord", function (request, reply) {
-  reply.redirect("https://discord.gg/H4mUJnBJDd")
+  reply.redirect("https://discord.gg/6qQrybf6kG")
 })
 
 function cookieOptions() {
