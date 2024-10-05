@@ -975,6 +975,7 @@ fastify.get("/public/search/studysets", async function (request, reply) {
                 }
             })
         } catch (error) {
+            request.log.error(error);
             /* on error, try again before actually error-ing */
             try {
                 let result = await pool.query(
@@ -1023,6 +1024,7 @@ fastify.get("/public/list/recent", async function (request, reply) {
             }
         })
     } catch (error) {
+        request.log.error(error);
         /* try again (once) */
         try {
             let result = await pool.query(
