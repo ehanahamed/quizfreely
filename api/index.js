@@ -1022,7 +1022,7 @@ fastify.get("/user/list/my-studysets", async function (request, reply) {
     
 })*/
 
-fastify.get("/search/studysets", async function (request, reply) {
+fastify.get("/public/search/studysets", async function (request, reply) {
     if (request.query && request.query.q) {
         try {
             let result = await pool.query(
