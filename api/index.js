@@ -696,6 +696,79 @@ fastify.post("/studysets", async function (request, reply) {
     }
 })
 
+fastify.get("/studysets/:studysetid", async function (request, reply) {
+    if (
+        request.headers.authorization &&
+        request.headers.authorization.toLowerCase().startsWith("bearer ")
+    ) {
+        /* "Bearer " (with space) is 6 characters, so 7 is where our token starts */
+        let authToken = request.headers.authorization.substring(7);
+        let client = await pool.connect();
+        try {
+            await client.query("BEGIN");
+            await client.query("set role quizfreely_auth");
+            let session = await client.query(
+                "select token, user_id from auth.verify_and_refresh_session($1)",
+                [ authToken ]
+            );
+            if (session.rows.length == 1) {
+                await client.query("set role quizfreely_auth_user");
+                await client.query("select set_config('quizfreely_auth.user_id', $1, true)", [session.rows[0].user_id]);
+                let selectedStudyset = await client.query(
+                    "select id, user_id, title, private, data, updated_at from public.studysets " +
+                    "where id = $1",
+                    [
+                        request.params.studysetid
+                    ]
+                );
+                if (selectedStudyset.rows.length == 1) {
+                    await client.query("COMMIT")
+                    return reply.send({
+                        "error": false,
+                        "data": {
+                            studyset: {
+                                id: selectedStudyset.rows[0].id,
+                                userId: selectedStudyset.rows[0].user_id,
+                                title: selectedStudyset.rows[0].title,
+                                data: selectedStudyset.rows[0].data,
+                                private: selectedStudyset.rows[0].private,
+                                updatedAt: selectedStudyset.rows[0].updated_at
+                            }
+                        },
+                        auth: session.rows[0].token
+                    })
+                } else {
+                    await client.query("ROLLBACK");
+                    return reply.callNotFound();
+                }
+            } else {
+                await client.query("ROLLBACK");
+                return reply.code(401).send({
+                    error: {
+                        type: "session-invalid"
+                    }
+                })
+            }
+        } catch (error) {
+            await client.query("ROLLBACK");
+            request.log.error(error);
+            return reply.code(500).send({
+                error: {
+                    type: "db-error"
+                }
+            })
+        } finally {
+            client.release()
+        }
+    } else {
+        return reply.code(400).send({
+            error: {
+                type: "auth-header-missing"
+            }
+        })
+    }
+})
+
 fastify.put("/studysets/:studysetid", async function (request, reply) {
     if (
         request.headers.authorization &&
@@ -856,79 +929,6 @@ fastify.delete("/studysets/:studysetid", async function (request, reply) {
     }
 })
 
-fastify.get("/studysets/:studysetid", async function (request, reply) {
-    if (
-        request.headers.authorization &&
-        request.headers.authorization.toLowerCase().startsWith("bearer ")
-    ) {
-        /* "Bearer " (with space) is 6 characters, so 7 is where our token starts */
-        let authToken = request.headers.authorization.substring(7);
-        let client = await pool.connect();
-        try {
-            await client.query("BEGIN");
-            await client.query("set role quizfreely_auth");
-            let session = await client.query(
-                "select token, user_id from auth.verify_and_refresh_session($1)",
-                [ authToken ]
-            );
-            if (session.rows.length == 1) {
-                await client.query("set role quizfreely_auth_user");
-                await client.query("select set_config('quizfreely_auth.user_id', $1, true)", [session.rows[0].user_id]);
-                let selectedStudyset = await client.query(
-                    "select id, user_id, title, private, data, updated_at from public.studysets " +
-                    "where id = $1",
-                    [
-                        request.params.studysetid
-                    ]
-                );
-                if (selectedStudyset.rows.length == 1) {
-                    await client.query("COMMIT")
-                    return reply.send({
-                        "error": false,
-                        "data": {
-                            studyset: {
-                                id: selectedStudyset.rows[0].id,
-                                userId: selectedStudyset.rows[0].user_id,
-                                title: selectedStudyset.rows[0].title,
-                                data: selectedStudyset.rows[0].data,
-                                private: selectedStudyset.rows[0].private,
-                                updatedAt: selectedStudyset.rows[0].updated_at
-                            }
-                        },
-                        auth: session.rows[0].token
-                    })
-                } else {
-                    await client.query("ROLLBACK");
-                    return reply.callNotFound();
-                }
-            } else {
-                await client.query("ROLLBACK");
-                return reply.code(401).send({
-                    error: {
-                        type: "session-invalid"
-                    }
-                })
-            }
-        } catch (error) {
-            await client.query("ROLLBACK");
-            request.log.error(error);
-            return reply.code(500).send({
-                error: {
-                    type: "db-error"
-                }
-            })
-        } finally {
-            client.release()
-        }
-    } else {
-        return reply.code(400).send({
-            error: {
-                type: "auth-header-missing"
-            }
-        })
-    }
-})
-
 fastify.get("/public/studysets/:studysetid", async function (request, reply) {
     try {
         let result = await pool.query(
@@ -956,71 +956,6 @@ fastify.get("/public/studysets/:studysetid", async function (request, reply) {
         })
     }
 })
-
-fastify.get("/user/list/my-studysets", async function (request, reply) {
-    if (
-        request.headers.authorization &&
-        request.headers.authorization.toLowerCase().startsWith("bearer ")
-    ) {
-        /* "Bearer " (with space) is 6 characters, so 7 is where our token starts */
-        let authToken = request.headers.authorization.substring(7);
-        let client = await pool.connect();
-        try {
-            await client.query("BEGIN");
-            await client.query("set role quizfreely_auth");
-            let session = await client.query(
-                "select token, user_id from auth.verify_and_refresh_session($1)",
-                [ authToken ]
-            );
-            if (session.rows.length == 1) {
-                await client.query("set role quizfreely_auth_user");
-                await client.query("select set_config('quizfreely_auth.user_id', $1, true)", [session.rows[0].user_id]);
-                let studysets = await client.query(
-                    "select id, user_id, title, private, updated_at from public.studysets " +
-                    "where user_id = $1 order by updated_at desc limit 100",
-                    [
-                        session.rows[0].user_id
-                    ]
-                );
-                await client.query("COMMIT");
-                return reply.send({
-                    "error": false,
-                    "data": {
-                        rows: studysets.rows,
-                    },
-                    auth: session.rows[0].token
-                })
-            } else {
-                await client.query("ROLLBACK");
-                return reply.code(401).send({
-                    error: {
-                        type: "session-invalid"
-                    }
-                })
-            }
-        } catch (error) {
-            await client.query("ROLLBACK");
-            request.log.error(error);
-            return reply.code(500).send({
-                error: {
-                    type: "db-error"
-                }
-            })
-        } finally {
-            client.release()
-        }
-    } else {
-        return reply.code(401).send({
-            error: {
-                type: "auth-header-missing"
-            }
-        })
-    }
-})
-
-/*fastify.get("/user/list/recent", async function (request, reply) {
-    
-})*/
 
 fastify.get("/public/search/studysets", async function (request, reply) {
     if (request.query && request.query.q) {
@@ -1138,6 +1073,71 @@ fastify.get("/public/list/featured", async function (request, reply) {
         })
     }
 })
+
+fastify.get("/list/my-studysets", async function (request, reply) {
+    if (
+        request.headers.authorization &&
+        request.headers.authorization.toLowerCase().startsWith("bearer ")
+    ) {
+        /* "Bearer " (with space) is 6 characters, so 7 is where our token starts */
+        let authToken = request.headers.authorization.substring(7);
+        let client = await pool.connect();
+        try {
+            await client.query("BEGIN");
+            await client.query("set role quizfreely_auth");
+            let session = await client.query(
+                "select token, user_id from auth.verify_and_refresh_session($1)",
+                [ authToken ]
+            );
+            if (session.rows.length == 1) {
+                await client.query("set role quizfreely_auth_user");
+                await client.query("select set_config('quizfreely_auth.user_id', $1, true)", [session.rows[0].user_id]);
+                let studysets = await client.query(
+                    "select id, user_id, title, private, updated_at from public.studysets " +
+                    "where user_id = $1 order by updated_at desc limit 100",
+                    [
+                        session.rows[0].user_id
+                    ]
+                );
+                await client.query("COMMIT");
+                return reply.send({
+                    "error": false,
+                    "data": {
+                        rows: studysets.rows,
+                    },
+                    auth: session.rows[0].token
+                })
+            } else {
+                await client.query("ROLLBACK");
+                return reply.code(401).send({
+                    error: {
+                        type: "session-invalid"
+                    }
+                })
+            }
+        } catch (error) {
+            await client.query("ROLLBACK");
+            request.log.error(error);
+            return reply.code(500).send({
+                error: {
+                    type: "db-error"
+                }
+            })
+        } finally {
+            client.release()
+        }
+    } else {
+        return reply.code(401).send({
+            error: {
+                type: "auth-header-missing"
+            }
+        })
+    }
+})
+
+/*fastify.get("/list/recent", async function (request, reply) {
+    
+})*/
 
 Cron("0 0 * * *", function () {
     pool.query("call auth.delete_expired_sessions()");
