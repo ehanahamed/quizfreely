@@ -2,7 +2,12 @@ var client = {
     apiUrl: "https://api.quizfreely.com",
     req: function (options, callback) {
         var reqHeaders;
-        if (options.public == false && client.hasSession()) {
+        if (options.token) {
+            reqHeaders = {
+                "Content-Type": "application/json",
+                "Authorization": "Bearer " + options.token
+            }
+        } else if (options.public == false && client.hasSession()) {
             reqHeaders = {
                 "Content-Type": "application/json",
                 "Authorization": "Bearer " + localStorage.getItem("auth")
