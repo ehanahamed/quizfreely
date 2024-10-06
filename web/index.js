@@ -106,7 +106,7 @@ function themeData(request) {
 }
 
 function landingPage(request, reply) {
-  fetch(API_URL + "/public/list/featured")
+  fetch(API_URL + "/public/list/featured?limit=3")
     .then(function (response) {
       response.json().then(function (responseJson) {
         if (responseJson.error) {
@@ -215,7 +215,7 @@ fastify.get("/explore", async function (request, reply) {
   try {
     let featuredRows = false;
     let featuredResponse = await (
-      await fetch(API_URL + "/public/list/featured")
+      await fetch(API_URL + "/public/list/featured?limit=3")
     ).json();
     if (featuredResponse.error == false && featuredResponse.data) {
       featuredRows = featuredResponse.data.rows;
@@ -223,7 +223,7 @@ fastify.get("/explore", async function (request, reply) {
     
     let recentRows = false;
     let recentsResponse = await (
-      await fetch(API_URL + "/public/list/recent")
+      await fetch(API_URL + "/public/list/recent?limit=3")
     ).json();
     if (recentsResponse.error == false && recentsResponse.data) {
       recentRows = recentsResponse.data.rows;
