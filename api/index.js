@@ -963,7 +963,7 @@ fastify.get("/public/search/studysets", async function (request, reply) {
             let result = await pool.query(
                 "select s.id, s.user_id, u.display_name, s.title, s.updated_at, s.terms_count " +
                 "from public.studysets s inner join public.profiles u on s.user_id = u.id " +
-                "where tsvector_title @@ websearch_to_tsquery('english', $1)",
+                "where s.private = false and tsvector_title @@ websearch_to_tsquery('english', $1)",
                 [
                     request.query.q
                 ]
@@ -976,30 +976,11 @@ fastify.get("/public/search/studysets", async function (request, reply) {
             })
         } catch (error) {
             request.log.error(error);
-            /* on error, try again before actually error-ing */
-            try {
-                let result = await pool.query(
-                    "select s.id, s.user_id, u.display_name, s.title, s.updated_at, s.terms_count " +
-                    "from public.studysets s inner join public.profiles u on s.user_id = u.id " +
-                    "where tsvector_title @@ websearch_to_tsquery('english', $1)",
-                    [
-                        request.query.q
-                    ]
-                )
-                return reply.send({
-                    error: false,
-                    data: {
-                        rows: result.rows
-                    }
-                })
-            } catch (error2) {
-                request.log.error(error2);
-                return reply.code(500).send({
-                    error: {
-                        type: "db-error"
-                    }
-                })
-            }
+            return reply.code(500).send({
+                error: {
+                    type: "db-error"
+                }
+            })
         }
     } else {
         return reply.code(400).send({
@@ -1015,7 +996,7 @@ fastify.get("/public/list/recent", async function (request, reply) {
         let result = await pool.query(
             "select s.id, s.user_id, u.display_name, s.title, s.updated_at, s.terms_count " +
             "from public.studysets s inner join public.profiles u on s.user_id = u.id " +
-            "order by s.updated_at desc limit 3"
+            "where s.private = false order by s.updated_at desc limit 3"
         )
         return reply.send({
             error: false,
@@ -1034,11 +1015,16 @@ fastify.get("/public/list/recent", async function (request, reply) {
 })
 
 fastify.get("/public/list/featured", async function (request, reply) {
+    let limit = 10;
+    if (request.query && request.query.limit > 0 && request.query.limit < 200 ) {
+        limit = request.query.limit;
+    }
     try {
         let result = await pool.query(
             "select s.id, s.user_id, u.display_name, s.title, s.updated_at, s.terms_count " +
             "from public.studysets s inner join public.profiles u on s.user_id = u.id " +
-            "where s.featured = true order by s.updated_at desc limit 3"
+            "where s.featured = true and s.private = false order by s.updated_at desc limit $1",
+            [limit]
         )
         if (result.rows.length >= 1) {
             return reply.send({
