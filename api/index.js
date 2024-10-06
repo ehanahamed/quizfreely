@@ -959,13 +959,19 @@ fastify.get("/public/studysets/:studysetid", async function (request, reply) {
 
 fastify.get("/public/search/studysets", async function (request, reply) {
     if (request.query && request.query.q) {
+        let limit = 10;
+        if (request.query && request.query.limit > 0 && request.query.limit < 200) {
+            limit = request.query.limit;
+        }
         try {
             let result = await pool.query(
                 "select s.id, s.user_id, u.display_name, s.title, s.updated_at, s.terms_count " +
                 "from public.studysets s inner join public.profiles u on s.user_id = u.id " +
-                "where s.private = false and tsvector_title @@ websearch_to_tsquery('english', $1)",
+                "where s.private = false and tsvector_title @@ websearch_to_tsquery('english', $1) " +
+                "limit $2",
                 [
-                    request.query.q
+                    request.query.q,
+                    limit
                 ]
             )
             return reply.send({
@@ -992,11 +998,16 @@ fastify.get("/public/search/studysets", async function (request, reply) {
 })
 
 fastify.get("/public/list/recent", async function (request, reply) {
+    let limit = 10;
+    if (request.query && request.query.limit > 0 && request.query.limit < 200) {
+        limit = request.query.limit;
+    }
     try {
         let result = await pool.query(
             "select s.id, s.user_id, u.display_name, s.title, s.updated_at, s.terms_count " +
             "from public.studysets s inner join public.profiles u on s.user_id = u.id " +
-            "where s.private = false order by s.updated_at desc limit 3"
+            "where s.private = false order by s.updated_at desc limit $1",
+            [ limit ]
         )
         return reply.send({
             error: false,
@@ -1016,7 +1027,7 @@ fastify.get("/public/list/recent", async function (request, reply) {
 
 fastify.get("/public/list/featured", async function (request, reply) {
     let limit = 10;
-    if (request.query && request.query.limit > 0 && request.query.limit < 200 ) {
+    if (request.query && request.query.limit > 0 && request.query.limit < 200) {
         limit = request.query.limit;
     }
     try {
@@ -1051,6 +1062,10 @@ fastify.get("/list/my-studysets", async function (request, reply) {
         request.headers.authorization &&
         request.headers.authorization.toLowerCase().startsWith("bearer ")
     ) {
+        let limit = 10;
+        if (request.query && request.query.limit > 0 && request.query.limit < 200) {
+            limit = request.query.limit;
+        }
         /* "Bearer " (with space) is 6 characters, so 7 is where our token starts */
         let authToken = request.headers.authorization.substring(7);
         let client = await pool.connect();
@@ -1066,9 +1081,10 @@ fastify.get("/list/my-studysets", async function (request, reply) {
                 await client.query("select set_config('quizfreely_auth.user_id', $1, true)", [session.rows[0].user_id]);
                 let studysets = await client.query(
                     "select id, user_id, title, private, updated_at from public.studysets " +
-                    "where user_id = $1 order by updated_at desc limit 100",
+                    "where user_id = $1 order by updated_at desc limit $2",
                     [
-                        session.rows[0].user_id
+                        session.rows[0].user_id,
+                        limit
                     ]
                 );
                 await client.query("COMMIT");
