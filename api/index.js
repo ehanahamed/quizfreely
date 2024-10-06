@@ -1127,8 +1127,24 @@ fastify.get("/list/my-studysets", async function (request, reply) {
     
 })*/
 
-Cron("0 0 * * *", function () {
-    pool.query("call auth.delete_expired_sessions()");
+Cron("0 0 * * *", async function () {
+    try {
+        let client = await pool.connect();
+        try {
+            await client.query("BEGIN");
+            await client.query("set role quizfreely_auth");
+            await client.query("call auth.delete_expired_sessions()");
+            await client.query("COMMIT");
+            fastify.log.info("ran cron job for auth.delete_expired_sessions()")
+        } catch (error2) {
+            await client.query("ROLLBACK");
+            fastify.log.error(error2, "error while running cron job for auth.delete_expired_sessions()")
+        } finally {
+            client.release();
+        }
+    } catch (error) {
+        fastify.log.error(error, "error while connecting to pg pool client during cron job for auth.delete_expired_sessions()")
+    }
 });
 
 fastify.listen({
