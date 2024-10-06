@@ -1025,27 +1025,11 @@ fastify.get("/public/list/recent", async function (request, reply) {
         })
     } catch (error) {
         request.log.error(error);
-        /* try again (once) */
-        try {
-            let result = await pool.query(
-                "select s.id, s.user_id, u.display_name, s.title, s.updated_at, s.terms_count " +
-                "from public.studysets s inner join public.profiles u on s.user_id = u.id " +
-                "order by s.updated_at desc limit 3"
-            )
-            return reply.send({
-                error: false,
-                data: {
-                    rows: result.rows
-                }
-            })
-        } catch (error2) {
-            request.log.error(error2);
-            return reply.code(500).send({
-                error: {
-                    type: "db-error"
-                }
-            })
-        }
+        return reply.code(500).send({
+            error: {
+                type: "db-error"
+            }
+        })
     }
 })
 
