@@ -219,3 +219,15 @@ to quizfreely_auth_user
 using (
   (select auth.get_user_id()) = user_id
 );
+
+create table public.search_queries (
+  query text primary key,
+  query_tsvector tsvector generated always as (to_tsvector('english', query)) stored,
+  count int not null default 1
+);
+
+grant select on public.search_queries to quizfreely_api, quizfreely_auth_user;
+grant insert on public.search_queries to quizfreely_auth_user;
+grant update on public.search_queries to quizfreely_auth_user;
+
+alter table public.search_queries disable row level security;
