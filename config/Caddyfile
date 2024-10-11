@@ -10,3 +10,9 @@ quizfreely.com {
     dns digitalocean DIGITAL_OCEAN_API_TOKEN_GOES_HERE
   }
 }
+www.quizfreely.com {
+  redir https://quizfreely.com{uri} permanent
+  tls {
+    dns digitalocean DIGITAL_OCEAN_API_TOKEN_GOES_HERE
+  }
+}
