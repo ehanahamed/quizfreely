@@ -997,6 +997,66 @@ fastify.get("/public/search/studysets", async function (request, reply) {
     }
 })
 
+fastify.get("/public/search/query-predictions", async function (request, reply) {
+    if (request.query && request.query.q) {
+        if (request.query.q.length >= 1 && request.query.q.length < 50) {
+            let limit = 5;
+            if (request.query && request.query.limit > 0 && request.query.limit < 100) {
+                limit = request.query.limit;
+            }
+            try {
+                let result;
+                if (request.query.q.length < 3) {
+                    result = await pool.query(
+                        "select query, subject from public.search_queries " +
+                        "where query ilike concat($1::text, '%') limit $2",
+                        [
+                            request.query.q,
+                            limit
+                        ]
+                    )
+                } else {
+                    result = await pool.query(
+                        "select query, subject from public.search_queries " +
+                        "where similarity(query, $1) > 0.1 " +
+                        "order by similarity(query, $1) desc limit $2",
+                        [
+                            request.query.q,
+                            limit
+                        ]
+                    )
+                }
+                return reply.send({
+                    error: false,
+                    data: {
+                        rows: result.rows
+                    }
+                })
+            } catch (error) {
+                request.log.error(error);
+                return reply.code(500).send({
+                    error: {
+                        type: "db-error"
+                    }
+                })
+            }
+        } else {
+            return reply.code(400).send({
+                error: {
+                    type: "field-length-invalid",
+                    message: "search query length must be greater than or equal to 1 and less than 50"
+                }
+            })
+        }
+    } else {
+        return reply.code(400).send({
+            error: {
+                type: "fields-missing"
+            }
+        })
+    }
+})
+
 fastify.get("/public/list/recent", async function (request, reply) {
     let limit = 10;
     if (request.query && request.query.limit > 0 && request.query.limit < 200) {
