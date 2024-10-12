@@ -1005,13 +1005,28 @@ fastify.get("/public/search/query-predictions", async function (request, reply) 
                 limit = request.query.limit;
             }
             try {
+                /*
+                    replace whitespace (tabs, spaces, etc and multiple) with a space
+                    whitespace characters next to eachother will be replaced with a single space
+                */
+                let spaceRegex = /\s+/g;
+                let inputQuery = request.query.q.replace(spaceRegex, " ");
+                /* after that, replace and sign ("&") with "and" */
+                inputQuery = inputQuery.replace("&", "and");
+                /*
+                    after "sanitizing" spaces, remove special characters
+                    this will keep letters (any alphabet) accent marks, numbers (any alphabet), underscore, period/dot, and dashes
+                */
+                let rmRegex = /[^\p{L}\p{M}\p{N} _.-]/gu;
+                inputQuery = inputQuery.replace(rmRegex, "");
                 let result;
                 if (request.query.q.length < 3) {
                     result = await pool.query(
                         "select query, subject from public.search_queries " +
-                        "where query ilike concat($1::text, '%') limit $2",
+                        "where query ilike $1 limit $2",
                         [
-                            request.query.q,
+                            /* percent sign (%) to match querys that start with inputQuery */
+                            (inputQuery + "%"),
                             limit
                         ]
                     )
