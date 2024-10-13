@@ -1009,16 +1009,16 @@ fastify.get("/public/search/query-predictions", async function (request, reply) 
                     replace whitespace (tabs, spaces, etc and multiple) with a space
                     whitespace characters next to eachother will be replaced with a single space
                 */
-                let spaceRegex = /\s+/g;
-                let inputQuery = request.query.q.replace(spaceRegex, " ");
+                let spaceRegex = /\s+/gu;
+                let inputQuery = request.query.q.replaceAll(spaceRegex, " ");
                 /* after that, replace and sign ("&") with "and" */
-                inputQuery = inputQuery.replace("&", "and");
+                inputQuery = inputQuery.replaceAll("&", "and");
                 /*
                     after "sanitizing" spaces, remove special characters
                     this will keep letters (any alphabet) accent marks, numbers (any alphabet), underscore, period/dot, and dashes
                 */
                 let rmRegex = /[^\p{L}\p{M}\p{N} _.-]/gu;
-                inputQuery = inputQuery.replace(rmRegex, "");
+                inputQuery = inputQuery.replaceAll(rmRegex, "");
                 let result;
                 if (inputQuery.length <= 3) {
                     result = await pool.query(
