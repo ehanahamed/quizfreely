@@ -1020,7 +1020,7 @@ fastify.get("/public/search/query-predictions", async function (request, reply) 
                 let rmRegex = /[^\p{L}\p{M}\p{N} _.-]/gu;
                 inputQuery = inputQuery.replace(rmRegex, "");
                 let result;
-                if (request.query.q.length < 3) {
+                if (inputQuery.length <= 3) {
                     result = await pool.query(
                         "select query, subject from public.search_queries " +
                         "where query ilike $1 limit $2",
@@ -1033,10 +1033,10 @@ fastify.get("/public/search/query-predictions", async function (request, reply) 
                 } else {
                     result = await pool.query(
                         "select query, subject from public.search_queries " +
-                        "where similarity(query, $1) > 0.1 " +
+                        "where similarity(query, $1) > 0.15 " +
                         "order by similarity(query, $1) desc limit $2",
                         [
-                            request.query.q,
+                            inputQuery,
                             limit
                         ]
                     )
