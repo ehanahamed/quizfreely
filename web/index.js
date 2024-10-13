@@ -95,7 +95,7 @@ function themeData(request) {
   if (request.cookies.theme !== undefined && themes.includes(request.cookies.theme)) {
     theme = request.cookies.theme;
   }
-  let themeCss = `<link rel="stylesheet" href="/assets/themes/${theme}.css" />`;
+  let themeCss = `<link rel="stylesheet" href="/assets/themes/${theme}.min.css" />`;
   if (theme == "custom") {
     themeCss = ""
   }
