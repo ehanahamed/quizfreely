@@ -76,7 +76,8 @@ fastify.setErrorHandler(function (error, request, reply) {
 fastify.setNotFoundHandler(function (request, reply) {
   request.log.warn("404 at " + request.url)
   reply.status(404).view("404.html", {
-    ...themeData(request)
+    ...themeData(request),
+    apiUrl: API_URL
   })
 })
 
@@ -112,11 +113,13 @@ function landingPage(request, reply) {
         if (responseJson.error) {
           reply.view("home.html", {
             ...themeData(request),
+            apiUrl: API_URL,
             featuredRows: false
           });
         } else {
           reply.view("home.html", {
             ...themeData(request),
+            apiUrl: API_URL,
             featuredRows: responseJson.data.rows
           });
         }
@@ -124,6 +127,7 @@ function landingPage(request, reply) {
     }).catch(function (error) {
       reply.view("home.html", {
         ...themeData(request),
+        apiUrl: API_URL,
         featuredRows: false
       });
     });
@@ -188,25 +192,29 @@ fastify.get("/sign-in", function (request, reply) {
 
 fastify.get("/edit", function (request, reply) {
   reply.view("edit.html", {
-    ...themeData(request)
+    ...themeData(request),
+    apiUrl: API_URL,
   })
 })
 
 fastify.get("/privacy", function (request, reply) {
   reply.view("privacy.html", {
-    ...themeData(request)
+    ...themeData(request),
+    apiUrl: API_URL,
   })
 })
 
 fastify.get("/terms", function (request, reply) {
   reply.view("tos.html", {
-    ...themeData(request)
+    ...themeData(request),
+    apiUrl: API_URL,
   })
 })
 
 fastify.get("/tos", function (request, reply) {
   reply.view("tos.html", {
-    ...themeData(request)
+    ...themeData(request),
+    apiUrl: API_URL,
   })
 })
 
@@ -231,6 +239,7 @@ fastify.get("/explore", async function (request, reply) {
     
     return reply.view("explore.html", {
         ...themeData(request),
+        apiUrl: API_URL,
         featuredRows: featuredRows,
         recentRows: recentRows
     });
