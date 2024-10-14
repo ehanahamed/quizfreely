@@ -1,0 +1,28 @@
+<form action="/search" method="get">
+    <div class="searchbar">
+        <i class="searchbar-icon nf nf-fa-search"></i>
+        <input type="text" name="q" id="searchbar-input" placeholder="Search" />
+    </div>
+</form>
+<script>
+    document.getElementById("searchbar-input").addEventListener(
+        "input",
+        function (event) {
+            if (event.target.value.length > 0 && event.target.value.length < 50) {
+                fetch(
+                    "<eta>= data.apiUrl </eta>/public/search/query-predictions?q=" + encodeURIComponent(event.target.value)
+                ).then(function (response) {
+                    response.json().then(function (responseJson) {
+                        if (responseJson.data) {
+                            console.log(responseJson.data.rows);
+                        }
+                    }).catch(function (error) {
+                        console.error(error);
+                    })
+                }).catch(function (error) {
+                    console.error(error);
+                })
+            }
+        }
+    )
+</script>
