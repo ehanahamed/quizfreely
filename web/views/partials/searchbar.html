@@ -1,8 +1,10 @@
-<form action="/search" method="get">
-    <div class="searchbar">
-        <i class="searchbar-icon nf nf-fa-search"></i>
-        <input type="text" name="q" id="searchbar-input" placeholder="Search" />
-    </div>
+<form action="/search" method="get" class="searchbar">
+    <i class="searchbar-icon nf nf-fa-search"></i>
+    <eta> if (data.searchQuery) { </eta>
+    <input type="text" name="q" id="searchbar-input" placeholder="Search" autocomplete="off" autocapitalize="off" spellcheck="false" value="<eta>= data.searchQuery </eta>"/>
+    <eta> } else { </eta>
+    <input type="text" name="q" id="searchbar-input" placeholder="Search" autocomplete="off" autocapitalize="off" spellcheck="false"/>
+    <eta> } </eta>
 </form>
 <script>
     document.getElementById("searchbar-input").addEventListener(
