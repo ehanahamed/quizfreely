@@ -1,4 +1,4 @@
-<header>
+<header class="navbar with-search with-status">
   <div class="menu nav">
     <div <eta> if (data.page == "home") {</eta>
       class="current"
@@ -15,5 +15,11 @@
     <eta>}</eta> >
       <a href="/settings">Settings</a>
     </div>
+  </div>
+  <div class="search">
+    <eta>~ include("./searchbar", { apiUrl: data.apiUrl, /*searchQuery: data.searchQuery*/ }) </eta>
+  </div>
+  <div class="status">
+    
   </div>
 </header>
