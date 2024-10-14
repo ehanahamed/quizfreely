@@ -16,10 +16,13 @@
       <a href="/settings">Settings</a>
     </div>
   </div>
+  <eta> if (data.hideSearchbar) { </eta>
+  <div class="search"></div>
+  <eta> } else { </eta>
   <div class="search">
     <eta>~ include("./searchbar", { apiUrl: data.apiUrl, searchQuery: data.searchQuery }) </eta>
   </div>
-  <div class="status">
-    
+  <eta> } </eta>
+  <div class="status">    
   </div>
 </header>
