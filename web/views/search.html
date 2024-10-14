@@ -33,7 +33,11 @@
   </head>
   <body>
     <eta>~ include("./partials/body-start", { theme: data.theme }) </eta>
+    <eta> if (data.query) { </eta>
     <eta>~ include("./partials/navbar", { page: "explore", searchQuery: data.query, apiUrl: data.apiUrl }) </eta>
+    <eta> } else { </eta>
+    <eta>~ include("./partials/navbar", { page: "explore", hideSearchbar: true }) </eta>
+    <eta> } </eta>
     <eta>~ include("./partials/noscript") </eta>
     <main>
       <div class="grid page">
@@ -55,10 +59,10 @@
           <eta> }) </eta>
           </div>
           <eta> } else { </eta>
-          <div class="searchbar">
-            <i class="searchbar-icon nf nf-fa-search"></i>
-            <input type="text" placeholder="Search" />
-          </div>
+          <h2 style="text-align:center;margin-top:4rem;margin-bottom:0px">Google 2</h2>
+          <p class="fg0" style="text-align:center;margin-top:0.2rem">The Sequel</p>
+          <eta>~ include("./partials/searchbar", {}) </eta>
+          <div style="margin-bottom:20rem"></div>
           <eta> } </eta>
         </div>
       </div>
