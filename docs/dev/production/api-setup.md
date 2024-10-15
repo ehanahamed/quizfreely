@@ -75,7 +75,9 @@ Set a secure password for the `postgres` user:
 \password postgres
 ```
 
-Run the commands in [quizfreely/api/quizfreely-db-setup.sql](../../../api/quizfreely-db-setup.sql) to setup all the users, schemas, tables, & functions. You can just copy and paste all the commands from the file into the database shell.
+Run the commands in [quizfreely/config/db/quizfreely-db-setup.sql](../../../config/db/quizfreely-db-setup.sql) to setup all the users, schemas, tables, & functions. You can just copy and paste all the commands from the file into the database shell.
+
+We used sparse-checkout to clone the repository, so you will NOT find `config/` on your/our cloned copy. Only `api/` (and/or `web/`) will exist on your/our cloned copy. You can get `quizfreely-db-setup.sql` from Quizfreely's Codeberg/GitHub.
 
 After you run those commands, there will be a user named `quizfreely_api`. We need to set its password:
 ```sh
@@ -182,7 +184,7 @@ git pull
 
 Check `api/quizfreely-api.log`, and delete/clear it if needed. (a new `quizfreely-api.log` will be created when the server process starts if you/we delete the whole file)
 
-If there are changes to [api/quizfreely-db-setup.sql](../../../api/quizfreely-db-setup.sql), we will manually update the production database to match all the changes to roles, schemas, tables, or functions in `quizfreely-db-setup.sql`.
+If there are changes to [config/db/quizfreely-db-setup.sql](../../../config/db/quizfreely-db-setup.sql), we will manually update the production database to match all the changes to roles, schemas, tables, or functions in `quizfreely-db-setup.sql`.
 
 After all changes are made, start quizfreely-api again:
 ```sh
