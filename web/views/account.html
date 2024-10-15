@@ -260,7 +260,7 @@
     </script>
     <eta>if (data.signup) { </eta>
     <script>
-      document.getElementById("signupButton").addEventListener("click", function () {
+      function signupSubmit() {
         if (
           document.getElementById("signupPasswordInput").value === document.getElementById("signupPasswordConfirmInput").value
         ) {
@@ -288,11 +288,20 @@
             "Passwords don't match <b>D:</b> <br />" +
             "Make sure you retyped your password how you want!";
         }
-      })
+      }
+      document.getElementById("signupButton").addEventListener("click", signupSubmit);
+      document.getElementById("signupPasswordConfirmInput").addEventListener(
+        "keyup",
+        function (event) {
+          if (event.key == "Enter") {
+            signupSubmit();
+          }
+        }
+      );
     </script>
     <eta> } else { </eta>
     <script>
-      document.getElementById("signinButton").addEventListener("click", function () {
+      function signinSubmit() {
         client.req({
           method: "POST",
           path: "/auth/sign-in",
@@ -309,7 +318,16 @@
             showSignedIn();
           }
         })
-      })
+      }
+      document.getElementById("signinButton").addEventListener("click", signinSubmit);
+      document.getElementById("signinPasswordInput").addEventListener(
+        "keyup",
+        function (event) {
+          if (event.key == "Enter") {
+            signinSubmit();
+          }
+        }
+      );
     </script>
     <eta> } </eta>
   </body>
