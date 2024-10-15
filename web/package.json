@@ -1,6 +1,6 @@
 {
   "name": "quizfreely-web",
-  "version": "0.24.0",
+  "version": "0.24.2",
   "main": "index.js",
   "type": "module",
   "scripts": {
