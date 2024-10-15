@@ -1,10 +1,11 @@
-<form action="/search" method="get" class="searchbar">
+<form action="/search" method="get" class="searchbar with-autocomplete">
     <i class="searchbar-icon nf nf-fa-search"></i>
     <eta> if (data.searchQuery) { </eta>
     <input type="text" name="q" id="searchbar-input" placeholder="Search" autocomplete="off" autocapitalize="off" spellcheck="false" value="<eta>= data.searchQuery </eta>"/>
     <eta> } else { </eta>
     <input type="text" name="q" id="searchbar-input" placeholder="Search" autocomplete="off" autocapitalize="off" spellcheck="false"/>
     <eta> } </eta>
+    <div id="searchbar-autocomplete" class="searchbar-autocomplete hide"></div>
 </form>
 <script>
     document.getElementById("searchbar-input").addEventListener(
@@ -16,14 +17,38 @@
                 ).then(function (response) {
                     response.json().then(function (responseJson) {
                         if (responseJson.data) {
-                            console.log(responseJson.data.rows);
+                            /* clear old items */
+                            document.getElementById("searchbar-autocomplete").innerHTML = "";
+                            /* iterate over rows and add their link element to the list */
+                            for(var i = 0; i < responseJson.data.rows.length; i++) {
+                                var link = document.createElement("a");
+                                link.href = "/search?q=" + encodeURIComponent(
+                                    responseJson.data.rows[i].query
+                                );
+                                link.innerText = responseJson.data.rows[i].query;
+                                document.getElementById("searchbar-autocomplete").appendChild(link);
+                            }
+                            /* show the container */
+                            document.getElementById("searchbar-autocomplete").classList.remove("hide");
+                        } else {
+                            /* hide and clear container on error */
+                            document.getElementById("searchbar-autocomplete").classList.add("hide");
+                            document.getElementById("searchbar-autocomplete").innerHTML = "";
                         }
                     }).catch(function (error) {
+                        /* hide and clear container on error */
+                        document.getElementById("searchbar-autocomplete").classList.add("hide");
+                        document.getElementById("searchbar-autocomplete").innerHTML = "";
                         console.error(error);
                     })
                 }).catch(function (error) {
+                    document.getElementById("searchbar-autocomplete").classList.add("hide");
+                    document.getElementById("searchbar-autocomplete").innerHTML = "";
                     console.error(error);
                 })
+            } else {
+                document.getElementById("searchbar-autocomplete").classList.add("hide");
+                document.getElementById("searchbar-autocomplete").innerHTML = "";
             }
         }
     )
