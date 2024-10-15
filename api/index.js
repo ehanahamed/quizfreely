@@ -2,6 +2,7 @@ import "dotenv/config";
 import Fastify from "fastify";
 import fastifyCompress from "@fastify/compress";
 import fastifyCors from "@fastify/cors";
+import fastifyFormbody from "@fastify/formbody";
 import fastifyOauth2 from "@fastify/oauth2";
 import pg from "pg";
 const { Pool, Client } = pg;
@@ -43,6 +44,7 @@ await fastify.register(
 await fastify.register(fastifyCors, {
     origin: CORS_ORIGIN
 });
+await fastify.register(fastifyFormbody);
 await fastify.register(fastifyOauth2, {
     name: "googleOAuth2",
     scope: ["openid", "profile", "email"],
