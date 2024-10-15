@@ -353,6 +353,8 @@ fastify.get("/search", function (request, reply) {
           })
         }
       })
+    }).catch(function (error) {
+      reply.callNotFound();
     })
   } else {
     reply.view("search.html", {
