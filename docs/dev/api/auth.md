@@ -20,7 +20,7 @@ Users' session id and token are stored in localstorage, just like username and p
 
 ### Postgres roles
 
-When we setup our PostgreSQL database we create three roles: `quizfreely_api`, `quizfreely_auth`, and `quizfreely_auth_user`. (The commands to setup the database are in [`api/quizfreely-db-setup.sql`](../../../api/quizfreely-db-setup.sql) and the process is explained in [developer docs > production > api-setup.md > Postgres setup](../production/api-setup.md#postgres-setup))
+When we setup our PostgreSQL database we create three roles: `quizfreely_api`, `quizfreely_auth`, and `quizfreely_auth_user`. (The commands to setup the database are in [`config/db/quizfreely-db-setup.sql`](../../../config/db/quizfreely-db-setup.sql) and the process is explained in [developer docs > production > api-setup.md > Postgres setup](../production/api-setup.md#postgres-setup))
 
 - `quizfreely_api` role
   - can be logged in/connected as
@@ -48,7 +48,7 @@ When we setup our PostgreSQL database we create three roles: `quizfreely_api`, `
 
 The server process/js code connects to the database as the `quizfreely_api` role.
 
-`quizfreely_api` can switch to other roles (`quizfreely_auth` or `quizfreely_auth_user`) after it connects, so that it only has permissions when we decide/the server js code decides it needs those permissions. It uses `set role role_goes_here;`, it can only become roles we allow it to become. When we setup the database with [`api/quizfreely-db-setup.sql`](../../../api/quizfreely-db-setup.sql) (explained in [developer docs > production > api-setup.md > Postgres setup](../production/api-setup.md#postgres-setup)) we grant `quizfreely_api` permission to become `quizfreely_auth`, and grant `quizfreely_auth` permission to become `quizfreely_auth_user`.
+`quizfreely_api` can switch to other roles (`quizfreely_auth` or `quizfreely_auth_user`) after it connects, so that it only has permissions when we decide/the server js code decides it needs those permissions. It uses `set role role_goes_here;`, it can only become roles we allow it to become. When we setup the database with [`config/db/quizfreely-db-setup.sql`](../../../config/db/quizfreely-db-setup.sql) (explained in [developer docs > production > api-setup.md > Postgres setup](../production/api-setup.md#postgres-setup)) we grant `quizfreely_api` permission to become `quizfreely_auth`, and grant `quizfreely_auth` permission to become `quizfreely_auth_user`.
 
 The api's paths that return public information (like `https://api.quizfreely.com/studysets/public/studyset-id-goes-here`) do a simple postgres query and return the requested data. `quizfreely_api` has permission to view public stuff.
 
