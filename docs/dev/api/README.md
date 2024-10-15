@@ -44,7 +44,7 @@ psql -d quizfreely-db
 
 Now, you should be in a different looking shell. This is the database shell, it's where you run SQL commands and stuff.
 
-Run the commands in [quizfreely/api/quizfreely-db-setup.sql](../../../api/quizfreely-db-setup.sql) to setup all the users, schemas, tables, & functions. You can just copy and paste all the commands from the file into the database shell.
+Run the commands in [quizfreely/config/db/quizfreely-db-setup.sql](../../../config/db/quizfreely-db-setup.sql) to setup all the users, schemas, tables, & functions. You can just copy and paste all the commands from the file into the database shell.
 
 After you run those commands, there will be a postgres user named `quizfreely_api`. We need to set its password:
 ```sh
