@@ -19,7 +19,7 @@ To restore the backed up data into a freshly created database, use the sql file:
 sudo su postgres
 createdb quizfreely-db
 psql -d quizfreely-db -f quizfreely-db-backup.sql
-# if you used --data-only, then FIRST run/copy api/quizfreely-db-setup.sql, then run:
+# if you used --data-only, then FIRST run/copy config/db/quizfreely-db-setup.sql, then run:
 # psql -d quizfreely-db -f quizfreely-db-data-only.sql
 ```
 
