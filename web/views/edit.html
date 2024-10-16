@@ -276,7 +276,7 @@
         })
       } else {
         var db;
-        var dbReq = indexedDB.open("quizfreelyDB", 1);
+        var dbReq = indexedDB.open("quizfreelydata", 1);
         dbReq.onerror = function (event) {
           alert("Oh no! IndexedDB errored. Better error message coming soon?");
         }
@@ -284,7 +284,7 @@
           db = event.target.result;
           if (db.objectStoreNames.contains("studysets") == false) {
             var studysetsObjectStore = db.createObjectStore("studysets", { keyPath: "id", autoIncrement: true });
-            studysetsObjectStore.createIndex("")
+            studysetsObjectStore.createIndex("title_idx", "title");
           }
         }
         dbReq.onsuccess = function (event) {
@@ -294,6 +294,15 @@
             alert("Oh no! An IndexedDB error!");
           };
           document.getElementById("create-button").addEventListener("click", function () {
+            var dbtrans = db.transaction("studysets", "readwrite");
+            var studysetsObjectStore = dbtrans.objectStore("studysets");
+            studysetsObjectStore.add({
+              title: document.getElementById("edit-title").value,
+              data: {
+                terms: editTermsTable.arrayFromTable()
+              },
+              updated_at: (new Date()).toUTCString()
+            })
           });
         };
       }
