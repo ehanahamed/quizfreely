@@ -27,6 +27,8 @@ insert into public.search_queries (query, subject) values
 ('irregular verbs','lang'),
 ('italian','lang/italiano'),
 ('inglés','lang/english'),
+('java','sci/compsci'),
+('javascript','sci/compsci'),
 ('japanese','lang/日本語'),
 ('korean','lang/한국어'),
 ('latin','lang/latin'),
