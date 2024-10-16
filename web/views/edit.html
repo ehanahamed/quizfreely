@@ -296,13 +296,16 @@
           document.getElementById("create-button").addEventListener("click", function () {
             var dbtrans = db.transaction("studysets", "readwrite");
             var studysetsObjectStore = dbtrans.objectStore("studysets");
-            studysetsObjectStore.add({
+            var addReq = studysetsObjectStore.add({
               title: document.getElementById("edit-title").value,
               data: {
                 terms: editTermsTable.arrayFromTable()
               },
               updated_at: (new Date()).toUTCString()
-            })
+            });
+            addReq.onsuccess = function () {
+              alert(objectStore.autoIncrement);
+            }
           });
         };
       }
