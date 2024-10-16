@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+  <!--
+    Quizfreely
+    Copyright (c) Ehan Ahamed and contributors
+    Licensed under the UPL-1.0 License
+    https://quizfreely.com/LICENSE.txt
+  -->
+
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=10, user-scalable=1"
+    />
+    <title><eta>= data.title </eta> - Quizfreely</title>
+    <meta name="description" content="Quizfreely is a free and open source learning app with flashcards, practice tests, and more tools to help you study." />
+    <meta name=”robots” content="index, follow" />
+    <link rel="canonical" href="https://quizfreely.com/explore" />
+    <link rel="icon" href="/favicon.ico" sizes="32x32">
+    <link rel="icon" href="/icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    <eta>~ data.themeCss </eta>
+    <link rel="stylesheet" href="/assets/fonts/fonts.css" />
+    <link
+      rel="stylesheet"
+      href="/assets/nerdfonts/webfont.css"
+    />
+  </head>
+  <body>
+    <eta>~ include("./partials/body-start", { theme: data.theme }) </eta>
+    <eta>~ include("./partials/navbar", { page: "explore", apiUrl: data.apiUrl }) </eta>
+    <eta>~ include("./partials/noscript") </eta>
+    <main>
+      <div class="grid page">
+        <div class="content">
+          <h2 class="h4"><eta>= data.title </eta></h2>
+          <div class="grid list">
+            <eta> data.rows.forEach(function (studyset) { </eta>
+              <div class="box">
+                <a href="/studysets/<eta>= studyset.id </eta>">
+                  <eta>= studyset.title </eta>
+                </a>
+                <p class="h6" style="margin-top:0.4rem;margin-bottom:0px">
+                  <eta>= studyset.display_name </eta>
+                </p>
+                <eta> if (studyset.terms_count >= 1) { </eta>
+                <p class="h6" style="margin-top:0.2rem;margin-bottom:0.2rem">
+                  <eta>= studyset.terms_count </eta> Terms
+                </p>
+                <eta> } </eta>
+              </div>
+            <eta> }) </eta>
+          </div>
+          <div class="combo-select">
+            <a href="/<eta>= data.sectionUrl </eta>?p=1" class="button left">1</a>
+            <eta> for (var i = 2; i < data.pagesTotal; i++) { </eta>
+            <a href="/<eta>= data.sectionUrl </eta>?p=<eta>= i </eta>" class="button left"><eta>= i </eta></a>
+            <eta> } </eta>
+            <a href="/<eta>= data.sectionUrl </eta>?p=<eta>= data.pagesTotal </eta>" class="button right"><eta>= data.pagesTotal </eta></a>
+          </div>
+        </div>
+      </div>
+    </main>
+    <eta>~ include("./partials/footer") </eta>
+    <script src="/assets/js/client.js"></script>
+    <script src="/assets/js/dayjs.min.js"></script>
+    <script src="/assets/js/calendar.js"></script>
+    <script>
+      client.apiUrl = "<eta>= data.apiUrl </eta>"
+      dayjs.extend(window.dayjs_plugin_calendar);
+      var dayjsCalendarOptions = {
+        sameDay: "[Today at] h:mm A", // Today at 11:22 PM
+        nextDay: "[Tomorrow at] h:mm A", // Tomorrow at 11:22 PM
+        nextWeek: "ddd, MMM D [at] h:mm A", // Fri, Aug 30 at 11:22 PM
+        lastDay: "[Yesterday at] h:mm A", // Yesterday at 11:22 PM
+        lastWeek: "ddd, MMM D [at] h:mm A", // Fri, Aug 30 at 11:22 PM
+        sameElse: "ddd, MMM D (YYYY-MM-DD)", // Fri, Aug 30 (2024-08-30)
+      };
+      if (window.localStorage && (localStorage.getItem("settingTimeHour") == "24h")) {
+        dayjsCalendarOptions = {
+          sameDay: "[Today at] H:mm", // Today at 23:22
+          nextDay: "[Tomorrow at] H:mm", // Tomorrow at 23:22
+          nextWeek: "ddd, MMM D [at] H:mm", // Fri, Aug 30 at 23:22
+          lastDay: "[Yesterday at] H:mm", // Yesterday at 23:22
+          lastWeek: "ddd, MMM D [at] H:mm", // Fri, Aug 30 at 23:22
+          sameElse: "ddd, MMM D (YYYY-MM-DD)", // Fri, Aug 30 (2024-08-30)
+        }
+      }
+      /*if (client.hasSession()) {
+        client.req("/studysets/list", {}, function (result) {
+          if (result.data && result.data.rows.length >= 1) {
+            document.getElementById("studyset-list").innerHTML = "";
+            for (var i = 0; i < result.data.rows.length; i++) {
+              var box = document.createElement("div");
+              box.classList.add("box");
+              var title = document.createElement("a");
+              title.innerText = result.data.rows[i].title;
+              if (result.data.rows[i].private) {
+                title.href = "/studyset/private/" + result.data.rows[i].id
+              } else {
+                title.href = "/studysets/" + result.data.rows[i].id
+              }
+              var time = document.createElement("p");
+              time.innerText = dayjs(result.data.rows[i].updated_at).calendar(
+                null,
+                dayjsCalendarOptions
+              )
+              time.classList.add("h6")
+              box.appendChild(title);
+              box.appendChild(time);
+              document.getElementById("studyset-list").appendChild(box);
+            }
+          }
+        })
+      }*/
+    </script>
+  </body>
+</html>
