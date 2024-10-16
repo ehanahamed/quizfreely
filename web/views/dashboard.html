@@ -36,26 +36,14 @@
           Starting point ig
           -->
           <div id="mainDashboarddiv">
-            <p>
-              Create a new study set or open a study set file you downloaded.
+            <p id="dashboard-noaccount-alert" class="fg0 hide">
+              You're not signed in, so your sets will be saved offline.
             </p>
             <div class="flex">
               <a href="/studyset/create" class="button">
                 <i class="nf nf-oct-plus"></i>
                 Create new
               </a>
-              <!--<label for="inputImportLocalFile" class="button alt">
-                <i class="nf nf-md-import"></i>
-                Open file
-              </label>-->
-              <button
-                onclick="document.getElementById('mainDashboardImportother').classList.remove('hide')"
-                class="alt"
-              >
-                <i class="nf nf-oct-upload"></i>
-                Import
-              </button>
-              <input id="inputImportLocalFile" class="invisible" type="file" />
             </div>
             <div class="grid list" id="studyset-list">
               <div class="box flex center-h center-v">
@@ -147,6 +135,7 @@
         }
       }
       if (client.hasSession()) {
+        document.getElementById("dashboard-noaccount-alert").classList.add("hide");
         client.req({ method: "GET", path: "/list/my-studysets" }, function (result) {
           if (result.data && result.data.rows.length >= 1) {
             document.getElementById("studyset-list").innerHTML = "";
@@ -172,6 +161,8 @@
             }
           }
         })
+      } else {
+        document.getElementById("dashboard-noaccount-alert").classList.remove("hide");
       }
     </script>
   </body>
