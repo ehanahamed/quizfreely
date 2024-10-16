@@ -186,6 +186,8 @@ Check `api/quizfreely-api.log`, and delete/clear it if needed. (a new `quizfreel
 
 If there are changes to [config/db/quizfreely-db-setup.sql](../../../config/db/quizfreely-db-setup.sql), we will manually update the production database to match all the changes to roles, schemas, tables, or functions in `quizfreely-db-setup.sql`.
 
+Also make sure to keep `public.search_queries` and `quizfreely/config/db/search-queries.sql` up to date.
+
 After all changes are made, start quizfreely-api again:
 ```sh
 sudo systemctl start quizfreely-api
