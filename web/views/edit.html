@@ -275,6 +275,27 @@
           })
         })
       } else {
+        var db;
+        var dbReq = indexedDB.open("quizfreelyDB", 1);
+        dbReq.onerror = function (event) {
+          alert("Oh no! IndexedDB errored. Better error message coming soon?");
+        }
+        dbReq.onupgradeneeded = function (event) {
+          db = event.target.result;
+          if (db.objectStoreNames.contains("studysets") == false) {
+            var studysetsObjectStore = db.createObjectStore("studysets", { keyPath: "id", autoIncrement: true });
+            studysetsObjectStore.createIndex("")
+          }
+        }
+        dbReq.onsuccess = function (event) {
+          db = event.target.result;
+          db.onerror = function (event) {
+            console.error(event);
+            alert("Oh no! An IndexedDB error!");
+          };
+          document.getElementById("create-button").addEventListener("click", function () {
+          });
+        };
       }
     </script>
     <eta> } else if (data.studysetId) { </eta>
