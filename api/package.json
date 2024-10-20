@@ -11,6 +11,7 @@
   "description": "",
   "dependencies": {
     "@fastify/compress": "^8.0.1",
+    "@fastify/cookie": "^11.0.1",
     "@fastify/cors": "^10.0.1",
     "@fastify/oauth2": "^8.0.1",
     "croner": "^8.1.2",
