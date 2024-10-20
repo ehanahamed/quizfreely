@@ -1,12 +1,12 @@
 {
   "name": "quizfreely-web",
-  "version": "0.24.2",
+  "version": "0.24.3",
   "main": "index.js",
   "type": "module",
   "scripts": {
     "start": "node index.js"
   },
-  "author": "Ehan Ahamed and contributors",
+  "author": "Ehan Ahamed",
   "license": "MIT",
   "description": "",
   "dependencies": {
