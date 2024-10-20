@@ -2,6 +2,7 @@ import "dotenv/config";
 import Fastify from "fastify";
 import fastifyCompress from "@fastify/compress";
 import fastifyCors from "@fastify/cors";
+import fastifyCookie from "@fastify/cookie";
 import fastifyOauth2 from "@fastify/oauth2";
 import pg from "pg";
 const { Pool, Client } = pg;
@@ -43,6 +44,11 @@ await fastify.register(
 await fastify.register(fastifyCors, {
     origin: CORS_ORIGIN
 });
+/*
+    "if you need @fastify/cookie yourself,
+    you will need to register it before @fastify/oauth2"
+*/
+await fastify.register(fastifyCookie)
 await fastify.register(fastifyOauth2, {
     name: "googleOAuth2",
     scope: ["openid", "profile", "email"],
@@ -1198,11 +1204,7 @@ fastify.get("/list/my-studysets", async function (request, reply) {
     }
 })
 
-/*fastify.get("/list/recent", async function (request, reply) {
-    
-})*/
-
-Cron("0 0 * * *", async function () {
+new Cron("0 0 * * *", async function () {
     try {
         let client = await pool.connect();
         try {
