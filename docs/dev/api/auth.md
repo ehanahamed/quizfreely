@@ -6,7 +6,7 @@ When a user signs up with a username & password, Quizfreely's website makes a ht
 
 Then, when the user does some action, like creating a studyset, the cookie with the session token is in that http request. Quizfreely's API checks our Postgres database to make sure the session is valid.
 
-These sessions expire after 10 days. If a user's session is expired, they just log in again to get a new session. When they log in with a username and password, the api checks if the password is correct by comparing the inputted password's hash with the hashed/encrypted password stored in the database. If they match, the user is given a new session. There is no "refresh token", user's just sign in again to get a new session.
+These sessions expire after 10 days. If a user's session is expired, they just log in again to get a new session. When they log in with a username and password, the api checks if the password is correct by comparing the inputted password's hash with the hashed/encrypted password stored in the database. If they match, the user is given a new session. There is no "refresh token", users just sign in again to get a new session.
 
 Hashing/encryption uses postgres' cryptographic functions (`pgcrypto`), so it's reliable & secure :3
 
