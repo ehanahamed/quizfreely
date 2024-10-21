@@ -88,7 +88,7 @@ fastify.setNotFoundHandler(function (request, reply) {
   })
 })
 
-function routes(fastify, options) { 
+function routes(fastify, options, done) { 
 fastify.post("/auth/sign-up", async function (request, reply) {
     /* check if username and password were sent in sign-up request body */
     if (request.body && request.body.username && request.body.password) {
@@ -1277,17 +1277,12 @@ fastify.get("/list/my-studysets", async function (request, reply) {
         })
     }
 })
+
+done();
 }
 
 fastify.register(routes, {
-    prefix: "/v0/"
-    /*
-        "The / route has different behavior depending on if the prefix ends with / or not.
-        As an example, if we consider a prefix /something/, adding a / route will only match /something/.
-        If we consider a prefix /something, adding a / route will match both /something and /something/.
-        See the prefixTrailingSlash route option above to change this behavior."
-        (from fastify documentation)
-    */
+    prefix: "/v0"
 })
 
 new Cron("0 0 * * *", async function () {
