@@ -37,7 +37,8 @@ var client = {
                 {
                     method: options.method,
                     headers: reqHeaders,
-                    body: JSON.stringify(options.body)
+                    body: JSON.stringify(options.body),
+                    credentials: "include"
                 }
             ).then(
                 function (response) {
