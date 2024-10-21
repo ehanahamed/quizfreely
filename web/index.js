@@ -83,7 +83,6 @@ fastify.setNotFoundHandler(function (request, reply) {
   request.log.warn("404 at " + request.url)
   reply.status(404).view("404.html", {
     ...themeData(request),
-    apiUrl: API_URL
   })
 })
 
@@ -119,13 +118,11 @@ function landingPage(request, reply) {
         if (responseJson.error) {
           reply.view("home.html", {
             ...themeData(request),
-            apiUrl: API_URL,
             featuredRows: false
           });
         } else {
           reply.view("home.html", {
             ...themeData(request),
-            apiUrl: API_URL,
             featuredRows: responseJson.data.rows
           });
         }
@@ -133,7 +130,6 @@ function landingPage(request, reply) {
     }).catch(function (error) {
       reply.view("home.html", {
         ...themeData(request),
-        apiUrl: API_URL,
         featuredRows: false
       });
     });
@@ -156,8 +152,7 @@ function dashboard(request, reply) {
     themeDataObj.theme,
     cookieOptionsObj
   ).view("dashboard.html", {
-    ...themeDataObj,
-    apiUrl: API_URL
+    ...themeDataObj
   })
 }
 
@@ -176,14 +171,12 @@ fastify.get("/landing-page", landingPage);
 fastify.get("/settings", function (request, reply) {
   reply.view("settings.html", {
     ...themeData(request),
-    modal: "none",
-    apiUrl: API_URL
+    modal: "none"
   })
 });
 fastify.get("/sign-up", function (request, reply) {
   reply.view("account.html", {
     signup: true,
-    apiUrl: API_URL,
     ...themeData(request)
   })
 })
@@ -191,7 +184,6 @@ fastify.get("/sign-up", function (request, reply) {
 fastify.get("/sign-in", function (request, reply) {
   reply.view("account.html", {
     signup: false,
-    apiUrl: API_URL,
     ...themeData(request)
   })
 })
@@ -199,28 +191,24 @@ fastify.get("/sign-in", function (request, reply) {
 fastify.get("/edit", function (request, reply) {
   reply.view("edit.html", {
     ...themeData(request),
-    apiUrl: API_URL,
   })
 })
 
 fastify.get("/privacy", function (request, reply) {
   reply.view("privacy.html", {
     ...themeData(request),
-    apiUrl: API_URL,
   })
 })
 
 fastify.get("/terms", function (request, reply) {
   reply.view("tos.html", {
     ...themeData(request),
-    apiUrl: API_URL,
   })
 })
 
 fastify.get("/tos", function (request, reply) {
   reply.view("tos.html", {
     ...themeData(request),
-    apiUrl: API_URL,
   })
 })
 
@@ -245,7 +233,6 @@ fastify.get("/explore", async function (request, reply) {
     
     return reply.view("explore.html", {
         ...themeData(request),
-        apiUrl: API_URL,
         featuredRows: featuredRows,
         recentRows: recentRows
     });
@@ -259,7 +246,6 @@ fastify.get("/studyset/create", function (request, reply) {
   reply.view("edit.html", {
     ...themeData(request),
     new: true,
-    apiUrl: API_URL
   })
 })
 
@@ -278,7 +264,6 @@ fastify.get("/studysets/:studyset", function (request, reply) {
             studysetId: request.params.studyset,
             studysetPage: "/studysets/" + request.params.studyset,
             studysetEditPage: "/studyset/edit/" + request.params.studyset,
-            apiUrl: API_URL
           })
         }
       });
@@ -296,7 +281,6 @@ fastify.get("/studyset/private/:studyset", function (request, reply) {
     studysetId: request.params.studyset,
     studysetPage: "/studyset/private/" + request.params.studyset,
     studysetEditPage: "/studyset/edit/" + request.params.studyset,
-    apiUrl: API_URL
   })
 })
 
@@ -308,7 +292,6 @@ fastify.get("/studyset/local/:studyset", function (request, reply) {
     studysetId: request.params.studyset,
     studysetPage: "/studyset/local/" + request.params.studyset,
     studysetEditPage: "/studyset/edit-local/" + request.params.studyset,
-    apiUrl: API_URL
   })
 })
 
@@ -317,7 +300,6 @@ fastify.get("/studyset/edit/:studyset", function (request, reply) {
     ...themeData(request),
     new: false,
     studysetId: request.params.studyset,
-    apiUrl: API_URL
   })
 })
 
@@ -331,7 +313,6 @@ fastify.get("/users/:userid", function (request, reply) {
           reply.view("user.html", {
             ...themeData(request),
             user: responseJson.data.user,
-            apiUrl: API_URL
           })
         }
       });
@@ -355,7 +336,6 @@ fastify.get("/search", function (request, reply) {
             ...themeData(request),
             query: request.query.q,
             results: responseJson.data.rows,
-            apiUrl: API_URL
           })
         }
       })
@@ -366,7 +346,6 @@ fastify.get("/search", function (request, reply) {
     reply.view("search.html", {
       ...themeData(request),
       query: false,
-      apiUrl: API_URL
     })
   }
 })
@@ -412,7 +391,6 @@ fastify.get("/settings/clear-cookies", function (request, reply) {
     {
       ...themeData(request),
       modal: "clearedCookies",
-      apiUrl: API_URL
     }
   )
 })
