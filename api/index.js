@@ -370,15 +370,14 @@ fastify.post("/auth/session/refresh", async function (request, reply) {
             await client.query("BEGIN");
             await client.query("set role quizfreely_auth");
             let session = await client.query(
-                "select token, user_id from auth.verify_and_refresh_session($1)",
+                "select user_id from auth.verify_session($1)",
                 [ authToken ]
             );
             if (session.rows.length == 1) {
                 await client.query("COMMIT")
                 return reply.send({
                     "error": false,
-                    "data": {}, 
-                    auth: session.rows[0].token
+                    "data": {}
                 })
             } else {
                 await client.query("ROLLBACK");
@@ -425,7 +424,7 @@ fastify.get("/user", async function (request, reply) {
             await client.query("BEGIN");
             await client.query("set role quizfreely_auth");
             let session = await client.query(
-                "select token, user_id from auth.verify_and_refresh_session($1)",
+                "select user_id from auth.verify_session($1)",
                 [ authToken ]
             );
             if (session.rows.length == 1) {
@@ -448,8 +447,7 @@ fastify.get("/user", async function (request, reply) {
                                 authType: userData.rows[0].auth_type,
                                 oauthGoogleEmail: userData.rows[0].oauth_google_email
                             },
-                        },
-                        auth: session.rows[0].token
+                        }
                     })
                 } else {
                     await client.query("ROLLBACK");
@@ -505,7 +503,7 @@ fastify.patch("/user", async function (request, reply) {
                 await client.query("BEGIN");
                 await client.query("set role quizfreely_auth");
                 let session = await client.query(
-                    "select token, user_id from auth.verify_and_refresh_session($1)",
+                    "select user_id from auth.verify_session($1)",
                     [ authToken ]
                 );
                 if (session.rows.length == 1) {
@@ -528,8 +526,7 @@ fastify.patch("/user", async function (request, reply) {
                                         username: userData.rows[0].username,
                                         displayName: userData.rows[0].display_name
                                     }
-                                },
-                                auth: session.rows[0].token
+                                }
                             })
                         } else {
                             await client.query("ROLLBACK");
@@ -629,7 +626,7 @@ fastify.post("/studysets", async function (request, reply) {
                 await client.query("BEGIN");
                 await client.query("set role quizfreely_auth");
                 let session = await client.query(
-                    "select token, user_id from auth.verify_and_refresh_session($1)",
+                    "select user_id from auth.verify_session($1)",
                     [ authToken ]
                 );
                 if (session.rows.length == 1) {
@@ -659,8 +656,7 @@ fastify.post("/studysets", async function (request, reply) {
                                 termsCount: insertedStudyset.rows[0].terms_count,
                                 updatedAt: insertedStudyset.rows[0].updated_at
                             },
-                        },
-                        auth: session.rows[0].token
+                        }
                     })
                 } else {
                     await client.query("ROLLBACK");
@@ -714,7 +710,7 @@ fastify.get("/studysets/:studysetid", async function (request, reply) {
             await client.query("BEGIN");
             await client.query("set role quizfreely_auth");
             let session = await client.query(
-                "select token, user_id from auth.verify_and_refresh_session($1)",
+                "select user_id from auth.verify_session($1)",
                 [ authToken ]
             );
             if (session.rows.length == 1) {
@@ -740,8 +736,7 @@ fastify.get("/studysets/:studysetid", async function (request, reply) {
                                 private: selectedStudyset.rows[0].private,
                                 updatedAt: selectedStudyset.rows[0].updated_at
                             }
-                        },
-                        auth: session.rows[0].token
+                        }
                     })
                 } else {
                     await client.query("ROLLBACK");
@@ -798,7 +793,7 @@ fastify.put("/studysets/:studysetid", async function (request, reply) {
                 await client.query("BEGIN");
                 await client.query("set role quizfreely_auth");
                 let session = await client.query(
-                    "select token, user_id from auth.verify_and_refresh_session($1)",
+                    "select user_id from auth.verify_session($1)",
                     [ authToken ]
                 );
                 if (session.rows.length == 1) {
@@ -829,8 +824,7 @@ fastify.put("/studysets/:studysetid", async function (request, reply) {
                                     termsCount: updatedStudyset.rows[0].terms_count,
                                     updatedAt: updatedStudyset.rows[0].updated_at
                                 }
-                            },
-                            auth: session.rows[0].token
+                            }
                         })
                     } else {
                         await client.query("ROLLBACK");
@@ -888,7 +882,7 @@ fastify.delete("/studysets/:studysetid", async function (request, reply) {
             await client.query("BEGIN");
             await client.query("set role quizfreely_auth");
             let session = await client.query(
-                "select token, user_id from auth.verify_and_refresh_session($1)",
+                "select user_id from auth.verify_session($1)",
                 [ authToken ]
             );
             if (session.rows.length == 1) {
@@ -904,8 +898,7 @@ fastify.delete("/studysets/:studysetid", async function (request, reply) {
                 await client.query("COMMIT")
                 return reply.send({
                     "error": false,
-                    "data": {},
-                    auth: session.rows[0].token
+                    "data": {}
                 })
             } else {
                 await client.query("ROLLBACK");
@@ -1154,7 +1147,7 @@ fastify.get("/list/my-studysets", async function (request, reply) {
             await client.query("BEGIN");
             await client.query("set role quizfreely_auth");
             let session = await client.query(
-                "select token, user_id from auth.verify_and_refresh_session($1)",
+                "select user_id from auth.verify_session($1)",
                 [ authToken ]
             );
             if (session.rows.length == 1) {
@@ -1173,8 +1166,7 @@ fastify.get("/list/my-studysets", async function (request, reply) {
                     "error": false,
                     "data": {
                         rows: studysets.rows,
-                    },
-                    auth: session.rows[0].token
+                    }
                 })
             } else {
                 await client.query("ROLLBACK");
