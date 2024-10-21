@@ -111,13 +111,13 @@ Now edit `.env`:
 2. Replace `PASSWORD` with your/our password for the "quizfreely_api" postgres user in `POSTGRES_URI=postgres://quizfreely_api:PASSWORD@localhost/quizfreely-db`
 3. Change `CORS_ORIGIN=http://localhost:8080` to `CORS_ORIGIN=https://quizfreely.com`
 4. Change `COOKIES_DOMAIN=localhost` to `COOKIES_DOMAIN=quizfreely.com`
-5. Change `WEB_OAUTH_CALLBACK_URL=http://localhost:8080/sign-up` to `WEB_OAUTH_CALLBACK_URL=https://quizfreely.com/sign-up`
+5. Change `API_OAUTH_CALLBACK_URL=http://localhost:8080/api/v0/oauth/google/callback` to `API_OAUTH_CALLBACK_URL=https://quizfreely.com/api/v0/oauth/google/callback`
+6. Change `WEB_OAUTH_CALLBACK_URL=http://localhost:8080/sign-up` to `WEB_OAUTH_CALLBACK_URL=https://quizfreely.com/sign-up`
 
 When you're done, the edited .env file should look similar to this:
 ```sh
 PORT=8008
 HOST=localhost
-API_URL=http://localhost:8008
 # there's still "@localhost" in POSTGRES_URI= because the server process connects to the database throgh localhost cause it's on the same machine
 POSTGRES_URI=postgres://quizfreely_api:PASSWORD@localhost/quizfreely-db
 CORS_ORIGIN=https://quizfreely.com
@@ -126,6 +126,7 @@ COOKIES_DOMAIN=quizfreely.com
 LOG_LEVEL=warn
 # OAUTH_GOOGLE_CLIENT_ID=
 # OAUTH_GOOGLE_CLIENT_SECRET=
+API_OAUTH_CALLBACK_URL=https://quizfreely.com/api/v0/oauth/google/callback
 WEB_OAUTH_CALLBACK_URL=https://quizfreely.com/sign-up
 ```
 
