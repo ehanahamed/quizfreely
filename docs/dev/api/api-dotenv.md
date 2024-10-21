@@ -9,9 +9,6 @@ To setup quizfreely-api & it's .env file for **production** see [production > ap
   - `localhost` to listen on localhost, `0.0.0.0` to listen on all all IPv4 addresses, see https://fastify.dev/docs/latest/Reference/Server/#listen
   - should be `HOST=localhost` for production
   - should be `HOST=0.0.0.0` for development
-- `API_URL=`
-  - url of the api, it's localhost even in production because we proxy that localhost url to https://quizfreely.com/api
-  - should be `API_URL=http://localhost:8008` for development AND PRODUCTION
 - `POSTGRES_URI=`
   - PostgreSQL connection URI
   - should be `POSTGRES_URI=postgres://quizfreely_api:PASSWORD@localhost/quizfreely-db`
@@ -36,7 +33,11 @@ To setup quizfreely-api & it's .env file for **production** see [production > ap
 - `OAUTH_GOOGLE_CLIENT_SECRET=`
   - google oauth client secret
   - get it from google cloud something: https://console.cloud.google.com/apis/credentials
+- `API_OAUTH_CALLBACK_URL=`
+  - url to handle oauth signin/signup
+  - should be `API_OAUTH_CALLBACK_URL=https://quizfreely.com/api/v0/oauth/google/callback` for production
+  - should be `API_OAUTH_CALLBACK_URL=http://localhost:8080/api/v0/oauth/google/callback` for development
 - `WEB_OAUTH_CALLBACK_URL=`
-  - url to redirect/callback to after oauth signin/signup
-  - should be `WEB_OAUTH_CALLBACK_URL=https://quizfreely.com/sign-up`
+  - url to redirect/callback to after oauth signin/signup is done
+  - should be `WEB_OAUTH_CALLBACK_URL=https://quizfreely.com/sign-up` for production
   - should be `WEB_OAUTH_CALLBACK_URL=http://localhost:8080/sign-up` for development
