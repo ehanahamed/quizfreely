@@ -111,28 +111,78 @@ function themeData(request) {
   }
 }
 
+async function userData(request) {
+  if (request.cookies.auth) {
+    try {
+      let rawUserInfo = await fetch(
+        API_URL + "/v0/user",
+        {
+          method: "GET",
+          headers: {
+            "Authorization": "Bearer " + request.cookies.auth
+          }
+        }
+      );
+      let userInfo = await rawUserInfo.json();
+      if (userInfo?.data?.user) {
+        return {
+          error: false,
+          data: {
+            user: userInfo.data.user
+          },
+          authed: true
+        }
+      } else {
+        return {
+          error: false,
+          authed: false
+        }
+      }
+    } catch (error) {
+      request.log.error(error);
+      return {
+        error: error,
+        authed: false
+      }
+    }
+  } else {
+    return {
+      error: false,
+      authed: false
+    }
+  }
+};
+
 function landingPage(request, reply) {
-  fetch(API_URL + "/public/list/featured?limit=3")
+  userData(request).then(function (userResult) {
+    fetch(API_URL + "/v0/public/list/featured?limit=3")
     .then(function (response) {
       response.json().then(function (responseJson) {
         if (responseJson.error) {
           reply.view("home.html", {
             ...themeData(request),
-            featuredRows: false
+            featuredRows: false,
+            authed: userResult.authed,
+            authedUser: userResult?.data?.user
           });
         } else {
           reply.view("home.html", {
             ...themeData(request),
-            featuredRows: responseJson.data.rows
+            featuredRows: responseJson.data.rows,
+            authed: userResult.authed,
+            authedUser: userResult?.data?.user
           });
         }
       });
     }).catch(function (error) {
       reply.view("home.html", {
         ...themeData(request),
-        featuredRows: false
+        featuredRows: false,
+        authed: userResult.authed,
+        authedUser: userResult?.data?.user
       });
     });
+  })
 }
 
 function dashboard(request, reply) {
