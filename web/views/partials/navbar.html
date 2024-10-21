@@ -23,6 +23,11 @@
     <eta>~ include("./searchbar", { searchQuery: data.searchQuery }) </eta>
   </div>
   <eta> } </eta>
-  <div class="status">    
+  <div class="status">
+    <eta> if (data.authed) { </eta>
+    signed in as <eta>= data.authedUser.displayName </eta>
+    <eta> } else { </eta>
+    not signed in
+    <eta> } </eta>
   </div>
 </header>
