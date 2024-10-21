@@ -217,10 +217,6 @@
       </div>
     </main>
     <eta>~ include("./partials/footer") </eta>
-    <script src="/assets/js/client.js"></script>
-    <script>
-      client.apiUrl = "<eta>= data.apiUrl </eta>"
-    </script>
     <eta> if (data.ssr && data.studyset) {</eta>
     <script>
       var studyset = JSON.parse("<eta>~ JSON.stringify(data.studyset).replaceAll('\\', '\\\\').replaceAll('\"', '\\\"') </eta>")
