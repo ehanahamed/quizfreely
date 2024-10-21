@@ -209,9 +209,7 @@
         </div>
     </main>
     <eta>~ include("./partials/footer") </eta>
-    <script src="/assets/js/client.js"></script>
     <script>
-      client.apiUrl = "<eta>= data.apiUrl </eta>";
       function showSignedIn() {
         document.getElementById("account-div").classList.add("hide");
         document.getElementById("error-div").classList.add("hide");
@@ -223,11 +221,14 @@
         document.getElementById("signedin-div").classList.add("hide");
       }
       if (client.hasSession()) {
-        client.req({ method: "GET", path: "/user" }, function (response) {
-          if (response.data && response.data.user) {
-            showSignedIn()
-          }
-        })
+        fetch("/api/v0/user", {
+            method: "GET",
+            credentials: "same-origin"
+        }).then(function (rawResponse) {
+          rawResponse.json().then(function (response) {
+            console.log("something");
+          })
+        });
       }/*
       document.getElementById("gaccount-button").addEventListener("click", function () {
         sb.auth.signInWithOAuth({
