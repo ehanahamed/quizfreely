@@ -12,9 +12,8 @@ To setup quizfreely-web & it's .env file for **production** see [production > we
   - should be `HOST=localhost` for production
   - should be `HOST=0.0.0.0` for development
 - `API_URL=`
-  - url of the api, with **NO trailing slash**
-  - should be `API_URL=https://api.quizfreely.com` for production
-  - should be `API_URL=http://localhost:8008` for development
+  - url of the api, it's localhost even in production because that localhost url is proxied by quizfreely-web so that you can access the api from https://quizfreely.com/api (with https and everything)
+  - should be `API_URL=http://localhost:8008` for development AND PRODUCTION
 - `COOKIES_DOMAIN=`
   - domain attribute to use for cookies
   - should be `COOKIES_DOMAIN=quizfreely.com` for production

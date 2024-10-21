@@ -1,5 +1,5 @@
 var client = {
-    apiUrl: "https://api.quizfreely.com",
+    apiUrl: "https://quizfreely.com/api",
     req: function (options, callback) {
         var reqHeaders = {};
         if (options.public && options.body) {
