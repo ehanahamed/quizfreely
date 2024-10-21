@@ -22,6 +22,10 @@ To setup quizfreely-api & it's .env file for **production** see [production > ap
   - allowed CORS origin, see https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Allow-Origin
   - should be `CORS_ORIGIN=https://quizfreely.com` for production
   - should be `CORS_ORIGIN=http://localhost:8080` for development
+- `COOKIES_DOMAIN=`
+  - This is used for the domain flag of auth cookies in api. We need to be able to access them from quizfreely-web, so set the domain to the higher level domain (quizfreely.com, not api.quizfreely.com)
+  - should be `COOKIES_DOMAIN=quizfreely.com` for production
+  - should be `COOKIES_DOMAIN=localhost` for development
 - `LOG_LEVEL=`
   - log level for fastify using pino
   - can be `trace`, `debug`, `info`, `warn`, `error`, `fatal`
