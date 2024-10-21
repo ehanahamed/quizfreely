@@ -1,6 +1,6 @@
 # Production Setup - Dev/Contributor Docs
 
-Right now, Quizfreely's website, https://quizfreely.com and api, https://api.quizfreely.com, run on the same server/droplet.
+Right now, Quizfreely's website and api run on the same server/droplet.
 
 Important thingies:
 - `/root/quizfreely/api/`
@@ -24,7 +24,9 @@ Quizfreely's website (`/root/quizfreely/web/`, "quizfreely-web") runs on port `:
 
 Quizfreely's API (`/root/quizfreely/api/`, "quizfreely-api") runs on port `:8008`. See [api-setup.md](./api-setup.md)
 
-Caddy lets quizfreely-web and quizfreely-api be accessed from https://quizfreely.com and https://api.quizfreely.com with valid https. See [caddy-setup.md](./caddy-setup.md)
+Caddy lets quizfreely-web be accessed from https://quizfreely.com with valid https. See [caddy-setup.md](./caddy-setup.md)
+
+Quizfreely Web proxies Quizfreely API's process on port `:8008` so that quizfreely-api can be accessed from `quizfreely.com/api/`
 
 Quizfreely's API connects to Quizfreely's PostgreSQL database to store all our data. See [api-setup.md](./api-setup.md) to setup the database (and api). See [db.md](./db.md) to manage the database.
 
