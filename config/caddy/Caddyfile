@@ -1,9 +1,3 @@
-api.quizfreely.com {
-  reverse_proxy :8008
-  tls {
-    dns digitalocean DIGITAL_OCEAN_API_TOKEN_GOES_HERE
-  }
-}
 quizfreely.com {
   reverse_proxy :8080
   tls {
