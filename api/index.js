@@ -274,8 +274,11 @@ fastify.post("/auth/sign-out", async function (request, reply) {
             request.cookies && request.cookies.auth
         )
     ) {
-        /* "Bearer " (with space) is 6 characters, so 7 is where our token starts */
-        let authToken = request?.headers?.authorization?.substring(7) || request.cookies.auth;
+        /*
+            "Bearer " (with space) is 6 characters, so 7 is where our token starts
+            We're using optional chaining (?.) with an OR (||), so that if the auth header isn't there, it uses the auth cookie
+        */
+        let authToken = request.headers?.authorization?.substring(7) || request.cookies.auth;
         let client = await pool.connect();
         try {
             await client.query("BEGIN");
@@ -425,60 +428,6 @@ fastify.get('/oauth/google/callback', function (request, reply) {
             )
         }
     })
-})
-
-fastify.post("/auth/session/refresh", async function (request, reply) {
-    if (
-        request.headers.authorization &&
-        request.headers.authorization.toLowerCase().startsWith("bearer ")
-    ) {
-        /* "Bearer " (with space) is 6 characters, so 7 is where our token starts */
-        let authToken = request.headers.authorization.substring(7);
-        let client = await pool.connect();
-        try {
-            await client.query("BEGIN");
-            await client.query("set role quizfreely_auth");
-            let session = await client.query(
-                "select user_id from auth.verify_session($1)",
-                [ authToken ]
-            );
-            if (session.rows.length == 1) {
-                await client.query("COMMIT")
-                return reply.send({
-                    "error": false,
-                    "data": {}
-                })
-            } else {
-                await client.query("ROLLBACK");
-                return reply.code(401).send({
-                    error: {
-                        type: "session-invalid"
-                    }
-                })
-            }
-        } catch (error) {
-            await client.query("ROLLBACK");
-            request.log.error(error);
-            return reply.code(500).send({
-                error: {
-                    type: "db-error"
-                }
-            })
-        } finally {
-            client.release()
-        }
-    } else {
-        /*
-            401 Unauthorized means the client is NOT logged in or authenticated
-            403 Forbidden means the client is logged in but not allowed,
-            so in this case we're responding with a 401 if our Authentication header is missing
-        */
-        return reply.code(401).send({
-            error: {
-                type: "auth-header-missing"
-            }
-        })
-    }
 })
 
 fastify.get("/user", async function (request, reply) {
