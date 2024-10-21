@@ -29,7 +29,7 @@
   </head>
   <body>
     <eta>~ include("./partials/body-start", { theme: data.theme }) </eta>
-    <eta>~ include("./partials/navbar", { page: "home" }) </eta>
+    <eta>~ include("./partials/navbar", { page: "home", authed: data.authed, authedUser: data.authedUser }) </eta>
     <main>
     <div class="grid intro" style="margin-bottom: 0px; padding-bottom: 0px; border:none">
         <div class="logotype">
