@@ -108,17 +108,16 @@ cp .env.example .env
 
 Now edit `.env`:
 1. Change `HOST=0.0.0.0` to `HOST=localhost`
-2. Change `API_URL=http://localhost:8008` to `API_URL=https://api.quizfreely.com`
-3. Replace `PASSWORD` with your/our password for the "quizfreely_api" postgres user in `POSTGRES_URI=postgres://quizfreely_api:PASSWORD@localhost/quizfreely-db`
-4. Change `CORS_ORIGIN=http://localhost:8080` to `CORS_ORIGIN=https://quizfreely.com`
-5. Change `COOKIES_DOMAIN=localhost` to `COOKIES_DOMAIN=quizfreely.com`
-6. Change `WEB_OAUTH_CALLBACK_URL=http://localhost:8080/sign-up` to `WEB_OAUTH_CALLBACK_URL=https://quizfreely.com/sign-up`
+2. Replace `PASSWORD` with your/our password for the "quizfreely_api" postgres user in `POSTGRES_URI=postgres://quizfreely_api:PASSWORD@localhost/quizfreely-db`
+3. Change `CORS_ORIGIN=http://localhost:8080` to `CORS_ORIGIN=https://quizfreely.com`
+4. Change `COOKIES_DOMAIN=localhost` to `COOKIES_DOMAIN=quizfreely.com`
+5. Change `WEB_OAUTH_CALLBACK_URL=http://localhost:8080/sign-up` to `WEB_OAUTH_CALLBACK_URL=https://quizfreely.com/sign-up`
 
 When you're done, the edited .env file should look similar to this:
 ```sh
 PORT=8008
 HOST=localhost
-API_URL=https://api.quizfreely.com
+API_URL=http://localhost:8008
 # there's still "@localhost" in POSTGRES_URI= because the server process connects to the database throgh localhost cause it's on the same machine
 POSTGRES_URI=postgres://quizfreely_api:PASSWORD@localhost/quizfreely-db
 CORS_ORIGIN=https://quizfreely.com
@@ -158,7 +157,7 @@ sudo systemctl start quizfreely-api
 
 If the systemd service is running successfully, quizfreely-api should be on port `:8008` by default.
 
-We use Caddy to let the quizfreely-api process on port `:8008` be accessed from `api.quizfreely.com` with https. See [caddy-setup.md](./caddy-setup.md) to finish setting up quizfreely-api.
+We use Caddy to let quizfreely-web's process on port `:8080` be accessed from `quizfreely.com`, and quizfreely-web proxies quizfreely-api's process on port `:8008` to be accessed from `quizfreely.com/api` with https and stuff. See [caddy-setup.md](./caddy-setup.md) to finish setting up quizfreely-api and quizfreely-web.
 
 For instructions to manage & backup the database see [db.md](./db.md)
 

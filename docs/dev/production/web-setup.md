@@ -46,14 +46,13 @@ cp .env.example .env
 
 Now edit `.env`:
 1. Change `HOST=0.0.0.0` to `HOST=localhost`
-2. Change `API_URL=http://localhost:8008` to `API_URL=https://api.quizfreely.com`
-3. Change `COOKIES_DOMAIN=localhost` to `COOKIES_DOMAIN=quizfreely.com`
+2. Change `COOKIES_DOMAIN=localhost` to `COOKIES_DOMAIN=quizfreely.com`
 
 When you're done, the edited .env file should look similar to this:
 ```sh
 PORT=8080
 HOST=localhost
-API_URL=https://api.quizfreely.com
+API_URL=http://localhost:8008
 COOKIES_DOMAIN=quizfreely.com
 # error, warn, info
 LOG_LEVEL=warn
