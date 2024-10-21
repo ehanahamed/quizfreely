@@ -303,22 +303,26 @@
     <eta> } else { </eta>
     <script>
       function signinSubmit() {
-        client.req({
+        fetch("/api/v0/auth/sign-in", {
           method: "POST",
-          path: "/auth/sign-in",
-          body: {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
             username: document.getElementById("signinUsernameInput").value,
             password: document.getElementById("signinPasswordInput").value
-          }
-        }, function (response) {
-          if (response.error) {
+          })
+        }).then(function (rawResponse) {
+          rawResponse.json().then(function (response) {
+            if (response.error) {
             showError()
             document.getElementById("error-text").innerHTML =
               "<b>Error</b>: " + response.error.type;
-          } else {
-            showSignedIn();
-          }
-        })
+            } else {
+              showSignedIn();
+            }
+          })
+        });
       }
       document.getElementById("signinButton").addEventListener("click", signinSubmit);
       document.getElementById("signinPasswordInput").addEventListener(
