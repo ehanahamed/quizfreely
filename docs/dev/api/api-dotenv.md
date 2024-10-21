@@ -10,9 +10,8 @@ To setup quizfreely-api & it's .env file for **production** see [production > ap
   - should be `HOST=localhost` for production
   - should be `HOST=0.0.0.0` for development
 - `API_URL=`
-  - url of the api, with **NO trailing slash**
-  - should be `API_URL=https://api.quizfreely.com` for production
-  - should be `API_URL=http://localhost:8008` for development
+  - url of the api, it's localhost even in production because we proxy that localhost url to https://quizfreely.com/api
+  - should be `API_URL=http://localhost:8008` for development AND PRODUCTION
 - `POSTGRES_URI=`
   - PostgreSQL connection URI
   - should be `POSTGRES_URI=postgres://quizfreely_api:PASSWORD@localhost/quizfreely-db`
@@ -23,7 +22,7 @@ To setup quizfreely-api & it's .env file for **production** see [production > ap
   - should be `CORS_ORIGIN=https://quizfreely.com` for production
   - should be `CORS_ORIGIN=http://localhost:8080` for development
 - `COOKIES_DOMAIN=`
-  - This is used for the domain flag of auth cookies in api. We need to be able to access them from quizfreely-web, so set the domain to the higher level domain (quizfreely.com, not api.quizfreely.com)
+  - This is used for the domain flag of auth cookies in api
   - should be `COOKIES_DOMAIN=quizfreely.com` for production
   - should be `COOKIES_DOMAIN=localhost` for development
 - `LOG_LEVEL=`
