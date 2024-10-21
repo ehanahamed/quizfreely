@@ -14,6 +14,7 @@ const HOST = process.env.HOST;
 const API_URL = process.env.API_URL;
 const POSTGRES_URI = process.env.POSTGRES_URI;
 const CORS_ORIGIN = process.env.CORS_ORIGIN;
+const COOKIES_DOMAIN = process.env.COOKIES_DOMAIN;
 const LOG_LEVEL = process.env.LOG_LEVEL;
 const OAUTH_GOOGLE_ID = process.env.OAUTH_GOOGLE_CLIENT_ID;
 const OAUTH_GOOGLE_SECRET = process.env.OAUTH_GOOGLE_CLIENT_SECRET;
@@ -114,6 +115,23 @@ fastify.post("/auth/sign-up", async function (request, reply) {
                             [userId]
                         );
                         await client.query("COMMIT");
+                        reply.setCookie(
+                            "auth",
+                            session.rows[0].token,
+                            {
+                                domain: COOKIES_DOMAIN,
+                                path: "/",
+                                signed: false,
+                                /* 10 days * 24 h per day * 60 min per h * 60 sec per min = 864000 seconds in 10 days */
+                                maxAge: 864000,
+                                httpOnly: true,
+                                sameSite: "lax",
+                                /* when secure is true,
+                                browsers only send the cookie through https,
+                                on localhost, browsers send it even if localhost isn't using https */
+                                secure: true
+                            }
+                        );
                         return reply.send({
                             error: false,
                             data: {
@@ -122,8 +140,7 @@ fastify.post("/auth/sign-up", async function (request, reply) {
                                     username: username,
                                     displayName: username
                                 },
-                            },
-                            auth: session.rows[0].token
+                            }
                         })
                     } else {
                         await client.query("ROLLBACK");
@@ -190,6 +207,23 @@ fastify.post("/auth/sign-in", async function (request, reply) {
                     [result.rows[0].id]
                 )
                 await client.query("COMMIT");
+                reply.setCookie(
+                    "auth",
+                    session.rows[0].token,
+                    {
+                        domain: COOKIES_DOMAIN,
+                        path: "/",
+                        signed: false,
+                        /* 10 days * 24 h per day * 60 min per h * 60 sec per min = 864000 seconds in 10 days */
+                        maxAge: 864000,
+                        httpOnly: true,
+                        sameSite: "lax",
+                        /* when secure is true,
+                        browsers only send the cookie through https,
+                        on localhost, browsers send it even if localhost isn't using https */
+                        secure: true
+                    }
+                );
                 return reply.send({
                     error: false,
                     data: {
@@ -198,8 +232,7 @@ fastify.post("/auth/sign-in", async function (request, reply) {
                             username: result.rows[0].username,
                             displayName: result.rows[0].display_name
                         },
-                    },
-                    auth: session.rows[0].token
+                    }
                 })
             } else {
                 await client.query("ROLLBACK");
@@ -232,11 +265,17 @@ fastify.post("/auth/sign-in", async function (request, reply) {
 
 fastify.post("/auth/sign-out", async function (request, reply) {
     if (
-        request.headers.authorization &&
-        request.headers.authorization.toLowerCase().startsWith("bearer ")
+        (
+            /* check for Authorization header */
+            request.headers.authorization &&
+            request.headers.authorization.toLowerCase().startsWith("bearer ")
+        ) || (
+            /* or check for Auth cookie */
+            request.cookies && request.cookies.auth
+        )
     ) {
         /* "Bearer " (with space) is 6 characters, so 7 is where our token starts */
-        let authToken = request.headers.authorization.substring(7);
+        let authToken = request?.headers?.authorization?.substring(7) || request.cookies.auth;
         let client = await pool.connect();
         try {
             await client.query("BEGIN");
@@ -245,7 +284,19 @@ fastify.post("/auth/sign-out", async function (request, reply) {
                 "delete from auth.sessions where token = $1",
                 [ authToken ]
             );
-            await client.query("COMMIT")
+            await client.query("COMMIT");
+            reply.clearCookie(
+                "auth",
+                {
+                    domain: COOKIES_DOMAIN,
+                    path: "/",
+                    signed: false,
+                    maxAge: 864000,
+                    httpOnly: true,
+                    sameSite: "lax",
+                    secure: true
+                }
+            )
             return reply.send({
                 "error": false,
                 "data": {}
@@ -299,9 +350,9 @@ async function googleAuthCallback(tokenObj) {
                     userinfo.email
                 ]
             );
+            /* after using google auth token and user id, create new session and get quizfreely auth token */
             let newSession = await client.query(
-                /* 5-second-expiry token sent in url searchparams to let client request a new normal-expiry token */
-                "insert into auth.sessions (user_id, expire_at) values ($1, clock_timestamp() + '5 seconds'::interval) returning token",
+                "insert into auth.sessions (user_id) values ($1) returning token, user_id",
                 [upsertedUser.rows[0].id]
             )
             await client.query("COMMIT");
@@ -313,6 +364,7 @@ async function googleAuthCallback(tokenObj) {
                         displayName: upsertedUser.rows[0].id
                     },
                 },
+                /* send quizfreely auth token in return obj to use setCookie with it (below) */
                 auth: newSession.rows[0].token
             }
         } catch (error) {
@@ -350,7 +402,24 @@ fastify.get('/oauth/google/callback', function (request, reply) {
                         request.log.error(result.error.error)
                         reply.redirect(WEB_OAUTH_CALLBACK + "?error=oauth-error")
                     } else {
-                        reply.redirect(WEB_OAUTH_CALLBACK + "?" + (new URLSearchParams({ token: result.auth }).toString()))
+                        reply.setCookie(
+                            "auth",
+                            result.auth,
+                            {
+                                domain: COOKIES_DOMAIN,
+                                path: "/",
+                                signed: false,
+                                /* 10 days * 24 h per day * 60 min per h * 60 sec per min = 864000 seconds in 10 days */
+                                maxAge: 864000,
+                                httpOnly: true,
+                                sameSite: "lax",
+                                /* when secure is true,
+                                browsers only send the cookie through https,
+                                on localhost, browsers send it even if localhost isn't using https */
+                                secure: true
+                            }
+                        );
+                        reply.redirect(WEB_OAUTH_CALLBACK)
                     }
                 }
             )
