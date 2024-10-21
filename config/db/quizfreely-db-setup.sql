@@ -84,7 +84,7 @@ grant select on public.profiles to quizfreely_api, quizfreely_auth, quizfreely_a
 create table auth.sessions (
   token text primary key default encode(gen_random_bytes(32), 'base64'),
   user_id uuid not null,
-  expire_at timestamptz default now() + '5 days'::interval
+  expire_at timestamptz default now() + '10 days'::interval
 );
 
 grant select on auth.sessions to quizfreely_auth, quizfreely_auth_user;
@@ -137,15 +137,17 @@ for delete
 to quizfreely_api, quizfreely_auth, quizfreely_auth_user
 using (expire_at < now());
 
-create function auth.verify_and_refresh_session(session_token text)
-returns table(token text, user_id uuid)
+/*
+  usage:
+  select user_id from auth.verify_session('token goes here');
+  if that returns 0 rows, session is invalid
+  if that returns 1 row, session is valid, and user's id is returned user_id
+*/
+create function auth.verify_session(session_token text)
+returns table(user_id uuid)
 language sql
 as $$
-update auth.sessions
-set token = encode(gen_random_bytes(32), 'base64'),
-expire_at = now() + '5 days'::interval
-where token = $1 and expire_at > now()
-returning token, user_id
+select user_id from auth.sessions where token = $1 and expire_at > now()
 $$;
 
 create procedure auth.delete_expired_sessions()
