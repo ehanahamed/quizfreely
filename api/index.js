@@ -11,13 +11,13 @@ import { Cron } from "croner";
 
 const PORT = process.env.PORT;
 const HOST = process.env.HOST;
-const API_URL = process.env.API_URL;
 const POSTGRES_URI = process.env.POSTGRES_URI;
 const CORS_ORIGIN = process.env.CORS_ORIGIN;
 const COOKIES_DOMAIN = process.env.COOKIES_DOMAIN;
 const LOG_LEVEL = process.env.LOG_LEVEL;
 const OAUTH_GOOGLE_ID = process.env.OAUTH_GOOGLE_CLIENT_ID;
 const OAUTH_GOOGLE_SECRET = process.env.OAUTH_GOOGLE_CLIENT_SECRET;
+const API_OAUTH_CALLBACK = process.env.API_OAUTH_CALLBACK_URL
 const WEB_OAUTH_CALLBACK = process.env.WEB_OAUTH_CALLBACK_URL;
 
 if (PORT == undefined || HOST == undefined) {
@@ -61,7 +61,7 @@ await fastify.register(fastifyOauth2, {
       auth: fastifyOauth2.GOOGLE_CONFIGURATION
     },
     startRedirectPath: "/oauth/google",
-    callbackUri: OAUTH_THINGY "/oauth/google/callback",
+    callbackUri: API_OAUTH_CALLBACK,
     cookie: {
         path: "/",
         secure: true,
