@@ -74,7 +74,7 @@
 
   <body>
     <eta>~ include("./partials/body-start", { theme: data.theme }) </eta>
-    <eta>~ include("./partials/navbar", { page: "account", apiUrl: data.apiUrl }) </eta>
+    <eta>~ include("./partials/navbar", { page: "account" }) </eta>
     <eta>~ include("./partials/noscript") </eta>
     <main>
       <div id="error-div" class="grid page hide">
@@ -116,7 +116,7 @@
             </div>
             <div class="separator">or</div>
             <div>
-              <a class="button fullWidth gaccount-button" href="<eta>= data.apiUrl </eta>/oauth/google">
+              <a class="button fullWidth gaccount-button" href="/api/v0/oauth/google">
                 <div class="gaccount-container">
                   <div class="gaccount-icon">
                     <svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" xmlns:xlink="http://www.w3.org/1999/xlink" style="display: block;">
@@ -171,7 +171,7 @@
               </div>
               <div class="separator">or</div>
               <div>
-                <a class="button fullWidth gaccount-button" href="<eta>= data.apiUrl </eta>/oauth/google">
+                <a class="button fullWidth gaccount-button" href="/api/v0/oauth/google">
                   <div class="gaccount-container">
                     <div class="gaccount-icon">
                       <svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" xmlns:xlink="http://www.w3.org/1999/xlink" style="display: block;">

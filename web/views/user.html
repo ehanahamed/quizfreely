@@ -27,7 +27,7 @@
 
   <body>
     <eta>~ include("./partials/body-start", { theme: data.theme }) </eta>
-    <eta>~ include("./partials/navbar", { page: "studyset", apiUrl: data.apiUrl }) </eta>
+    <eta>~ include("./partials/navbar", { page: "studyset" }) </eta>
     <main>
       <div class="grid page">
         <div class="content">
@@ -36,9 +36,5 @@
       </div>
     </main>
     <eta>~ include("./partials/footer") </eta>
-    <script src="/assets/js/client.js"></script>
-    <script>
-      client.apiUrl = "<eta>= data.apiUrl </eta>"
-    </script>
   </body>
 </html>

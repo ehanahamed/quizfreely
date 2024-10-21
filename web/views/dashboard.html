@@ -27,7 +27,7 @@
 
   <body>
     <eta>~ include("./partials/body-start", { theme: data.theme }) </eta>
-    <eta>~ include("./partials/navbar", { page: "home", apiUrl: data.apiUrl }) </eta>
+    <eta>~ include("./partials/navbar", { page: "home" }) </eta>
     <eta>~ include("./partials/noscript") </eta>
     <main>
       <div class="grid page">
@@ -107,10 +107,8 @@
       </div>
     </main>
     <eta>~ include("./partials/footer") </eta>
-    <script src="/assets/js/client.js"></script>
     <script src="/assets/js/fancyTimestamp.js"></script>
     <script>
-      client.apiUrl = "<eta>= data.apiUrl </eta>"
       if (window.localStorage && (localStorage.getItem("settingTimeHour") == "24h")) {
         fancyTimestamp.hours = 24;
       } else if (window.localStorage && (localStorage.getItem("settingTimeHour") == "12h")) {

@@ -27,7 +27,7 @@
 
   <body>
     <eta>~ include("./partials/body-start", { theme: data.theme }) </eta>
-    <eta>~ include("./partials/navbar", { page: "edit", apiUrl: data.apiUrl }) </eta>
+    <eta>~ include("./partials/navbar", { page: "edit" }) </eta>
     <eta>~ include("./partials/noscript") </eta>
     <main>
       <div class="grid page">
@@ -220,10 +220,6 @@
     })
     </script>
     <script src="/assets/js/indexedDB.js"></script>
-    <script src="/assets/js/client.js"></script>
-    <script>
-      client.apiUrl = "<eta>= data.apiUrl </eta>"
-    </script>
     <script>
       document.getElementById("edit-private-false").addEventListener("click",
         function () {
