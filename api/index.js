@@ -88,6 +88,7 @@ fastify.setNotFoundHandler(function (request, reply) {
   })
 })
 
+function routes(fastify, options) { 
 fastify.post("/auth/sign-up", async function (request, reply) {
     /* check if username and password were sent in sign-up request body */
     if (request.body && request.body.username && request.body.password) {
@@ -1275,6 +1276,11 @@ fastify.get("/list/my-studysets", async function (request, reply) {
             }
         })
     }
+})
+}
+
+fastify.register(routes, {
+    prefix: "v0"
 })
 
 new Cron("0 0 * * *", async function () {
