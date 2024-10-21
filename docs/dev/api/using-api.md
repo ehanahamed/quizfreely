@@ -85,3 +85,5 @@ Here's an example for using `client`:
   }
 </script>
 ```
+
+outdated lol
