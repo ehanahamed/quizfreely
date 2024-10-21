@@ -221,7 +221,7 @@
     <script>
       var studyset = JSON.parse("<eta>~ JSON.stringify(data.studyset).replaceAll('\\', '\\\\').replaceAll('\"', '\\\"') </eta>")
       if (client.hasSession()) {
-        client.req({ method: "GET", path: "/user" }, function (response) {
+        fetch({ method: "GET", path: "/user" }, function (response) {
           if (response.data && response.data.user.id == "<eta>= data.studyset.user_id </eta>") {
             document.getElementById("edit-menu").classList.remove("hide");
           }
@@ -231,10 +231,11 @@
     <eta> } else if (data.local) {</eta>
     <script>
       var studyset = {};
-      client.req({
-          method: "GET",
-          path: "/studysets/<eta>= data.studysetId </eta>"
-        }, function (response) {
+      fetch("/api/v0/studysets/<eta>= data.studysetId </eta>", {
+        method: "GET",
+        credentials: "same-origin"
+      }).then(function (rawResponse) {
+        rawResponse.json().then(function (response) {
           if (response.data) {
             studyset = response.data.studyset
             console.log(studyset)
@@ -242,6 +243,7 @@
           } else {
             alert("error while loading non-public studyset")
           }
+        })
       })
       document.getElementById("edit-menu").classList.remove("hide");
     </script>
