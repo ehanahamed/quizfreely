@@ -242,7 +242,7 @@
         "<b>Error</b>: " + urlParams.get("error");
     } else if (window.location.search.includes("?token")) {
       var urlParams = new URLSearchParams(window.location.search);
-      client.req({
+      fetch({
           method: "POST",
           path: "/auth/session/refresh",
           token: urlParams.get("token")
