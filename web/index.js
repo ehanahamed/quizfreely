@@ -4,6 +4,7 @@ import fastifyCompress from "@fastify/compress";
 import fastifyStatic from "@fastify/static";
 import fastifyView from "@fastify/view";
 import fastifyCookie from "@fastify/cookie";
+import fastifyHttpProxy from "@fastify/http-proxy";
 import path from "path";
 import { Eta } from "eta";
 import { themes } from "./themes.js";
@@ -56,6 +57,11 @@ await fastify.register(fastifyView, {
 await fastify.register(fastifyStatic, {
   root: path.join(import.meta.dirname, "assets"),
   prefix: "/assets/"
+});
+
+await fastify.register(fastifyHttpProxy, {
+  upstream: API_URL,
+  prefix: '/api'
 });
 
 fastify.setErrorHandler(function (error, request, reply) {
