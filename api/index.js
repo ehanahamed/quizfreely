@@ -1280,7 +1280,14 @@ fastify.get("/list/my-studysets", async function (request, reply) {
 }
 
 fastify.register(routes, {
-    prefix: "v0"
+    prefix: "/v0/"
+    /*
+        "The / route has different behavior depending on if the prefix ends with / or not.
+        As an example, if we consider a prefix /something/, adding a / route will only match /something/.
+        If we consider a prefix /something, adding a / route will match both /something and /something/.
+        See the prefixTrailingSlash route option above to change this behavior."
+        (from fastify documentation)
+    */
 })
 
 new Cron("0 0 * * *", async function () {
