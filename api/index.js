@@ -43,8 +43,7 @@ await fastify.register(
     fastifyCompress
 );
 await fastify.register(fastifyCors, {
-    origin: CORS_ORIGIN,
-    credentials: true
+    origin: CORS_ORIGIN
 });
 /*
     "if you need @fastify/cookie yourself,
