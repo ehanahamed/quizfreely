@@ -432,11 +432,20 @@ fastify.get('/oauth/google/callback', function (request, reply) {
 
 fastify.get("/user", async function (request, reply) {
     if (
-        request.headers.authorization &&
-        request.headers.authorization.toLowerCase().startsWith("bearer ")
+        (
+            /* check for Authorization header */
+            request.headers.authorization &&
+            request.headers.authorization.toLowerCase().startsWith("bearer ")
+        ) || (
+            /* or check for Auth cookie */
+            request.cookies && request.cookies.auth
+        )
     ) {
-        /* "Bearer " (with space) is 6 characters, so 7 is where our token starts */
-        let authToken = request.headers.authorization.substring(7);
+        /*
+            "Bearer " (with space) is 6 characters, so 7 is where our token starts
+            We're using optional chaining (?.) with an OR (||), so that if the auth header isn't there, it uses the auth cookie
+        */
+        let authToken = request.headers?.authorization?.substring(7) || request.cookies.auth;
         let client = await pool.connect();
         try {
             await client.query("BEGIN");
@@ -506,11 +515,20 @@ fastify.get("/user", async function (request, reply) {
 
 fastify.patch("/user", async function (request, reply) {
     if (
-        request.headers.authorization &&
-        request.headers.authorization.toLowerCase().startsWith("bearer ")
+        (
+            /* check for Authorization header */
+            request.headers.authorization &&
+            request.headers.authorization.toLowerCase().startsWith("bearer ")
+        ) || (
+            /* or check for Auth cookie */
+            request.cookies && request.cookies.auth
+        )
     ) {
-        /* "Bearer " (with space) is 6 characters, so 7 is where our token starts */
-        let authToken = request.headers.authorization.substring(7);
+        /*
+            "Bearer " (with space) is 6 characters, so 7 is where our token starts
+            We're using optional chaining (?.) with an OR (||), so that if the auth header isn't there, it uses the auth cookie
+        */
+        let authToken = request.headers?.authorization?.substring(7) || request.cookies.auth;
         if (
             request.body &&
             request.body.user &&
@@ -623,11 +641,20 @@ fastify.get("/public/users/:userid", async function (request, reply) {
 
 fastify.post("/studysets", async function (request, reply) {
     if (
-        request.headers.authorization &&
-        request.headers.authorization.toLowerCase().startsWith("bearer ")
+        (
+            /* check for Authorization header */
+            request.headers.authorization &&
+            request.headers.authorization.toLowerCase().startsWith("bearer ")
+        ) || (
+            /* or check for Auth cookie */
+            request.cookies && request.cookies.auth
+        )
     ) {
-        /* "Bearer " (with space) is 6 characters, so 7 is where our token starts */
-        let authToken = request.headers.authorization.substring(7);
+        /*
+            "Bearer " (with space) is 6 characters, so 7 is where our token starts
+            We're using optional chaining (?.) with an OR (||), so that if the auth header isn't there, it uses the auth cookie
+        */
+        let authToken = request.headers?.authorization?.substring(7) || request.cookies.auth;
         if (
             request.body &&
             request.body.studyset &&
@@ -718,11 +745,20 @@ fastify.post("/studysets", async function (request, reply) {
 
 fastify.get("/studysets/:studysetid", async function (request, reply) {
     if (
-        request.headers.authorization &&
-        request.headers.authorization.toLowerCase().startsWith("bearer ")
+        (
+            /* check for Authorization header */
+            request.headers.authorization &&
+            request.headers.authorization.toLowerCase().startsWith("bearer ")
+        ) || (
+            /* or check for Auth cookie */
+            request.cookies && request.cookies.auth
+        )
     ) {
-        /* "Bearer " (with space) is 6 characters, so 7 is where our token starts */
-        let authToken = request.headers.authorization.substring(7);
+        /*
+            "Bearer " (with space) is 6 characters, so 7 is where our token starts
+            We're using optional chaining (?.) with an OR (||), so that if the auth header isn't there, it uses the auth cookie
+        */
+        let authToken = request.headers?.authorization?.substring(7) || request.cookies.auth;
         let client = await pool.connect();
         try {
             await client.query("BEGIN");
@@ -790,11 +826,20 @@ fastify.get("/studysets/:studysetid", async function (request, reply) {
 
 fastify.put("/studysets/:studysetid", async function (request, reply) {
     if (
-        request.headers.authorization &&
-        request.headers.authorization.toLowerCase().startsWith("bearer ")
+        (
+            /* check for Authorization header */
+            request.headers.authorization &&
+            request.headers.authorization.toLowerCase().startsWith("bearer ")
+        ) || (
+            /* or check for Auth cookie */
+            request.cookies && request.cookies.auth
+        )
     ) {
-        /* "Bearer " (with space) is 6 characters, so 7 is where our token starts */
-        let authToken = request.headers.authorization.substring(7);
+        /*
+            "Bearer " (with space) is 6 characters, so 7 is where our token starts
+            We're using optional chaining (?.) with an OR (||), so that if the auth header isn't there, it uses the auth cookie
+        */
+        let authToken = request.headers?.authorization?.substring(7) || request.cookies.auth;
         if (
             request.body &&
             request.body.studyset &&
@@ -890,11 +935,20 @@ fastify.put("/studysets/:studysetid", async function (request, reply) {
 
 fastify.delete("/studysets/:studysetid", async function (request, reply) {
     if (
-        request.headers.authorization &&
-        request.headers.authorization.toLowerCase().startsWith("bearer ")
+        (
+            /* check for Authorization header */
+            request.headers.authorization &&
+            request.headers.authorization.toLowerCase().startsWith("bearer ")
+        ) || (
+            /* or check for Auth cookie */
+            request.cookies && request.cookies.auth
+        )
     ) {
-        /* "Bearer " (with space) is 6 characters, so 7 is where our token starts */
-        let authToken = request.headers.authorization.substring(7);
+        /*
+            "Bearer " (with space) is 6 characters, so 7 is where our token starts
+            We're using optional chaining (?.) with an OR (||), so that if the auth header isn't there, it uses the auth cookie
+        */
+        let authToken = request.headers?.authorization?.substring(7) || request.cookies.auth;
         let client = await pool.connect();
         try {
             await client.query("BEGIN");
@@ -1151,15 +1205,24 @@ fastify.get("/public/list/featured", async function (request, reply) {
 
 fastify.get("/list/my-studysets", async function (request, reply) {
     if (
-        request.headers.authorization &&
-        request.headers.authorization.toLowerCase().startsWith("bearer ")
+        (
+            /* check for Authorization header */
+            request.headers.authorization &&
+            request.headers.authorization.toLowerCase().startsWith("bearer ")
+        ) || (
+            /* or check for Auth cookie */
+            request.cookies && request.cookies.auth
+        )
     ) {
         let limit = 10;
         if (request.query && request.query.limit > 0 && request.query.limit < 200) {
             limit = request.query.limit;
         }
-        /* "Bearer " (with space) is 6 characters, so 7 is where our token starts */
-        let authToken = request.headers.authorization.substring(7);
+        /*
+            "Bearer " (with space) is 6 characters, so 7 is where our token starts
+            We're using optional chaining (?.) with an OR (||), so that if the auth header isn't there, it uses the auth cookie
+        */
+        let authToken = request.headers?.authorization?.substring(7) || request.cookies.auth;
         let client = await pool.connect();
         try {
             await client.query("BEGIN");
