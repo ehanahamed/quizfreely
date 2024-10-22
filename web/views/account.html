@@ -83,6 +83,13 @@
         </div>
       </div>
         <eta> if (data.authed) { </eta>
+        <div id="signedin-div" class="grid page hide">
+          <div class="content">
+            <h2>You're signed in!</h2>
+            <a href="/dashboard" class="button yay large">Dashboard</a>
+            <a href="/settings" class="button yay large alt">Settings</a>
+          </div>
+        </div>
         <eta> } else if (data.signup) { </eta>
           <div id="account-div">
           <div class="grid screen">
@@ -202,14 +209,9 @@
           </div>
         </div>
         <eta> } </eta>
-        <div id="signedin-div" class="grid page hide">
-          <div class="content">
-            <h2>You're signed in!</h2>
-            <a href="/dashboard" class="button yay large">Continue</a>
-          </div>
-        </div>
     </main>
     <eta>~ include("./partials/footer") </eta>
+    <eta> if (data.authed == false) {</eta>
     <script>
       function showSignedIn() {
         document.getElementById("account-div").classList.add("hide");
@@ -238,7 +240,7 @@
         "<b>Error</b>: " + urlParams.get("error");
     }
     </script>
-    <eta>if (!data.authed && data.signup) { </eta>
+    <eta>if (data.signup) { </eta>
     <script>
       function signupSubmit() {
         if (
@@ -279,7 +281,7 @@
         }
       );
     </script>
-    <eta> } else if (!data.authed) { </eta>
+    <eta> } else { </eta>
     <script>
       function signinSubmit() {
         fetch("/api/v0/auth/sign-in", {
@@ -313,6 +315,7 @@
         }
       );
     </script>
+    <eta> } </eta>
     <eta> } </eta>
   </body>
 </html>
