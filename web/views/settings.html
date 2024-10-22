@@ -166,44 +166,30 @@
       }
     </script>
     <script>
-      if (client.hasSession()) {
-        client.req({ method: "GET", path: "/user" }, function (response) {
-          if (response.data && response.data.user) {
-            document.getElementById("account-not-signedin-div").classList.add("hide");
-            document.getElementById("account-signedin-div").classList.remove("hide");
-            document.getElementById("account-display-name").innerText = response.data.user.displayName;
-            if (response.data.user.authType == "oauth-google") {
-              document.getElementById("account-username-password-div").classList.add("hide");
-              document.getElementById("account-oauth-google-div").classList.remove("hide");
-              document.getElementById("account-oauth-google-email").innerText = response.data.user.oauthGoogleEmail;
-            } else /* response.data.user.authType == "username-password" */ {
-              document.getElementById("account-username-password-div").classList.remove("hide");
-              document.getElementById("account-oauth-google-div").classList.add("hide");
-              document.getElementById("account-username").innerText = response.data.user.username;
-            }
-          }
-        })
-      }
       document.getElementById("display-name-edit-button").addEventListener("click", function () {
         document.getElementById("display-name-edit").value = document.getElementById("account-display-name").innerText;
         document.getElementById("display-name-edit-div").classList.remove("hide");
         document.getElementById("display-name-view-div").classList.add("hide");
       })
       document.getElementById("display-name-edit-save-button").addEventListener("click", function () {
-        client.req({
+        fetch("/api/v0/user", {
           method: "PATCH",
-          path: "/user",
-          body: {
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
             user: {
               displayName: document.getElementById("display-name-edit").value
             }
-          }
-        }, function (response) {
-          if (response.data && response.data.user) {
-            document.getElementById("account-display-name").innerText = response.data.user.displayName;
-          }
-          document.getElementById("display-name-view-div").classList.remove("hide");
-          document.getElementById("display-name-edit-div").classList.add("hide");
+          })
+        }, function (rawResponse) {
+          rawResponse.json().then(function (response) {
+            if (response.data && response.data.user) {
+              document.getElementById("account-display-name").innerText = response.data.user.displayName;
+            }
+            document.getElementById("display-name-view-div").classList.remove("hide");
+            document.getElementById("display-name-edit-div").classList.add("hide");
+          })
         })
       })
       document.getElementById("display-name-edit-cancel-button").addEventListener("click", function () {
@@ -211,8 +197,11 @@
         document.getElementById("display-name-edit-div").classList.add("hide");
       })
       document.getElementById("account-sign-out-button").addEventListener("click", function () {
-        client.deleteLocalSession();
-        window.location.reload();
+        fetch("/api/v0/auth/sign-out", {
+          method: "POST"
+        }).then(function (rawResponse) {
+          window.location.reload();
+        })
       })
     </script>
   </body>
