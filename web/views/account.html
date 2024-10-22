@@ -82,7 +82,8 @@
           <p id="error-text" class="box ohno">Error</p>
         </div>
       </div>
-        <eta> if (data.signup) { </eta>
+        <eta> if (data.authed) { </eta>
+        <eta> } else if (data.signup) { </eta>
           <div id="account-div">
           <div class="grid screen">
           <div class="content">
@@ -242,7 +243,7 @@
         "<b>Error</b>: " + urlParams.get("error");
     }
     </script>
-    <eta>if (data.signup) { </eta>
+    <eta>if (!data.authed && data.signup) { </eta>
     <script>
       function signupSubmit() {
         if (
@@ -283,7 +284,7 @@
         }
       );
     </script>
-    <eta> } else { </eta>
+    <eta> } else if (!data.authed) { </eta>
     <script>
       function signinSubmit() {
         fetch("/api/v0/auth/sign-in", {
