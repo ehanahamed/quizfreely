@@ -19,9 +19,11 @@ Here is a list of error types:
   - for example
     - trying to create a studyset without sending the title or content in the request body
     - or trying to sign in without a password in the request body
-- `"auth-header-missing"`
-  - Authorization http header was not sent or is invalid
-  - It's supposed to look like this: `Authorization: Bearer abcd1234tokenGoesHere`
+  - also make sure the requeset body is valid json and has content-type (header) as json
+- `"auth-missing"`
+  - Authorization http header or auth cookie were not sent
+  - The cookie is supposed to be named `auth`, and its value is supposed to be the token
+  - Auth headers are supposed to look like this: `Authorization: Bearer abcd1234tokenGoesHere`
 - `"db-error"`
   - something went wrong while trying to connect to, read from, or write to the database
 - `"session-invalid"`
