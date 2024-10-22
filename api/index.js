@@ -324,7 +324,7 @@ fastify.post("/auth/sign-out", async function (request, reply) {
         */
         return reply.code(401).send({
             error: {
-                type: "auth-header-missing"
+                type: "auth-missing"
             }
         })
     }
@@ -508,7 +508,7 @@ fastify.get("/user", async function (request, reply) {
         */
         return reply.code(401).send({
             error: {
-                type: "auth-header-missing"
+                type: "auth-missing"
             }
         })
     }
@@ -603,7 +603,7 @@ fastify.patch("/user", async function (request, reply) {
     } else {
         return reply.code(401).send({
             error: {
-                type: "auth-header-missing"
+                type: "auth-missing"
             }
         })
     }
@@ -738,7 +738,7 @@ fastify.post("/studysets", async function (request, reply) {
         */
         return reply.code(401).send({
             error: {
-                type: "auth-header-missing"
+                type: "auth-missing"
             }
         })
     }
@@ -819,7 +819,7 @@ fastify.get("/studysets/:studysetid", async function (request, reply) {
     } else {
         return reply.code(400).send({
             error: {
-                type: "auth-header-missing"
+                type: "auth-missing"
             }
         })
     }
@@ -928,7 +928,7 @@ fastify.put("/studysets/:studysetid", async function (request, reply) {
         */
         return reply.code(401).send({
             error: {
-                type: "auth-header-missing"
+                type: "auth-missing"
             }
         })
     }
@@ -995,7 +995,7 @@ fastify.delete("/studysets/:studysetid", async function (request, reply) {
     } else {
         return reply.code(401).send({
             error: {
-                type: "auth-header-missing"
+                type: "auth-missing"
             }
         })
     }
@@ -1272,7 +1272,7 @@ fastify.get("/list/my-studysets", async function (request, reply) {
     } else {
         return reply.code(401).send({
             error: {
-                type: "auth-header-missing"
+                type: "auth-missing"
             }
         })
     }
