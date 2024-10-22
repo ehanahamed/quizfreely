@@ -240,23 +240,6 @@
       showError();
       document.getElementById("error-text").innerHTML =
         "<b>Error</b>: " + urlParams.get("error");
-    } else if (window.location.search.includes("?token")) {
-      var urlParams = new URLSearchParams(window.location.search);
-      fetch({
-          method: "POST",
-          path: "/auth/session/refresh",
-          token: urlParams.get("token")
-        },
-        function (result) {
-          if (result.error) {
-            showError();
-            document.getElementById("error-text").innerHTML =
-              "<b>Error</b>: " + result.error.type;
-          } else {
-            showSignedIn();
-          }
-        }
-      )
     }
     </script>
     <eta>if (data.signup) { </eta>
