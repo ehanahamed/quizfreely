@@ -65,47 +65,53 @@
             </div>
           </div>
           <h3>Account</h3>
-          <div id="account-not-signedin-div" class="box">
-            <p>
-              You're not signed in.<br />
-              Do you want to <a href="./sign-in">sign in</a> or <a href="./sign-up">create an account</a>?
-            </p>
-          </div>
-          <div id="account-signedin-div" class="box hide">
+          <eta> if (data.authed) { </eta>
+          <div id="account-signedin-div" class="box">
             <div class="flex compact-gap align-end" id="display-name-view-div">
               <p>
                 <span class="h6">Display name:</span><br />
-                <span id="account-display-name">...</span>
+                <span id="account-display-name"><eta>= data.authedUser.displayName </eta></span>
               </p>
               <button class="icon-only-button" id="display-name-edit-button"><i class="nf nf-fa-pencil"></i></button>
             </div>
             <div id="display-name-edit-div" class="hide" style="margin-top:0px">
               <p class="h6" style="margin-bottom:0.6rem">Display Name:</p>
               <div class="flex" style="margin-top:0px">
-                <input type="text" id="display-name-edit" placeholder="Display Name"/>
+                <input type="text" id="display-name-edit" placeholder="Display Name" value="<eta>= data.authedUser.displayName </eta>" />
               </div>
               <div class="flex">
                 <button id="display-name-edit-save-button">Save</button>
                 <button id="display-name-edit-cancel-button" class="alt">Cancel</button>
               </div>
             </div>
-            <div id="account-username-password-div" class="hide">
+            <eta> if (data.authedUser.authType == "oauth-google") { </eta>
+              <div id="account-oauth-google-div">
+                <p class="fg0">Signed in with Google</p>
+                <p>
+                  <span class="h6">Google account:</span><br />
+                  <span id="account-oauth-google-email"><eta>= data.authedUser.oauthGoogleEmail </eta>></span>
+                </p>
+              </div>
+            <eta> } else { </eta>
+            <div id="account-username-password-div">
               <p>
                 <span class="h6">Username:</span><br />
-                <span id="account-username">...</span>
+                <span id="account-username"><eta>= data.authedUser.username </span>
               </p>
             </div>
-            <div id="account-oauth-google-div" class="hide">
-              <p class="fg0">Signed in with Google</p>
-              <p>
-                <span class="h6">Google account:</span><br />
-                <span id="account-oauth-google-email">email</span>
-              </p>
-            </div>
+            <eta> } </eta>
             <div class="flex">
               <button id="account-sign-out-button" class="ohno">Sign out</button>
             </div>
           </div>
+          <eta> } else { </eta>
+          <div id="account-not-signedin-div" class="box">
+            <p>
+              You're not signed in.<br />
+              Do you want to <a href="./sign-in">sign in</a> or <a href="./sign-up">create an account</a>?
+            </p>
+          </div>
+          <eta> } </eta>
           <h3>Data & Privacy</h3>
           <div class="box">
             <p>Some settings are stored as cookies.<br />
