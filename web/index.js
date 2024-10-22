@@ -14,6 +14,7 @@ const HOST = process.env.HOST
 const API_URL = process.env.API_URL
 const COOKIES_DOMAIN = process.env.COOKIES_DOMAIN
 const LOG_LEVEL = process.env.LOG_LEVEL
+const LOG_PRETTY = process.env.LOG_PRETTY || "false"
 
 if (PORT == undefined || HOST == undefined) {
   console.error(
@@ -23,11 +24,31 @@ if (PORT == undefined || HOST == undefined) {
   process.exit(1);
 }
 
-const fastify = Fastify({
-  logger: {
+let loggerConfig = {
+  level: LOG_LEVEL,
+  file: path.join(import.meta.dirname, "quizfreely-web.log")
+};
+if (LOG_PRETTY == "true") {
+  loggerConfig = {
     level: LOG_LEVEL,
-    file: path.join(import.meta.dirname, "quizfreely-web.log")
-  }
+    transport: {
+      targets: [
+        {
+          target: "pino-pretty",
+          
+        },
+        {
+          target: "pino/file",
+          options: {
+            destination: path.join(import.meta.dirname, "quizfreely-web.log")
+          }
+        }
+      ]
+    },
+  };
+}
+const fastify = Fastify({
+  logger: loggerConfig
 })
 
 const eta = new Eta({
