@@ -81,8 +81,12 @@ fastify.setErrorHandler(function (error, request, reply) {
 
 fastify.setNotFoundHandler(function (request, reply) {
   request.log.warn("404 at " + request.url)
-  reply.status(404).view("404.html", {
-    ...themeData(request),
+  userData(request).then(function (userResult) {
+    reply.status(404).view("404.html", {
+      ...themeData(request),
+      authed: userResult.authed,
+      authedUser: userResult?.data?.user
+    })
   })
 })
 
@@ -188,21 +192,25 @@ function landingPage(request, reply) {
 function dashboard(request, reply) {
   let themeDataObj = themeData(request);
   let cookieOptionsObj = cookieOptions();
-  /*
-    cookies are not permanent, they eventually expire
-    resetting the expiration date on every page doesn't make sense
-    instead we refresh/update the expiration date when users visit the dashboard
-  */
-  reply.setCookie(
-    "dashboard",
-    "true",
-    cookieOptionsObj
-  ).setCookie(
-    "theme",
-    themeDataObj.theme,
-    cookieOptionsObj
-  ).view("dashboard.html", {
-    ...themeDataObj
+  userData(request).then(function (userResult) {
+    /*
+      cookies are not permanent, they eventually expire
+      resetting the expiration date on every page doesn't make sense
+      instead we refresh/update the expiration date when users visit the dashboard
+    */
+    reply.setCookie(
+      "dashboard",
+      "true",
+      cookieOptionsObj
+    ).setCookie(
+      "theme",
+      themeDataObj.theme,
+      cookieOptionsObj
+    ).view("dashboard.html", {
+      ...themeDataObj,
+      authed: userResult.authed,
+      authedUser: userResult?.data?.user
+    })
   })
 }
 
@@ -219,50 +227,79 @@ fastify.get("/home", home);
 fastify.get("/dashboard", dashboard);
 fastify.get("/landing-page", landingPage);
 fastify.get("/settings", function (request, reply) {
-  reply.view("settings.html", {
-    ...themeData(request),
-    modal: "none"
+  userData(request).then(function (userResult) {
+    reply.view("settings.html", {
+      ...themeData(request),
+      modal: "none",
+      authed: userResult.authed,
+      authedUser: userResult?.data?.user
+    })  
   })
 });
 fastify.get("/sign-up", function (request, reply) {
-  reply.view("account.html", {
-    signup: true,
-    ...themeData(request)
+  userData(request).then(function (userResult) {
+    reply.view("account.html", {
+      signup: true,
+      ...themeData(request),
+      authed: userResult.authed,
+      authedUser: userResult?.data?.user
+    })
   })
 })
 
 fastify.get("/sign-in", function (request, reply) {
-  reply.view("account.html", {
-    signup: false,
-    ...themeData(request)
+  userData(request).then(function (userResult) {
+    reply.view("account.html", {
+      signup: false,
+      ...themeData(request),
+      authed: userResult.authed,
+      authedUser: userResult?.data?.user
+    })
   })
 })
 
 fastify.get("/edit", function (request, reply) {
-  reply.view("edit.html", {
-    ...themeData(request),
+  userData(request).then(function (userResult) {
+    reply.view("edit.html", {
+      ...themeData(request),
+      authed: userResult.authed,
+      authedUser: userResult?.data?.user
+    })
   })
 })
 
 fastify.get("/privacy", function (request, reply) {
-  reply.view("privacy.html", {
-    ...themeData(request),
+  userData(request).then(function (userResult) {
+    reply.view("privacy.html", {
+      ...themeData(request),
+      authed: userResult.authed,
+      authedUser: userResult?.data?.user
+    })
   })
 })
 
 fastify.get("/terms", function (request, reply) {
-  reply.view("tos.html", {
-    ...themeData(request),
+  userData(request).then(function (userResult) {
+    reply.view("tos.html", {
+      ...themeData(request),
+      authed: userResult.authed,
+      authedUser: userResult?.data?.user
+    })
   })
 })
 
 fastify.get("/tos", function (request, reply) {
-  reply.view("tos.html", {
-    ...themeData(request),
+  userData(request).then(function (userResult) {
+    reply.view("tos.html", {
+      ...themeData(request),
+      authed: userResult.authed,
+      authedUser: userResult?.data?.user
+    })
   })
 })
 
 fastify.get("/explore", async function (request, reply) {
+  let userResult = await userData(request);
   /* this is async, remember to use `return reply.send()` instead of just `reply.send()` */
   try {
     let featuredRows = false;
@@ -284,7 +321,9 @@ fastify.get("/explore", async function (request, reply) {
     return reply.view("explore.html", {
         ...themeData(request),
         featuredRows: featuredRows,
-        recentRows: recentRows
+        recentRows: recentRows,
+        authed: userResult.authed,
+        authedUser: userResult?.data?.user
     });
   } catch (error) {
     request.log.error(error);
@@ -293,14 +332,19 @@ fastify.get("/explore", async function (request, reply) {
 })
 
 fastify.get("/studyset/create", function (request, reply) {
-  reply.view("edit.html", {
-    ...themeData(request),
-    new: true,
-  })
+  userData(request).then(function (userResult) {
+    reply.view("edit.html", {
+      ...themeData(request),
+      new: true,
+      authed: userResult.authed,
+      authedUser: userResult?.data?.user
+    })
+  });
 })
 
 fastify.get("/studysets/:studyset", function (request, reply) {
-  fetch(API_URL + "/public/studysets/" + request.params.studyset)
+  userData(request).then(function (userResult) {
+    fetch(API_URL + "/public/studysets/" + request.params.studyset)
     .then(function (response) {
       response.json().then(function (responseJson) {
         if (responseJson.error) {
@@ -314,6 +358,8 @@ fastify.get("/studysets/:studyset", function (request, reply) {
             studysetId: request.params.studyset,
             studysetPage: "/studysets/" + request.params.studyset,
             studysetEditPage: "/studyset/edit/" + request.params.studyset,
+            authed: userResult.authed,
+            authedUser: userResult?.data?.user
           })
         }
       });
@@ -321,40 +367,54 @@ fastify.get("/studysets/:studyset", function (request, reply) {
       request.log.error(error)
       reply.callNotFound();
     });
+  })
 })
 
 fastify.get("/studyset/private/:studyset", function (request, reply) {
-  reply.view("studyset.html", {
-    ...themeData(request),
-    ssr: false,
-    local: false,
-    studysetId: request.params.studyset,
-    studysetPage: "/studyset/private/" + request.params.studyset,
-    studysetEditPage: "/studyset/edit/" + request.params.studyset,
+  userData(request).then(function (userResult) {
+    reply.view("studyset.html", {
+      ...themeData(request),
+      ssr: false,
+      local: false,
+      studysetId: request.params.studyset,
+      studysetPage: "/studyset/private/" + request.params.studyset,
+      studysetEditPage: "/studyset/edit/" + request.params.studyset,
+      authed: userResult.authed,
+      authedUser: userResult?.data?.user
+    })
   })
 })
 
 fastify.get("/studyset/local/:studyset", function (request, reply) {
-  reply.view("studyset.html", {
-    ...themeData(request),
-    ssr: false,
-    local: true,
-    studysetId: request.params.studyset,
-    studysetPage: "/studyset/local/" + request.params.studyset,
-    studysetEditPage: "/studyset/edit-local/" + request.params.studyset,
+  userData(request).then(function (userResult) {
+    reply.view("studyset.html", {
+      ...themeData(request),
+      ssr: false,
+      local: true,
+      studysetId: request.params.studyset,
+      studysetPage: "/studyset/local/" + request.params.studyset,
+      studysetEditPage: "/studyset/edit-local/" + request.params.studyset,
+      authed: userResult.authed,
+      authedUser: userResult?.data?.user
+    })
   })
 })
 
 fastify.get("/studyset/edit/:studyset", function (request, reply) {
-  reply.view("edit.html", {
-    ...themeData(request),
-    new: false,
-    studysetId: request.params.studyset,
+  userData(request).then(function (userResult) {
+    reply.view("edit.html", {
+      ...themeData(request),
+      new: false,
+      studysetId: request.params.studyset,
+      authed: userResult.authed,
+      authedUser: userResult?.data?.user
+    })
   })
 })
 
 fastify.get("/users/:userid", function (request, reply) {
-  fetch(API_URL + "/public/users/" + request.params.userid)
+  userData(request).then(function (userResult) {
+    fetch(API_URL + "/public/users/" + request.params.userid)
     .then(function (response) {
       response.json().then(function (responseJson) {
         if (responseJson.error) {
@@ -363,6 +423,8 @@ fastify.get("/users/:userid", function (request, reply) {
           reply.view("user.html", {
             ...themeData(request),
             user: responseJson.data.user,
+            authed: userResult.authed,
+            authedUser: userResult?.data?.user
           })
         }
       });
@@ -370,34 +432,41 @@ fastify.get("/users/:userid", function (request, reply) {
       request.log.error(error)
       reply.callNotFound();
     });
+  })
 })
 
 fastify.get("/search", function (request, reply) {
-  if (request.query && request.query.q) {
-    fetch(
-      API_URL + "/public/search/studysets?" + (new URLSearchParams({ q: request.query.q })).toString()
-    ).then(function (response) {
-      response.json().then(function (responseJson) {
-        if (responseJson.error) {
-          request.log.error(responseJson.error);
-          reply.callNotFound();
-        } else {
-          reply.view("search.html", {
-            ...themeData(request),
-            query: request.query.q,
-            results: responseJson.data.rows,
-          })
-        }
+  userData(request).then(function (userResult) {
+    if (request.query && request.query.q) {
+      fetch(
+        API_URL + "/public/search/studysets?" + (new URLSearchParams({ q: request.query.q })).toString()
+      ).then(function (response) {
+        response.json().then(function (responseJson) {
+          if (responseJson.error) {
+            request.log.error(responseJson.error);
+            reply.callNotFound();
+          } else {
+            reply.view("search.html", {
+              ...themeData(request),
+              query: request.query.q,
+              results: responseJson.data.rows,
+              authed: userResult.authed,
+              authedUser: userResult?.data?.user
+            })
+          }
+        })
+      }).catch(function (error) {
+        reply.callNotFound();
       })
-    }).catch(function (error) {
-      reply.callNotFound();
-    })
-  } else {
-    reply.view("search.html", {
-      ...themeData(request),
-      query: false,
-    })
-  }
+    } else {
+      reply.view("search.html", {
+        ...themeData(request),
+        query: false,
+        authed: userResult.authed,
+        authedUser: userResult?.data?.user
+      })
+    }
+  })
 })
 
 fastify.get("/discord", function (request, reply) {
