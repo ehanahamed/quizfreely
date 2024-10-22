@@ -34,9 +34,9 @@
   <body>
     <eta>~ include("./partials/body-start", { theme: data.theme }) </eta>
     <eta> if (data.query) { </eta>
-    <eta>~ include("./partials/navbar", { page: "explore", searchQuery: data.query }) </eta>
+    <eta>~ include("./partials/navbar", { page: "explore", authed: data.authed, authedUser: data.authedUser, searchQuery: data.query }) </eta>
     <eta> } else { </eta>
-    <eta>~ include("./partials/navbar", { page: "explore", hideSearchbar: true }) </eta>
+    <eta>~ include("./partials/navbar", { page: "explore", authed: data.authed, authedUser: data.authedUser, hideSearchbar: true }) </eta>
     <eta> } </eta>
     <eta>~ include("./partials/noscript") </eta>
     <main>

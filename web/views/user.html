@@ -27,7 +27,7 @@
 
   <body>
     <eta>~ include("./partials/body-start", { theme: data.theme }) </eta>
-    <eta>~ include("./partials/navbar", { page: "studyset" }) </eta>
+    <eta>~ include("./partials/navbar", { page: "studyset", authed: data.authed, authedUser: data.authedUser }) </eta>
     <main>
       <div class="grid page">
         <div class="content">

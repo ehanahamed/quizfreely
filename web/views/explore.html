@@ -29,7 +29,7 @@
   </head>
   <body>
     <eta>~ include("./partials/body-start", { theme: data.theme }) </eta>
-    <eta>~ include("./partials/navbar", { page: "explore" }) </eta>
+    <eta>~ include("./partials/navbar", { page: "explore", authed: data.authed, authedUser: data.authedUser }) </eta>
     <eta>~ include("./partials/noscript") </eta>
     <main>
       <div class="grid page">

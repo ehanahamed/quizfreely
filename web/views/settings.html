@@ -28,7 +28,7 @@
 
   <body>
     <eta>~ include("./partials/body-start", { theme: data.theme }) </eta>
-    <eta>~ include("./partials/navbar", { page: "settings" }) </eta>
+    <eta>~ include("./partials/navbar", { page: "settings", authed: data.authed, authedUser: data.authedUser }) </eta>
     <eta>~ include("./partials/noscript") </eta>
     <main>
       <div class="grid page">

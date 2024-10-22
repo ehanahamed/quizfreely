@@ -31,7 +31,7 @@
 
   <body>
     <eta>~ include("./partials/body-start", { theme: data.theme }) </eta>
-    <eta>~ include("./partials/navbar", { page: "studyset" }) </eta>
+    <eta>~ include("./partials/navbar", { page: "studyset", authed: data.authed, authedUser: data.authedUser }) </eta>
     <eta> if (data.ssr == false) {</eta>
     <eta>~ include("./partials/noscript") </eta>
     <eta> } </eta>
