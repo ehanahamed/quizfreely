@@ -15,6 +15,7 @@ const POSTGRES_URI = process.env.POSTGRES_URI;
 const CORS_ORIGIN = process.env.CORS_ORIGIN;
 const COOKIES_DOMAIN = process.env.COOKIES_DOMAIN;
 const LOG_LEVEL = process.env.LOG_LEVEL;
+const LOG_PRETTY = process.env.LOG_PRETTY || "false";
 const OAUTH_GOOGLE_ID = process.env.OAUTH_GOOGLE_CLIENT_ID;
 const OAUTH_GOOGLE_SECRET = process.env.OAUTH_GOOGLE_CLIENT_SECRET;
 const API_OAUTH_CALLBACK = process.env.API_OAUTH_CALLBACK_URL
@@ -28,11 +29,31 @@ if (PORT == undefined || HOST == undefined) {
     process.exit(1);
 }
 
+let loggerConfig = {
+    level: LOG_LEVEL,
+    file: path.join(import.meta.dirname, "quizfreely-api.log")
+  };
+if (LOG_PRETTY == "true") {
+    loggerConfig = {
+      level: LOG_LEVEL,
+      transport: {
+        targets: [
+          {
+            target: "pino-pretty",
+            
+          },
+          {
+            target: "pino/file",
+            options: {
+              destination: path.join(import.meta.dirname, "quizfreely-api.log")
+            }
+          }
+        ]
+      },
+    };
+}
 const fastify = Fastify({
-    logger: {
-        level: LOG_LEVEL,
-        file: path.join(import.meta.dirname, "quizfreely-api.log")
-    }
+    logger: loggerConfig
 })
 
 const pool = new Pool({
