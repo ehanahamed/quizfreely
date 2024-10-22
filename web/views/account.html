@@ -213,29 +213,9 @@
     <eta>~ include("./partials/footer") </eta>
     <eta> if (data.authed == false) {</eta>
     <script>
-      function showSignedIn() {
-        document.getElementById("account-div").classList.add("hide");
-        document.getElementById("error-div").classList.add("hide");
-        document.getElementById("signedin-div").classList.remove("hide");
-      }
-      function showError() {
-        document.getElementById("account-div").classList.remove("hide");
-        document.getElementById("error-div").classList.remove("hide");
-        document.getElementById("signedin-div").classList.add("hide");
-      }
-      if (client.hasSession()) {
-        fetch("/api/v0/user", {
-            method: "GET",
-            credentials: "same-origin"
-        }).then(function (rawResponse) {
-          rawResponse.json().then(function (response) {
-            console.log("something");
-          })
-        });
-      }
     if (window.location.search.includes("?error")) {
       var urlParams = new URLSearchParams(window.location.search);
-      showError();
+      document.getElementById("error-div").classList.remove("hide");
       document.getElementById("error-text").innerHTML =
         "<b>Error</b>: " + urlParams.get("error");
     }
