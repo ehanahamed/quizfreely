@@ -47,13 +47,13 @@
             <div class="grid list" id="studyset-list">
               <eta> if (data.authed && data.studysetList && data.studysetList.length > 0 ) { </eta>
                 <eta> data.studysetList.forEach(function (studyset) { </eta>
-                  <div class="box flex">
+                  <div class="box">
                     <eta> if (studyset.private) { </eta>
-                      <a href="/studyset/private/<eta>= studyset.id </eta>"></a>
+                      <a href="/studyset/private/<eta>= studyset.id </eta>"><eta>= studyset.title </eta></a>
                     <eta> } else { </eta>
-                      <a href="/studysets/<eta>= studyset.id </eta>"></a>
+                      <a href="/studysets/<eta>= studyset.id </eta>"><eta>= studyset.title </eta></a>
                     <eta> } </eta>
-                    <p data-timestamp="<eta>= studyset.updated_at </eta>"></p>
+                    <p class="h6" data-timestamp="<eta>= studyset.updated_at </eta>">...</p>
                   </div>
                 <eta> }) </eta>
               <eta> } else { </eta>
@@ -129,6 +129,16 @@
       } else if (window.localStorage && (localStorage.getItem("settingTimeHour") == "12h")) {
         fancyTimestamp.hours = 12;
       }
+    </script>
+    <eta> if (data.authed && data.studysetList && data.studysetList.length > 0) { </eta>
+    <script>
+      for (var i = 0; i < document.getElementById("studyset-list").children.length; i++) {
+        var timestampElement = document.getElementById("studyset-list").children[i].children[1]
+        timestampElement.innerText = fancyTimestamp.format(timestampElement.dataset.timestamp);
+      }
+    </script>
+    <eta> } </eta>
+    <script>
       if (client.hasSession()) {
         document.getElementById("dashboard-noaccount-alert").classList.add("hide");
         client.req({ method: "GET", path: "/list/my-studysets" }, function (result) {
