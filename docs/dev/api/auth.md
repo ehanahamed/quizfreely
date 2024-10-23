@@ -18,6 +18,16 @@ These sessions also expire after 10 days. When they expire, users will have to s
 
 ## Technical Info
 
+### Auth Cookie and Authorization Header
+
+When a user signs in (or signs up, or signs in with oauth) quizfreely-api gives the user a cookie named `auth` that has the user's session token. It's a `Secure`, `HttpOnly`, `SameSite` cookie that will only be sent using `https` and can't be accessed by client (and can not be stolen by XSS attacks).
+
+When client js code in quizfreely-web makes requests to quizfreely-api, the browser sends that `auth` cookie, and the API uses that to authenticate the user.
+
+When SSR/server-side js code in quizfreely-web makes requests to quizfreely-api, the server processs sends the user's token in an `Authorization` header as a bearer token. (Like this: `Authorization: Bearer tokengoeshere`). Since quizfreely-web is at the root/base of a domain (like `https://quizfreely.com` or `http://localhost:8080`) and quizfreely-api is at `/api` on the same domain, (like `https://quizfreely.com/api/` or `http://localhost:8080/api/`), the `auth` cookie can be used by quizfreely-web (because the cookie has SameSite for `quizfreely.com` (or `localhost` for development)). So when quizfreely-web's server side js code needs to make a request to quizfreely-api for server-side rendering (SSR) or something, quizfreely-web gets the user's `auth` cookie, but it needs to "forward"/send the session token to quizfreely-api too, so it takes the token from the `auth` cookie and puts it into an `Authorization` http header in the server-side request to quizfreely-api.
+
+That SameSite attribute of the auth cookie is configured in quizfreely-api's `.env` file with `COOKIES_DOMAIN=`, so that they can be easily configured AND secure in production and development. See [developer docs > api > api-dotenv.md](./api-dotenv.md) for more documentation.
+
 ### Postgres roles
 
 When we setup our PostgreSQL database we create three roles: `quizfreely_api`, `quizfreely_auth`, and `quizfreely_auth_user`. (The commands to setup the database are in [`config/db/quizfreely-db-setup.sql`](../../../config/db/quizfreely-db-setup.sql) and the process is explained in [developer docs > production > api-setup.md > Postgres setup](../production/api-setup.md#postgres-setup))
