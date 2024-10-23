@@ -33,9 +33,11 @@
       <div class="grid page">
         <div class="content">
           <div id="mainDashboarddiv">
-            <p id="dashboard-noaccount-alert" class="fg0 hide">
-              You're not signed in, so your sets will be saved offline.
-            </p>
+            <eta> if (data.authed == false) { </eta>
+              <p id="dashboard-noaccount-alert" class="fg0">
+                You're not signed in, so your sets will be saved offline.
+              </p>
+            <eta> } </eta>
             <div class="flex">
               <a href="/studyset/create" class="button">
                 <i class="nf nf-oct-plus"></i>
@@ -43,9 +45,22 @@
               </a>
             </div>
             <div class="grid list" id="studyset-list">
+              <eta> if (data.authed && data.studysetList && data.studysetList.length > 0 ) { </eta>
+                <eta> data.studysetList.forEach(function (studyset) { </eta>
+                  <div class="box flex">
+                    <eta> if (studyset.private) { </eta>
+                      <a href="/studyset/private/<eta>= studyset.id </eta>"></a>
+                    <eta> } else { </eta>
+                      <a href="/studysets/<eta>= studyset.id </eta>"></a>
+                    <eta> } </eta>
+                    <p data-timestamp="<eta>= studyset.updated_at </eta>"></p>
+                  </div>
+                <eta> }) </eta>
+              <eta> } else { </eta>
               <div class="box flex center-h center-v">
                 <div>Tap "create new" to create a studyset</div>
               </div>
+              <eta> } </eta>
             </div>
             <div id="mainDashboardImportother" class="modal hide">
               <div class="content">
