@@ -96,7 +96,7 @@
             <div id="account-username-password-div">
               <p>
                 <span class="h6">Username:</span><br />
-                <span id="account-username"><eta>= data.authedUser.username </span>
+                <span id="account-username"><eta>= data.authedUser.username </eta></span>
               </p>
             </div>
             <eta> } </eta>
@@ -182,7 +182,7 @@
               displayName: document.getElementById("display-name-edit").value
             }
           })
-        }, function (rawResponse) {
+        }).then(function (rawResponse) {
           rawResponse.json().then(function (response) {
             if (response.data && response.data.user) {
               document.getElementById("account-display-name").innerText = response.data.user.displayName;
