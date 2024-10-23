@@ -222,13 +222,13 @@
     <eta> if (data.ssr && data.studyset) {</eta>
     <script>
       var studyset = JSON.parse("<eta>~ JSON.stringify(data.studyset).replaceAll('\\', '\\\\').replaceAll('\"', '\\\"') </eta>")
-      if (client.hasSession()) {
+      /*if (client.hasSession()) {
         fetch({ method: "GET", path: "/user" }, function (response) {
           if (response.data && response.data.user.id == "<eta>= data.studyset.user_id </eta>") {
             document.getElementById("edit-menu").classList.remove("hide");
           }
         })
-      }
+      }*/
     </script>
     <eta> } else if (data.local) {</eta>
     <script>
