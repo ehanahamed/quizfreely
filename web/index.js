@@ -325,7 +325,7 @@ fastify.get("/explore", async function (request, reply) {
   try {
     let featuredRows = false;
     let featuredResponse = await (
-      await fetch(API_URL + "/public/list/featured?limit=3")
+      await fetch(API_URL + "/v0/public/list/featured?limit=3")
     ).json();
     if (featuredResponse.error == false && featuredResponse.data) {
       featuredRows = featuredResponse.data.rows;
@@ -333,7 +333,7 @@ fastify.get("/explore", async function (request, reply) {
     
     let recentRows = false;
     let recentsResponse = await (
-      await fetch(API_URL + "/public/list/recent?limit=3")
+      await fetch(API_URL + "/v0/public/list/recent?limit=3")
     ).json();
     if (recentsResponse.error == false && recentsResponse.data) {
       recentRows = recentsResponse.data.rows;
@@ -365,7 +365,7 @@ fastify.get("/studyset/create", function (request, reply) {
 
 fastify.get("/studysets/:studyset", function (request, reply) {
   userData(request).then(function (userResult) {
-    fetch(API_URL + "/public/studysets/" + request.params.studyset)
+    fetch(API_URL + "/v0/public/studysets/" + request.params.studyset)
     .then(function (response) {
       response.json().then(function (responseJson) {
         if (responseJson.error) {
@@ -435,7 +435,7 @@ fastify.get("/studyset/edit/:studyset", function (request, reply) {
 
 fastify.get("/users/:userid", function (request, reply) {
   userData(request).then(function (userResult) {
-    fetch(API_URL + "/public/users/" + request.params.userid)
+    fetch(API_URL + "/v0/public/users/" + request.params.userid)
     .then(function (response) {
       response.json().then(function (responseJson) {
         if (responseJson.error) {
@@ -460,7 +460,7 @@ fastify.get("/search", function (request, reply) {
   userData(request).then(function (userResult) {
     if (request.query && request.query.q) {
       fetch(
-        API_URL + "/public/search/studysets?" + (new URLSearchParams({ q: request.query.q })).toString()
+        API_URL + "/v0/public/search/studysets?" + (new URLSearchParams({ q: request.query.q })).toString()
       ).then(function (response) {
         response.json().then(function (responseJson) {
           if (responseJson.error) {
