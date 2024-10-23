@@ -230,24 +230,28 @@
         ) {
           document.getElementById("error-div").classList.add("hide");
           var username = document.getElementById("signupUsernameInput").value
-          client.req({
+          fetch("/api/v0/auth/sign-up", {
             method: "POST",
-            path: "/auth/sign-up",
+            headers: {
+              "Content-Type": "application/json"
+            },
             body: {
               username: username,
               password: document.getElementById("signupPasswordInput").value
             }
-          }, function (response) {
-            if (response.error) {
-              showError();
-              document.getElementById("error-text").innerHTML =
-                "<b>Error</b>: " + response.error.type;
-            } else {
-              showSignedIn();
-            }
+          }).then(function (rawRes) {
+            rawRes.json().then(function (response) {
+              if (response.error) {
+                document.getElementById("error-text").classList.remove("hide");
+                document.getElementById("error-text").innerHTML =
+                  "<b>Error</b>: " + response.error.type;
+              } else {
+                window.location.reload();
+              }
+            })
           })
         } else {
-          showError();
+          document.getElementById("error-text").classList.remove("hide");
           document.getElementById("error-text").innerHTML =
             "Passwords don't match <b>D:</b> <br />" +
             "Make sure you retyped your password how you want!";
@@ -278,11 +282,11 @@
         }).then(function (rawResponse) {
           rawResponse.json().then(function (response) {
             if (response.error) {
-            showError()
-            document.getElementById("error-text").innerHTML =
+              document.getElementById("error-text").classList.remove("hide");
+              document.getElementById("error-text").innerHTML =
               "<b>Error</b>: " + response.error.type;
             } else {
-              showSignedIn();
+              window.location.reload();
             }
           })
         });
