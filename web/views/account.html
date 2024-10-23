@@ -242,7 +242,7 @@
           }).then(function (rawRes) {
             rawRes.json().then(function (response) {
               if (response.error) {
-                document.getElementById("error-text").classList.remove("hide");
+                document.getElementById("error-div").classList.remove("hide");
                 document.getElementById("error-text").innerHTML =
                   "<b>Error</b>: " + response.error.type;
               } else {
@@ -251,7 +251,7 @@
             })
           })
         } else {
-          document.getElementById("error-text").classList.remove("hide");
+          document.getElementById("error-div").classList.remove("hide");
           document.getElementById("error-text").innerHTML =
             "Passwords don't match <b>D:</b> <br />" +
             "Make sure you retyped your password how you want!";
@@ -282,7 +282,7 @@
         }).then(function (rawResponse) {
           rawResponse.json().then(function (response) {
             if (response.error) {
-              document.getElementById("error-text").classList.remove("hide");
+              document.getElementById("error-div").classList.remove("hide");
               document.getElementById("error-text").innerHTML =
               "<b>Error</b>: " + response.error.type;
             } else {
