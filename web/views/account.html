@@ -235,10 +235,10 @@
             headers: {
               "Content-Type": "application/json"
             },
-            body: {
+            body: JSON.stringify({
               username: username,
               password: document.getElementById("signupPasswordInput").value
-            }
+            })
           }).then(function (rawRes) {
             rawRes.json().then(function (response) {
               if (response.error) {
