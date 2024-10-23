@@ -227,11 +227,34 @@ function dashboard(request, reply) {
       "theme",
       themeDataObj.theme,
       cookieOptionsObj
-    ).view("dashboard.html", {
-      ...themeDataObj,
-      authed: userResult.authed,
-      authedUser: userResult?.data?.user
-    })
+    )
+    if (userResult.authed) {
+      fetch(API_URL + "/v0/list/my-studysets", {
+        method: "GET",
+        headers: {
+          "Authorization": "Bearer " + request.cookies.auth
+        }
+      }).then(function (rawRes) {
+        rawRes.json().then(function (response) {
+          if (response.error) {
+            request.log.error(response.error);
+          }
+          reply.view("dashboard.html", {
+            ...themeDataObj,
+            authed: userResult.authed,
+            authedUser: userResult?.data?.user,
+            studysetList: response?.data?.rows
+          })
+        })
+      })
+    } else {
+      /* userResult.authed is false, user isn't signed in */
+      reply.view("dashboard.html", {
+        ...themeDataObj,
+        authed: userResult.authed,
+        authedUser: userResult?.data?.user
+      })
+    }
   })
 }
 
