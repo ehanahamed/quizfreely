@@ -20,6 +20,8 @@ To setup quizfreely-api & it's .env file for **production** see [production > ap
   - should be `CORS_ORIGIN=http://localhost:8080` for development
 - `COOKIES_DOMAIN=`
   - This is used for the domain flag of auth cookies in api
+  - NO protocol (`example.com`, NOT `https://example.com`)
+  - NO trailing slash (`example.com`, NOT `example.com/`)
   - should be `COOKIES_DOMAIN=quizfreely.com` for production
   - should be `COOKIES_DOMAIN=localhost` for development
 - `LOG_LEVEL=`
