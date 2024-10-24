@@ -34,7 +34,7 @@ When we setup our PostgreSQL database we create three roles: `quizfreely_api`, `
 
 - `quizfreely_api` role
   - can be logged in/connected as
-  - has a password (set it using `\password quizfreely_api` in the database shell (`psql -d quizfreely-db`))
+  - has a password (set it using `\password quizfreely_api` in the database shell (`psql -d quizfreely_db`))
   - can view public information
     - can view `public.studysets` rows where `private = false`
     - can view `public.profiles`

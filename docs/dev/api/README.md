@@ -34,12 +34,12 @@ cd ~
 
 Now create the database:
 ```sh
-createdb quizfreely-db
+createdb quizfreely_db
 ```
 
 Now, while still being the `postgres` linux user, access the database shell:
 ```sh
-psql -d quizfreely-db
+psql -d quizfreely_db
 ```
 
 Now, you should be in a different looking shell. This is the database shell, it's where you run SQL commands and stuff.
@@ -73,7 +73,7 @@ cd quizfreely/api/
 cp .env.example .env
 ```
 
-Edit `.env` and replace `PASSWORD` with your/our password for the "quizfreely_api" postgres user in `POSTGRES_URI=postgres://quizfreely_api:PASSWORD@localhost/quizfreely-db`
+Edit `.env` and replace `PASSWORD` with your/our password for the "quizfreely_api" postgres user in `POSTGRES_URI=postgres://quizfreely_api:PASSWORD@localhost/quizfreely_db`
 
 All the other values are already set up with reasonable defaults for local development.
 

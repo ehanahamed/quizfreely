@@ -60,12 +60,12 @@ cd ~
 
 Now create the database:
 ```sh
-createdb quizfreely-db
+createdb quizfreely_db
 ```
 
 Now, while still being the `postgres` linux user, access the database shell:
 ```sh
-psql -d quizfreely-db
+psql -d quizfreely_db
 ```
 
 Now, you should be in a different looking shell. This is the database shell, it's where you run SQL commands and stuff.
@@ -108,7 +108,7 @@ cp .env.example .env
 
 Now edit `.env`:
 1. Change `HOST=0.0.0.0` to `HOST=localhost`
-2. Replace `PASSWORD` with your/our password for the "quizfreely_api" postgres user in `POSTGRES_URI=postgres://quizfreely_api:PASSWORD@localhost/quizfreely-db`
+2. Replace `PASSWORD` with your/our password for the "quizfreely_api" postgres user in `POSTGRES_URI=postgres://quizfreely_api:PASSWORD@localhost/quizfreely_db`
 3. Change `CORS_ORIGIN=http://localhost:8080` to `CORS_ORIGIN=https://quizfreely.com`
 4. Change `COOKIES_DOMAIN=localhost` to `COOKIES_DOMAIN=quizfreely.com`
 5. Change `API_OAUTH_CALLBACK_URL=http://localhost:8080/api/v0/oauth/google/callback` to `API_OAUTH_CALLBACK_URL=https://quizfreely.com/api/v0/oauth/google/callback`
@@ -119,7 +119,7 @@ When you're done, the edited .env file should look similar to this:
 PORT=8008
 HOST=localhost
 # there's still "@localhost" in POSTGRES_URI= because the server process connects to the database throgh localhost cause it's on the same machine
-POSTGRES_URI=postgres://quizfreely_api:PASSWORD@localhost/quizfreely-db
+POSTGRES_URI=postgres://quizfreely_api:PASSWORD@localhost/quizfreely_db
 CORS_ORIGIN=https://quizfreely.com
 COOKIES_DOMAIN=quizfreely.com
 # error, warn, info
