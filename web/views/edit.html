@@ -237,6 +237,40 @@
     <eta> if (data.new) { </eta>
     <script>
       editTermsTable.add();
+      /* indexeddb stuff */
+      /*var db;
+        var dbReq = indexedDB.open("quizfreelydata", 1);
+        dbReq.onerror = function (event) {
+          alert("Oh no! IndexedDB errored. Better error message coming soon?");
+        }
+        dbReq.onupgradeneeded = function (event) {
+          db = event.target.result;
+          if (db.objectStoreNames.contains("studysets") == false) {
+            var studysetsObjectStore = db.createObjectStore("studysets", { keyPath: "id", autoIncrement: true });
+            studysetsObjectStore.createIndex("title_idx", "title");
+          }
+        }
+        dbReq.onsuccess = function (event) {
+          db = event.target.result;
+          db.onerror = function (event) {
+            console.error(event);
+            alert("Oh no! An IndexedDB error!");
+          };
+          document.getElementById("create-button").addEventListener("click", function () {
+            var dbtrans = db.transaction("studysets", "readwrite");
+            var studysetsObjectStore = dbtrans.objectStore("studysets");
+            var addReq = studysetsObjectStore.add({
+              title: document.getElementById("edit-title").value,
+              data: {
+                terms: editTermsTable.arrayFromTable()
+              },
+              updated_at: (new Date()).toUTCString()
+            });
+            addReq.onsuccess = function () {
+              alert(objectStore.autoIncrement);
+            }
+          });
+        };*/
       if (client.hasSession()) {
         document.getElementById("create-button").addEventListener("click", function () {
           var private = document.getElementById("edit-private-true").classList.contains("selected");
@@ -272,39 +306,7 @@
           })
         })
       } else {
-        var db;
-        var dbReq = indexedDB.open("quizfreelydata", 1);
-        dbReq.onerror = function (event) {
-          alert("Oh no! IndexedDB errored. Better error message coming soon?");
-        }
-        dbReq.onupgradeneeded = function (event) {
-          db = event.target.result;
-          if (db.objectStoreNames.contains("studysets") == false) {
-            var studysetsObjectStore = db.createObjectStore("studysets", { keyPath: "id", autoIncrement: true });
-            studysetsObjectStore.createIndex("title_idx", "title");
-          }
-        }
-        dbReq.onsuccess = function (event) {
-          db = event.target.result;
-          db.onerror = function (event) {
-            console.error(event);
-            alert("Oh no! An IndexedDB error!");
-          };
-          document.getElementById("create-button").addEventListener("click", function () {
-            var dbtrans = db.transaction("studysets", "readwrite");
-            var studysetsObjectStore = dbtrans.objectStore("studysets");
-            var addReq = studysetsObjectStore.add({
-              title: document.getElementById("edit-title").value,
-              data: {
-                terms: editTermsTable.arrayFromTable()
-              },
-              updated_at: (new Date()).toUTCString()
-            });
-            addReq.onsuccess = function () {
-              alert(objectStore.autoIncrement);
-            }
-          });
-        };
+        /* moved up */
       }
     </script>
     <eta> } else if (data.studysetId) { </eta>
