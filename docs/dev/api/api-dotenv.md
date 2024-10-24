@@ -11,8 +11,8 @@ To setup quizfreely-api & it's .env file for **production** see [production > ap
   - should be `HOST=0.0.0.0` for development
 - `POSTGRES_URI=`
   - PostgreSQL connection URI
-  - should be `POSTGRES_URI=postgres://quizfreely_api:PASSWORD@localhost/quizfreely-db`
-  - replace `PASSWORD` with your/our passowrd
+  - should be `POSTGRES_URI=postgres://quizfreely_api:PASSWORD@localhost/quizfreely_db`
+  - replace `PASSWORD` with your/our password
   - Most other .env variables replace localhost in production, but we keep "@localhost" in POSTGRES_URI= because the server process connects to the database through localhost, because both are on the same machine
 - `CORS_ORIGIN=`
   - allowed CORS origin, see https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Allow-Origin
