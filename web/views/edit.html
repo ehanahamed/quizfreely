@@ -94,7 +94,14 @@
               <i class="nf nf-oct-check"></i>
               Create
             </button>
-            <!-- dropdown thingy ill add later i forgor -->
+            <div class="dropdown">
+              <button class="dropdown-toggle">
+                <i class="nf nf-md-dots_horizontal"></i>
+              </button>
+              <div class="content">
+                <button id="create-button-local"><i class="nf nf-oct-cloud_offline"></i> Save Locally </button>
+              </div>
+            </div>
             <eta> } else if (data.new) { </eta>
             <button id="create-button-local">
               <i class="nf nf-oct-check"></i>
@@ -282,10 +289,12 @@
     <script>
       document.getElementById("create-button-authed").addEventListener("click", function () {
         var private = document.getElementById("edit-private-true").classList.contains("selected");
-        client.req({
+        await("/api/v0/studysets", {
           method: "POST",
-          path: "/studysets",
-          body: {
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
             studyset: {
               title: document.getElementById("edit-title").value,
               private: private,
@@ -293,8 +302,8 @@
                 terms: editTermsTable.arrayFromTable()
               }
             }
-          }
-        }, function (result) {
+          })
+        }).then(function (result) {
           if (result.data && result.data.studyset) {
             if (private) {
               window.location.replace("/studyset/private/" + result.data.studyset.id)
