@@ -1329,4 +1329,11 @@ new Cron("0 0 * * *", async function () {
 fastify.listen({
     port: PORT,
     host: HOST
+}, function (error, address) {
+    if (error) {
+        fastify.log.error(error);
+        process.exit(1);
+    } else if (LOG_PRETTY == "true") {
+        console.log("Quizfreely-API is running at " + address);
+    }
 })

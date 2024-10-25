@@ -561,4 +561,11 @@ fastify.get("/settings/clear-cookies", function (request, reply) {
 fastify.listen({
   port: PORT,
   host: HOST
+}, function (error, address) {
+  if (error) {
+    fastify.log.error(error);
+    process.exit(1);
+  } else if (LOG_PRETTY == "true") {
+    console.log("Quizfreely-web is running at " + address);
+  }
 })
