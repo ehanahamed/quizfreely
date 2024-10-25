@@ -286,6 +286,7 @@
         };*/
     </script>
     <eta> if (data.authed) { </eta>
+    <!-- and data.new is true (creating a new studyset, not updating one) -->
     <script>
       var doubleReq = false;
       document.getElementById("create-button-authed").addEventListener("click", function () {
@@ -333,9 +334,13 @@
     </script>
     <eta> } </eta>
     <eta> } else if (data.studysetId) { </eta>
+    <!-- data.new is false (updating an existing studyset, not creating one) -->
+    <eta> if (data.authed) { </eta>
     <script>
-      if (client.hasSession()) {
-        client.req({ method: "GET", path: "/studysets/<eta>= data.studysetId </eta>" }, function (result) {
+      /*
+        fetch("/api/v0/studysets/<eta>= data.studysetId </eta>", {
+          method: "GET"
+        }, function (result) {
           if (result.error) {
             alert("error, could not load studyset while trying to edit")
           } else {
@@ -349,7 +354,7 @@
               document.getElementById("edit-private-true").classList.remove("selected");
             }
           }
-        })
+        })*/
         document.getElementById("save-button").addEventListener("click", function () {
           var private = document.getElementById("edit-private-true").classList.contains("selected");
           client.req({
@@ -376,10 +381,8 @@
             }
           })
         })
-      } else {
-        alert("not signed in :(")
-      }
     </script>
+    <eta> } </eta>
     <eta> } </eta>
   </body>
 </html>
