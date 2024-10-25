@@ -107,26 +107,54 @@ cp .env.example .env
 ```
 
 Now edit `.env`:
-1. Change `HOST=0.0.0.0` to `HOST=localhost`
-2. Replace `PASSWORD` with your/our password for the "quizfreely_api" postgres user in `POSTGRES_URI=postgres://quizfreely_api:PASSWORD@localhost/quizfreely_db`
-3. Change `CORS_ORIGIN=http://localhost:8080` to `CORS_ORIGIN=https://quizfreely.com`
-4. Change `COOKIES_DOMAIN=localhost` to `COOKIES_DOMAIN=quizfreely.com`
-5. Change `API_OAUTH_CALLBACK_URL=http://localhost:8080/api/v0/oauth/google/callback` to `API_OAUTH_CALLBACK_URL=https://quizfreely.com/api/v0/oauth/google/callback`
-6. Change `WEB_OAUTH_CALLBACK_URL=http://localhost:8080/sign-up` to `WEB_OAUTH_CALLBACK_URL=https://quizfreely.com/sign-up`
+1. Set `HOST=` to `HOST=localhost`
+2. Replace `PASSWORD_GOES_HERE` with your/our password for the "quizfreely_api" postgres user in `POSTGRES_URI=`
+3. Set `CORS_ORIGIN=` to `CORS_ORIGIN=https://quizfreely.com`
+4. Set `COOKIES_DOMAIN=` to `COOKIES_DOMAIN=quizfreely.com`
+5. Set `LOG_PRETTY=` to `LOG_PRETTY=false`
+5. Get/find our client ID & secret for Google OAuth from Google Cloud Console Thingy, add them in `OAUTH_GOOGLE_CLIENT_ID=` and `OAUTH_GOOGLE_CLIENT_SECRET=`
+6. Set `API_OAUTH_CALLBACK_URL=` to `API_OAUTH_CALLBACK_URL=https://quizfreely.com/api/v0/oauth/google/callback`
+7. Set `WEB_OAUTH_CALLBACK_URL=` to `WEB_OAUTH_CALLBACK_URL=https://quizfreely.com/sign-up`
+
+All details and options for quizfreely-api's .env file are documented in [api-dotenv.md](../api/api-dotenv.md)
 
 When you're done, the edited .env file should look similar to this:
 ```sh
 PORT=8008
+
+# for production: HOST=localhost
+# for development: HOST=0.0.0.0
 HOST=localhost
-# there's still "@localhost" in POSTGRES_URI= because the server process connects to the database throgh localhost cause it's on the same machine
-POSTGRES_URI=postgres://quizfreely_api:PASSWORD@localhost/quizfreely_db
+
+# replace PASSWORD_GOES_HERE and check database name
+POSTGRES_URI=postgres://quizfreely_api:ACTUAL_PASSWORD@localhost/quizfreely_db
+
+# for production: CORS_ORIGIN=https://quizfreely.com
+# for development: CORS_ORIGIN=http://localhost:8080
 CORS_ORIGIN=https://quizfreely.com
+
+# no trailing slash: example.com NOT example.com/
+# no protocol: example.com NOT https://example.com
+# for production: COOKIES_DOMAIN=quizfreely.com
+# for development: COOKIES_DOMAIN=localhost
 COOKIES_DOMAIN=quizfreely.com
-# error, warn, info
+
+# fatal, error, warn, info, debug, or trace
 LOG_LEVEL=warn
-# OAUTH_GOOGLE_CLIENT_ID=
-# OAUTH_GOOGLE_CLIENT_SECRET=
+
+# for production: LOG_PRETTY=false
+# for development: LOG_PRETTY=false
+LOG_PRETTY=false
+
+OAUTH_GOOGLE_CLIENT_ID=ACTUAL_ID_GOES_HERE
+OAUTH_GOOGLE_CLIENT_SECRET=ACTUAL_SECRET_GOES_HERE
+
+# production: API_OAUTH_CALLBACK_URL=https://quizfreely.com/api/v0/oauth/google/callback
+# development: API_OAUTH_CALLBACK_URL=http://localhost:8080/api/v0/oauth/google/callback
 API_OAUTH_CALLBACK_URL=https://quizfreely.com/api/v0/oauth/google/callback
+
+# production: WEB_OAUTH_CALLBACK_URL=https://quizfreely.com/sign-up
+# development: WEB_OAUTH_CALLBACK_URL=http://localhost:8080/sign-up
 WEB_OAUTH_CALLBACK_URL=https://quizfreely.com/sign-up
 ```
 
