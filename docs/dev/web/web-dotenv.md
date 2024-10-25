@@ -26,3 +26,10 @@ To setup quizfreely-web & it's .env file for **production** see [production > we
   - can be `trace`, `debug`, `info`, `warn`, `error`, `fatal`
   - should be `LOG_LEVEL=warn` or `LOG_LEVEL=error` for production
   - we switch between them for development
+- `LOG_PRETTY=`
+  - `true` or `false` to enable or disable pretty-printing/formatting logs
+  - when enabled, logs are pretty-printed to the terminal/console (STDOUT) AND written into the log file (`web/quizfreely-web.log`)
+  - when disabled, logs are only printed into the log file (`web/quizfreely-web.log`) in their default json format (no pretty printing/fancy formatting)
+  - formatting/pretty-printing makes every request/response slightly slower, which is why we disable it for production
+  - should be `LOG_PRETTY=false` for production
+  - should be `LOG_PRETTY=true` for development
