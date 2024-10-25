@@ -287,39 +287,48 @@
     </script>
     <eta> if (data.authed) { </eta>
     <script>
+      var doubleReq = false;
       document.getElementById("create-button-authed").addEventListener("click", function () {
         var private = document.getElementById("edit-private-true").classList.contains("selected");
-        await("/api/v0/studysets", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({
-            studyset: {
-              title: document.getElementById("edit-title").value,
-              private: private,
-              data: {
-                terms: editTermsTable.arrayFromTable()
+        if (doubleReq == false) {
+          fetch("/api/v0/studysets", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+              studyset: {
+                title: document.getElementById("edit-title").value,
+                private: private,
+                data: {
+                  terms: editTermsTable.arrayFromTable()
+                }
               }
-            }
+            })
+          }).then(function (rawRes) {
+            rawRes.json().then(function (result) {
+              if (result.data && result.data.studyset) {
+                if (private) {
+                  window.location.replace("/studyset/private/" + result.data.studyset.id)
+                } else {
+                  window.location.replace("/studysets/" + result.data.studyset.id)
+                }
+              } else if (result.error) {
+                var errorModal = document.createElement("div");
+                errorModal.classList.add("modal")
+                errorModal.id = "create-error-modal"
+                var errorModalContent = document.createElement("div");
+                errorModalContent.classList.add("content");
+              } else {
+                alert("big error")
+              }
+            })
+          }).catch(function (error) {
+            alert("fetch error?");
+            console.error(error);
           })
-        }).then(function (result) {
-          if (result.data && result.data.studyset) {
-            if (private) {
-              window.location.replace("/studyset/private/" + result.data.studyset.id)
-            } else {
-              window.location.replace("/studysets/" + result.data.studyset.id)
-            }
-          } else if (result.error) {
-            var errorModal = document.createElement("div");
-            errorModal.classList.add("modal")
-            errorModal.id = "create-error-modal"
-            var errorModalContent = document.createElement("div");
-            errorModalContent.classList.add("content");
-          } else {
-            alert("big error")
-          }
-        })
+          doubleReq = true;
+        }
       })
     </script>
     <eta> } </eta>
