@@ -45,17 +45,36 @@ cp .env.example .env
 ```
 
 Now edit `.env`:
-1. Change `HOST=0.0.0.0` to `HOST=localhost`
-2. Change `COOKIES_DOMAIN=localhost` to `COOKIES_DOMAIN=quizfreely.com`
+1. Set `HOST=` to `HOST=localhost`
+2. Set `COOKIES_DOMAIN=` to `COOKIES_DOMAIN=quizfreely.com`
+3. Set `LOG_PRETTY=` to `LOG_PRETTY=false`
+
+Quizfreely-web's .env file is documented with detail in [web-dotenv.md](../web/web-dotenv.md)
 
 When you're done, the edited .env file should look similar to this:
 ```sh
 PORT=8080
+
+# for production: HOST=localhost
+# for development: HOST=0.0.0.0
 HOST=localhost
+
+# no trailing slash: https://example.com NOT https://example.com/
+# for development AND production: API_URL=http://localhost:8008
 API_URL=http://localhost:8008
+
+# no trailing slash: example.com NOT example.com/
+# no protocol: example.com NOT https://example.com
+# for production: COOKIES_DOMAIN=quizfreely.com
+# for development: COOKIES_DOMAIN=localhost
 COOKIES_DOMAIN=quizfreely.com
-# error, warn, info
+
+# fatal, error, warn, info, debug, or trace
 LOG_LEVEL=warn
+
+# for production: LOG_PRETTY=false
+# for development: LOG_PRETTY=true
+LOG_PRETTY=false
 ```
 
 For more details about the .env file, see [web-dotenv.md](../web/web-dotenv.md)
