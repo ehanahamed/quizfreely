@@ -36,6 +36,27 @@ To setup quizfreely-api & it's .env file for **production** see [production > ap
   - NO trailing slash (`example.com`, NOT `example.com/`)
   - should be `COOKIES_DOMAIN=quizfreely.com` for production
   - should be `COOKIES_DOMAIN=localhost` for development
+- `CRON_CLEAR_LOGS=`
+  - `true` or `false` to enable or disable cron job to clear logs (clears contents of `quizfreely-api.log`) every hour, day, week, or month, etc (interval set with `CRON_CLEAR_LOGS_INTERVAL=`)
+  - should be `CRON_CLEAR_LOGS=true` for production
+- `CRON_CLEAR_LOGS_INTERVAL=`
+  - croner pattern to schedule when to run cron job to clear logs (https://croner.56k.guru/usage/pattern/)
+    - for example: daily is `CRON_CLEAR_LOGS_INTERVAL="0 0 * * *"`
+    - another example, weekly is `CRON_CLEAR_LOGS_INTERVAL="0 0 * * 0"`
+  - this does not matter if `CRON_CLEAR_LOGS` is `false`. You/we can comment it out or leave it blank if you have `CRON_CLEAR_LOGS=false`, but you must give it a valid value if you have `CRON_CLEAR_LOGS=true`
+  - Hourly is probably too frequent for most use cases. Daily or weekly are reccomended
+- `CRON_DELETE_EXPIRED_SESSIONS=`
+  - `true` or `false` to enable or disable cron job to delete expired sessions from `auth.sessions` in your/our PostgreSQL database every hour, day, week, or month, etc (interval set with `CRON_DELETE_EXPIRED_SESSIONS_INTERVAL=`)
+  - This is NOT security-related. Session tokens will always stop working after they expire (see [developer docs > api > auth.md](./auth.md) for details). We only delete them for storage space and performance.
+  - should be `CRON_DELETE_EXPIRED_SESSIONS=true` for production
+- `CRON_DELETE_EXPIRED_SESSIONS_INTERVAL=`
+  - croner pattern to schedule when to run cron job to delete expired sessions (https://croner.56k.guru/usage/pattern/)
+    - for example: hourly is `CRON_DELETE_EXPIRED_SESSIONS_INTERVAL="0 * * * *"`
+    - another example, daily is `CRON_DELETE_EXPIRED_SESSIONS_INTERVAL="0 0 * * *"`
+    - another example, weekly is `CRON_DELETE_EXPIRED_SESSIONS_INTERVAL="0 0 * * 0"`
+  - This is NOT security-related. Session tokens will always stop working after they expire (see [developer docs > api > auth.md](./auth.md) for details). We only delete them for storage space and performance.
+  - this does not matter if `CRON_DELETE_EXPIRED_SESSIONS` is `false`. You/we can comment it out or leave it blank if you have `CRON_DELETE_EXPIRED_SESSIONS=false`, but you must give it a valid value if you have `CRON_DELETE_EXPIRED_SESSIONS=true`
+  - Daily or weekly are reccomended
 - `OAUTH_GOOGLE_CLIENT_ID=`
   - google oauth client id
   - get it from google cloud something: https://console.cloud.google.com/apis/credentials

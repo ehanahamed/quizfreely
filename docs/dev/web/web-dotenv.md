@@ -33,3 +33,12 @@ To setup quizfreely-web & it's .env file for **production** see [production > we
   - NO trailing slash (`example.com`, NOT `example.com/`)
   - should be `COOKIES_DOMAIN=quizfreely.com` for production
   - should be `COOKIES_DOMAIN=localhost` for development
+- `CRON_CLEAR_LOGS=`
+  - `true` or `false` to enable or disable cron job to clear logs (clears contents of `quizfreely-web.log`) every hour, day, week, or month, etc (interval set with `CRON_CLEAR_LOGS_INTERVAL=`)
+  - should be `CRON_CLEAR_LOGS=true` for production
+- `CRON_CLEAR_LOGS_INTERVAL=`
+  - croner pattern to schedule when to run cron job to clear logs (https://croner.56k.guru/usage/pattern/)
+    - for example: daily is `CRON_CLEAR_LOGS_INTERVAL="0 0 * * *"`
+    - another example, weekly is `CRON_CLEAR_LOGS_INTERVAL="0 0 * * 0"`
+  - this does not matter if `CRON_CLEAR_LOGS` is `false`. You/we can comment it out or leave it blank if you have `CRON_CLEAR_LOGS=false`, but you must give it a valid value if you have `CRON_CLEAR_LOGS=true`
+  - Hourly is probably too frequent for most use cases. Daily or weekly are reccomended
