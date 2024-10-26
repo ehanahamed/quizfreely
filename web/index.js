@@ -15,6 +15,8 @@ const API_URL = process.env.API_URL
 const COOKIES_DOMAIN = process.env.COOKIES_DOMAIN
 const LOG_LEVEL = process.env.LOG_LEVEL
 const LOG_PRETTY = process.env.LOG_PRETTY || "false"
+const CRON_CLEAR_LOGS = process.env.CRON_CLEAR_LOGS || "false";
+const CRON_CLEAR_LOGS_INTERVAL = process.env.CRON_CLEAR_LOGS_INTERVAL;
 
 if (PORT == undefined || HOST == undefined) {
   console.error(
@@ -573,3 +575,19 @@ fastify.listen({
     console.log("Quizfreely-web is running at " + link);
   }
 })
+
+if (CRON_CLEAR_LOGS == "true") {
+  new Cron(CRON_CLEAR_LOGS_INTERVAL, async function () {
+    try {
+        writeFile(
+            path.join(import.meta.dirname, "quizfreely-web.log"),
+            "",
+            function () {
+                fastify.log.info("ran cron job to clear log file")
+            }
+        )
+    } catch (error) {
+        fastify.log.error(error, "error while trying to clear logs with cron job")
+    }
+  });
+}
