@@ -36,6 +36,20 @@ To setup quizfreely-api & it's .env file for **production** see [production > ap
   - NO trailing slash (`example.com`, NOT `example.com/`)
   - should be `COOKIES_DOMAIN=quizfreely.com` for production
   - should be `COOKIES_DOMAIN=localhost` for development
+- `OAUTH_GOOGLE_CLIENT_ID=`
+  - google oauth client id
+  - get it from google cloud something: https://console.cloud.google.com/apis/credentials
+- `OAUTH_GOOGLE_CLIENT_SECRET=`
+  - google oauth client secret
+  - get it from google cloud something: https://console.cloud.google.com/apis/credentials
+- `API_OAUTH_CALLBACK_URL=`
+  - url to handle oauth signin/signup
+  - should be `API_OAUTH_CALLBACK_URL=https://quizfreely.com/api/v0/oauth/google/callback` for production
+  - should be `API_OAUTH_CALLBACK_URL=http://localhost:8080/api/v0/oauth/google/callback` for development
+- `WEB_OAUTH_CALLBACK_URL=`
+  - url to redirect/callback to after oauth signin/signup is done
+  - should be `WEB_OAUTH_CALLBACK_URL=https://quizfreely.com/sign-up` for production
+  - should be `WEB_OAUTH_CALLBACK_URL=http://localhost:8080/sign-up` for development
 - `CRON_CLEAR_LOGS=`
   - `true` or `false` to enable or disable cron job to clear logs (clears contents of `quizfreely-api.log`) every hour, day, week, or month, etc (interval set with `CRON_CLEAR_LOGS_INTERVAL=`)
   - should be `CRON_CLEAR_LOGS=true` for production
@@ -57,17 +71,3 @@ To setup quizfreely-api & it's .env file for **production** see [production > ap
   - This is NOT security-related. Session tokens will always stop working after they expire (see [developer docs > api > auth.md](./auth.md) for details). We only delete them for storage space and performance.
   - this does not matter if `CRON_DELETE_EXPIRED_SESSIONS` is `false`. You/we can comment it out or leave it blank if you have `CRON_DELETE_EXPIRED_SESSIONS=false`, but you must give it a valid value if you have `CRON_DELETE_EXPIRED_SESSIONS=true`
   - Daily or weekly are reccomended
-- `OAUTH_GOOGLE_CLIENT_ID=`
-  - google oauth client id
-  - get it from google cloud something: https://console.cloud.google.com/apis/credentials
-- `OAUTH_GOOGLE_CLIENT_SECRET=`
-  - google oauth client secret
-  - get it from google cloud something: https://console.cloud.google.com/apis/credentials
-- `API_OAUTH_CALLBACK_URL=`
-  - url to handle oauth signin/signup
-  - should be `API_OAUTH_CALLBACK_URL=https://quizfreely.com/api/v0/oauth/google/callback` for production
-  - should be `API_OAUTH_CALLBACK_URL=http://localhost:8080/api/v0/oauth/google/callback` for development
-- `WEB_OAUTH_CALLBACK_URL=`
-  - url to redirect/callback to after oauth signin/signup is done
-  - should be `WEB_OAUTH_CALLBACK_URL=https://quizfreely.com/sign-up` for production
-  - should be `WEB_OAUTH_CALLBACK_URL=http://localhost:8080/sign-up` for development
