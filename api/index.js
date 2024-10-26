@@ -1334,6 +1334,10 @@ fastify.listen({
         fastify.log.error(error);
         process.exit(1);
     } else if (LOG_PRETTY == "true") {
-        console.log("Quizfreely-API is running at " + address);
+        var link = address;
+        if (COOKIES_DOMAIN == "localhost") {
+            link = link.replace("://127.0.0.1:", "://localhost:")
+        }
+        console.log("Quizfreely-API is running at " + link);
     }
 })
