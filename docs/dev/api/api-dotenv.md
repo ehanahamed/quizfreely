@@ -9,6 +9,18 @@ To setup quizfreely-api & it's .env file for **production** see [production > ap
   - `localhost` to listen on localhost, `0.0.0.0` to listen on all all IPv4 addresses, see https://fastify.dev/docs/latest/Reference/Server/#listen
   - should be `HOST=localhost` for production
   - should be `HOST=0.0.0.0` for development
+- `LOG_LEVEL=`
+  - log level for fastify using pino
+  - can be `trace`, `debug`, `info`, `warn`, `error`, `fatal`
+  - should be `LOG_LEVEL=warn` or `LOG_LEVEL=error` for production
+  - we switch between them for development
+- `LOG_PRETTY=`
+  - `true` or `false` to enable or disable pretty-printing/formatting logs
+  - when enabled, logs are pretty-printed to the terminal/console (STDOUT) AND written into the log file (`api/quizfreely-api.log`)
+  - when disabled, logs are only printed into the log file (`api/quizfreely-api.log`) in their default json format (no pretty printing/fancy formatting)
+  - formatting/pretty-printing makes every request/response slightly slower, which is why we disable it for production
+  - should be `LOG_PRETTY=false` for production
+  - should be `LOG_PRETTY=true` for development
 - `POSTGRES_URI=`
   - PostgreSQL connection URI
   - should be `POSTGRES_URI=postgres://quizfreely_api:PASSWORD@localhost/quizfreely_db`
@@ -24,18 +36,6 @@ To setup quizfreely-api & it's .env file for **production** see [production > ap
   - NO trailing slash (`example.com`, NOT `example.com/`)
   - should be `COOKIES_DOMAIN=quizfreely.com` for production
   - should be `COOKIES_DOMAIN=localhost` for development
-- `LOG_LEVEL=`
-  - log level for fastify using pino
-  - can be `trace`, `debug`, `info`, `warn`, `error`, `fatal`
-  - should be `LOG_LEVEL=warn` or `LOG_LEVEL=error` for production
-  - we switch between them for development
-- `LOG_PRETTY=`
-  - `true` or `false` to enable or disable pretty-printing/formatting logs
-  - when enabled, logs are pretty-printed to the terminal/console (STDOUT) AND written into the log file (`api/quizfreely-api.log`)
-  - when disabled, logs are only printed into the log file (`api/quizfreely-api.log`) in their default json format (no pretty printing/fancy formatting)
-  - formatting/pretty-printing makes every request/response slightly slower, which is why we disable it for production
-  - should be `LOG_PRETTY=false` for production
-  - should be `LOG_PRETTY=true` for development
 - `OAUTH_GOOGLE_CLIENT_ID=`
   - google oauth client id
   - get it from google cloud something: https://console.cloud.google.com/apis/credentials
