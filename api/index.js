@@ -7,6 +7,7 @@ import fastifyOauth2 from "@fastify/oauth2";
 import pg from "pg";
 const { Pool, Client } = pg;
 import path from "path";
+import { writeFile } from "node:fs";
 import { Cron } from "croner";
 
 const PORT = process.env.PORT;
@@ -20,6 +21,10 @@ const OAUTH_GOOGLE_ID = process.env.OAUTH_GOOGLE_CLIENT_ID;
 const OAUTH_GOOGLE_SECRET = process.env.OAUTH_GOOGLE_CLIENT_SECRET;
 const API_OAUTH_CALLBACK = process.env.API_OAUTH_CALLBACK_URL
 const WEB_OAUTH_CALLBACK = process.env.WEB_OAUTH_CALLBACK_URL;
+const CRON_DELETE_EXPIRED_SESSIONS = process.env.CRON_DELETE_EXPIRED_SESSIONS || "false";
+const CRON_DELETE_EXPIRED_SESSIONS_INTERVAL = process.env.CRON_DELETE_EXPIRED_SESSIONS_INTERVAL;
+const CRON_CLEAR_LOGS = process.env.CRON_CLEAR_LOGS || "false";
+const CRON_CLEAR_LOGS_INTERVAL = process.env.CRON_CLEAR_LOGS_INTERVAL;
 
 if (PORT == undefined || HOST == undefined) {
     console.error(
@@ -1306,7 +1311,24 @@ fastify.register(routes, {
     prefix: "/v0"
 })
 
-new Cron("0 0 * * *", async function () {
+fastify.listen({
+    port: PORT,
+    host: HOST
+}, function (error, address) {
+    if (error) {
+        fastify.log.error(error);
+        process.exit(1);
+    } else if (LOG_PRETTY == "true") {
+        var link = address;
+        if (COOKIES_DOMAIN == "localhost") {
+            link = link.replace("://127.0.0.1:", "://localhost:")
+        }
+        console.log("Quizfreely-API is running at " + link);
+    }
+})
+
+if (CRON_DELETE_EXPIRED_SESSIONS == "true") {
+new Cron(CRON_DELETE_EXPIRED_SESSIONS_INTERVAL, async function () {
     try {
         let client = await pool.connect();
         try {
@@ -1325,19 +1347,20 @@ new Cron("0 0 * * *", async function () {
         fastify.log.error(error, "error while connecting to pg pool client during cron job for auth.delete_expired_sessions()")
     }
 });
+}
 
-fastify.listen({
-    port: PORT,
-    host: HOST
-}, function (error, address) {
-    if (error) {
-        fastify.log.error(error);
-        process.exit(1);
-    } else if (LOG_PRETTY == "true") {
-        var link = address;
-        if (COOKIES_DOMAIN == "localhost") {
-            link = link.replace("://127.0.0.1:", "://localhost:")
+if (CRON_CLEAR_LOGS == "true") {
+    new Cron(CRON_CLEAR_LOGS_INTERVAL, async function () {
+        try {
+            writeFile(
+                path.join(import.meta.dirname, "quizfreely-api.log"),
+                "",
+                function () {
+                    fastify.log.info("ran cron job to clear log file")
+                }
+            )
+        } catch (error) {
+            fastify.log.error(error, "error while trying to clear logs with cron job")
         }
-        console.log("Quizfreely-API is running at " + link);
-    }
-})
+    });
+}
