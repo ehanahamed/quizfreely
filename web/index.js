@@ -570,6 +570,7 @@ fastify.listen({
   } else if (LOG_PRETTY == "true") {
     var link = address;
     if (COOKIES_DOMAIN == "localhost") {
+      link = link.replace("://[::]:", "://localhost:")
       link = link.replace("://127.0.0.1:", "://localhost:")
     }
     console.log("Quizfreely-web is running at " + link);
