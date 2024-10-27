@@ -24,8 +24,11 @@ To setup quizfreely-web & it's .env file for **production** see [production > we
   - should be `LOG_PRETTY=false` for production
   - should be `LOG_PRETTY=true` for development
 - `API_URL=`
-  - url of the api, it's localhost even in production because that localhost url is proxied by quizfreely-web so that you can access the api from https://quizfreely.com/api (with https and everything)
+  - Url where Quizfreely-API is running
   - NO trailing slash (`https://example.com`, NOT `https://example.com/`)
+  - When quizfreely-web and quizfreely-api are running on the same machine, API_URL should be an internal/loopback address like `API_URL=http://localhost:8008` (even in production) because API_URL is proxied by quizfreely-web so that we can access API_URL from `/api` on quizfreely-web (with quizfreely-web's https and same-origin policies and stuff)
+  - Quizfreely-web's server js code makes requests to API_URL directly. Quizfreely-web's client js on users' browsers makes requests to `/api` on quizfreely-web's domain (like `https://quizfreely.com/api`), NOT directly to API_URL
+  - If quizfreely-web and quizfreely-api are running on different machines we/you might have `API_URL=https://123.234.123.234:8008` or `API_URL=https://api.example.com`
   - should be `API_URL=http://localhost:8008` for development AND PRODUCTION
 - `COOKIES_DOMAIN=`
   - domain attribute to use for cookies
