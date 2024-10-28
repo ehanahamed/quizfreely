@@ -821,9 +821,7 @@ fastify.get("/studysets/:studysetid", async function (request, reply) {
                     })
                 } else {
                     await client.query("ROLLBACK");
-                    return reply.send({
-                        abc: "def"
-                    })
+                    return reply.callNotFound();
                 }
             } else {
                 await client.query("ROLLBACK");
