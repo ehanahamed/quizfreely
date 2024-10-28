@@ -8,7 +8,10 @@ To setup quizfreely-web & it's .env file for **production** see [production > we
   - port number to use
   - should be `PORT=8080` for production and development
 - `HOST=`
-  - `localhost` to listen on localhost, `0.0.0.0` to listen on all all IPv4 addresses, see https://fastify.dev/docs/latest/Reference/Server/#listen
+  - `::` to listen on all IPv6 and IPv4 addresses, `0.0.0.0` to listen on all all IPv4 addresses, or `localhost` to only listen on the same machine (IPv6 and IPv4)
+    - see https://fastify.dev/docs/latest/Reference/Server/#listentextresolver for all details
+    - "Using `::` for the address will listen on all IPv6 addresses and, depending on OS, may also listen on all IPv4 addresses" (https://fastify.dev/docs/latest/Reference/Server/#listentextresolver and https://nodejs.org/api/net.html#serverlistenport-host-backlog-callback)
+  - we use `HOST=localhost` for production because we use caddy to reverse-proxy quizfreely-web's server process (that listens on localhost) so it can be accessed from the real domain (https://quizfreely.com) with https and stuff (see [developer docs > production > README.md](../production/README.md) and [developer docs > production > caddy-setup.md](../production/caddy-setup.md)). We only need caddy and it's reverse-proxy for production, developers can just access the server process itself for development.
   - should be `HOST=localhost` for production
   - should be `HOST=0.0.0.0` for development
 - `LOG_LEVEL=`
