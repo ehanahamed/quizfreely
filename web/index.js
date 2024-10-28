@@ -449,7 +449,7 @@ fastify.get("/studyset/local/:studyset", function (request, reply) {
 
 fastify.get("/studyset/edit/:studyset", function (request, reply) {
   userData(request).then(function (userResult) {
-    fetch(API_URL + "/studysets/" + request.params.studyset, {
+    fetch(API_URL + "/v0/studysets/" + request.params.studyset, {
       method: "GET",
       headers: {
         "Authorization": "Bearer " + userResult.token
@@ -467,8 +467,7 @@ fastify.get("/studyset/edit/:studyset", function (request, reply) {
           })
         } else {
           /* something something res.error, res.error.type */
-          console.log(request.params.studyset)
-          request.log.error(res);
+          request.log.error(res.error);
           reply.view("edit.html", {
             ...themeData(request),
             new: false,
