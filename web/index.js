@@ -157,7 +157,8 @@ async function userData(request) {
           data: {
             user: userInfo.data.user
           },
-          authed: true
+          authed: true,
+          token: request.cookies.auth,
         }
       } else {
         return {
@@ -448,12 +449,55 @@ fastify.get("/studyset/local/:studyset", function (request, reply) {
 
 fastify.get("/studyset/edit/:studyset", function (request, reply) {
   userData(request).then(function (userResult) {
-    reply.view("edit.html", {
-      ...themeData(request),
-      new: false,
-      studysetId: request.params.studyset,
-      authed: userResult.authed,
-      authedUser: userResult?.data?.user
+    fetch(API_URL + "/studysets/" + request.params.studyset, {
+      method: "GET",
+      headers: {
+        "Authorization": "Bearer " + userResult.token
+      }
+    }).then(function (rawRes) {
+      rawRes.json().then(function (res) {
+        if (res.data) {
+          reply.view("edit.html", {
+            ...themeData(request),
+            new: false,
+            studysetId: request.params.studyset,
+            studyset: res.data.studyset,
+            authed: userResult.authed,
+            authedUser: userResult?.data?.user
+          })
+        } else {
+          /* something something res.error, res.error.type */
+          request.log.error(error);
+          reply.view("edit.html", {
+            ...themeData(request),
+            new: false,
+            studysetId: request.params.studyset,
+            authed: userResult.authed,
+            authedUser: userResult?.data?.user
+            /* work in progress: show actual error message */
+          });  
+        }
+      }).catch(function (error) {
+        request.log.error(error);
+        reply.view("edit.html", {
+          ...themeData(request),
+          new: false,
+          studysetId: request.params.studyset,
+          authed: userResult.authed,
+          authedUser: userResult?.data?.user
+          /* work in progress add actual error message */
+        });
+      })
+    }).catch(function (error) {
+      request.log.error(error);
+      reply.view("edit.html", {
+        ...themeData(request),
+        new: false,
+        studysetId: request.params.studyset,
+        authed: userResult.authed,
+        authedUser: userResult?.data?.user
+        /* work in progress add error thingy */
+      })
     })
   })
 })
