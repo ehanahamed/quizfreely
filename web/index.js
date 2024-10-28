@@ -467,6 +467,7 @@ fastify.get("/studyset/edit/:studyset", function (request, reply) {
           })
         } else {
           /* something something res.error, res.error.type */
+          console.log(request.params.studyset)
           request.log.error(res);
           reply.view("edit.html", {
             ...themeData(request),
