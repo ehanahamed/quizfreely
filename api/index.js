@@ -809,14 +809,7 @@ fastify.get("/studysets/:studysetid", async function (request, reply) {
                     return reply.send({
                         "error": false,
                         "data": {
-                            studyset: {
-                                id: selectedStudyset.rows[0].id,
-                                userId: selectedStudyset.rows[0].user_id,
-                                title: selectedStudyset.rows[0].title,
-                                data: selectedStudyset.rows[0].data,
-                                private: selectedStudyset.rows[0].private,
-                                updatedAt: selectedStudyset.rows[0].updated_at
-                            }
+                            studyset: selectedStudyset.rows[0]
                         }
                     })
                 } else {
