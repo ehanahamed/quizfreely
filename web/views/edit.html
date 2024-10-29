@@ -359,10 +359,13 @@
         })
         document.getElementById("save-button").addEventListener("click", function () {
           var private = document.getElementById("edit-private-true").classList.contains("selected");
-          client.req({
+          fetch("/api/v0/studysets/<eta>= data.studysetId </eta>", {
             method: "PUT",
-            path: "/studysets/<eta>= data.studysetId </eta>",
-            body: {
+            credentials: "same-origin",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
               studyset: {
                 title: document.getElementById("edit-title").value,
                 private: private,
@@ -370,17 +373,19 @@
                   terms: editTermsTable.arrayFromTable()
                 }
               }
-            }
-          }, function (result) {
-            if (result.error) {
-              alert("error while trying to update studyset")
-            } else {
-              if (private) {
-                window.location.replace("/studyset/private/" + result.data.studyset.id)
+            })
+          }).then(function (rawResponse) {
+            rawResponse.json().then(function (result) {
+              if (result.error) {
+                alert("error while trying to update studyset")
               } else {
-                window.location.replace("/studysets/" + result.data.studyset.id)
+                if (private) {
+                  window.location.replace("/studyset/private/" + result.data.studyset.id)
+                } else {
+                  window.location.replace("/studysets/" + result.data.studyset.id)
+                }
               }
-            }
+            })
           })
         })
     </script>
