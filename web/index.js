@@ -419,16 +419,33 @@ fastify.get("/studysets/:studyset", function (request, reply) {
 
 fastify.get("/studyset/private/:studyset", function (request, reply) {
   userData(request).then(function (userResult) {
-    reply.view("studyset.html", {
-      ...themeData(request),
-      ssr: false,
-      local: false,
-      studysetId: request.params.studyset,
-      studysetPage: "/studyset/private/" + request.params.studyset,
-      studysetEditPage: "/studyset/edit/" + request.params.studyset,
-      authed: userResult.authed,
-      authedUser: userResult?.data?.user
-    })
+    fetch(API_URL + "/v0/studysets/" + request.params.studyset, {
+        method: "GET",
+        headers: {
+            "Authorization": "Bearer " + userResult.token
+        }
+    }).then(function (response) {
+      response.json().then(function (responseJson) {
+        if (responseJson.error) {
+          reply.callNotFound()
+        } else {
+          reply.view("studyset.html", {
+            ...themeData(request),
+            ssr: true,
+            local: false,
+            studyset: responseJson.data.studyset,
+            studysetId: request.params.studyset,
+            studysetPage: "/studysets/" + request.params.studyset,
+            studysetEditPage: "/studyset/edit/" + request.params.studyset,
+            authed: userResult.authed,
+            authedUser: userResult?.data?.user
+          })
+        }
+      });
+    }).catch(function (error) {
+      request.log.error(error)
+      reply.callNotFound();
+    });
   })
 })
 
