@@ -337,7 +337,6 @@
     <!-- data.new is false (updating an existing studyset, not creating one) -->
     <eta> if (data.authed) { </eta>
     <script>
-      /*
         fetch("/api/v0/studysets/<eta>= data.studysetId </eta>", {
           method: "GET"
         }, function (result) {
@@ -354,7 +353,7 @@
               document.getElementById("edit-private-true").classList.remove("selected");
             }
           }
-        })*/
+        })
         document.getElementById("save-button").addEventListener("click", function () {
           var private = document.getElementById("edit-private-true").classList.contains("selected");
           client.req({
