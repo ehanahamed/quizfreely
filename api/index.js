@@ -587,7 +587,7 @@ fastify.patch("/user", async function (request, reply) {
                                     user: {
                                         id: userData.rows[0].id,
                                         username: userData.rows[0].username,
-                                        displayName: userData.rows[0].display_name
+                                        display_name: userData.rows[0].display_name
                                     }
                                 }
                             })
