@@ -338,8 +338,9 @@
     <eta> if (data.authed) { </eta>
     <script>
         fetch("/api/v0/studysets/<eta>= data.studysetId </eta>", {
-          method: "GET"
-        }, function (result) {
+          method: "GET",
+          credentials: "same-origin"
+        }).then(function (result) {
           if (result.error) {
             alert("error, could not load studyset while trying to edit")
           } else {
