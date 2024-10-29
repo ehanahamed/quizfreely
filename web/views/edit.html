@@ -340,20 +340,22 @@
         fetch("/api/v0/studysets/<eta>= data.studysetId </eta>", {
           method: "GET",
           credentials: "same-origin"
-        }).then(function (result) {
-          if (result.error) {
-            alert("error, could not load studyset while trying to edit")
-          } else {
-            document.getElementById("edit-title").value = result.data.studyset.title;
-            editTermsTable.tableFromArray(result.data.studyset.data.terms);
-            if (result.data.studyset.private) {
-              document.getElementById("edit-private-false").classList.remove("selected");
-              document.getElementById("edit-private-true").classList.add("selected");
+        }).then(function (rawResponse) {
+          rawResponse.json().then(function (result) {
+              if (result.error) {
+              alert("error, could not load studyset while trying to edit")
             } else {
-              document.getElementById("edit-private-false").classList.add("selected");
-              document.getElementById("edit-private-true").classList.remove("selected");
+              document.getElementById("edit-title").value = result.data.studyset.title;
+              editTermsTable.tableFromArray(result.data.studyset.data.terms);
+              if (result.data.studyset.private) {
+                document.getElementById("edit-private-false").classList.remove("selected");
+                document.getElementById("edit-private-true").classList.add("selected");
+              } else {
+                document.getElementById("edit-private-false").classList.add("selected");
+                document.getElementById("edit-private-true").classList.remove("selected");
+              }
             }
-          }
+          })
         })
         document.getElementById("save-button").addEventListener("click", function () {
           var private = document.getElementById("edit-private-true").classList.contains("selected");
