@@ -428,18 +428,21 @@ fastify.get("/studyset/private/:studyset", function (request, reply) {
       response.json().then(function (responseJson) {
         if (responseJson.error) {
           reply.callNotFound()
+        } else if (responseJson?.data?.studyset?.private == false) {
+          /* redirect to public url if set is not private */
+          reply.redirect("/studysets/" + request.params.studyset);
         } else {
-          reply.view("studyset.html", {
-            ...themeData(request),
-            ssr: true,
-            local: false,
-            studyset: responseJson.data.studyset,
-            studysetId: request.params.studyset,
-            studysetPage: "/studysets/" + request.params.studyset,
-            studysetEditPage: "/studyset/edit/" + request.params.studyset,
-            authed: userResult.authed,
-            authedUser: userResult?.data?.user
-          })
+            reply.view("studyset.html", {
+                ...themeData(request),
+                ssr: true,
+                local: false,
+                studyset: responseJson.data.studyset,
+                studysetId: request.params.studyset,
+                studysetPage: "/studysets/" + request.params.studyset,
+                studysetEditPage: "/studyset/edit/" + request.params.studyset,
+                authed: userResult.authed,
+                authedUser: userResult?.data?.user
+            })
         }
       });
     }).catch(function (error) {
