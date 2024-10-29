@@ -497,9 +497,9 @@ fastify.get("/user", async function (request, reply) {
                             user: {
                                 id: userData.rows[0].id,
                                 username: userData.rows[0].username,
-                                displayName: userData.rows[0].display_name,
-                                authType: userData.rows[0].auth_type,
-                                oauthGoogleEmail: userData.rows[0].oauth_google_email
+                                display_name: userData.rows[0].display_name,
+                                auth_type: userData.rows[0].auth_type,
+                                oauth_google_email: userData.rows[0].oauth_google_email
                             },
                         }
                     })
