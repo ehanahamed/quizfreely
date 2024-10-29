@@ -80,9 +80,13 @@
             <eta> } else { </eta>
             <h2 id="studyset-title">Title</h2>
             <eta> } </eta>
-            <eta> if (data.studyset) { </eta>
+            <eta> if (data.studyset && data.studyset.display_name) { </eta>
             <p>
               Created by <a href="/users/<eta>= data.studyset.user_id</eta>"><eta>= data.studyset.display_name </eta></a>
+            </p>
+            <eta> } else if (data.studyset && data.studyset.private && data?.authedUser?.display_name) { </eta>
+            <p>
+              Created by <a href="/users/<eta>= data.studyset.user_id</eta>"><eta>= data?.authedUser?.display_name </eta></a>
             </p>
             <eta> } </eta>
             <eta> if (data.studyset && data.authed && (data.authedUser.id == data.studyset.user_id)) { </eta>
