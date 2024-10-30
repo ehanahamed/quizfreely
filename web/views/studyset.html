@@ -268,14 +268,15 @@
       document.getElementById("fullscreen-flashcards-button").addEventListener("click", function () {
         document.getElementById('mainOpenFlashcarddiv').classList.add('fullscreen')
       })
-
-      document.getElementById("delete-button").addEventListener("click", function () {
-        document.getElementById("delete-modal").classList.remove("hide");
-      })
-
-      document.getElementById("delete-cancel-button").addEventListener("click", function () {
-        document.getElementById("delete-modal").classList.add("hide");
-      })
+      if (document.getElementById("delete-button")) {
+        document.getElementById("delete-button").addEventListener("click", function () {
+          document.getElementById("delete-modal").classList.remove("hide");
+        })
+        
+        document.getElementById("delete-cancel-button").addEventListener("click", function () {
+          document.getElementById("delete-modal").classList.add("hide");
+        })
+      }
     </script>
     <eta> if (data.local) { </eta>
     <eta> } else { </eta>
