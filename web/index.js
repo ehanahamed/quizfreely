@@ -400,10 +400,8 @@ fastify.get("/studysets/:studyset", function (request, reply) {
         } else {
           reply.view("studyset.html", {
             ...themeData(request),
-            ssr: true,
             local: false,
             studyset: responseJson.data.studyset,
-            studysetId: request.params.studyset,
             studysetPage: "/studysets/" + request.params.studyset,
             studysetEditPage: "/studyset/edit/" + request.params.studyset,
             authed: userResult.authed,
@@ -435,11 +433,9 @@ fastify.get("/studyset/private/:studyset", function (request, reply) {
         } else {
             reply.view("studyset.html", {
                 ...themeData(request),
-                ssr: true,
                 local: false,
                 studyset: responseJson.data.studyset,
-                studysetId: request.params.studyset,
-                studysetPage: "/studysets/" + request.params.studyset,
+                studysetPage: "/studyset/private/" + request.params.studyset,
                 studysetEditPage: "/studyset/edit/" + request.params.studyset,
                 authed: userResult.authed,
                 authedUser: userResult?.data?.user
@@ -457,9 +453,7 @@ fastify.get("/studyset/local/:studyset", function (request, reply) {
   userData(request).then(function (userResult) {
     reply.view("studyset.html", {
       ...themeData(request),
-      ssr: false,
       local: true,
-      studysetId: request.params.studyset,
       studysetPage: "/studyset/local/" + request.params.studyset,
       studysetEditPage: "/studyset/edit-local/" + request.params.studyset,
       authed: userResult.authed,
