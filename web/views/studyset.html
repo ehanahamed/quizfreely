@@ -13,7 +13,7 @@
       name="viewport"
       content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=10, user-scalable=1"
     />
-    <eta> if (data.ssr && data.studyset) { </eta>
+    <eta> if (data.studyset) { </eta>
     <title><eta>= data.studyset.title</eta> - Quizfreely</title>
     <eta> } else { </eta>
     <title>Quizfreely</title>
@@ -32,7 +32,7 @@
   <body>
     <eta>~ include("./partials/body-start", { theme: data.theme }) </eta>
     <eta>~ include("./partials/navbar", { page: "studyset", authed: data.authed, authedUser: data.authedUser }) </eta>
-    <eta> if (data.ssr == false) {</eta>
+    <eta> if (data.local) {</eta>
     <eta>~ include("./partials/noscript") </eta>
     <eta> } </eta>
     <main>
@@ -75,7 +75,7 @@
                 </div>
               </div>
             </div>
-            <eta> if (data.ssr) {</eta>
+            <eta> if (data?.studyset?.title) {</eta>
             <h2 id="mainActionsStudysettitle"><eta>= data.studyset.title </eta></h2>
             <eta> } else { </eta>
             <h2 id="studyset-title">Title</h2>
@@ -125,7 +125,7 @@
                   class="card double"
                   id="flashcard"
                 >
-                  <eta> if (data.ssr && data.studyset && data.studyset.data && data.studyset.data.terms && data.studyset.data.terms.length >= 1) { </eta>
+                  <eta> if (data.studyset && data.studyset.data && data.studyset.data.terms && data.studyset.data.terms.length >= 1) { </eta>
                   <div class="content">
                     <div class="front" id="flashcard-front">
                       <eta>= data.studyset.data.terms[0][0] </eta>
@@ -146,7 +146,7 @@
                   <eta> } </eta>
                 </div>
                 <div class="caption centerThree">
-                  <eta> if (data.ssr && data.studyset && data.studyset.data && data.studyset.data.terms) { </eta>
+                  <eta> if (data.studyset && data.studyset.data && data.studyset.data.terms) { </eta>
                   <p id="flashcards-count">
                     1/<eta>= data.studyset.data.terms.length </eta>
                   </p>
@@ -197,7 +197,7 @@
                   <th>Term</th>
                   <th>Definition</th>
                 </tr>
-                <eta> if (data.ssr && data.studyset && data.studyset.data && data.studyset.data.terms) { data.studyset.data.terms.forEach(function (term) { </eta>
+                <eta> if (data.studyset && data.studyset.data && data.studyset.data.terms) { data.studyset.data.terms.forEach(function (term) { </eta>
                 <tr>
                   <td>
                     <eta>= term[0]</eta>
@@ -223,7 +223,7 @@
       </div>
     </main>
     <eta>~ include("./partials/footer") </eta>
-    <eta> if (data.ssr && data.studyset) {</eta>
+    <eta> if (data.studyset) {</eta>
     <script>
       var studyset = JSON.parse("<eta>~ JSON.stringify(data.studyset).replaceAll('\\', '\\\\').replaceAll('\"', '\\\"') </eta>")
     </script>
@@ -278,11 +278,10 @@
         })
       }
     </script>
-    <eta> if (data.local) { </eta>
-    <eta> } else { </eta>
+    <eta> if (data?.studyset?.id) { </eta>
     <script>
       document.getElementById("delete-confirm-button").addEventListener("click", function () {
-        fetch("/api/v0/studysets/<eta>= data.studysetId </eta>", {
+        fetch("/api/v0/studysets/<eta>= data.studyset.id </eta>", {
           method: "DELETE",
           credentials: "same-origin"
         }).then(function (rawResponse) {
