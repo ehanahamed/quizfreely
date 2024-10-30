@@ -7,6 +7,7 @@ import fastifyCookie from "@fastify/cookie";
 import fastifyHttpProxy from "@fastify/http-proxy";
 import path from "path";
 import { Eta } from "eta";
+import { Cron } from "croner";
 import { themes } from "./themes.js";
 
 const PORT = process.env.PORT
