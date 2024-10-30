@@ -281,19 +281,27 @@
     <eta> } else { </eta>
     <script>
       document.getElementById("delete-confirm-button").addEventListener("click", function () {
-        client.req({
-            method: "DELETE",
-            path: "/studysets/<eta>= data.studysetId </eta>"
-          },
-          function (response) {
+        fetch("/api/v0/studysets/<eta>= data.studysetId </eta>", {
+          method: "DELETE",
+          credentials: "same-origin"
+        }).then(function (rawResponse) {
+          rawResponse.json().then(function (response) {
             if (response.error) {
               console.log(response)
               alert(response.error)
             } else {
               window.location.replace("/dashboard");
             }
-          }
-        )
+          }).catch(function (error) {
+            console.error(error);
+            alert("json parsing fetch error");
+            /* work in progress error msgs */
+          })
+        }).catch(function (error) {
+          console.error(error);
+          alert("fetch error")
+          /* work in progress error messages? */
+        })
       })
     </script>
     <eta> } </eta>
