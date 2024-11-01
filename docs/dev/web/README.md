@@ -39,9 +39,11 @@ See [developer docs > api](../api/README.md) to set up quizfreely-api.
 
 ## Extra Info for GitHub Codespaces
 
-If your Codespaces url is `https://abc-example-123456.github.dev/`, its `localhost:8080` is at `https://abc-example-123456-8080.app.github.dev/`.
+If your/our Codespaces url is `https://abc-example-123456.github.dev/`, your/our `localhost:8080` will be at `https://abc-example-123456-8080.app.github.dev/`.
 
-Codespaces also will show you a little pop-up/button/link thingy when you start a process on any port so you can easily get to that url.
+When `PRETTY_PRINT=true` (see [developer docs > web > web-dotenv.md](./web-dotenv.md)), Quizfreely-web will print our internal/localhost url, and codespaces will send you to the correct `...app.github.dev` url when you click the link in our terminal.
+
+Codespaces will show you a little pop-up/button/link thingy when you start a process (like quizfreely-web) on any port, that link will bring you to the correct `...app.github.dev` url thingy.
 
 On Codespaces, edit quizfreely-web's dotenv file (`.env`) to have `COOKIES_DOMAIN=` set to our `...app.github.dev` url:
 ```sh
@@ -52,4 +54,4 @@ COOKIES_DOMAIN=abc-example-123456-8080.app.github.dev
 # ...
 ```
 
-All the other dotenv default values for local development already work perfectly with Codespaces. See [developer docs > web > web-dotenv.md](./web-dotenv.md) for all dotenv options and more details.
+Most of the other dotenv default values for local development already work perfectly with Codespaces. See [developer docs > web > web-dotenv.md](./web-dotenv.md) for all dotenv options and more details.
