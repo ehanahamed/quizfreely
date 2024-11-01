@@ -165,7 +165,7 @@ fastify.post("/auth/sign-up", async function (request, reply) {
                                 user: {
                                     id: userId,
                                     username: username,
-                                    displayName: username
+                                    display_name: username
                                 },
                             }
                         })
@@ -257,7 +257,7 @@ fastify.post("/auth/sign-in", async function (request, reply) {
                         user: {
                             id: result.rows[0].id,
                             username: result.rows[0].username,
-                            displayName: result.rows[0].display_name
+                            display_name: result.rows[0].display_name
                         },
                     }
                 })
@@ -391,7 +391,7 @@ async function googleAuthCallback(tokenObj) {
                 data: {
                     user: {
                         id: upsertedUser.rows[0].id,
-                        displayName: upsertedUser.rows[0].id
+                        display_name: upsertedUser.rows[0].id
                     },
                 },
                 /* send quizfreely auth token in return obj to use setCookie with it (below) */
@@ -559,7 +559,7 @@ fastify.patch("/user", async function (request, reply) {
         if (
             request.body &&
             request.body.user &&
-            (request.body.user.displayName /* || request.body.user. */)
+            (request.body.user.display_name /* || request.body.user. */)
         ) {
             let client = await pool.connect();
             try {
@@ -570,13 +570,13 @@ fastify.patch("/user", async function (request, reply) {
                     [ authToken ]
                 );
                 if (session.rows.length == 1) {
-                    if (request.body.user.displayName) {
+                    if (request.body.user.display_name) {
                         let userData = await client.query(
                             "update auth.users set display_name = $2 " +
                             "where id = $1 returning id, username, display_name",
                             [
                                 session.rows[0].user_id,
-                                request.body.user.displayName
+                                request.body.user.display_name
                             ]
                         );
                         if (userData.rows.length == 1) {
@@ -649,7 +649,7 @@ fastify.get("/public/users/:userid", async function (request, reply) {
                     user: {
                         id: result.rows[0].id,
                         username: result.rows[0].username,
-                        displayName: result.rows[0].display_name
+                        display_name: result.rows[0].display_name
                     }
                 }
             })
@@ -722,11 +722,11 @@ fastify.post("/studysets", async function (request, reply) {
                         "data": {
                             studyset: {
                                 id: insertedStudyset.rows[0].id,
-                                userId: insertedStudyset.rows[0].user_id,
+                                user_id: insertedStudyset.rows[0].user_id,
                                 title: insertedStudyset.rows[0].title,
                                 private: insertedStudyset.rows[0].private,
-                                termsCount: insertedStudyset.rows[0].terms_count,
-                                updatedAt: insertedStudyset.rows[0].updated_at
+                                terms_count: insertedStudyset.rows[0].terms_count,
+                                updated_at: insertedStudyset.rows[0].updated_at
                             },
                         }
                     })
@@ -901,11 +901,11 @@ fastify.put("/studysets/:studysetid", async function (request, reply) {
                             "data": {
                                 studyset: {
                                     id: updatedStudyset.rows[0].id,
-                                    userId: updatedStudyset.rows[0].user_id,
+                                    user_id: updatedStudyset.rows[0].user_id,
                                     title: updatedStudyset.rows[0].title,
                                     private: updatedStudyset.rows[0].private,
-                                    termsCount: updatedStudyset.rows[0].terms_count,
-                                    updatedAt: updatedStudyset.rows[0].updated_at
+                                    terms_count: updatedStudyset.rows[0].terms_count,
+                                    updated_at: updatedStudyset.rows[0].updated_at
                                 }
                             }
                         })
