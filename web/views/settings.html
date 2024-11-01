@@ -70,26 +70,26 @@
             <div class="flex compact-gap align-end" id="display-name-view-div">
               <p>
                 <span class="h6">Display name:</span><br />
-                <span id="account-display-name"><eta>= data.authedUser.displayName </eta></span>
+                <span id="account-display-name"><eta>= data.authedUser.display_name </eta></span>
               </p>
               <button class="icon-only-button" id="display-name-edit-button"><i class="nf nf-fa-pencil"></i></button>
             </div>
             <div id="display-name-edit-div" class="hide" style="margin-top:0px">
               <p class="h6" style="margin-bottom:0.6rem">Display Name:</p>
               <div class="flex" style="margin-top:0px">
-                <input type="text" id="display-name-edit" placeholder="Display Name" value="<eta>= data.authedUser.displayName </eta>" />
+                <input type="text" id="display-name-edit" placeholder="Display Name" value="<eta>= data.authedUser.display_name </eta>" />
               </div>
               <div class="flex">
                 <button id="display-name-edit-save-button">Save</button>
                 <button id="display-name-edit-cancel-button" class="alt">Cancel</button>
               </div>
             </div>
-            <eta> if (data.authedUser.authType == "oauth-google") { </eta>
+            <eta> if (data.authedUser.auth_type == "oauth-google") { </eta>
               <div id="account-oauth-google-div">
                 <p class="fg0">Signed in with Google</p>
                 <p>
                   <span class="h6">Google account:</span><br />
-                  <span id="account-oauth-google-email"><eta>= data.authedUser.oauthGoogleEmail </eta>></span>
+                  <span id="account-oauth-google-email"><eta>= data.authedUser.oauth_google_email </eta>></span>
                 </p>
               </div>
             <eta> } else { </eta>
@@ -180,13 +180,13 @@
           },
           body: JSON.stringify({
             user: {
-              displayName: document.getElementById("display-name-edit").value
+              display_name: document.getElementById("display-name-edit").value
             }
           })
         }).then(function (rawResponse) {
           rawResponse.json().then(function (response) {
             if (response.data && response.data.user) {
-              document.getElementById("account-display-name").innerText = response.data.user.displayName;
+              document.getElementById("account-display-name").innerText = response.data.user.display_name;
             }
             document.getElementById("display-name-view-div").classList.remove("hide");
             document.getElementById("display-name-edit-div").classList.add("hide");
