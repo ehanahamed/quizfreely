@@ -223,11 +223,7 @@
       </div>
     </main>
     <eta>~ include("./partials/footer") </eta>
-    <eta> if (data.studyset) {</eta>
-    <script>
-      var studyset = JSON.parse("<eta>~ JSON.stringify(data.studyset).replaceAll('\\', '\\\\').replaceAll('\"', '\\\"') </eta>")
-    </script>
-    <eta> } else if (data.local) {</eta>
+    <eta> if (data.local) {</eta>
     <script>
       var studyset = {};
       /* work in progress local studyset viewing thingy */
