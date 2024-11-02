@@ -98,12 +98,13 @@ await fastify.register(fastifyOauth2, {
 })
 
 fastify.setErrorHandler(function (error, request, reply) {
-    request.log.error(error)
-    reply.code(500).send({
-        error: {
-            type: "server-error"
-        }
-    })
+    if (error.statusCode < 500) {
+        request.log.warn(error)
+        reply.code(error.statusCode).send(error);
+    } else {
+        request.log.error(error)
+        reply.code(error.statusCode).send(error);
+    }
 })
 
 fastify.setNotFoundHandler(function (request, reply) {
@@ -115,7 +116,18 @@ fastify.setNotFoundHandler(function (request, reply) {
 })
 
 function routes(fastify, options, done) { 
-fastify.post("/auth/sign-up", async function (request, reply) {
+fastify.post("/auth/sign-up", {
+    schema: {
+        body: {
+            type: "object",
+            properties: {
+                username: { type: "string" },
+                password: { type: "string" }
+            },
+            required: ["username", "password"]
+        }
+    }
+}, async function (request, reply) {
     /* check if username and password were sent in sign-up request body */
     if (request.body && request.body.username && request.body.password) {
         if (request.body.password.length >= 8) {
@@ -217,7 +229,18 @@ fastify.post("/auth/sign-up", async function (request, reply) {
     }
 })
 
-fastify.post("/auth/sign-in", async function (request, reply) {
+fastify.post("/auth/sign-in", {
+    schema: {
+        body: {
+            type: "object",
+            properties: {
+                username: { type: "string" },
+                password: { type: "string" }
+            },
+            required: ["username", "password"]
+        }
+    }
+}, async function (request, reply) {
     if (request.body && request.body.username && request.body.password) {
         let client = await pool.connect();
         try {
