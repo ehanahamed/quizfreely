@@ -1056,116 +1056,117 @@ fastify.get("/public/studysets/:studysetid", async function (request, reply) {
     }
 })
 
-fastify.get("/public/search/studysets", async function (request, reply) {
-    if (request.query && request.query.q) {
-        let limit = 10;
-        if (request.query && request.query.limit > 0 && request.query.limit < 200) {
-            limit = request.query.limit;
-        }
-        try {
-            let result = await pool.query(
-                "select s.id, s.user_id, u.display_name, s.title, s.updated_at, s.terms_count " +
-                "from public.studysets s inner join public.profiles u on s.user_id = u.id " +
-                "where s.private = false and tsvector_title @@ websearch_to_tsquery('english', $1) " +
-                "limit $2",
-                [
-                    request.query.q,
-                    limit
-                ]
-            )
-            return reply.send({
-                error: false,
-                data: {
-                    rows: result.rows
+fastify.get("/public/search/studysets", {
+    schema: {
+        querystring: {
+            type: "object",
+            properties: {
+                q: { type: "string", maxLength: 9000 },
+                limit: {
+                    type: "number",
+                    default: 10,
+                    minimum: 1,
+                    maximum: 9000
                 }
-            })
-        } catch (error) {
-            request.log.error(error);
-            return reply.code(500).send({
-                error: {
-                    type: "db-error"
-                }
-            })
+            },
+            required: ["q"]
         }
-    } else {
-        return reply.code(400).send({
+    }
+}, async function (request, reply) {
+    limit = request.query.limit;
+    try {
+        let result = await pool.query(
+            "select s.id, s.user_id, u.display_name, s.title, s.updated_at, s.terms_count " +
+            "from public.studysets s inner join public.profiles u on s.user_id = u.id " +
+            "where s.private = false and tsvector_title @@ websearch_to_tsquery('english', $1) " +
+            "limit $2",
+            [
+                request.query.q,
+                limit
+            ]
+        )
+        return reply.send({
+            error: false,
+            data: {
+                rows: result.rows
+            }
+        })
+    } catch (error) {
+        request.log.error(error);
+        return reply.code(500).send({
             error: {
-                type: "fields-missing"
+                type: "db-error"
             }
         })
     }
 })
 
-fastify.get("/public/search/query-predictions", async function (request, reply) {
-    if (request.query && request.query.q) {
-        if (request.query.q.length >= 1 && request.query.q.length < 50) {
-            let limit = 5;
-            if (request.query && request.query.limit > 0 && request.query.limit < 100) {
-                limit = request.query.limit;
-            }
-            try {
-                /*
-                    replace whitespace (tabs, spaces, etc and multiple) with a space
-                    whitespace characters next to eachother will be replaced with a single space
-                */
-                let spaceRegex = /\s+/gu;
-                let inputQuery = request.query.q.replaceAll(spaceRegex, " ");
-                /* after that, replace and sign ("&") with "and" */
-                inputQuery = inputQuery.replaceAll("&", "and");
-                /*
-                    after "sanitizing" spaces, remove special characters
-                    this will keep letters (any alphabet) accent marks, numbers (any alphabet), underscore, period/dot, and dashes
-                */
-                let rmRegex = /[^\p{L}\p{M}\p{N} _.-]/gu;
-                inputQuery = inputQuery.replaceAll(rmRegex, "");
-                let result;
-                if (inputQuery.length <= 3) {
-                    result = await pool.query(
-                        "select query, subject from public.search_queries " +
-                        "where query ilike $1 limit $2",
-                        [
-                            /* percent sign (%) to match querys that start with inputQuery */
-                            (inputQuery + "%"),
-                            limit
-                        ]
-                    )
-                } else {
-                    result = await pool.query(
-                        "select query, subject from public.search_queries " +
-                        "where similarity(query, $1) > 0.15 " +
-                        "order by similarity(query, $1) desc limit $2",
-                        [
-                            inputQuery,
-                            limit
-                        ]
-                    )
+fastify.get("/public/search/query-predictions", {
+    schema: {
+        querystring: {
+            type: "object",
+            properties: {
+                q: { type: "string", maxLength: 50 },
+                limit: {
+                    type: "number",
+                    default: 5,
+                    minimum: 1,
+                    maximum: 9000
                 }
-                return reply.send({
-                    error: false,
-                    data: {
-                        rows: result.rows
-                    }
-                })
-            } catch (error) {
-                request.log.error(error);
-                return reply.code(500).send({
-                    error: {
-                        type: "db-error"
-                    }
-                })
-            }
-        } else {
-            return reply.code(400).send({
-                error: {
-                    type: "field-length-invalid",
-                    message: "search query length must be greater than or equal to 1 and less than 50"
-                }
-            })
+            },
+            required: ["q"]
         }
-    } else {
-        return reply.code(400).send({
+    }
+}, async function (request, reply) {
+    limit = request.query.limit;
+    try {
+        /*
+            replace whitespace (tabs, spaces, etc and multiple) with a space
+            whitespace characters next to eachother will be replaced with a single space
+        */
+        let spaceRegex = /\s+/gu;
+        let inputQuery = request.query.q.replaceAll(spaceRegex, " ");
+        /* after that, replace and sign ("&") with "and" */
+        inputQuery = inputQuery.replaceAll("&", "and");
+        /*
+            after "sanitizing" spaces, remove special characters
+            this will keep letters (any alphabet) accent marks, numbers (any alphabet), underscore, period/dot, and dashes
+        */
+        let rmRegex = /[^\p{L}\p{M}\p{N} _.-]/gu;
+        inputQuery = inputQuery.replaceAll(rmRegex, "");
+        let result;
+        if (inputQuery.length <= 3) {
+            result = await pool.query(
+                "select query, subject from public.search_queries " +
+                "where query ilike $1 limit $2",
+                [
+                    /* percent sign (%) to match querys that start with inputQuery */
+                    (inputQuery + "%"),
+                    limit
+                ]
+            )
+        } else {
+            result = await pool.query(
+                "select query, subject from public.search_queries " +
+                "where similarity(query, $1) > 0.15 " +
+                "order by similarity(query, $1) desc limit $2",
+                [
+                    inputQuery,
+                    limit
+                ]
+            )
+        }
+        return reply.send({
+            error: false,
+            data: {
+                rows: result.rows
+            }
+        })
+    } catch (error) {
+        request.log.error(error);
+        return reply.code(500).send({
             error: {
-                type: "fields-missing"
+                type: "db-error"
             }
         })
     }
