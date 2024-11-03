@@ -536,7 +536,20 @@ fastify.get("/user", async function (request, reply) {
     }
 })
 
-fastify.patch("/user", async function (request, reply) {
+fastify.patch("/user", {
+    schema: {
+        body: {
+            type: "object",
+            properties: {
+                display_name: {
+                    type: "string",
+                    minLength: 1,
+                    maxLength: 9000
+                }
+            }
+        }
+    }
+}, async function (request, reply) {
     if (
         (
             /* check for Authorization header */
@@ -553,9 +566,7 @@ fastify.patch("/user", async function (request, reply) {
         */
         let authToken = request.headers?.authorization?.substring(7) || request.cookies.auth;
         if (
-            request.body &&
-            request.body.user &&
-            (request.body.user.display_name /* || request.body.user. */)
+            (request.body.display_name /* || request.body. */)
         ) {
             let client = await pool.connect();
             try {
@@ -566,13 +577,13 @@ fastify.patch("/user", async function (request, reply) {
                     [ authToken ]
                 );
                 if (session.rows.length == 1) {
-                    if (request.body.user.display_name) {
+                    if (request.body.display_name) {
                         let userData = await client.query(
                             "update auth.users set display_name = $2 " +
                             "where id = $1 returning id, username, display_name",
                             [
                                 session.rows[0].user_id,
-                                request.body.user.display_name
+                                request.body.display_name
                             ]
                         );
                         if (userData.rows.length == 1) {
@@ -593,7 +604,7 @@ fastify.patch("/user", async function (request, reply) {
                         }
                     }
                     /* using if, NOT using else, so we can update multiple OR just one value in a reqeust */
-                    // if (request.body.user. ) {
+                    // if (request.body. ) {
                     //
                     // }
                 } else {
@@ -690,7 +701,7 @@ fastify.post("/studysets", {
             We're using optional chaining (?.) with an OR (||), so that if the auth header isn't there, it uses the auth cookie
         */
         let authToken = request.headers?.authorization?.substring(7) || request.cookies.auth;
-        let studysetTitle = request.body.studyset.title || "Untitled Studyset";
+        let studysetTitle = request.body.title || "Untitled Studyset";
         let client = await pool.connect();
         try {
             await client.query("BEGIN");
@@ -708,10 +719,10 @@ fastify.post("/studysets", {
                     [
                         session.rows[0].user_id,
                         studysetTitle,
-                        request.body.studyset.private,
-                        request.body.studyset.data,
+                        request.body.private,
+                        request.body.data,
                         /* we use optional chaining (that .?) and nullish coalescing (that ??) to default to 0 (without throwing an error) if terms or terms.length are undefined */
-                        request.body.studyset.data?.terms?.length ?? 0
+                        request.body.data?.terms?.length ?? 0
                     ]
                 );
                 await client.query("COMMIT")
@@ -863,7 +874,7 @@ fastify.put("/studysets/:studysetid", {
             We're using optional chaining (?.) with an OR (||), so that if the auth header isn't there, it uses the auth cookie
         */
         let authToken = request.headers?.authorization?.substring(7) || request.cookies.auth;
-        let studysetTitle = request.body.studyset.title || "Untitled Studyset";
+        let studysetTitle = request.body.title || "Untitled Studyset";
         let client = await pool.connect();
         try {
             await client.query("BEGIN");
@@ -881,10 +892,10 @@ fastify.put("/studysets/:studysetid", {
                     [
                         request.params.studysetid,
                         studysetTitle,
-                        request.body.studyset.private,
-                        request.body.studyset.data,
+                        request.body.private,
+                        request.body.data,
                         /* we use optional chaining (that .?) and nullish coalescing (that ??) to default to 0 (without throwing an error) if terms or terms.length are undefined */
-                        request.body.studyset.data?.terms?.length ?? 0
+                        request.body.data?.terms?.length ?? 0
                     ]
                 );
                 if (updatedStudyset.rows.length == 1) {
