@@ -9,7 +9,7 @@ Quizfreely's api sends responses that look like this on error:
 }
 ```
 
-work in progress - this is going to be outdated soon and needs to be updated (schemas validate for us (no more fields-missing), request bodies are different now (body.abc instead of body.studyset.abc), and response bodies are different (not response.data.studyset.abc anymore))
+work in progress: this is going to be outdated soon and needs to be updated (schemas validate for us (no more fields-missing), request bodies are different now (body.abc instead of body.studyset.abc), and response bodies are different (not response.data.studyset.abc anymore))
 
 `error.type` is a simple/consistent way to categorize errors and show error messages based on them.
 
