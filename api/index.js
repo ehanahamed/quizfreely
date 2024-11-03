@@ -116,6 +116,17 @@ fastify.setNotFoundHandler(function (request, reply) {
 })
 
 function routes(fastify, options, done) { 
+fastify.addSchema({
+    $id: "studysetBody",
+    type: "object",
+    properties: {
+        title: { type: "string", maxLength: "500" },
+        private: { type: "boolean" },
+        data: { type: "object" }
+    },
+    required: ["title", "private", "data"]
+});
+
 fastify.post("/auth/sign-up", {
     schema: {
         body: {
@@ -689,7 +700,11 @@ fastify.get("/public/users/:userid", async function (request, reply) {
     }
 })
 
-fastify.post("/studysets", async function (request, reply) {
+fastify.post("/studysets", {
+    schema: {
+        body: { $ref: "studysetBody#" }
+    }
+}, async function (request, reply) {
     if (
         (
             /* check for Authorization header */
@@ -705,16 +720,6 @@ fastify.post("/studysets", async function (request, reply) {
             We're using optional chaining (?.) with an OR (||), so that if the auth header isn't there, it uses the auth cookie
         */
         let authToken = request.headers?.authorization?.substring(7) || request.cookies.auth;
-        if (
-            request.body &&
-            request.body.studyset &&
-            request.body.studyset.title &&
-            (
-                request.body.studyset.private === true || 
-                request.body.studyset.private === false
-            ) &&
-            request.body.studyset.data
-        ) {
             let studysetTitle = request.body.studyset.title || "Untitled Studyset";
             let client = await pool.connect();
             try {
@@ -772,13 +777,6 @@ fastify.post("/studysets", async function (request, reply) {
             } finally {
                 client.release()
             }
-        } else {
-            return reply.code(400).send({
-                error: {
-                    type: "fields-missing"
-                }
-            })
-        }
     } else {
         /*
             401 Unauthorized means the client is NOT logged in or authenticated
@@ -867,7 +865,11 @@ fastify.get("/studysets/:studysetid", async function (request, reply) {
     }
 })
 
-fastify.put("/studysets/:studysetid", async function (request, reply) {
+fastify.put("/studysets/:studysetid", {
+    schema: {
+        body: { $ref: "studysetBody#" }
+    }
+}, async function (request, reply) {
     if (
         (
             /* check for Authorization header */
@@ -883,16 +885,6 @@ fastify.put("/studysets/:studysetid", async function (request, reply) {
             We're using optional chaining (?.) with an OR (||), so that if the auth header isn't there, it uses the auth cookie
         */
         let authToken = request.headers?.authorization?.substring(7) || request.cookies.auth;
-        if (
-            request.body &&
-            request.body.studyset &&
-            request.body.studyset.title &&
-            (
-                request.body.studyset.private === true || 
-                request.body.studyset.private === false
-            ) &&
-            request.body.studyset.data
-        ) {
             let studysetTitle = request.body.studyset.title || "Untitled Studyset";
             let client = await pool.connect();
             try {
@@ -955,13 +947,6 @@ fastify.put("/studysets/:studysetid", async function (request, reply) {
             } finally {
                 client.release()
             }
-        } else {
-            return reply.code(400).send({
-                error: {
-                    type: "fields-missing"
-                }
-            })
-        }
     } else {
         /*
             401 Unauthorized means the client is NOT logged in or authenticated
