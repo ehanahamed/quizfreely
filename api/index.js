@@ -115,18 +115,7 @@ fastify.setNotFoundHandler(function (request, reply) {
   })
 })
 
-function routes(fastify, options, done) { 
-fastify.addSchema({
-    $id: "studysetBody",
-    type: "object",
-    properties: {
-        title: { type: "string", maxLength: "500" },
-        private: { type: "boolean" },
-        data: { type: "object" }
-    },
-    required: ["title", "private", "data"]
-});
-
+function routes(fastify, options, done) {
 fastify.post("/auth/sign-up", {
     schema: {
         body: {
@@ -675,7 +664,15 @@ fastify.get("/public/users/:userid", async function (request, reply) {
 
 fastify.post("/studysets", {
     schema: {
-        body: { $ref: "studysetBody#" }
+        body: {
+            type: "object",
+            properties: {
+                title: { type: "string", maxLength: "9000" },
+                private: { type: "boolean" },
+                data: { type: "object" }
+            },
+            required: ["title", "private", "data"]
+        }
     }
 }, async function (request, reply) {
     if (
@@ -840,7 +837,15 @@ fastify.get("/studysets/:studysetid", async function (request, reply) {
 
 fastify.put("/studysets/:studysetid", {
     schema: {
-        body: { $ref: "studysetBody#" }
+        body: {
+            type: "object",
+            properties: {
+                title: { type: "string", maxLength: "9000" },
+                private: { type: "boolean" },
+                data: { type: "object" }
+            },
+            required: ["title", "private", "data"]
+        }
     }
 }, async function (request, reply) {
     if (
