@@ -133,140 +133,34 @@ fastify.post("/auth/sign-up", {
             type: "object",
             properties: {
                 username: { type: "string" },
-                password: { type: "string" }
+                password: { type: "string", minLength: 8, maxLength: 9000 }
             },
             required: ["username", "password"]
         }
     }
 }, async function (request, reply) {
-    /* check if username and password were sent in sign-up request body */
-    if (request.body && request.body.username && request.body.password) {
-        if (request.body.password.length >= 8) {
-            let username = request.body.username;
-             /* regex to check if username has letters (any alphabet, but no uppercase) or numbers (any alphabet) or dot, underscore, or dash */
-            if (/^(?!.*\p{Lu})[\p{L}\p{M}\p{N}._-]+$/u.test(username) && username.length >= 2 && username.length < 100) {
-                let client = await pool.connect();
-                try {
-                    await client.query("BEGIN");
-                    await client.query("set role quizfreely_auth");
-                    let result = await client.query(
-                        "select username from auth.users where username = $1 limit 1",
-                        [username]
-                    );
-                    if (result.rows.length == 0) {
-                        let result2 = await client.query(
-                            "insert into auth.users (username, encrypted_password, display_name) " +
-                            "values ($1, crypt($2, gen_salt('bf')), $1) returning id",
-                            [username, request.body.password]
-                        );
-                        let userId = result2.rows[0].id;
-                        let session = await client.query(
-                            "insert into auth.sessions (user_id) values ($1) returning token, user_id",
-                            [userId]
-                        );
-                        await client.query("COMMIT");
-                        reply.setCookie(
-                            "auth",
-                            session.rows[0].token,
-                            {
-                                domain: COOKIES_DOMAIN,
-                                path: "/",
-                                signed: false,
-                                /* 10 days * 24 h per day * 60 min per h * 60 sec per min = 864000 seconds in 10 days */
-                                maxAge: 864000,
-                                httpOnly: true,
-                                sameSite: "lax",
-                                /* when secure is true,
-                                browsers only send the cookie through https,
-                                on localhost, browsers send it even if localhost isn't using https */
-                                secure: true
-                            }
-                        );
-                        return reply.send({
-                            error: false,
-                            data: {
-                                user: {
-                                    id: userId,
-                                    username: username,
-                                    display_name: username
-                                },
-                            }
-                        })
-                    } else {
-                        await client.query("ROLLBACK");
-                        return reply.code(400).send({
-                            error: {
-                                type: "username-taken"
-                            }
-                        })
-                    }
-                } catch (error) {
-                    await client.query("ROLLBACK");
-                    request.log.error(error);
-                    return reply.code(500).send({
-                        error: {
-                            type: "db-error"
-                        }
-                    })
-                } finally {
-                    /* finally block will execute even though we put return statements in try block or catch block
-                    which is good for our use case :D */
-                    client.release();
-                }
-            } else {
-                /* username does not match regex or does not match length */
-                return reply.code(400).send(
-                    {
-                        error: {
-                            type: "username-invalid"
-                        }
-                    }
-                )
-            }
-        } else {
-            return reply.code(400).send({
-                error: {
-                    type: "password-weak"
-                }
-            })
-        }
-    } else {
-        /* password and/or username missing in request.body */
-        return reply.code(400).send({
-            error: {
-                type: "fields-missing"
-            }
-        })
-    }
-})
-
-fastify.post("/auth/sign-in", {
-    schema: {
-        body: {
-            type: "object",
-            properties: {
-                username: { type: "string" },
-                password: { type: "string" }
-            },
-            required: ["username", "password"]
-        }
-    }
-}, async function (request, reply) {
-    if (request.body && request.body.username && request.body.password) {
+    let username = request.body.username;
+     /* regex to check if username has letters (any alphabet, but no uppercase) or numbers (any alphabet) or dot, underscore, or dash */
+    if (/^(?!.*\p{Lu})[\p{L}\p{M}\p{N}._-]+$/u.test(username) && username.length >= 2 && username.length < 100) {
         let client = await pool.connect();
         try {
             await client.query("BEGIN");
             await client.query("set role quizfreely_auth");
             let result = await client.query(
-                "select id, username, display_name from auth.users " +
-                "where username = $1 and encrypted_password = crypt($2, encrypted_password) limit 1",
-                [request.body.username, request.body.password]
-            )
-            if (result.rows.length == 1) {
+                "select username from auth.users where username = $1 limit 1",
+                [username]
+            );
+            if (result.rows.length == 0) {
+                let result2 = await client.query(
+                    "insert into auth.users (username, encrypted_password, display_name) " +
+                    "values ($1, crypt($2, gen_salt('bf')), $1) returning id",
+                    [username, request.body.password]
+                );
+                let userId = result2.rows[0].id;
                 let session = await client.query(
                     "insert into auth.sessions (user_id) values ($1) returning token, user_id",
-                    [result.rows[0].id]
-                )
+                    [userId]
+                );
                 await client.query("COMMIT");
                 reply.setCookie(
                     "auth",
@@ -289,9 +183,9 @@ fastify.post("/auth/sign-in", {
                     error: false,
                     data: {
                         user: {
-                            id: result.rows[0].id,
-                            username: result.rows[0].username,
-                            display_name: result.rows[0].display_name
+                            id: userId,
+                            username: username,
+                            display_name: username
                         },
                     }
                 })
@@ -299,7 +193,7 @@ fastify.post("/auth/sign-in", {
                 await client.query("ROLLBACK");
                 return reply.code(400).send({
                     error: {
-                        type: "sign-in-incorrect"
+                        type: "username-taken"
                     }
                 })
             }
@@ -312,15 +206,94 @@ fastify.post("/auth/sign-in", {
                 }
             })
         } finally {
+            /* finally block will execute even though we put return statements in try block or catch block
+            which is good for our use case :D */
             client.release();
         }
     } else {
-        /* password and/or username missing in request.body */
-        return reply.code(400).send({
+        /* username does not match regex or does not match length */
+        return reply.code(400).send(
+            {
+                error: {
+                    type: "username-invalid"
+                }
+            }
+        )
+    }
+})
+
+fastify.post("/auth/sign-in", {
+    schema: {
+        body: {
+            type: "object",
+            properties: {
+                username: { type: "string" },
+                password: { type: "string", maxLength: 9000 }
+            },
+            required: ["username", "password"]
+        }
+    }
+}, async function (request, reply) {
+    let client = await pool.connect();
+    try {
+        await client.query("BEGIN");
+        await client.query("set role quizfreely_auth");
+        let result = await client.query(
+            "select id, username, display_name from auth.users " +
+            "where username = $1 and encrypted_password = crypt($2, encrypted_password) limit 1",
+            [request.body.username, request.body.password]
+        )
+        if (result.rows.length == 1) {
+            let session = await client.query(
+                "insert into auth.sessions (user_id) values ($1) returning token, user_id",
+                [result.rows[0].id]
+            )
+            await client.query("COMMIT");
+            reply.setCookie(
+                "auth",
+                session.rows[0].token,
+                {
+                    domain: COOKIES_DOMAIN,
+                    path: "/",
+                    signed: false,
+                    /* 10 days * 24 h per day * 60 min per h * 60 sec per min = 864000 seconds in 10 days */
+                    maxAge: 864000,
+                    httpOnly: true,
+                    sameSite: "lax",
+                    /* when secure is true,
+                    browsers only send the cookie through https,
+                    on localhost, browsers send it even if localhost isn't using https */
+                    secure: true
+                }
+            );
+            return reply.send({
+                error: false,
+                data: {
+                    user: {
+                        id: result.rows[0].id,
+                        username: result.rows[0].username,
+                        display_name: result.rows[0].display_name
+                    },
+                }
+            })
+        } else {
+            await client.query("ROLLBACK");
+            return reply.code(400).send({
+                error: {
+                    type: "sign-in-incorrect"
+                }
+            })
+        }
+    } catch (error) {
+        await client.query("ROLLBACK");
+        request.log.error(error);
+        return reply.code(500).send({
             error: {
-                type: "fields-missing"
+                type: "db-error"
             }
         })
+    } finally {
+        client.release();
     }
 })
 
