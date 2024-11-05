@@ -70,8 +70,8 @@ const schema = `
     }
 
     type Mutation {
-        createStudyset(title: String!, private: Boolean!, data: JSON): Studyset
-        updateStudyset(id: String!, title: String, private: Boolean, data: JSON): Studyset
+        createStudyset(title: String!, private: Boolean!, data: String): Studyset
+        updateStudyset(id: String!, title: String, private: Boolean, data: String): Studyset
     }
     
     type User {
@@ -92,7 +92,7 @@ const schema = `
         id: String
         title: String
         private: Boolean
-        data: JSON
+        data: String
     }
 `;
 
@@ -105,8 +105,18 @@ const resolvers = {
 }
 
 await fastify.register(mercurius, {
-    schema,
-    resolvers
+    schema: schema,
+    resolvers: resolvers,
+    context: function (request, reply) {
+        if (request.something) { something() };
+        return {
+            authed: false,
+            authedUser: {
+
+            }
+        }
+    },
+    graphiql: true
 });
 await fastify.register(
     fastifyCompress
@@ -724,7 +734,7 @@ fastify.post("/studysets", {
         body: {
             type: "object",
             properties: {
-                title: { type: "string", maxLength: "9000" },
+                title: { type: "string", maxLength: 9000 },
                 private: { type: "boolean" },
                 data: { type: "object" }
             },
