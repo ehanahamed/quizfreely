@@ -65,34 +65,54 @@ const fastify = Fastify({
 const schema = `
     type Query {
         authedUser: AuthedUser
-        studyset(id: String): Studyset
-        user(id: String): User
+        studyset(id: ID): Studyset
+        user(id: ID): User
     }
 
     type Mutation {
-        createStudyset(title: String!, private: Boolean!, data: String): Studyset
-        updateStudyset(id: String!, title: String, private: Boolean, data: String): Studyset
+        createStudyset(studyset: StudysetInput): Studyset
+        updateStudyset(id: ID!, studyset: StudysetInput): Studyset
     }
     
     type User {
-        id: String
+        id: ID
         username: String
         display_name: String
     }
 
     type AuthedUser {
-        id: String
+        id: ID
         username: String
         display_name: String
-        auth_type: String
+        auth_type: AuthType
         google_oauth_email: String
+    }
+
+    # work in progress update actual auth types in here, db, prod db, and web
+    enum AuthType {
+        username_password
+        oauth_google
     }
     
     type Studyset {
-        id: String
+        id: ID
         title: String
         private: Boolean
-        data: String
+        data: StudysetData
+    }
+    
+    type StudysetData {
+        terms: [[String]]
+    }
+
+    input StudysetInput {
+        title: String!
+        private: Boolean
+        data: StudysetDataInput
+    }
+    
+    input StudysetDataInput {
+        terms: [[String]]
     }
 `;
 
