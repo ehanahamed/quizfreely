@@ -907,7 +907,7 @@ fastify.put("/studysets/:studysetid", {
         body: {
             type: "object",
             properties: {
-                title: { type: "string", maxLength: "9000" },
+                title: { type: "string", maxLength: 9000 },
                 private: { type: "boolean" },
                 data: { type: "object" }
             },
