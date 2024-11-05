@@ -17,6 +17,8 @@
     "croner": "^9.0.0",
     "dotenv": "^16.4.5",
     "fastify": "^5.0.0",
+    "graphql": "^16.9.0",
+    "mercurius": "^15.1.0",
     "pg": "^8.13.0"
   },
   "devDependencies": {
