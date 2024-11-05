@@ -1,5 +1,6 @@
 import "dotenv/config";
 import Fastify from "fastify";
+import mercurius from "mercurius";
 import fastifyCompress from "@fastify/compress";
 import fastifyCors from "@fastify/cors";
 import fastifyCookie from "@fastify/cookie";
@@ -61,10 +62,52 @@ const fastify = Fastify({
     logger: loggerConfig
 })
 
-const pool = new Pool({
-    connectionString: POSTGRES_URI
-})
+const schema = `
+    type Query {
+        authedUser: AuthedUser
+        studyset(id: String): Studyset
+        user(id: String): User
+    }
 
+    type Mutation {
+        createStudyset(title: String!, private: Boolean!, data: JSON): Studyset
+        updateStudyset(id: String!, title: String, private: Boolean, data: JSON): Studyset
+    }
+    
+    type User {
+        id: String
+        username: String
+        display_name: String
+    }
+
+    type AuthedUser {
+        id: String
+        username: String
+        display_name: String
+        auth_type: String
+        google_oauth_email: String
+    }
+    
+    type Studyset {
+        id: String
+        title: String
+        private: Boolean
+        data: JSON
+    }
+`;
+
+const resolvers = {
+    Query: {
+        studyset: async function (something, obj) {
+            // very work in progress
+        }
+    }
+}
+
+await fastify.register(mercurius, {
+    schema,
+    resolvers
+});
 await fastify.register(
     fastifyCompress
 );
@@ -96,6 +139,9 @@ await fastify.register(fastifyOauth2, {
     },
     pkce: "S256"
 })
+const pool = new Pool({
+    connectionString: POSTGRES_URI
+});
 
 fastify.setErrorHandler(function (error, request, reply) {
     if (error.statusCode < 500) {
