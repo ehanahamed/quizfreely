@@ -65,7 +65,7 @@ const fastify = Fastify({
 const schema = `
     type Query {
         authedUser: AuthedUser
-        studyset(id: ID): Studyset
+        studyset(id: ID, public: Boolean): Studyset
         user(id: ID): User
     }
     type Mutation {
@@ -116,20 +116,79 @@ const resolvers = {
     }
 }
 
+async function context(request, reply) {
+    if ((
+        /* check for Authorization header */
+        request.headers.authorization &&
+        request.headers.authorization.toLowerCase().startsWith("bearer ")
+    ) || (
+        /* or check for Auth cookie */
+        request.cookies && request.cookies.auth
+    )) {
+        /*
+            "Bearer " (with space) is 6 characters, so 7 is where our token starts
+            We're using optional chaining (?.) with an OR (||), so that if the auth header isn't there, it uses the auth cookie
+        */
+        let authToken = request.headers?.authorization?.substring(7) || request.cookies.auth;
+        let client = await pool.connect();
+        try {
+            await client.query("BEGIN");
+            await client.query("set role quizfreely_auth");
+            let session = await client.query(
+                "select user_id from auth.verify_session($1)",
+                [ authToken ]
+            );
+            if (session.rows.length == 1) {
+                let userData = await client.query(
+                    "select id, username, display_name, auth_type, oauth_google_email from auth.users " +
+                    "where id = $1",
+                    [
+                        session.rows[0].user_id
+                    ]
+                );
+                if (userData.rows.length == 1) {
+                    await client.query("COMMIT");
+                    return {
+                        authed: true,
+                        authedUser: 
+                    };
+                } else {
+                    await client.query("ROLLBACK");
+                    return {
+                        authed: false
+                    };
+                }
+            } else {
+                await client.query("ROLLBACK");
+                return {
+                    authed: false
+                };
+            }
+        } catch (error) {
+            await client.query("ROLLBACK");
+            request.log.error(error);
+            return reply.code(500).send({
+                error: {
+                    type: "db-error"
+                }
+            })
+        } finally {
+            client.release()
+        }
+    } else {
+        return {
+            authed: false
+        }
+    }
+}
+
 await fastify.register(mercurius, {
     schema: schema,
     resolvers: resolvers,
-    context: function (request, reply) {
-        if (request.something) { something() };
-        return {
-            authed: false,
-            authedUser: {
-
-            }
-        }
-    },
+    context: context,
     graphiql: true
 });
+
 await fastify.register(
     fastifyCompress
 );
