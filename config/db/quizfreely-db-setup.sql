@@ -25,12 +25,13 @@ as $$
 select current_setting('quizfreely_auth.user_id')::uuid
 $$;
 
+create type auth_type_enum as enum ('username_password', 'oauth_google');
 create table auth.users (
   id uuid primary key default gen_random_uuid(),
   username text,
   encrypted_password text,
   display_name text not null,
-  auth_type text not null default 'username-password',
+  auth_type auth_type_enum not null,
   oauth_google_id text,
   oauth_google_email text,
   unique (username),
