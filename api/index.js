@@ -84,7 +84,6 @@ const schema = `
         auth_type: AuthType
         google_oauth_email: String
     }
-    # work in progress update actual auth types in here, db, prod db, and web
     enum AuthType {
         username_password
         oauth_google
