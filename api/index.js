@@ -68,18 +68,15 @@ const schema = `
         studyset(id: ID): Studyset
         user(id: ID): User
     }
-
     type Mutation {
         createStudyset(studyset: StudysetInput): Studyset
         updateStudyset(id: ID!, studyset: StudysetInput): Studyset
     }
-    
     type User {
         id: ID
         username: String
         display_name: String
     }
-
     type AuthedUser {
         id: ID
         username: String
@@ -87,30 +84,25 @@ const schema = `
         auth_type: AuthType
         google_oauth_email: String
     }
-
     # work in progress update actual auth types in here, db, prod db, and web
     enum AuthType {
         username_password
         oauth_google
     }
-    
     type Studyset {
         id: ID
         title: String
         private: Boolean
         data: StudysetData
     }
-    
     type StudysetData {
         terms: [[String]]
     }
-
     input StudysetInput {
         title: String!
         private: Boolean
         data: StudysetDataInput
     }
-    
     input StudysetDataInput {
         terms: [[String]]
     }
@@ -217,8 +209,8 @@ fastify.post("/auth/sign-up", {
             );
             if (result.rows.length == 0) {
                 let result2 = await client.query(
-                    "insert into auth.users (username, encrypted_password, display_name) " +
-                    "values ($1, crypt($2, gen_salt('bf')), $1) returning id",
+                    "insert into auth.users (username, encrypted_password, display_name, auth_type) " +
+                    "values ($1, crypt($2, gen_salt('bf')), $1, 'username_password') returning id",
                     [username, request.body.password]
                 );
                 let userId = result2.rows[0].id;
@@ -444,7 +436,7 @@ async function googleAuthCallback(tokenObj) {
             await client.query("set role quizfreely_auth");
             let upsertedUser = await client.query(
                 "insert into auth.users (display_name, auth_type, oauth_google_id, oauth_google_email) " +
-                "values ($1, 'oauth-google', $2, $3) on conflict (oauth_google_id) do update " +
+                "values ($1, 'oauth_google', $2, $3) on conflict (oauth_google_id) do update " +
                 "set oauth_google_email = $3 returning id, display_name",
                 [
                     userinfo.name,
