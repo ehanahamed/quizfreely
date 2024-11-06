@@ -93,6 +93,7 @@ const schema = `
         title: String
         private: Boolean
         data: StudysetData
+        author: User
     }
     type StudysetData {
         terms: [[String]]
@@ -109,15 +110,21 @@ const schema = `
 
 const resolvers = {
     Query: {
-        studyset: async function (_, args, context, info) {
-            return {
-                id: "abc",
-                title: "idk",
-                data: {
-                    terms: [
-                        ["t1"], ["d1"],
-                        ["t2"], ["d2"]
-                    ]
+        studyset: async function (_, args, context) {
+            if (args.public) {
+                //getPublicStudyset(args.id);
+                return {
+                    title: "public"
+                }
+            } else if (context.authed) {
+                //getStudyset(args.id, context.authedUser);
+                return {
+                    title: "authed"
+                }
+            } else {
+                // throw error cause not signed in
+                return {
+                    title: "err"
                 }
             }
         }
@@ -158,7 +165,7 @@ async function context(request, reply) {
                     await client.query("COMMIT");
                     return {
                         authed: true,
-                        authedUser: 
+                        authedUser: {}
                     };
                 } else {
                     await client.query("ROLLBACK");
