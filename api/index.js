@@ -109,8 +109,17 @@ const schema = `
 
 const resolvers = {
     Query: {
-        studyset: async function (something, obj) {
-            // very work in progress
+        studyset: async function (_, args, context, info) {
+            return {
+                id: "abc",
+                title: "idk",
+                data: {
+                    terms: [
+                        ["t1"], ["d1"],
+                        ["t2"], ["d2"]
+                    ]
+                }
+            }
         }
     }
 }
