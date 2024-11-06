@@ -62,148 +62,6 @@ const fastify = Fastify({
     logger: loggerConfig
 })
 
-const schema = `
-    type Query {
-        authedUser: AuthedUser
-        studyset(id: ID, public: Boolean): Studyset
-        user(id: ID): User
-    }
-    type Mutation {
-        createStudyset(studyset: StudysetInput): Studyset
-        updateStudyset(id: ID!, studyset: StudysetInput): Studyset
-    }
-    type User {
-        id: ID
-        username: String
-        display_name: String
-    }
-    type AuthedUser {
-        id: ID
-        username: String
-        display_name: String
-        auth_type: AuthType
-        google_oauth_email: String
-    }
-    enum AuthType {
-        username_password
-        oauth_google
-    }
-    type Studyset {
-        id: ID
-        title: String
-        private: Boolean
-        data: StudysetData
-        author: User
-    }
-    type StudysetData {
-        terms: [[String]]
-    }
-    input StudysetInput {
-        title: String!
-        private: Boolean
-        data: StudysetDataInput
-    }
-    input StudysetDataInput {
-        terms: [[String]]
-    }
-`;
-
-const resolvers = {
-    Query: {
-        studyset: async function (_, args, context) {
-            if (args.public) {
-                //getPublicStudyset(args.id);
-                return {
-                    title: "public"
-                }
-            } else if (context.authed) {
-                //getStudyset(args.id, context.authedUser);
-                return {
-                    title: "authed"
-                }
-            } else {
-                // throw error cause not signed in
-                return {
-                    title: "err"
-                }
-            }
-        }
-    }
-}
-
-async function context(request, reply) {
-    if ((
-        /* check for Authorization header */
-        request.headers.authorization &&
-        request.headers.authorization.toLowerCase().startsWith("bearer ")
-    ) || (
-        /* or check for Auth cookie */
-        request.cookies && request.cookies.auth
-    )) {
-        /*
-            "Bearer " (with space) is 6 characters, so 7 is where our token starts
-            We're using optional chaining (?.) with an OR (||), so that if the auth header isn't there, it uses the auth cookie
-        */
-        let authToken = request.headers?.authorization?.substring(7) || request.cookies.auth;
-        let client = await pool.connect();
-        try {
-            await client.query("BEGIN");
-            await client.query("set role quizfreely_auth");
-            let session = await client.query(
-                "select user_id from auth.verify_session($1)",
-                [ authToken ]
-            );
-            if (session.rows.length == 1) {
-                let userData = await client.query(
-                    "select id, username, display_name, auth_type, oauth_google_email from auth.users " +
-                    "where id = $1",
-                    [
-                        session.rows[0].user_id
-                    ]
-                );
-                if (userData.rows.length == 1) {
-                    await client.query("COMMIT");
-                    return {
-                        authed: true,
-                        authedUser: {}
-                    };
-                } else {
-                    await client.query("ROLLBACK");
-                    return {
-                        authed: false
-                    };
-                }
-            } else {
-                await client.query("ROLLBACK");
-                return {
-                    authed: false
-                };
-            }
-        } catch (error) {
-            await client.query("ROLLBACK");
-            request.log.error(error);
-            return reply.code(500).send({
-                error: {
-                    type: "db-error"
-                }
-            })
-        } finally {
-            client.release()
-        }
-    } else {
-        return {
-            authed: false
-        }
-    }
-}
-
-await fastify.register(mercurius, {
-    schema: schema,
-    resolvers: resolvers,
-    context: context,
-    graphiql: true
-});
-
 await fastify.register(
     fastifyCompress
 );
@@ -256,6 +114,143 @@ fastify.setNotFoundHandler(function (request, reply) {
     }
   })
 })
+const schema = `
+    type Query {
+        authedUser: AuthedUser
+        studyset(id: ID, public: Boolean): Studyset
+        user(id: ID): User
+    }
+    type Mutation {
+        createStudyset(studyset: StudysetInput): Studyset
+        updateStudyset(id: ID!, studyset: StudysetInput): Studyset
+    }
+    type User {
+        id: ID
+        username: String
+        display_name: String
+    }
+    type AuthedUser {
+        id: ID
+        username: String
+        display_name: String
+        auth_type: AuthType
+        google_oauth_email: String
+    }
+    enum AuthType {
+        username_password
+        oauth_google
+    }
+    type Studyset {
+        id: ID
+        title: String
+        private: Boolean
+        data: StudysetData
+        author: User
+    }
+    type StudysetData {
+        terms: [[String]]
+    }
+    input StudysetInput {
+        title: String!
+        private: Boolean
+        data: StudysetDataInput
+    }
+    input StudysetDataInput {
+        terms: [[String]]
+    }
+`;
+
+const resolvers = {
+    Query: {
+        studyset: async function (_, args, context) {
+            if (args.public) {
+                await getPublicStudyset(args.id);
+            } else if (context.authed) {
+                await getStudyset(args.id, context.authedUser);
+                return {
+                    title: "authed"
+                }
+            } else {
+                // throw error cause not signed in
+                return {
+                    title: "err"
+                }
+            }
+        }
+    }
+}
+
+async function context(request, reply) {
+    if ((
+        /* check for Authorization header */
+        request.headers.authorization &&
+        request.headers.authorization.toLowerCase().startsWith("bearer ")
+    ) || (
+        /* or check for Auth cookie */
+        request.cookies && request.cookies.auth
+    )) {
+        /*
+            "Bearer " (with space) is 6 characters, so 7 is where our token starts
+            We're using optional chaining (?.) with an OR (||), so that if the auth header isn't there, it uses the auth cookie
+        */
+        let authToken = request.headers?.authorization?.substring(7) || request.cookies.auth;
+        let client = await pool.connect();
+        try {
+            await client.query("BEGIN");
+            await client.query("set role quizfreely_auth");
+            let session = await client.query(
+                "select user_id from auth.verify_session($1)",
+                [ authToken ]
+            );
+            if (session.rows.length == 1) {
+                let userData = await client.query(
+                    "select id, username, display_name, auth_type, oauth_google_email from auth.users " +
+                    "where id = $1",
+                    [
+                        session.rows[0].user_id
+                    ]
+                );
+                if (userData.rows.length == 1) {
+                    await client.query("COMMIT");
+                    return {
+                        authed: true,
+                        authedUser: userData.rows[0],
+                        token: authToken
+                    };
+                } else {
+                    await client.query("ROLLBACK");
+                    return {
+                        authed: false
+                    };
+                }
+            } else {
+                await client.query("ROLLBACK");
+                return {
+                    authed: false
+                };
+            }
+        } catch (error) {
+            await client.query("ROLLBACK");
+            request.log.error(error);
+            return {
+                authed: false
+            }
+        } finally {
+            client.release()
+        }
+    } else {
+        return {
+            authed: false
+        }
+    }
+}
+
+await fastify.register(mercurius, {
+    schema: schema,
+    resolvers: resolvers,
+    context: context,
+    graphiql: true
+});
 
 function routes(fastify, options, done) {
 fastify.post("/auth/sign-up", {
