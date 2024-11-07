@@ -197,7 +197,7 @@ const resolvers = {
                     return result.data;
                 }
             } else if (context.authed) {
-                let result = await getStudyset(args.id, context.authedUser);
+                let result = await getStudyset(args.id, context.authedUser.id);
                 if (result.error) {
                     throw new mercurius.ErrorWithProps(
                         result.error.message,
@@ -336,7 +336,7 @@ async function getPublicStudyset(id) {
         error: errorObj
     }
 */
-async function getStudyset(id, authedUser) {
+async function getStudyset(id, authedUserId) {
     let result;
     let client = await pool.connect();
     try {
@@ -344,14 +344,12 @@ async function getStudyset(id, authedUser) {
         await client.query("set role quizfreely_auth_user");
         await client.query(
             "select set_config('quizfreely_auth.user_id', $1, true)",
-            [ authedUser.user_id ]
+            [ authedUserId ]
         );
         let selectedStudyset = await client.query(
             "select id, user_id, title, private, data, updated_at from public.studysets " +
-            "where id = $1",
-            [
-                id
-            ]
+            "where id = $1 and (private = false or user_id = $2)",
+            [ id, authedUserId ]
         );
         if (selectedStudyset.rows.length == 1) {
             await client.query("COMMIT")
@@ -714,84 +712,19 @@ fastify.get('/oauth/google/callback', function (request, reply) {
     })
 })
 
-fastify.get("/user", async function (request, reply) {
-    if (
-        (
-            /* check for Authorization header */
-            request.headers.authorization &&
-            request.headers.authorization.toLowerCase().startsWith("bearer ")
-        ) || (
-            /* or check for Auth cookie */
-            request.cookies && request.cookies.auth
-        )
-    ) {
-        /*
-            "Bearer " (with space) is 6 characters, so 7 is where our token starts
-            We're using optional chaining (?.) with an OR (||), so that if the auth header isn't there, it uses the auth cookie
-        */
-        let authToken = request.headers?.authorization?.substring(7) || request.cookies.auth;
-        let client = await pool.connect();
-        try {
-            await client.query("BEGIN");
-            await client.query("set role quizfreely_auth");
-            let session = await client.query(
-                "select user_id from auth.verify_session($1)",
-                [ authToken ]
-            );
-            if (session.rows.length == 1) {
-                let userData = await client.query(
-                    "select id, username, display_name, auth_type, oauth_google_email from auth.users " +
-                    "where id = $1",
-                    [
-                        session.rows[0].user_id
-                    ]
-                );
-                if (userData.rows.length == 1) {
-                    await client.query("COMMIT");
-                    return reply.send({
-                        "error": false,
-                        "data": {
-                            user: {
-                                id: userData.rows[0].id,
-                                username: userData.rows[0].username,
-                                display_name: userData.rows[0].display_name,
-                                auth_type: userData.rows[0].auth_type,
-                                oauth_google_email: userData.rows[0].oauth_google_email
-                            },
-                        }
-                    })
-                } else {
-                    await client.query("ROLLBACK");
-                    return reply.callNotFound();
-                }
-            } else {
-                await client.query("ROLLBACK");
-                return reply.code(401).send({
-                    error: {
-                        type: "session-invalid"
-                    }
-                })
+fastify.get("/auth/user", async function (request, reply) {
+    const authContext = await context(request, reply);
+    if (authContext.authed) {
+        return reply.send({
+            data: {
+                authedUser: authContext.authedUser,
+                authed: true
             }
-        } catch (error) {
-            await client.query("ROLLBACK");
-            request.log.error(error);
-            return reply.code(500).send({
-                error: {
-                    type: "db-error"
-                }
-            })
-        } finally {
-            client.release()
-        }
+        })
     } else {
-        /*
-            401 Unauthorized means the client is NOT logged in or authenticated
-            403 Forbidden means the client is logged in but not allowed,
-            so in this case we're responding with a 401 if our Authentication header is missing
-        */
-        return reply.code(401).send({
-            error: {
-                type: "auth-missing"
+        return reply.send({
+            data: {
+                authed: false
             }
         })
     }
@@ -1034,26 +967,17 @@ fastify.post("/studysets", {
 })
 
 fastify.get("/studysets/:studysetid", async function (request, reply) {
-    if (
-        (
-            /* check for Authorization header */
-            request.headers.authorization &&
-            request.headers.authorization.toLowerCase().startsWith("bearer ")
-        ) || (
-            /* or check for Auth cookie */
-            request.cookies && request.cookies.auth
-        )
-    ) {
-        /*
-            "Bearer " (with space) is 6 characters, so 7 is where our token starts
-            We're using optional chaining (?.) with an OR (||), so that if the auth header isn't there, it uses the auth cookie
-        */
-        let authToken = request.headers?.authorization?.substring(7) || request.cookies.auth;
-        
+    let result = await getStudyset(request.params.id, authContext.authedUser);
+    if (result.error) {
+        return reply.code(500).send({
+            error: result.error
+        })
+    } else if (result.data === null) {
+        return reply.callNotFound();
     } else {
-        return reply.code(400).send({
-            error: {
-                type: "auth-missing"
+        return reply.send({
+            data: {
+                studyset: result.data
             }
         })
     }
@@ -1231,7 +1155,20 @@ fastify.delete("/studysets/:studysetid", async function (request, reply) {
 })
 
 fastify.get("/public/studysets/:studysetid", async function (request, reply) {
-    
+    let result = await getPublicStudyset(request.params.id);
+    if (result.error) {
+        return reply.code(500).send({
+            error: result.error
+        })
+    } else if (result.data === null) {
+        return reply.callNotFound();
+    } else {
+        return reply.send({
+            data: {
+                studyset: result.data
+            }
+        })
+    }
 })
 
 fastify.get("/public/search/studysets", {
