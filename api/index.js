@@ -93,17 +93,23 @@ await fastify.register(fastifyOauth2, {
     },
     pkce: "S256"
 })
-const pool = new Pool({
-    connectionString: POSTGRES_URI
-});
 
 fastify.setErrorHandler(function (error, request, reply) {
     if (error.statusCode < 500) {
         request.log.warn(error)
-        reply.code(error.statusCode).send(error);
+        reply.code(error.statusCode).send({
+            error: error
+        });
+    } else if (error.statusCode >= 100 && error.statusCode <= 599) {
+        request.log.error(error)
+        reply.code(error.statusCode).send({
+            error: error
+        });
     } else {
         request.log.error(error)
-        reply.code(error.statusCode).send(error);
+        reply.code(500).send({
+            error: error
+        });
     }
 })
 
@@ -114,6 +120,11 @@ fastify.setNotFoundHandler(function (request, reply) {
     }
   })
 })
+
+const pool = new Pool({
+    connectionString: POSTGRES_URI
+});
+
 const schema = `
     type Query {
         authedUser: AuthedUser
