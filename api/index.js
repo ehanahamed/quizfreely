@@ -136,6 +136,7 @@ const schema = `
     type Mutation {
         createStudyset(studyset: StudysetInput): Studyset
         updateStudyset(id: ID!, studyset: StudysetInput): Studyset
+        deleteStudyset(id: ID!): ID
     }
     type User {
         id: ID
@@ -157,8 +158,9 @@ const schema = `
         id: ID
         title: String
         private: Boolean
+        user_id: ID
+        user_display_name: String
         data: StudysetData
-        author: User
     }
     type StudysetData {
         terms: [[String]]
@@ -184,19 +186,34 @@ const resolvers = {
         },
         studyset: async function (_, args, context) {
             if (args.public) {
-                await getPublicStudyset(args.id);
+                let result = await getPublicStudyset(args.id);
+                if (result.error) {
+                    throw new mercurius.ErrorWithProps(
+                        result.error.message,
+                        result.error
+                    )
+                } else {
+                    /* getPublicStudyset().data is studyset json on sucess, null on not found, and undefined on error */
+                    return result.data;
+                }
             } else if (context.authed) {
-                await getStudyset(args.id, context.authedUser);
-                return {
-                    title: "authed"
+                let result = await getStudyset(args.id, context.authedUser);
+                if (result.error) {
+                    throw new mercurius.ErrorWithProps(
+                        result.error.message,
+                        result.error
+                    )
+                } else {
+                    /* getStudyset().data is studyset json on success, null on not found, and undefined on error */
+                    return result.data;
                 }
-            } else {
-                // throw error cause not signed in
-                return {
-                    title: "err"
-                }
+            } else /* not public, but also not signed in */ {
+                throw new mercurius.ErrorWithProps("Not signed in while trying to view studyset without `public: true`", { code: "NOT_AUTHED" });
             }
         }
+    },
+    Mutation: {
+
     }
 }
 
@@ -271,6 +288,93 @@ await fastify.register(mercurius, {
     context: context,
     graphiql: true
 });
+
+/*
+    on sucess, returns: {
+        data: studysetJson
+    }
+    on not found, returns: {
+        data: null
+    }
+    on error, returns: {
+        error: errorObj
+    }
+*/
+async function getPublicStudyset(id) {
+    try {
+        let result = await pool.query(
+            "select s.id, s.user_id, u.display_name as user_display_name, s.title, s.data, s.updated_at, s.terms_count " +
+            "from public.studysets s inner join public.profiles u on s.user_id = u.id " +
+            "where s.id = $1 and s.private = false limit 1",
+            [ id ]
+        )
+        if (result.rows.length == 1) {
+            return {
+                data: result.rows[0]
+            };
+        } else {
+            return {
+                data: null
+            };
+        }
+    } catch (error) {
+        fastify.log.error(error);
+        return {
+            error: error
+        }
+    }
+}
+
+/*
+    on sucess, returns: {
+        data: studysetJson
+    }
+    on not found, returns: {
+        data: null
+    }
+    on error, returns: {
+        error: errorObj
+    }
+*/
+async function getStudyset(id, authedUser) {
+    let result;
+    let client = await pool.connect();
+    try {
+        await client.query("BEGIN");
+        await client.query("set role quizfreely_auth_user");
+        await client.query(
+            "select set_config('quizfreely_auth.user_id', $1, true)",
+            [ authedUser.user_id ]
+        );
+        let selectedStudyset = await client.query(
+            "select id, user_id, title, private, data, updated_at from public.studysets " +
+            "where id = $1",
+            [
+                id
+            ]
+        );
+        if (selectedStudyset.rows.length == 1) {
+            await client.query("COMMIT")
+            result = {
+                data: selectedStudyset.rows[0]
+            }
+        } else {
+            await client.query("ROLLBACK");
+            result = {
+                data: null
+            };
+        }
+    } catch (error) {
+        await client.query("ROLLBACK");
+        fastify.log.error(error);
+        result = {
+            error: error
+        }
+    } finally {
+        client.release()
+        return result;
+    }
+}
 
 function routes(fastify, options, done) {
 fastify.post("/auth/sign-up", {
@@ -945,55 +1049,7 @@ fastify.get("/studysets/:studysetid", async function (request, reply) {
             We're using optional chaining (?.) with an OR (||), so that if the auth header isn't there, it uses the auth cookie
         */
         let authToken = request.headers?.authorization?.substring(7) || request.cookies.auth;
-        let client = await pool.connect();
-        try {
-            await client.query("BEGIN");
-            await client.query("set role quizfreely_auth");
-            let session = await client.query(
-                "select user_id from auth.verify_session($1)",
-                [ authToken ]
-            );
-            if (session.rows.length == 1) {
-                await client.query("set role quizfreely_auth_user");
-                await client.query("select set_config('quizfreely_auth.user_id', $1, true)", [session.rows[0].user_id]);
-                let selectedStudyset = await client.query(
-                    "select id, user_id, title, private, data, updated_at from public.studysets " +
-                    "where id = $1",
-                    [
-                        request.params.studysetid
-                    ]
-                );
-                if (selectedStudyset.rows.length == 1) {
-                    await client.query("COMMIT")
-                    return reply.send({
-                        "error": false,
-                        "data": {
-                            studyset: selectedStudyset.rows[0]
-                        }
-                    })
-                } else {
-                    await client.query("ROLLBACK");
-                    return reply.callNotFound();
-                }
-            } else {
-                await client.query("ROLLBACK");
-                return reply.code(401).send({
-                    error: {
-                        type: "session-invalid"
-                    }
-                })
-            }
-        } catch (error) {
-            await client.query("ROLLBACK");
-            request.log.error(error);
-            return reply.code(500).send({
-                error: {
-                    type: "db-error"
-                }
-            })
-        } finally {
-            client.release()
-        }
+        
     } else {
         return reply.code(400).send({
             error: {
@@ -1175,31 +1231,7 @@ fastify.delete("/studysets/:studysetid", async function (request, reply) {
 })
 
 fastify.get("/public/studysets/:studysetid", async function (request, reply) {
-    try {
-        let result = await pool.query(
-            "select s.id, s.user_id, u.display_name, s.title, s.data, s.updated_at, s.terms_count " +
-            "from public.studysets s inner join public.profiles u on s.user_id = u.id " +
-            "where s.id = $1 and s.private = false limit 1",
-            [request.params.studysetid]
-        )
-        if (result.rows.length == 1) {
-            return reply.send({
-                error: false,
-                data: {
-                    studyset: result.rows[0]
-                }
-            })
-        } else {
-            return reply.callNotFound();
-        }
-    } catch (error) {
-        request.log.error(error);
-        return reply.status(500).send({
-            error: {
-                type: "db-error"
-            }
-        })
-    }
+    
 })
 
 fastify.get("/public/search/studysets", {
