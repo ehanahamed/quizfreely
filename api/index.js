@@ -173,6 +173,13 @@ const schema = `
 
 const resolvers = {
     Query: {
+        authedUser: async function (_, args, context) {
+            if (context.authed) {
+                return context.authedUser
+            } else {
+                return null;
+            }
+        },
         studyset: async function (_, args, context) {
             if (args.public) {
                 await getPublicStudyset(args.id);
