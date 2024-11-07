@@ -116,9 +116,11 @@ fastify.setErrorHandler(function (error, request, reply) {
 fastify.setNotFoundHandler(function (request, reply) {
   reply.code(404).send({
     error: {
-        type: "not-found"
+        code: "NOT_FOUND",
+        statusCode: 404,
+        message: "404 Not Found"
     }
-  })
+  });
 })
 
 const pool = new Pool({
