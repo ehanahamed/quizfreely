@@ -885,31 +885,17 @@ fastify.patch("/user", {
 })
 
 fastify.get("/public/users/:userid", async function (request, reply) {
-    try {
-        let result = await pool.query(
-            "select id, username, display_name from public.profiles " +
-            "where id = $1",
-            [request.params.userid]
-        )
-        if (result.rows.length == 1) {
-            return reply.send({
-                error: false,
-                data: {
-                    user: {
-                        id: result.rows[0].id,
-                        username: result.rows[0].username,
-                        display_name: result.rows[0].display_name
-                    }
-                }
-            })
-        } else {
-            return reply.callNotFound();
-        }
-    } catch (error) {
-        request.log.error(error);
+    let result = await getUser(reqest.params.id);
+    if (result.error) {
         return reply.code(500).send({
-            error: {
-                type: "db-error"
+            error: result.error
+        })
+    } else if (result.data === null) {
+        return reply.callNotFound();
+    } else {
+        return reply.send({
+            data: {
+                user: result.data
             }
         })
     }
@@ -1015,17 +1001,28 @@ fastify.post("/studysets", {
 })
 
 fastify.get("/studysets/:studysetid", async function (request, reply) {
-    let result = await getStudyset(request.params.id, authContext.authedUser);
-    if (result.error) {
-        return reply.code(500).send({
-            error: result.error
-        })
-    } else if (result.data === null) {
-        return reply.callNotFound();
+    const authContext = await context(request, reply);
+    if (authContext.authed) {
+        let result = await getStudyset(request.params.id, authContext.authedUser);
+        if (result.error) {
+            return reply.code(500).send({
+                error: result.error
+            })
+        } else if (result.data === null) {
+            return reply.callNotFound();
+        } else {
+            return reply.send({
+                data: {
+                    studyset: result.data
+                }
+            })
+        }
     } else {
-        return reply.send({
-            data: {
-                studyset: result.data
+        return reply.code(401).send({
+            error: {
+                code: "NOT_AUTHED",
+                statusCode: 401,
+                message: "Not signed in while trying to view a studyset. Use /public/studysets/ for unauthed requests"
             }
         })
     }
