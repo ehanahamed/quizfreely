@@ -130,11 +130,11 @@ const pool = new Pool({
 const schema = `
     type Query {
         authedUser: AuthedUser
-        studyset(id: ID, public: Boolean): Studyset
-        user(id: ID): User
+        studyset(id: ID!, public: Boolean!): Studyset
+        user(id: ID!): User
     }
     type Mutation {
-        createStudyset(studyset: StudysetInput): Studyset
+        createStudyset(studyset: StudysetInput!): Studyset
         updateStudyset(id: ID!, studyset: StudysetInput): Studyset
         deleteStudyset(id: ID!): ID
     }
@@ -167,8 +167,8 @@ const schema = `
     }
     input StudysetInput {
         title: String!
-        private: Boolean
-        data: StudysetDataInput
+        private: Boolean!
+        data: StudysetDataInput!
     }
     input StudysetDataInput {
         terms: [[String]]
@@ -209,6 +209,17 @@ const resolvers = {
                 }
             } else /* not public, but also not signed in */ {
                 throw new mercurius.ErrorWithProps("Not signed in while trying to view studyset without `public: true`", { code: "NOT_AUTHED" });
+            }
+        },
+        user: async function (_, args, context) {
+            let result = await getUser(args.id);
+            if (result.error) {
+                throw new mercurius.ErrorWithProps(
+                    result.error.message,
+                    result.error
+                );
+            } else {
+                return result.data;
             }
         }
     },
@@ -371,6 +382,43 @@ async function getStudyset(id, authedUserId) {
     } finally {
         client.release()
         return result;
+    }
+}
+
+/*
+    on sucess, returns: {
+        data: studysetJson
+    }
+    on not found, returns: {
+        data: null
+    }
+    on error, returns: {
+        error: errorObj
+    }
+*/
+async function getUser(id) {
+    try {
+        let result = await pool.query(
+            "select id, username, display_name from public.profiles " +
+            "where id = $1",
+            [ id ]
+        )
+        if (result.rows.length == 1) {
+            return {
+                data: {
+                    id: result.rows[0].id,
+                    username: result.rows[0].username,
+                    display_name: result.rows[0].display_name
+                }
+            }
+        } else {
+            return null;
+        }
+    } catch (error) {
+        fastify.log.error(error);
+        return {
+            error: error
+        }
     }
 }
 
