@@ -130,7 +130,7 @@ const pool = new Pool({
 const schema = `
     type Query {
         authedUser: AuthedUser
-        studyset(id: ID!, public: Boolean!): Studyset
+        studyset(id: ID!, withAuth: Boolean!): Studyset
         user(id: ID!): User
     }
     type Mutation {
@@ -185,7 +185,7 @@ const resolvers = {
             }
         },
         studyset: async function (_, args, context) {
-            if (args.public) {
+            if (args.withAuth == false) {
                 let result = await getPublicStudyset(args.id);
                 if (result.error) {
                     throw new mercurius.ErrorWithProps(
@@ -196,7 +196,7 @@ const resolvers = {
                     /* getPublicStudyset().data is studyset json on sucess, null on not found, and undefined on error */
                     return result.data;
                 }
-            } else if (context.authed) {
+            } else if (context.authed) /* withAuth is true, and context.authed is true (signed in) */ {
                 let result = await getStudyset(args.id, context.authedUser.id);
                 if (result.error) {
                     throw new mercurius.ErrorWithProps(
@@ -207,7 +207,7 @@ const resolvers = {
                     /* getStudyset().data is studyset json on success, null on not found, and undefined on error */
                     return result.data;
                 }
-            } else /* not public, but also not signed in */ {
+            } else /* withAuth is true, but context.auth is false (not signed in) */ {
                 throw new mercurius.ErrorWithProps("Not signed in while trying to view studyset without `public: true`", { code: "NOT_AUTHED" });
             }
         },
