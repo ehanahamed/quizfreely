@@ -133,6 +133,10 @@ const schema = `
         authedUser: AuthedUser
         studyset(id: ID!, withAuth: Boolean!): Studyset
         user(id: ID!): User
+        featuredStudysets(limit: Int): [Studyset]
+        recentStudysets(limit Int): [Studyset]
+        searchStudysets(q: String!, limit: Int): [Studyset]
+        searchQueries(q: String!, limit: Int): [SearchQuery]
     }
     type Mutation {
         createStudyset(studyset: StudysetInput!): Studyset
@@ -173,6 +177,10 @@ const schema = `
     }
     input StudysetDataInput {
         terms: [[String]]
+    }
+    type SearchQuery {
+        query: String
+        subject: String
     }
 `;
 
@@ -1291,7 +1299,7 @@ fastify.get("/public/search/studysets", {
     }
 })
 
-fastify.get("/public/search/query-predictions", {
+fastify.get("/public/search/queries", {
     schema: {
         querystring: {
             type: "object",
