@@ -572,7 +572,7 @@ fastify.get("/search", async function (request, reply) {
         authedUser = apiRes.data?.authedUser
       }
       if (apiRes?.data?.searchStudysets?.length >= 0) {
-        reply.view("search.html", {
+        return reply.view("search.html", {
           ...themeData(request),
           query: request.query.q,
           results: apiRes.data.searchStudysets,
@@ -580,14 +580,14 @@ fastify.get("/search", async function (request, reply) {
           authedUser: authedUser
         })
       } else {
-        reply.send("work in progress error message mabye")
+        return reply.send("work in progress error message mabye")
       }
     } catch (error) {
-      reply.send("work in progress error message?")
+      return reply.send("work in progress error message?")
     }
   } else {
     let userResult = await userData(request);
-    reply.view("search.html", {
+    return reply.view("search.html", {
       ...themeData(request),
       query: false,
       authed: userResult.authed,
