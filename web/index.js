@@ -157,7 +157,7 @@ async function userData(request) {
             username
             display_name
             auth_type
-            google_oauth_email
+            oauth_google_email
           }
         }`
       })
