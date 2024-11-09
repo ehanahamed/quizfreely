@@ -149,7 +149,7 @@ const schema = `
         username: String
         display_name: String
         auth_type: AuthType
-        google_oauth_email: String
+        oauth_google_email: String
     }
     enum AuthType {
         username_password
