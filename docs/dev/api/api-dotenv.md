@@ -48,8 +48,12 @@ To setup quizfreely-api & it's .env file for **production** see [production > ap
   - get it from google cloud something: https://console.cloud.google.com/apis/credentials
 - `API_OAUTH_CALLBACK_URL=`
   - url to handle oauth signin/signup
-  - should be `API_OAUTH_CALLBACK_URL=https://quizfreely.com/api/v0/oauth/google/callback` for production
-  - should be `API_OAUTH_CALLBACK_URL=http://localhost:8080/api/v0/oauth/google/callback` for development
+  - remember to put this url under "Authorized redirect URIs" in google cloud something
+    - see https://console.cloud.google.com/apis/credentials
+    - find it under: "apis & services" > "credidentials" > "OAuth 2.0 Client IDs" > "Authorized redirect URIs"
+    - google decided you have to put the full url (`http://localhost:1234/abc/def`, NOT `http://localhost:1234`)
+  - should be `API_OAUTH_CALLBACK_URL=https://quizfreely.com/api/oauth/google/callback` for production
+  - should be `API_OAUTH_CALLBACK_URL=http://localhost:8080/api/oauth/google/callback` for development
 - `WEB_OAUTH_CALLBACK_URL=`
   - url to redirect/callback to after oauth signin/signup is done
   - should be `WEB_OAUTH_CALLBACK_URL=https://quizfreely.com/sign-up` for production
