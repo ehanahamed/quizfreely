@@ -224,7 +224,51 @@ const resolvers = {
         }
     },
     Mutation: {
-
+        createStudyset: async function (_, args, context) {
+            if (context.authed) {
+                let result = await createStudyset(args.studyset, context.authedUser.id);
+                if (result.error) {
+                    throw new mercurius.ErrorWithProps(
+                        result.error.message,
+                        result.error
+                    )
+                } else {
+                    return result.data;
+                }
+            } else /* auth is false (not signed in) */ {
+                throw new mercurius.ErrorWithProps("Not signed in while trying to create studyset", { code: "NOT_AUTHED" });
+            }
+        },
+        updateStudyset: async function (_, args, context) {
+            if (context.authed) {
+                let result = await updateStudyset(args.id, args.studyset, context.authedUser.id);
+                if (result.error) {
+                    throw new mercurius.ErrorWithProps(
+                        result.error.message,
+                        result.error
+                    )
+                } else {
+                    return result.data;
+                }
+            } else /* auth is false (not signed in) */ {
+                throw new mercurius.ErrorWithProps("Not signed in while trying to update studyset", { code: "NOT_AUTHED" });
+            }
+        },
+        deleteStudyset: async function (_, args, context) {
+            if (context.authed) {
+                let result = await deleteStudyset(args.id, context.authedUser.id);
+                if (result.error) {
+                    throw new mercurius.ErrorWithProps(
+                        result.error.message,
+                        result.error
+                    )
+                } else {
+                    return result.data;
+                }
+            } else /* auth is false (not signed in) */ {
+                throw new mercurius.ErrorWithProps("Not signed in while trying to delete studyset", { code: "NOT_AUTHED" });
+            }
+        }
     }
 }
 
@@ -382,6 +426,52 @@ async function getStudyset(id, authedUserId) {
     } finally {
         client.release()
         return result;
+    }
+}
+
+async function createStudyset(studyset, authedUserId) {
+    let client = await pool.connect();
+    try {
+        await client.query("BEGIN");
+        await client.query("set role quizfreely_auth_user");
+        await client.query("select set_config('quizfreely_auth.user_id', $1, true)", [
+            authedUserId
+        ]);
+        let insertedStudyset = await client.query(
+            "insert into public.studysets (user_id, title, private, data, terms_count) " +
+            "values ($1, $2, $3, $4, $5) returning id, user_id, title, private, terms_count, updated_at",
+            [
+                authedUserId,
+                studyset.title,
+                studyset.private,
+                studyset.data,
+                /* we use optional chaining (that .?) and nullish coalescing (that ??) to default to 0 (without throwing an error) if terms or terms.length are undefined */
+                studyset.data?.terms?.length ?? 0
+            ]
+        );
+        await client.query("COMMIT")
+        return {
+            data: {
+                studyset: {
+                    id: insertedStudyset.rows[0].id,
+                    user_id: insertedStudyset.rows[0].user_id,
+                    title: insertedStudyset.rows[0].title,
+                    private: insertedStudyset.rows[0].private,
+                    terms_count: insertedStudyset.rows[0].terms_count,
+                    updated_at: insertedStudyset.rows[0].updated_at
+                }
+            }
+        }
+    } catch (error) {
+        await client.query("ROLLBACK");
+        request.log.error(error);
+        return reply.code(500).send({
+            error: {
+                type: "db-error"
+            }
+        })
+    } finally {
+        client.release()
     }
 }
 
@@ -930,62 +1020,7 @@ fastify.post("/studysets", {
         */
         let authToken = request.headers?.authorization?.substring(7) || request.cookies.auth;
         let studysetTitle = request.body.title || "Untitled Studyset";
-        let client = await pool.connect();
-        try {
-            await client.query("BEGIN");
-            await client.query("set role quizfreely_auth");
-            let session = await client.query(
-                "select user_id from auth.verify_session($1)",
-                [ authToken ]
-            );
-            if (session.rows.length == 1) {
-                await client.query("set role quizfreely_auth_user");
-                await client.query("select set_config('quizfreely_auth.user_id', $1, true)", [session.rows[0].user_id]);
-                let insertedStudyset = await client.query(
-                    "insert into public.studysets (user_id, title, private, data, terms_count) " +
-                    "values ($1, $2, $3, $4, $5) returning id, user_id, title, private, terms_count, updated_at",
-                    [
-                        session.rows[0].user_id,
-                        studysetTitle,
-                        request.body.private,
-                        request.body.data,
-                        /* we use optional chaining (that .?) and nullish coalescing (that ??) to default to 0 (without throwing an error) if terms or terms.length are undefined */
-                        request.body.data?.terms?.length ?? 0
-                    ]
-                );
-                await client.query("COMMIT")
-                return reply.send({
-                    "error": false,
-                    "data": {
-                        studyset: {
-                            id: insertedStudyset.rows[0].id,
-                            user_id: insertedStudyset.rows[0].user_id,
-                            title: insertedStudyset.rows[0].title,
-                            private: insertedStudyset.rows[0].private,
-                            terms_count: insertedStudyset.rows[0].terms_count,
-                            updated_at: insertedStudyset.rows[0].updated_at
-                        },
-                    }
-                })
-            } else {
-                await client.query("ROLLBACK");
-                return reply.code(401).send({
-                    error: {
-                        type: "session-invalid"
-                    }
-                })
-            }
-        } catch (error) {
-            await client.query("ROLLBACK");
-            request.log.error(error);
-            return reply.code(500).send({
-                error: {
-                    type: "db-error"
-                }
-            })
-        } finally {
-            client.release()
-        }
+        
     } else {
         /*
             401 Unauthorized means the client is NOT logged in or authenticated
