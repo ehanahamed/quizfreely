@@ -133,10 +133,10 @@ const schema = `
         authedUser: AuthedUser
         studyset(id: ID!, withAuth: Boolean!): Studyset
         user(id: ID!): User
-        featuredStudysets(limit: Int): [Studyset]
-        recentStudysets(limit: Int): [Studyset]
-        searchStudysets(q: String!, limit: Int): [Studyset]
-        searchQueries(q: String!, limit: Int): [SearchQuery]
+        featuredStudysets(limit: Int, offset: Int): [Studyset]
+        recentStudysets(limit: Int, offset: Int): [Studyset]
+        searchStudysets(q: String!, limit: Int, offset: Int): [Studyset]
+        searchQueries(q: String!, limit: Int, offset: Int): [SearchQuery]
     }
     type Mutation {
         createStudyset(studyset: StudysetInput!): Studyset
@@ -232,6 +232,30 @@ const resolvers = {
                 );
             } else {
                 return result.data;
+            }
+        },
+        featuredStudysets: async function (_, args, context) {
+            /* use nullish coalescing thingy, `??`, to default to 3 for limit and 0 for offset */
+            let result = await featuredStudysets(args.limit ?? 3, args.offset ?? 0)
+            if (result.error) {
+                throw new mercurius.ErrorWithProps(
+                    result.error.message,
+                    result.error
+                );
+            } else {
+                return result.data
+            }
+        },
+        recentStudysets: async function (_, args, context) {
+            /* use nullish coalescing thingy, `??`, to default to 3 for limit and 0 for offset */
+            let result = await recentStudysets(args.limit ?? 3, args.offset ?? 0)
+            if (result.error) {
+                throw new mercurius.ErrorWithProps(
+                    result.error.message,
+                    result.error
+                );
+            } else {
+                return result.data
             }
         }
     },
@@ -606,6 +630,44 @@ async function getUser(id) {
         }
     } catch (error) {
         fastify.log.error(error);
+        return {
+            error: error
+        }
+    }
+}
+
+async function featuredStudysets(limit) {
+    try {
+        let result = await pool.query(
+            "select s.id, s.user_id, u.display_name, s.title, s.updated_at, s.terms_count " +
+            "from public.studysets s inner join public.profiles u on s.user_id = u.id " +
+            "where s.featured = true and s.private = false order by s.updated_at desc limit $1",
+            [ limit ]
+        )
+        return {
+            data: result.rows
+        }
+    } catch (error) {
+        request.log.error(error);
+        return {
+            error: error
+        }
+    }
+}
+
+async function recentStudysets(limit) {
+    try {
+        let result = await pool.query(
+            "select s.id, s.user_id, u.display_name, s.title, s.updated_at, s.terms_count " +
+            "from public.studysets s inner join public.profiles u on s.user_id = u.id " +
+            "where s.private = false order by s.updated_at desc limit $1",
+            [ limit ]
+        )
+        return {
+            data: result.rows
+        }
+    } catch (error) {
+        request.log.error(error);
         return {
             error: error
         }
@@ -1370,61 +1432,69 @@ fastify.get("/public/search/queries", {
     }
 })
 
-fastify.get("/public/list/recent", async function (request, reply) {
-    let limit = 10;
-    if (request.query && request.query.limit > 0 && request.query.limit < 200) {
-        limit = request.query.limit;
-    }
-    try {
-        let result = await pool.query(
-            "select s.id, s.user_id, u.display_name, s.title, s.updated_at, s.terms_count " +
-            "from public.studysets s inner join public.profiles u on s.user_id = u.id " +
-            "where s.private = false order by s.updated_at desc limit $1",
-            [ limit ]
-        )
-        return reply.send({
-            error: false,
-            data: {
-                rows: result.rows
+fastify.get("/public/list/recent", {
+    schema: {
+        querystring: {
+            type: "object",
+            properties: {
+                limit: {
+                    type: "number",
+                    default: 3,
+                    minimum: 1,
+                    maximum: 9000
+                },
+                offset: {
+                    type: "number",
+                    default: 0,
+                    minimum: 0,
+                }
             }
-        })
-    } catch (error) {
-        request.log.error(error);
+        }
+    }
+}, async function (request, reply) {
+    let result = await recentStudysets(request.querystring.limit, request.querystring.offset);
+    if (result.error) {
         return reply.code(500).send({
-            error: {
-                type: "db-error"
+            error: result.error
+        })
+    } else {
+        return reply.send({
+            data: {
+                studysets: result.data
             }
         })
     }
 })
 
-fastify.get("/public/list/featured", async function (request, reply) {
-    let limit = 10;
-    if (request.query && request.query.limit > 0 && request.query.limit < 200) {
-        limit = request.query.limit;
-    }
-    try {
-        let result = await pool.query(
-            "select s.id, s.user_id, u.display_name, s.title, s.updated_at, s.terms_count " +
-            "from public.studysets s inner join public.profiles u on s.user_id = u.id " +
-            "where s.featured = true and s.private = false order by s.updated_at desc limit $1",
-            [limit]
-        )
-        if (result.rows.length >= 1) {
-            return reply.send({
-                error: false,
-                data: {
-                    rows: result.rows
+fastify.get("/public/list/featured", {
+    schema: {
+        querystring: {
+            type: "object",
+            properties: {
+                limit: {
+                    type: "number",
+                    default: 3,
+                    minimum: 1,
+                    maximum: 9000
+                },
+                offset: {
+                    type: "number",
+                    default: 0,
+                    minimum: 0,
                 }
-            })
-        } else {
-            return reply.callNotFound();
+            }
         }
-    } catch (error) {
-        request.log.error(error);
+    }
+}, async function (request, reply) {
+    let result = await featuredStudysets(request.querystring.limit, request.querystring.offset);
+    if (result.error) {
         return reply.code(500).send({
-            error: {
-                type: "db-error"
+            error: result.error
+        })
+    } else {
+        return reply.send({
+            data: {
+                studysets: result.data
             }
         })
     }
