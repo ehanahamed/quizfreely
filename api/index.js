@@ -134,7 +134,7 @@ const schema = `
         studyset(id: ID!, withAuth: Boolean!): Studyset
         user(id: ID!): User
         featuredStudysets(limit: Int): [Studyset]
-        recentStudysets(limit Int): [Studyset]
+        recentStudysets(limit: Int): [Studyset]
         searchStudysets(q: String!, limit: Int): [Studyset]
         searchQueries(q: String!, limit: Int): [SearchQuery]
     }
