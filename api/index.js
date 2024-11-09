@@ -430,6 +430,7 @@ async function getStudyset(id, authedUserId) {
 }
 
 async function createStudyset(studyset, authedUserId) {
+    let result;
     let client = await pool.connect();
     try {
         await client.query("BEGIN");
@@ -450,28 +451,115 @@ async function createStudyset(studyset, authedUserId) {
             ]
         );
         await client.query("COMMIT")
-        return {
+        result = {
             data: {
-                studyset: {
-                    id: insertedStudyset.rows[0].id,
-                    user_id: insertedStudyset.rows[0].user_id,
-                    title: insertedStudyset.rows[0].title,
-                    private: insertedStudyset.rows[0].private,
-                    terms_count: insertedStudyset.rows[0].terms_count,
-                    updated_at: insertedStudyset.rows[0].updated_at
+                id: insertedStudyset.rows[0].id,
+                user_id: insertedStudyset.rows[0].user_id,
+                title: insertedStudyset.rows[0].title,
+                private: insertedStudyset.rows[0].private,
+                terms_count: insertedStudyset.rows[0].terms_count,
+                updated_at: insertedStudyset.rows[0].updated_at
+            }
+        }
+    } catch (error) {
+        await client.query("ROLLBACK");
+        fastify.log.error(error);
+        result = {
+            error: error
+        }
+    } finally {
+        client.release()
+        return result;
+    }
+}
+
+async function updateStudyset(id, studyset, authedUserId) {
+    let result;
+    let client = await pool.connect();
+    try {
+        await client.query("BEGIN");
+        await client.query("set role quizfreely_auth_user");
+        await client.query("select set_config('quizfreely_auth.user_id', $1, true)", [
+            authedUserId
+        ]);
+        let updatedStudyset = await client.query(
+            "update public.studysets set title = $2, private = $3, data = $4, terms_count = $5, updated_at = clock_timestamp() " +
+            "where id = $1 returning id, user_id, title, private, terms_count, updated_at",
+            [
+                id,
+                studyset.title,
+                studyset.private,
+                studyset.data,
+                /* we use optional chaining (that .?) and nullish coalescing (that ??) to default to 0 (without throwing an error) if terms or terms.length are undefined */
+                studyset.data?.terms?.length ?? 0
+            ]
+        );
+        if (updatedStudyset.rows.length == 1) {
+            await client.query("COMMIT")
+            result = {
+                data: {
+                    id: updatedStudyset.rows[0].id,
+                    user_id: updatedStudyset.rows[0].user_id,
+                    title: updatedStudyset.rows[0].title,
+                    private: updatedStudyset.rows[0].private,
+                    terms_count: updatedStudyset.rows[0].terms_count,
+                    updated_at: updatedStudyset.rows[0].updated_at
                 }
+            }
+        } else {
+            await client.query("ROLLBACK");
+            /*
+                returns { data: studysetJson } on sucess,
+                returns { data: null } on not found
+                returns { error: errorObj } on error
+            */
+            result = {
+                data: null
+            };
+        }
+    } catch (error) {
+        await client.query("ROLLBACK");
+        request.log.error(error);
+        result = {
+            error: error
+        }
+    } finally {
+        client.release()
+        return result;
+    }
+}
+
+async function deleteStudyset(id, authedUserId) {
+    let result;
+    let client = await pool.connect();
+    try {
+        await client.query("BEGIN");
+        await client.query("set role quizfreely_auth_user");
+        await client.query("select set_config('quizfreely_auth.user_id', $1, true)", [
+            authedUserId
+        ]);
+        await client.query(
+            "delete from public.studysets " +
+            "where id = $1",
+            [
+                id
+            ]
+        );
+        await client.query("COMMIT")
+        result = {
+            data: {
+                id: id
             }
         }
     } catch (error) {
         await client.query("ROLLBACK");
         request.log.error(error);
-        return reply.code(500).send({
-            error: {
-                type: "db-error"
-            }
-        })
+        result = {
+            error: error
+        }
     } finally {
         client.release()
+        return result;
     }
 }
 
@@ -1092,67 +1180,7 @@ fastify.put("/studysets/:studysetid", {
         */
         let authToken = request.headers?.authorization?.substring(7) || request.cookies.auth;
         let studysetTitle = request.body.title || "Untitled Studyset";
-        let client = await pool.connect();
-        try {
-            await client.query("BEGIN");
-            await client.query("set role quizfreely_auth");
-            let session = await client.query(
-                "select user_id from auth.verify_session($1)",
-                [ authToken ]
-            );
-            if (session.rows.length == 1) {
-                await client.query("set role quizfreely_auth_user");
-                await client.query("select set_config('quizfreely_auth.user_id', $1, true)", [session.rows[0].user_id]);
-                let updatedStudyset = await client.query(
-                    "update public.studysets set title = $2, private = $3, data = $4, terms_count = $5, updated_at = clock_timestamp() " +
-                    "where id = $1 returning id, user_id, title, private, terms_count, updated_at",
-                    [
-                        request.params.studysetid,
-                        studysetTitle,
-                        request.body.private,
-                        request.body.data,
-                        /* we use optional chaining (that .?) and nullish coalescing (that ??) to default to 0 (without throwing an error) if terms or terms.length are undefined */
-                        request.body.data?.terms?.length ?? 0
-                    ]
-                );
-                if (updatedStudyset.rows.length == 1) {
-                    await client.query("COMMIT")
-                    return reply.send({
-                        "error": false,
-                        "data": {
-                            studyset: {
-                                id: updatedStudyset.rows[0].id,
-                                user_id: updatedStudyset.rows[0].user_id,
-                                title: updatedStudyset.rows[0].title,
-                                private: updatedStudyset.rows[0].private,
-                                terms_count: updatedStudyset.rows[0].terms_count,
-                                updated_at: updatedStudyset.rows[0].updated_at
-                            }
-                        }
-                    })
-                } else {
-                    await client.query("ROLLBACK");
-                    return reply.callNotFound();
-                }
-            } else {
-                await client.query("ROLLBACK");
-                return reply.code(401).send({
-                    error: {
-                        type: "session-invalid"
-                    }
-                })
-            }
-        } catch (error) {
-            await client.query("ROLLBACK");
-            request.log.error(error);
-            return reply.code(500).send({
-                error: {
-                    type: "db-error"
-                }
-            })
-        } finally {
-            client.release()
-        }
+        
     } else {
         /*
             401 Unauthorized means the client is NOT logged in or authenticated
@@ -1183,48 +1211,7 @@ fastify.delete("/studysets/:studysetid", async function (request, reply) {
             We're using optional chaining (?.) with an OR (||), so that if the auth header isn't there, it uses the auth cookie
         */
         let authToken = request.headers?.authorization?.substring(7) || request.cookies.auth;
-        let client = await pool.connect();
-        try {
-            await client.query("BEGIN");
-            await client.query("set role quizfreely_auth");
-            let session = await client.query(
-                "select user_id from auth.verify_session($1)",
-                [ authToken ]
-            );
-            if (session.rows.length == 1) {
-                await client.query("set role quizfreely_auth_user");
-                await client.query("select set_config('quizfreely_auth.user_id', $1, true)", [session.rows[0].user_id]);
-                await client.query(
-                    "delete from public.studysets " +
-                    "where id = $1",
-                    [
-                        request.params.studysetid
-                    ]
-                );
-                await client.query("COMMIT")
-                return reply.send({
-                    "error": false,
-                    "data": {}
-                })
-            } else {
-                await client.query("ROLLBACK");
-                return reply.code(401).send({
-                    error: {
-                        type: "session-invalid"
-                    }
-                })
-            }
-        } catch (error) {
-            await client.query("ROLLBACK");
-            request.log.error(error);
-            return reply.code(500).send({
-                error: {
-                    type: "db-error"
-                }
-            })
-        } finally {
-            client.release()
-        }
+        
     } else {
         return reply.code(401).send({
             error: {
