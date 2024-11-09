@@ -83,7 +83,7 @@ await fastify.register(fastifyOauth2, {
       },
       auth: fastifyOauth2.GOOGLE_CONFIGURATION
     },
-    startRedirectPath: "/oauth/google",
+    startRedirectPath: "/v0/oauth/google",
     callbackUri: API_OAUTH_CALLBACK,
     cookie: {
         path: "/",
