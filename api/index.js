@@ -129,6 +129,7 @@ const pool = new Pool({
 
 const schema = `
     type Query {
+        authed: Boolean
         authedUser: AuthedUser
         studyset(id: ID!, withAuth: Boolean!): Studyset
         user(id: ID!): User
@@ -177,6 +178,9 @@ const schema = `
 
 const resolvers = {
     Query: {
+        authed: async function (_, args, context) {
+            return context.authed;
+        },
         authedUser: async function (_, args, context) {
             if (context.authed) {
                 return context.authedUser
