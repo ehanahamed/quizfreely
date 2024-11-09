@@ -83,7 +83,7 @@ await fastify.register(fastifyOauth2, {
       },
       auth: fastifyOauth2.GOOGLE_CONFIGURATION
     },
-    startRedirectPath: "/v0/oauth/google",
+    startRedirectPath: "/oauth/google",
     callbackUri: API_OAUTH_CALLBACK,
     cookie: {
         path: "/",
@@ -604,6 +604,107 @@ async function getUser(id) {
     }
 }
 
+async function googleAuthCallback(tokenObj) {
+    try {
+        let response = await fetch("https://www.googleapis.com/oauth2/v2/userinfo", {
+            method: "GET",
+            headers: {
+                Authorization: "Bearer " + tokenObj.access_token
+            }
+          }
+        );
+        let userinfo = await response.json();
+        let client = await pool.connect();
+        try {
+            await client.query("BEGIN");
+            await client.query("set role quizfreely_auth");
+            let upsertedUser = await client.query(
+                "insert into auth.users (display_name, auth_type, oauth_google_id, oauth_google_email) " +
+                "values ($1, 'oauth_google', $2, $3) on conflict (oauth_google_id) do update " +
+                "set oauth_google_email = $3 returning id, display_name",
+                [
+                    userinfo.name,
+                    userinfo.id,
+                    userinfo.email
+                ]
+            );
+            /* after using google auth token and user id, create new session and get quizfreely auth token */
+            let newSession = await client.query(
+                "insert into auth.sessions (user_id) values ($1) returning token, user_id",
+                [upsertedUser.rows[0].id]
+            )
+            await client.query("COMMIT");
+            return {
+                error: false,
+                data: {
+                    user: {
+                        id: upsertedUser.rows[0].id,
+                        display_name: upsertedUser.rows[0].id
+                    },
+                },
+                /* send quizfreely auth token in return obj to use setCookie with it (below) */
+                auth: newSession.rows[0].token
+            }
+        } catch (error) {
+            await client.query("ROLLBACK");
+            return {
+                error: {
+                    type: "db-error",
+                    error: error
+                }
+            }
+        } finally {
+            client.release();
+        }
+    } catch (error) {
+        return {
+            error: {
+                type: "fetch-error",
+                error: error
+            }
+        }
+    }
+}
+
+fastify.get('/oauth/google/callback', function (request, reply) {
+    // Note that in this example a "reply" is also passed, it's so that code verifier cookie can be cleaned before
+    // token is requested from token endpoint
+    fastify.googleOAuth2.getAccessTokenFromAuthorizationCodeFlow(request, reply, function (error, result) {
+        if (error) {
+            request.log.error(error);
+            reply.redirect(WEB_OAUTH_CALLBACK + "?error=oauth-error");
+        } else {
+            googleAuthCallback(result.token).then(
+                function (result) {
+                    if (result.error) {
+                        request.log.error(result.error.error)
+                        reply.redirect(WEB_OAUTH_CALLBACK + "?error=oauth-error")
+                    } else {
+                        reply.setCookie(
+                            "auth",
+                            result.auth,
+                            {
+                                domain: COOKIES_DOMAIN,
+                                path: "/",
+                                signed: false,
+                                /* 10 days * 24 h per day * 60 min per h * 60 sec per min = 864000 seconds in 10 days */
+                                maxAge: 864000,
+                                httpOnly: true,
+                                sameSite: "lax",
+                                /* when secure is true,
+                                browsers only send the cookie through https,
+                                on localhost, browsers send it even if localhost isn't using https */
+                                secure: true
+                            }
+                        );
+                        reply.redirect(WEB_OAUTH_CALLBACK)
+                    }
+                }
+            )
+        }
+    })
+})
+
 function routes(fastify, options, done) {
 fastify.post("/auth/sign-up", {
     schema: {
@@ -839,107 +940,6 @@ fastify.post("/auth/sign-out", async function (request, reply) {
             }
         })
     }
-})
-
-async function googleAuthCallback(tokenObj) {
-    try {
-        let response = await fetch("https://www.googleapis.com/oauth2/v2/userinfo", {
-            method: "GET",
-            headers: {
-                Authorization: "Bearer " + tokenObj.access_token
-            }
-          }
-        );
-        let userinfo = await response.json();
-        let client = await pool.connect();
-        try {
-            await client.query("BEGIN");
-            await client.query("set role quizfreely_auth");
-            let upsertedUser = await client.query(
-                "insert into auth.users (display_name, auth_type, oauth_google_id, oauth_google_email) " +
-                "values ($1, 'oauth_google', $2, $3) on conflict (oauth_google_id) do update " +
-                "set oauth_google_email = $3 returning id, display_name",
-                [
-                    userinfo.name,
-                    userinfo.id,
-                    userinfo.email
-                ]
-            );
-            /* after using google auth token and user id, create new session and get quizfreely auth token */
-            let newSession = await client.query(
-                "insert into auth.sessions (user_id) values ($1) returning token, user_id",
-                [upsertedUser.rows[0].id]
-            )
-            await client.query("COMMIT");
-            return {
-                error: false,
-                data: {
-                    user: {
-                        id: upsertedUser.rows[0].id,
-                        display_name: upsertedUser.rows[0].id
-                    },
-                },
-                /* send quizfreely auth token in return obj to use setCookie with it (below) */
-                auth: newSession.rows[0].token
-            }
-        } catch (error) {
-            await client.query("ROLLBACK");
-            return {
-                error: {
-                    type: "db-error",
-                    error: error
-                }
-            }
-        } finally {
-            client.release();
-        }
-    } catch (error) {
-        return {
-            error: {
-                type: "fetch-error",
-                error: error
-            }
-        }
-    }
-}
-
-fastify.get('/oauth/google/callback', function (request, reply) {
-    // Note that in this example a "reply" is also passed, it's so that code verifier cookie can be cleaned before
-    // token is requested from token endpoint
-    fastify.googleOAuth2.getAccessTokenFromAuthorizationCodeFlow(request, reply, function (error, result) {
-        if (error) {
-            request.log.error(error);
-            reply.redirect(WEB_OAUTH_CALLBACK + "?error=oauth-error");
-        } else {
-            googleAuthCallback(result.token).then(
-                function (result) {
-                    if (result.error) {
-                        request.log.error(result.error.error)
-                        reply.redirect(WEB_OAUTH_CALLBACK + "?error=oauth-error")
-                    } else {
-                        reply.setCookie(
-                            "auth",
-                            result.auth,
-                            {
-                                domain: COOKIES_DOMAIN,
-                                path: "/",
-                                signed: false,
-                                /* 10 days * 24 h per day * 60 min per h * 60 sec per min = 864000 seconds in 10 days */
-                                maxAge: 864000,
-                                httpOnly: true,
-                                sameSite: "lax",
-                                /* when secure is true,
-                                browsers only send the cookie through https,
-                                on localhost, browsers send it even if localhost isn't using https */
-                                secure: true
-                            }
-                        );
-                        reply.redirect(WEB_OAUTH_CALLBACK)
-                    }
-                }
-            )
-        }
-    })
 })
 
 fastify.get("/auth/user", async function (request, reply) {
