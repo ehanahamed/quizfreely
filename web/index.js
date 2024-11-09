@@ -532,38 +532,68 @@ fastify.get("/users/:userid", function (request, reply) {
   })
 })
 
-fastify.get("/search", function (request, reply) {
-  userData(request).then(function (userResult) {
-    if (request.query && request.query.q) {
-      fetch(
-        API_URL + "/v0/public/search/studysets?" + (new URLSearchParams({ q: request.query.q })).toString()
-      ).then(function (response) {
-        response.json().then(function (responseJson) {
-          if (responseJson.error) {
-            request.log.error(responseJson.error);
-            reply.callNotFound();
-          } else {
-            reply.view("search.html", {
-              ...themeData(request),
-              query: request.query.q,
-              results: responseJson.data.rows,
-              authed: userResult.authed,
-              authedUser: userResult?.authedUser
-            })
+fastify.get("/search", async function (request, reply) {
+  if (request?.query?.q) {
+    try {
+      let rawApiRes = await fetch(API_URL + "/graphql", {
+        method: "POST",
+        headers: {
+          "Authorization": "Bearer " + request.cookies.auth,
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          query: `query SearchResults($q: String) {
+            authed
+            authedUser {
+              id
+              username
+              display_name
+              auth_type
+              oauth_google_email
+            }
+            searchStudysets(q: $q) {
+              id
+              title
+              user_id
+              user_display_name
+              termsCount
+            }
+          }`,
+          variables: {
+            q: request.query.q
           }
         })
-      }).catch(function (error) {
-        reply.callNotFound();
-      })
-    } else {
-      reply.view("search.html", {
-        ...themeData(request),
-        query: false,
-        authed: userResult.authed,
-        authedUser: userResult?.authedUser
-      })
+      });
+      let apiRes = await rawApiRes.json();
+      let authed = false;
+      let authedUser;
+      if (apiRes?.data?.authed) {
+        authed = apiRes.data.authed;
+        authedUser = apiRes.data?.authedUser
+      }
+      if (apiRes?.data?.searchStudysets?.length >= 0) {
+        reply.view("search.html", {
+          ...themeData(request),
+          query: request.query.q,
+          results: apiRes.data.searchStudysets,
+          authed: authed,
+          authedUser: authedUser
+        })
+      } else {
+        reply.send("work in progress error message mabye")
+      }
+    } catch (error) {
+      reply.send("work in progress error message?")
     }
-  })
+  } else {
+    let userResult = await userData(request);
+    reply.view("search.html", {
+      ...themeData(request),
+      query: false,
+      authed: userResult.authed,
+      authedUser: userResult?.authedUser
+    })
+  }
 })
 
 fastify.get("/discord", function (request, reply) {
