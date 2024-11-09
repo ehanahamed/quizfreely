@@ -109,7 +109,7 @@ fastify.setNotFoundHandler(function (request, reply) {
     reply.status(404).view("404.html", {
       ...themeData(request),
       authed: userResult.authed,
-      authedUser: userResult?.data?.user
+      authedUser: userResult?.authedUser
     })
   })
 })
@@ -156,6 +156,8 @@ async function userData(request) {
             id
             username
             display_name
+            auth_type
+            google_oauth_email
           }
         }`
       })
@@ -182,14 +184,14 @@ function landingPage(request, reply) {
             ...themeData(request),
             featuredRows: false,
             authed: userResult.authed,
-            authedUser: userResult?.data?.user
+            authedUser: userResult?.authedUser
           });
         } else {
           reply.view("home.html", {
             ...themeData(request),
             featuredRows: responseJson.data.rows,
             authed: userResult.authed,
-            authedUser: userResult?.data?.user
+            authedUser: userResult?.authedUser
           });
         }
       });
@@ -198,7 +200,7 @@ function landingPage(request, reply) {
         ...themeData(request),
         featuredRows: false,
         authed: userResult.authed,
-        authedUser: userResult?.data?.user
+        authedUser: userResult?.authedUser
       });
     });
   })
@@ -236,7 +238,7 @@ function dashboard(request, reply) {
           reply.view("dashboard.html", {
             ...themeDataObj,
             authed: userResult.authed,
-            authedUser: userResult?.data?.user,
+            authedUser: userResult?.authedUser,
             studysetList: response?.data?.rows
           })
         })
@@ -246,7 +248,7 @@ function dashboard(request, reply) {
       reply.view("dashboard.html", {
         ...themeDataObj,
         authed: userResult.authed,
-        authedUser: userResult?.data?.user
+        authedUser: userResult?.authedUser
       })
     }
   })
@@ -270,7 +272,7 @@ fastify.get("/settings", function (request, reply) {
       ...themeData(request),
       modal: "none",
       authed: userResult.authed,
-      authedUser: userResult?.data?.user
+      authedUser: userResult?.authedUser
     })  
   })
 });
@@ -280,7 +282,7 @@ fastify.get("/sign-up", function (request, reply) {
       signup: true,
       ...themeData(request),
       authed: userResult.authed,
-      authedUser: userResult?.data?.user
+      authedUser: userResult?.authedUser
     })
   })
 })
@@ -291,7 +293,7 @@ fastify.get("/sign-in", function (request, reply) {
       signup: false,
       ...themeData(request),
       authed: userResult.authed,
-      authedUser: userResult?.data?.user
+      authedUser: userResult?.authedUser
     })
   })
 })
@@ -301,7 +303,7 @@ fastify.get("/edit", function (request, reply) {
     reply.view("edit.html", {
       ...themeData(request),
       authed: userResult.authed,
-      authedUser: userResult?.data?.user
+      authedUser: userResult?.authedUser
     })
   })
 })
@@ -311,7 +313,7 @@ fastify.get("/privacy", function (request, reply) {
     reply.view("privacy.html", {
       ...themeData(request),
       authed: userResult.authed,
-      authedUser: userResult?.data?.user
+      authedUser: userResult?.authedUser
     })
   })
 })
@@ -321,7 +323,7 @@ fastify.get("/terms", function (request, reply) {
     reply.view("tos.html", {
       ...themeData(request),
       authed: userResult.authed,
-      authedUser: userResult?.data?.user
+      authedUser: userResult?.authedUser
     })
   })
 })
@@ -331,7 +333,7 @@ fastify.get("/tos", function (request, reply) {
     reply.view("tos.html", {
       ...themeData(request),
       authed: userResult.authed,
-      authedUser: userResult?.data?.user
+      authedUser: userResult?.authedUser
     })
   })
 })
@@ -361,7 +363,7 @@ fastify.get("/explore", async function (request, reply) {
         featuredRows: featuredRows,
         recentRows: recentRows,
         authed: userResult.authed,
-        authedUser: userResult?.data?.user
+        authedUser: userResult?.authedUser
     });
   } catch (error) {
     request.log.error(error);
@@ -375,7 +377,7 @@ fastify.get("/studyset/create", function (request, reply) {
       ...themeData(request),
       new: true,
       authed: userResult.authed,
-      authedUser: userResult?.data?.user
+      authedUser: userResult?.authedUser
     })
   });
 })
@@ -395,7 +397,7 @@ fastify.get("/studysets/:studyset", function (request, reply) {
             studysetPage: "/studysets/" + request.params.studyset,
             studysetEditPage: "/studyset/edit/" + request.params.studyset,
             authed: userResult.authed,
-            authedUser: userResult?.data?.user
+            authedUser: userResult?.authedUser
           })
         }
       });
@@ -428,7 +430,7 @@ fastify.get("/studyset/private/:studyset", function (request, reply) {
                 studysetPage: "/studyset/private/" + request.params.studyset,
                 studysetEditPage: "/studyset/edit/" + request.params.studyset,
                 authed: userResult.authed,
-                authedUser: userResult?.data?.user
+                authedUser: userResult?.authedUser
             })
         }
       });
@@ -447,7 +449,7 @@ fastify.get("/studyset/local/:studyset", function (request, reply) {
       studysetPage: "/studyset/local/" + request.params.studyset,
       studysetEditPage: "/studyset/edit-local/" + request.params.studyset,
       authed: userResult.authed,
-      authedUser: userResult?.data?.user
+      authedUser: userResult?.authedUser
     })
   })
 })
@@ -468,7 +470,7 @@ fastify.get("/studyset/edit/:studyset", function (request, reply) {
             studysetId: request.params.studyset,
             studyset: res.data.studyset,
             authed: userResult.authed,
-            authedUser: userResult?.data?.user
+            authedUser: userResult?.authedUser
           })
         } else {
           /* something something res.error, res.error.type */
@@ -478,7 +480,7 @@ fastify.get("/studyset/edit/:studyset", function (request, reply) {
             new: false,
             studysetId: request.params.studyset,
             authed: userResult.authed,
-            authedUser: userResult?.data?.user
+            authedUser: userResult?.authedUser
             /* work in progress: show actual error message */
           });  
         }
@@ -489,7 +491,7 @@ fastify.get("/studyset/edit/:studyset", function (request, reply) {
           new: false,
           studysetId: request.params.studyset,
           authed: userResult.authed,
-          authedUser: userResult?.data?.user
+          authedUser: userResult?.authedUser
           /* work in progress add actual error message */
         });
       })
@@ -500,7 +502,7 @@ fastify.get("/studyset/edit/:studyset", function (request, reply) {
         new: false,
         studysetId: request.params.studyset,
         authed: userResult.authed,
-        authedUser: userResult?.data?.user
+        authedUser: userResult?.authedUser
         /* work in progress add error thingy */
       })
     })
@@ -519,7 +521,7 @@ fastify.get("/users/:userid", function (request, reply) {
             ...themeData(request),
             user: responseJson.data.user,
             authed: userResult.authed,
-            authedUser: userResult?.data?.user
+            authedUser: userResult?.authedUser
           })
         }
       });
@@ -546,7 +548,7 @@ fastify.get("/search", function (request, reply) {
               query: request.query.q,
               results: responseJson.data.rows,
               authed: userResult.authed,
-              authedUser: userResult?.data?.user
+              authedUser: userResult?.authedUser
             })
           }
         })
@@ -558,7 +560,7 @@ fastify.get("/search", function (request, reply) {
         ...themeData(request),
         query: false,
         authed: userResult.authed,
-        authedUser: userResult?.data?.user
+        authedUser: userResult?.authedUser
       })
     }
   })
