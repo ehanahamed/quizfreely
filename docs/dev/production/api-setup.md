@@ -113,7 +113,7 @@ Now edit `.env`:
 4. Set `COOKIES_DOMAIN=` to `COOKIES_DOMAIN=quizfreely.com`
 5. Set `LOG_PRETTY=` to `LOG_PRETTY=false`
 5. Get/find our client ID & secret for Google OAuth from Google Cloud Console Thingy, add them in `OAUTH_GOOGLE_CLIENT_ID=` and `OAUTH_GOOGLE_CLIENT_SECRET=`
-6. Set `API_OAUTH_CALLBACK_URL=` to `API_OAUTH_CALLBACK_URL=https://quizfreely.com/api/v0/oauth/google/callback`
+6. Set `API_OAUTH_CALLBACK_URL=` to `API_OAUTH_CALLBACK_URL=https://quizfreely.com/api/oauth/google/callback`
 7. Set `WEB_OAUTH_CALLBACK_URL=` to `WEB_OAUTH_CALLBACK_URL=https://quizfreely.com/sign-up`
 
 All details and options for quizfreely-api's .env file are documented in [api-dotenv.md](../api/api-dotenv.md)
@@ -149,9 +149,9 @@ LOG_PRETTY=false
 OAUTH_GOOGLE_CLIENT_ID=ACTUAL_ID_GOES_HERE
 OAUTH_GOOGLE_CLIENT_SECRET=ACTUAL_SECRET_GOES_HERE
 
-# production: API_OAUTH_CALLBACK_URL=https://quizfreely.com/api/v0/oauth/google/callback
-# development: API_OAUTH_CALLBACK_URL=http://localhost:8080/api/v0/oauth/google/callback
-API_OAUTH_CALLBACK_URL=https://quizfreely.com/api/v0/oauth/google/callback
+# production: API_OAUTH_CALLBACK_URL=https://quizfreely.com/api/oauth/google/callback
+# development: API_OAUTH_CALLBACK_URL=http://localhost:8080/api/oauth/google/callback
+API_OAUTH_CALLBACK_URL=https://quizfreely.com/api/oauth/google/callback
 
 # production: WEB_OAUTH_CALLBACK_URL=https://quizfreely.com/sign-up
 # development: WEB_OAUTH_CALLBACK_URL=http://localhost:8080/sign-up
