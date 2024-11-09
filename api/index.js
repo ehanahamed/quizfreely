@@ -1308,7 +1308,7 @@ fastify.get("/public/search/query-predictions", {
         }
     }
 }, async function (request, reply) {
-    limit = request.query.limit;
+    let limit = request.query.limit;
     try {
         /*
             replace whitespace (tabs, spaces, etc and multiple) with a space
