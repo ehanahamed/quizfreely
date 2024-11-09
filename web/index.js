@@ -139,6 +139,39 @@ function themeData(request) {
   }
 }
 
+async function userData(request) {
+  let authed = false;
+  let authedUser;
+  if (request.cookies.auth) {
+    let rawAuthedRes = await fetch(API_URL + "/graphql", {
+      method: "POST",
+      headers: {
+        "Authorization": "Bearer " + request.cookies.auth,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        query: `query {
+          authed
+          authedUser {
+            id
+            username
+            display_name
+          }
+        }`
+      })
+    });
+    let authedRes = await rawAuthedRes.json();
+    if (authedRes?.data?.authed) {
+      authed = authedRes.data.authed;
+      authedUser = authedRes.data?.authedUser
+    }
+  }
+  return {
+    authed: authed,
+    authedUser: authedUser
+  }
+}
+
 function landingPage(request, reply) {
   userData(request).then(function (userResult) {
     fetch(API_URL + "/v0/public/list/featured?limit=3")
@@ -241,26 +274,7 @@ fastify.get("/settings", function (request, reply) {
     })  
   })
 });
-fastify.get("/sign-up", async function (request, reply) {
-  let authed = false;
-  let authedUser;
-  if (request.cookies.auth) {
-    let rawAuthedRes = await fetch(API_URL + "/graphql", {
-      method: "POST",
-      headers: {
-        "Authorization": "Bearer " + request.cookies.auth,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        query: "query { authed authedUser }"
-      })
-    });
-    let authedRes = await rawAuthedRes.json();
-    if (authedRes?.data?.authed) {
-      authed = authedRes.data.authed;
-      authedUser = authedRes.data.authedUser
-    }
-  }
+fastify.get("/sign-up", function (request, reply) {
   userData(request).then(function (userResult) {
     reply.view("account.html", {
       signup: true,
