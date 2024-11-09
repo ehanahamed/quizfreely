@@ -56,6 +56,7 @@ To setup quizfreely-api & it's .env file for **production** see [production > ap
   - should be `API_OAUTH_CALLBACK_URL=http://localhost:8080/api/oauth/google/callback` for development
 - `WEB_OAUTH_CALLBACK_URL=`
   - url to redirect/callback to after oauth signin/signup is done
+  - this does not need to be added as an authorized redirect thingy under that google cloud thingy
   - should be `WEB_OAUTH_CALLBACK_URL=https://quizfreely.com/sign-up` for production
   - should be `WEB_OAUTH_CALLBACK_URL=http://localhost:8080/sign-up` for development
 - `CRON_CLEAR_LOGS=`
