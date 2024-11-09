@@ -208,7 +208,7 @@ const resolvers = {
                     return result.data;
                 }
             } else /* withAuth is true, but context.auth is false (not signed in) */ {
-                throw new mercurius.ErrorWithProps("Not signed in while trying to view studyset without `public: true`", { code: "NOT_AUTHED" });
+                throw new mercurius.ErrorWithProps("Not signed in while trying to view studyset. Use `withAuth: false` for unauthed requests", { code: "NOT_AUTHED" });
             }
         },
         user: async function (_, args, context) {
@@ -1084,40 +1084,40 @@ fastify.post("/studysets", {
         body: {
             type: "object",
             properties: {
-                title: { type: "string", maxLength: 9000 },
-                private: { type: "boolean" },
-                data: { type: "object" }
+                studyset: {
+                    type: "object",
+                    properties: {
+                        title: { type: "string", maxLength: 9000 },
+                        private: { type: "boolean" },
+                        data: { type: "object" }
+                    },
+                    required: ["title", "private", "data"]
+                }
             },
-            required: ["title", "private", "data"]
+            required: ["studyset"]
         }
     }
 }, async function (request, reply) {
-    if (
-        (
-            /* check for Authorization header */
-            request.headers.authorization &&
-            request.headers.authorization.toLowerCase().startsWith("bearer ")
-        ) || (
-            /* or check for Auth cookie */
-            request.cookies && request.cookies.auth
-        )
-    ) {
-        /*
-            "Bearer " (with space) is 6 characters, so 7 is where our token starts
-            We're using optional chaining (?.) with an OR (||), so that if the auth header isn't there, it uses the auth cookie
-        */
-        let authToken = request.headers?.authorization?.substring(7) || request.cookies.auth;
-        let studysetTitle = request.body.title || "Untitled Studyset";
-        
+    const authContext = await context(request, reply);
+    if (authContext.authed) {
+        let result = await createStudyset(request.body.studyset, authContext.authedUser.id);
+        if (result.error) {
+            return reply.code(500).send({
+                error: result.error
+            })
+        } else {
+            return reply.send({
+                data: {
+                    user: result.data
+                }
+            })
+        }
     } else {
-        /*
-            401 Unauthorized means the client is NOT logged in or authenticated
-            403 Forbidden means the client is logged in but not allowed,
-            so in this case we're responding with a 401 if our Authentication header is missing
-        */
         return reply.code(401).send({
             error: {
-                type: "auth-missing"
+                code: "NOT_AUTHED",
+                statusCode: 401,
+                message: "Not signed in while trying to create a studyset"
             }
         })
     }
