@@ -342,22 +342,33 @@ fastify.get("/explore", async function (request, reply) {
   let userResult = await userData(request);
   /* this is async, remember to use `return reply.send()` instead of just `reply.send()` */
   try {
-    let featuredRows = false;
-    let featuredResponse = await (
-      await fetch(API_URL + "/v0/public/list/featured?limit=3")
-    ).json();
-    if (featuredResponse.error == false && featuredResponse.data) {
-      featuredRows = featuredResponse.data.rows;
-    } /* else, like if featuredResponse.error, featuredRows will stay false */
-    
-    let recentRows = false;
-    let recentsResponse = await (
-      await fetch(API_URL + "/v0/public/list/recent?limit=3")
-    ).json();
-    if (recentsResponse.error == false && recentsResponse.data) {
-      recentRows = recentsResponse.data.rows;
-    }  /* if recentsResponse.error == true, recentRows will stay false */
-    
+    rawApiRes = await fetch(API_URL + "/graphql", {
+      method: "POST",
+      headers: {
+        "Authorization": "Bearer " + request.cookies.auth,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        query: `query {
+          authed
+          authedUser {
+            id
+            username
+            display_name
+            auth_type
+            oauth_google_email
+          }
+          featuredStudysets {
+            id
+            title
+          }
+          recentStudysets {
+            id
+            title
+          }
+        }`
+      })
+    })
     return reply.view("explore.html", {
         ...themeData(request),
         featuredRows: featuredRows,
