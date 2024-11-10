@@ -360,10 +360,14 @@ fastify.get("/explore", async function (request, reply) {
           featuredStudysets {
             id
             title
+            user_display_name
+            terms_count
           }
           recentStudysets {
             id
             title
+            user_display_name
+            terms_count
           }
         }`
       })
