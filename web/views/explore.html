@@ -34,10 +34,10 @@
     <main>
       <div class="grid page">
         <div class="content">
-          <eta> if (data.featuredRows) { </eta>
+          <eta> if (data.featuredStudysets.length >= 1) { </eta>
           <h2 class="h4">Featured Studysets</h2>
           <div class="grid list">
-            <eta> data.featuredRows.forEach(function (featuredStudyset) { </eta>
+            <eta> data.featuredStudysets.forEach(function (featuredStudyset) { </eta>
               <div class="box">
                 <a href="/studysets/<eta>= featuredStudyset.id </eta>">
                   <eta>= featuredStudyset.title </eta>
@@ -54,10 +54,10 @@
             <eta> }) </eta>
           </div>
           <eta> } </eta>
-          <eta> if (data.recentRows && data.recentRows.length > 0) { </eta>
+          <eta> if (data.recentStudysets.length >= 1) { </eta>
           <h2 class="h4">Recently Created or Updated</h2>
             <div class="grid list">
-              <eta> data.recentRows.forEach(function (studyset) { </eta>
+              <eta> data.recentStudysets.forEach(function (studyset) { </eta>
                 <div class="box">
                   <a href="/studysets/<eta>= studyset.id </eta>">
                     <eta>= studyset.title </eta>
