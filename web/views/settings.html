@@ -172,16 +172,14 @@
         document.getElementById("display-name-view-div").classList.add("hide");
       })
       document.getElementById("display-name-edit-save-button").addEventListener("click", function () {
-        fetch("/api/v0/user", {
+        fetch("/api/v0/auth/user", {
           method: "PATCH",
           credentials: "same-origin",
           headers: {
             "Content-Type": "application/json"
           },
           body: JSON.stringify({
-            user: {
-              display_name: document.getElementById("display-name-edit").value
-            }
+            display_name: document.getElementById("display-name-edit").value
           })
         }).then(function (rawResponse) {
           rawResponse.json().then(function (response) {
