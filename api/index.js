@@ -137,6 +137,7 @@ const schema = `
         recentStudysets(limit: Int, offset: Int): [Studyset]
         searchStudysets(q: String!, limit: Int, offset: Int): [Studyset]
         searchQueries(q: String!, limit: Int, offset: Int): [SearchQuery]
+        myStudysets(limit: Int, offset: Int): [Studyset]
     }
     type Mutation {
         createStudyset(studyset: StudysetInput!): Studyset
@@ -287,6 +288,22 @@ const resolvers = {
                 );
             } else {
                 return result.data
+            }
+        },
+        myStudysets: async function (_, args, context) {
+            if (context.authed) {
+                let result = await myStudysets(context.authedUser.id, args?.limit ?? 10, args?.offset ?? 0);
+                if (result.error) {
+                    context.reply.request.log.error(result.error);
+                    throw new mercurius.ErrorWithProps(
+                        result.error.message,
+                        result.error
+                    );
+                } else {
+                    return result.data
+                }
+            } else {
+                throw new mercurius.ErrorWithProps("Not signed in while trying to view current account's studysets, `myStudysets`", { code: "NOT_AUTHED" });
             }
         }
     },
@@ -832,6 +849,37 @@ async function searchQueries(query, limit, offset) {
         return {
             error: error
         }
+    }
+}
+
+async function myStudysets(authedUserId, limit, offset) {
+    let client = await pool.connect();
+    try {
+        await client.query("BEGIN");
+        await client.query("set role quizfreely_auth_user");
+        await client.query("select set_config('quizfreely_auth.user_id', $1, true)", [
+            authedUserId
+        ]);
+        let studysets = await client.query(
+            "select id, user_id, title, private, updated_at from public.studysets " +
+            "where user_id = $1 order by updated_at desc limit $2 offset $3",
+            [
+                authedUserId,
+                limit,
+                offset
+            ]
+        );
+        await client.query("COMMIT");
+        return {
+            data: studysets.rows
+        };
+    } catch (error) {
+        await client.query("ROLLBACK");
+        return {
+            error: error
+        };
+    } finally {
+        client.release()
     }
 }
 
@@ -1489,6 +1537,7 @@ fastify.get("/public/list/recent", {
 }, async function (request, reply) {
     let result = await recentStudysets(request.querystring.limit, request.querystring.offset);
     if (result.error) {
+        request.log.error(result.error);
         return reply.code(500).send({
             error: result.error
         })
@@ -1523,6 +1572,7 @@ fastify.get("/public/list/featured", {
 }, async function (request, reply) {
     let result = await featuredStudysets(request.querystring.limit, request.querystring.offset);
     if (result.error) {
+        request.log.error(result.error);
         return reply.code(500).send({
             error: result.error
         })
@@ -1536,74 +1586,27 @@ fastify.get("/public/list/featured", {
 })
 
 fastify.get("/list/my-studysets", async function (request, reply) {
-    if (
-        (
-            /* check for Authorization header */
-            request.headers.authorization &&
-            request.headers.authorization.toLowerCase().startsWith("bearer ")
-        ) || (
-            /* or check for Auth cookie */
-            request.cookies && request.cookies.auth
-        )
-    ) {
-        let limit = 10;
-        if (request.query && request.query.limit > 0 && request.query.limit < 200) {
-            limit = request.query.limit;
-        }
-        /*
-            "Bearer " (with space) is 6 characters, so 7 is where our token starts
-            We're using optional chaining (?.) with an OR (||), so that if the auth header isn't there, it uses the auth cookie
-        */
-        let authToken = request.headers?.authorization?.substring(7) || request.cookies.auth;
-        let client = await pool.connect();
-        try {
-            await client.query("BEGIN");
-            await client.query("set role quizfreely_auth");
-            let session = await client.query(
-                "select user_id from auth.verify_session($1)",
-                [ authToken ]
-            );
-            if (session.rows.length == 1) {
-                await client.query("set role quizfreely_auth_user");
-                await client.query("select set_config('quizfreely_auth.user_id', $1, true)", [session.rows[0].user_id]);
-                let studysets = await client.query(
-                    "select id, user_id, title, private, updated_at from public.studysets " +
-                    "where user_id = $1 order by updated_at desc limit $2",
-                    [
-                        session.rows[0].user_id,
-                        limit
-                    ]
-                );
-                await client.query("COMMIT");
-                return reply.send({
-                    "error": false,
-                    "data": {
-                        rows: studysets.rows,
-                    }
-                })
-            } else {
-                await client.query("ROLLBACK");
-                return reply.code(401).send({
-                    error: {
-                        type: "session-invalid"
-                    }
-                })
-            }
-        } catch (error) {
-            await client.query("ROLLBACK");
-            request.log.error(error);
+    let authContext = await context(request, reply);
+    if (authContext.authed) {
+        let result = await myStudysets(authContext.authedUser.id, request?.query?.limit ?? 10, request?.query?.offset ?? 0)
+        if (result.error) {
+            request.log.error(result.error);
             return reply.code(500).send({
-                error: {
-                    type: "db-error"
+                error: result.error
+            })
+        } else {
+            return reply.send({
+                data: {
+                    studysets: result.data
                 }
             })
-        } finally {
-            client.release()
         }
     } else {
         return reply.code(401).send({
             error: {
-                type: "auth-missing"
+                code: "NOT_AUTHED",
+                statusCode: 401,
+                message: "Not signed in while trying to view current account's studysets"
             }
         })
     }
