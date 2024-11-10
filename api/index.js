@@ -1029,7 +1029,7 @@ fastify.get("/auth/user", async function (request, reply) {
     }
 })
 
-fastify.patch("/user", {
+fastify.patch("/auth/user", {
     schema: {
         body: {
             type: "object",
