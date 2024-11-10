@@ -241,7 +241,13 @@ function dashboard(request, reply) {
             authedUser: userResult?.authedUser,
             studysetList: response?.data?.rows
           })
+        }).catch(function (error) {
+          request.log.error(error);
+          reply.send("work in progress oopsie woopsie")
         })
+      }).catch(function (error) {
+        request.log.error(error);
+        reply.send("work in progress oopsie woopsie")
       })
     } else {
       /* userResult.authed is false, user isn't signed in */
