@@ -1183,7 +1183,7 @@ fastify.post("/studysets", {
         } else {
             return reply.send({
                 data: {
-                    user: result.data
+                    studyset: result.data
                 }
             })
         }
