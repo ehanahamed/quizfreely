@@ -166,6 +166,7 @@ const schema = `
         user_id: ID
         user_display_name: String
         data: StudysetData
+        terms_count: Int
     }
     type StudysetData {
         terms: [[String]]
@@ -639,7 +640,7 @@ async function getUser(id) {
 async function featuredStudysets(limit) {
     try {
         let result = await pool.query(
-            "select s.id, s.user_id, u.display_name, s.title, s.updated_at, s.terms_count " +
+            "select s.id, s.user_id, u.display_name as user_display_name, s.title, s.updated_at, s.terms_count " +
             "from public.studysets s inner join public.profiles u on s.user_id = u.id " +
             "where s.featured = true and s.private = false order by s.updated_at desc limit $1",
             [ limit ]
@@ -657,7 +658,7 @@ async function featuredStudysets(limit) {
 async function recentStudysets(limit) {
     try {
         let result = await pool.query(
-            "select s.id, s.user_id, u.display_name, s.title, s.updated_at, s.terms_count " +
+            "select s.id, s.user_id, u.display_name as user_display_name, s.title, s.updated_at, s.terms_count " +
             "from public.studysets s inner join public.profiles u on s.user_id = u.id " +
             "where s.private = false order by s.updated_at desc limit $1",
             [ limit ]
