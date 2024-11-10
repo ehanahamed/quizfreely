@@ -723,7 +723,7 @@ async function updateUser(authedUserId, updatedThingies) {
     try {
         await client.query("BEGIN");
         await client.query("set role quizfreely_auth");
-        if (request.body.display_name) {
+        if (updatedThingies.display_name) {
             let userData = await client.query(
                 "update auth.users set display_name = $2 " +
                 "where id = $1 returning id, username, display_name",
@@ -747,6 +747,10 @@ async function updateUser(authedUserId, updatedThingies) {
                 result = null;
             }
         }
+        /* using if, NOT using else, so we can update multiple OR just one value in a request */
+        // if (updatedThingies. ) {
+        //
+        // }
     } catch (error) {
         await client.query("ROLLBACK");
         result = {
