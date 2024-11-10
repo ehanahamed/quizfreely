@@ -442,7 +442,7 @@ fastify.get("/studyset/private/:studyset", function (request, reply) {
     fetch(API_URL + "/v0/studysets/" + request.params.studyset, {
         method: "GET",
         headers: {
-            "Authorization": "Bearer " + userResult.token
+            "Authorization": "Bearer " + request.cookies.auth
         }
     }).then(function (response) {
       response.json().then(function (responseJson) {
@@ -488,7 +488,7 @@ fastify.get("/studyset/edit/:studyset", function (request, reply) {
     fetch(API_URL + "/v0/studysets/" + request.params.studyset, {
       method: "GET",
       headers: {
-        "Authorization": "Bearer " + userResult.token
+        "Authorization": "Bearer " + request.cookies.auth
       }
     }).then(function (rawRes) {
       rawRes.json().then(function (res) {
