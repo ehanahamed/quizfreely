@@ -238,14 +238,14 @@
       document.getElementById("flashcards-flip-button").addEventListener("click", flashcardsFlip);
       
       function flashcardsChange() {
-        document.getElementById("flashcard-front").innerText = studyset.data.terms[flashcardsIndex][0]
-        document.getElementById("flashcard-back").innerText = studyset.data.terms[flashcardsIndex][1]
-        let flashcardsCount = flashcardsIndex + 1
-        document.getElementById("flashcards-count").innerText = flashcardsCount + "/" + studyset.data.terms.length;
+        var termsList = document.getElementById("terms-table").children[0];
+        document.getElementById("flashcard-front").innerText = termsList.children[flashcardsIndex + 1].children[0].innerText
+        document.getElementById("flashcard-back").innerText = termsList.children[flashcardsIndex + 1].children[1].innerText
+        document.getElementById("flashcards-count").innerText = (flashcardsIndex + 1) + "/" + (termsList.children.length - 1);
       }
 
       function flashcardsNext() {
-        if (flashcardsIndex < (studyset.data.terms.length - 1)) {
+        if (flashcardsIndex < (document.getElementById("terms-table").children[0].children.length - 2)) {
           flashcardsIndex += 1
           flashcardsChange()
         }
