@@ -266,7 +266,7 @@ const resolvers = {
             }
         },
         searchStudysets: async function (_, args, context) {
-            let result = await searchStudysets(args.q, args?.limit, args?.offset);
+            let result = await searchStudysets(args.q, args?.limit ?? 10, args?.offset ?? 0);
             if (result.error) {
                 context.reply.request.log.error(result.error);
                 throw new mercurius.ErrorWithProps(
@@ -278,7 +278,7 @@ const resolvers = {
             }
         },
         searchQueries: async function (_, args, context) {
-            let result = await searchQueries(args.q, args?.limit, args?.offset);
+            let result = await searchQueries(args.q, args?.limit ?? 5, args?.offset ?? 0);
             if (result.error) {
                 context.reply.request.log.error(result.error);
                 throw new mercurius.ErrorWithProps(
@@ -353,6 +353,8 @@ const resolvers = {
                 } else {
                     return result.data;
                 }
+            } else /* ontext.authed is false (not signed in) */ {
+                throw new mercurius.ErrorWithProps("Not signed in while trying to update user", { code: "NOT_AUTHED" });
             }
         }
     }
@@ -678,13 +680,13 @@ async function getUser(id) {
     }
 }
 
-async function featuredStudysets(limit) {
+async function featuredStudysets(limit, offset) {
     try {
         let result = await pool.query(
             "select s.id, s.user_id, u.display_name as user_display_name, s.title, s.updated_at, s.terms_count " +
             "from public.studysets s inner join public.profiles u on s.user_id = u.id " +
-            "where s.featured = true and s.private = false order by s.updated_at desc limit $1",
-            [ limit ]
+            "where s.featured = true and s.private = false order by s.updated_at desc limit $1 offset $2",
+            [ limit, offset ]
         )
         return {
             data: result.rows
@@ -696,14 +698,129 @@ async function featuredStudysets(limit) {
     }
 }
 
-async function recentStudysets(limit) {
+async function recentStudysets(limit, offset) {
     try {
         let result = await pool.query(
             "select s.id, s.user_id, u.display_name as user_display_name, s.title, s.updated_at, s.terms_count " +
             "from public.studysets s inner join public.profiles u on s.user_id = u.id " +
-            "where s.private = false order by s.updated_at desc limit $1",
-            [ limit ]
+            "where s.private = false order by s.updated_at desc limit $1 offset $2",
+            [ limit, offset ]
         )
+        return {
+            data: result.rows
+        }
+    } catch (error) {
+        return {
+            error: error
+        }
+    }
+}
+
+/* right now this only updates display_name, using updateUser(userIdHere, { display_name: "newDisplayNameHere" }) */
+async function updateUser(authedUserId, updatedThingies) {
+    let result;
+    let client = await pool.connect();
+    try {
+        await client.query("BEGIN");
+        await client.query("set role quizfreely_auth");
+        if (request.body.display_name) {
+            let userData = await client.query(
+                "update auth.users set display_name = $2 " +
+                "where id = $1 returning id, username, display_name",
+                [
+                    authedUserId,
+                    updatedThingies.display_name
+                ]
+            );
+            if (userData.rows.length == 1) {
+                await client.query("COMMIT");
+                result = {
+                    "error": false,
+                    data: {
+                        id: userData.rows[0].id,
+                        username: userData.rows[0].username,
+                        display_name: userData.rows[0].display_name
+                    }
+                }
+            } else {
+                await client.query("ROLLBACK");
+                result = null;
+            }
+        }
+    } catch (error) {
+        await client.query("ROLLBACK");
+        result = {
+            error: error
+        }
+    } finally {
+        client.release()
+        return result;
+    }
+}
+
+async function searchStudysets(query, limit, offset) {
+    try {
+        let result = await pool.query(
+            "select s.id, s.user_id, u.display_name, s.title, s.updated_at, s.terms_count " +
+            "from public.studysets s inner join public.profiles u on s.user_id = u.id " +
+            "where s.private = false and tsvector_title @@ websearch_to_tsquery('english', $1) " +
+            "limit $2 offset $3",
+            [
+                query,
+                limit,
+                offset
+            ]
+        )
+        return {
+            data: result.rows
+        };
+    } catch (error) {
+        return {
+            error: error
+        };
+    }
+}
+
+async function searchQueries(query, limit, offset) {
+    try {
+        /*
+            replace whitespace (tabs, spaces, etc and multiple) with a space
+            whitespace characters next to eachother will be replaced with a single space
+        */
+        let spaceRegex = /\s+/gu;
+        let inputQuery = query.replaceAll(spaceRegex, " ");
+        /* after that, replace and sign ("&") with "and" */
+        inputQuery = inputQuery.replaceAll("&", "and");
+        /*
+            after "sanitizing" spaces, remove special characters
+            this will keep letters (any alphabet) accent marks, numbers (any alphabet), underscore, period/dot, and dashes
+        */
+        let rmRegex = /[^\p{L}\p{M}\p{N} _.-]/gu;
+        inputQuery = inputQuery.replaceAll(rmRegex, "");
+        let result;
+        if (inputQuery.length <= 3) {
+            result = await pool.query(
+                "select query, subject from public.search_queries " +
+                "where query ilike $1 limit $2 offset $3",
+                [
+                    /* percent sign (%) to match querys that start with inputQuery */
+                    (inputQuery + "%"),
+                    limit,
+                    offset
+                ]
+            )
+        } else {
+            result = await pool.query(
+                "select query, subject from public.search_queries " +
+                "where similarity(query, $1) > 0.15 " +
+                "order by similarity(query, $1) desc limit $2 limit $3",
+                [
+                    inputQuery,
+                    limit,
+                    offset
+                ]
+            )
+        }
         return {
             data: result.rows
         }
@@ -1101,69 +1218,11 @@ fastify.patch("/auth/user", {
         let authToken = request.headers?.authorization?.substring(7) || request.cookies.auth;
         if (
             (request.body.display_name /* || request.body. */)
-        ) {
-            let client = await pool.connect();
-            try {
-                await client.query("BEGIN");
-                await client.query("set role quizfreely_auth");
-                let session = await client.query(
-                    "select user_id from auth.verify_session($1)",
-                    [ authToken ]
-                );
-                if (session.rows.length == 1) {
-                    if (request.body.display_name) {
-                        let userData = await client.query(
-                            "update auth.users set display_name = $2 " +
-                            "where id = $1 returning id, username, display_name",
-                            [
-                                session.rows[0].user_id,
-                                request.body.display_name
-                            ]
-                        );
-                        if (userData.rows.length == 1) {
-                            await client.query("COMMIT");
-                            return reply.send({
-                                "error": false,
-                                "data": {
-                                    user: {
-                                        id: userData.rows[0].id,
-                                        username: userData.rows[0].username,
-                                        display_name: userData.rows[0].display_name
-                                    }
-                                }
-                            })
-                        } else {
-                            await client.query("ROLLBACK");
-                            return reply.callNotFound();
-                        }
-                    }
-                    /* using if, NOT using else, so we can update multiple OR just one value in a request */
-                    // if (request.body. ) {
-                    //
-                    // }
-                } else {
-                    await client.query("ROLLBACK");
-                    return reply.code(401).send({
-                        error: {
-                            type: "session-invalid"
-                        }
-                    })
-                }
-            } catch (error) {
-                await client.query("ROLLBACK");
-                request.log.error(error);
-                return reply.code(500).send({
-                    error: {
-                        type: "db-error"
-                    }
-                })
-            } finally {
-                client.release()
-            }
+        ) { 
         } else {
             return reply.code(400).send({
                 error: {
-                    type: "fields-missing"
+                    code: "fields missing but different"
                 }
             })
         }
@@ -1380,31 +1439,7 @@ fastify.get("/public/search/studysets", {
     }
 }, async function (request, reply) {
     limit = request.query.limit;
-    try {
-        let result = await pool.query(
-            "select s.id, s.user_id, u.display_name, s.title, s.updated_at, s.terms_count " +
-            "from public.studysets s inner join public.profiles u on s.user_id = u.id " +
-            "where s.private = false and tsvector_title @@ websearch_to_tsquery('english', $1) " +
-            "limit $2",
-            [
-                request.query.q,
-                limit
-            ]
-        )
-        return reply.send({
-            error: false,
-            data: {
-                rows: result.rows
-            }
-        })
-    } catch (error) {
-        request.log.error(error);
-        return reply.code(500).send({
-            error: {
-                type: "db-error"
-            }
-        })
-    }
+    
 })
 
 fastify.get("/public/search/queries", {
@@ -1425,57 +1460,7 @@ fastify.get("/public/search/queries", {
     }
 }, async function (request, reply) {
     let limit = request.query.limit;
-    try {
-        /*
-            replace whitespace (tabs, spaces, etc and multiple) with a space
-            whitespace characters next to eachother will be replaced with a single space
-        */
-        let spaceRegex = /\s+/gu;
-        let inputQuery = request.query.q.replaceAll(spaceRegex, " ");
-        /* after that, replace and sign ("&") with "and" */
-        inputQuery = inputQuery.replaceAll("&", "and");
-        /*
-            after "sanitizing" spaces, remove special characters
-            this will keep letters (any alphabet) accent marks, numbers (any alphabet), underscore, period/dot, and dashes
-        */
-        let rmRegex = /[^\p{L}\p{M}\p{N} _.-]/gu;
-        inputQuery = inputQuery.replaceAll(rmRegex, "");
-        let result;
-        if (inputQuery.length <= 3) {
-            result = await pool.query(
-                "select query, subject from public.search_queries " +
-                "where query ilike $1 limit $2",
-                [
-                    /* percent sign (%) to match querys that start with inputQuery */
-                    (inputQuery + "%"),
-                    limit
-                ]
-            )
-        } else {
-            result = await pool.query(
-                "select query, subject from public.search_queries " +
-                "where similarity(query, $1) > 0.15 " +
-                "order by similarity(query, $1) desc limit $2",
-                [
-                    inputQuery,
-                    limit
-                ]
-            )
-        }
-        return reply.send({
-            error: false,
-            data: {
-                rows: result.rows
-            }
-        })
-    } catch (error) {
-        request.log.error(error);
-        return reply.code(500).send({
-            error: {
-                type: "db-error"
-            }
-        })
-    }
+    
 })
 
 fastify.get("/public/list/recent", {
