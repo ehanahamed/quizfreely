@@ -239,7 +239,7 @@ function dashboard(request, reply) {
             ...themeDataObj,
             authed: userResult.authed,
             authedUser: userResult?.authedUser,
-            studysetList: response?.data?.rows
+            studysetList: response?.data?.studysets
           })
         }).catch(function (error) {
           request.log.error(error);
