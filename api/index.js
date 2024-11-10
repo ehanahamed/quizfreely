@@ -1136,7 +1136,7 @@ fastify.patch("/user", {
 })
 
 fastify.get("/public/users/:userid", async function (request, reply) {
-    let result = await getUser(request.params.id);
+    let result = await getUser(request.params.userid);
     if (result.error) {
         request.log.error(result.error);
         return reply.code(500).send({
@@ -1201,7 +1201,7 @@ fastify.post("/studysets", {
 fastify.get("/studysets/:studysetid", async function (request, reply) {
     const authContext = await context(request, reply);
     if (authContext.authed) {
-        let result = await getStudyset(request.params.id, authContext.authedUser);
+        let result = await getStudyset(request.params.studysetid, authContext.authedUser);
         if (result.error) {
             request.log.error(result.error);
             return reply.code(500).send({
@@ -1248,7 +1248,7 @@ fastify.put("/studysets/:studysetid", {
 }, async function (request, reply) {
     const authContext = await context(request, reply);
     if (authContext.authed) {
-        let result = await updateStudyset(request.params.id, request.body.studyset, authContext.authedUser.id);
+        let result = await updateStudyset(request.params.studysetid, request.body.studyset, authContext.authedUser.id);
         if (result.error) {
             request.log.error(result.error);
             return reply.code(500).send({
@@ -1277,7 +1277,7 @@ fastify.put("/studysets/:studysetid", {
 fastify.delete("/studysets/:studysetid", async function (request, reply) {
     const authContext = await context(request, reply);
     if (authContext.authed) {
-        let result = await deleteStudyset(request.params.id, authContext.authedUser.id);
+        let result = await deleteStudyset(request.params.studysetid, authContext.authedUser.id);
         if (result.error) {
             request.log.error(result.error);
             return reply.code(500).send({
@@ -1304,7 +1304,7 @@ fastify.delete("/studysets/:studysetid", async function (request, reply) {
 })
 
 fastify.get("/public/studysets/:studysetid", async function (request, reply) {
-    let result = await getPublicStudyset(request.params.id);
+    let result = await getPublicStudyset(request.params.studysetid);
     if (result.error) {
         request.log.error(result.error);
         return reply.code(500).send({
