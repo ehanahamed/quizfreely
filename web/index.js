@@ -339,10 +339,9 @@ fastify.get("/tos", function (request, reply) {
 })
 
 fastify.get("/explore", async function (request, reply) {
-  let userResult = await userData(request);
   /* this is async, remember to use `return reply.send()` instead of just `reply.send()` */
   try {
-    rawApiRes = await fetch(API_URL + "/graphql", {
+    let rawApiRes = await fetch(API_URL + "/graphql", {
       method: "POST",
       headers: {
         "Authorization": "Bearer " + request.cookies.auth,
@@ -368,13 +367,28 @@ fastify.get("/explore", async function (request, reply) {
           }
         }`
       })
-    })
+    });
+    let apiRes = await rawApiRes.json();
+    let authed = false;
+    let authedUser;
+    let featuredStudysets = [];
+    let recentStudysets = [];
+    if (apiRes?.data?.authed) {
+      authed = apiRes.data.authed;
+      authedUser = apiRes.data?.authedUser;
+    }
+    if (apiRes?.data?.featuredStudysets?.length >= 0) {
+      featuredStudysets = apiRes.data.featuredStudysets;
+    }
+    if (apiRes?.data?.recentStudysets?.length >= 0) {
+      recentStudysets = apiRes.data.recentStudysets;
+    }
     return reply.view("explore.html", {
         ...themeData(request),
-        featuredRows: featuredRows,
-        recentRows: recentRows,
-        authed: userResult.authed,
-        authedUser: userResult?.authedUser
+        featuredStudysets: featuredStudysets,
+        recentStudysets: recentStudysets,
+        authed: authed,
+        authedUser: authedUser
     });
   } catch (error) {
     request.log.error(error);
