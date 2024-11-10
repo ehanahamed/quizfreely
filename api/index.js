@@ -200,6 +200,7 @@ const resolvers = {
             if (args.withAuth == false) {
                 let result = await getPublicStudyset(args.id);
                 if (result.error) {
+                    context.request.log.error(result.error);
                     throw new mercurius.ErrorWithProps(
                         result.error.message,
                         result.error
@@ -211,6 +212,7 @@ const resolvers = {
             } else if (context.authed) /* withAuth is true, and context.authed is true (signed in) */ {
                 let result = await getStudyset(args.id, context.authedUser.id);
                 if (result.error) {
+                    context.request.log.error(result.error);
                     throw new mercurius.ErrorWithProps(
                         result.error.message,
                         result.error
@@ -226,6 +228,7 @@ const resolvers = {
         user: async function (_, args, context) {
             let result = await getUser(args.id);
             if (result.error) {
+                context.request.log.error(result.error);
                 throw new mercurius.ErrorWithProps(
                     result.error.message,
                     result.error
@@ -238,6 +241,7 @@ const resolvers = {
             /* use nullish coalescing thingy, `??`, to default to 3 for limit and 0 for offset */
             let result = await featuredStudysets(args.limit ?? 3, args.offset ?? 0)
             if (result.error) {
+                context.request.log.error(result.error);
                 throw new mercurius.ErrorWithProps(
                     result.error.message,
                     result.error
@@ -250,6 +254,7 @@ const resolvers = {
             /* use nullish coalescing thingy, `??`, to default to 3 for limit and 0 for offset */
             let result = await recentStudysets(args.limit ?? 3, args.offset ?? 0)
             if (result.error) {
+                context.request.log.error(result.error);
                 throw new mercurius.ErrorWithProps(
                     result.error.message,
                     result.error
@@ -264,6 +269,7 @@ const resolvers = {
             if (context.authed) {
                 let result = await createStudyset(args.studyset, context.authedUser.id);
                 if (result.error) {
+                    context.request.log.error(result.error);
                     throw new mercurius.ErrorWithProps(
                         result.error.message,
                         result.error
@@ -279,6 +285,7 @@ const resolvers = {
             if (context.authed) {
                 let result = await updateStudyset(args.id, args.studyset, context.authedUser.id);
                 if (result.error) {
+                    context.request.log.error(result.error);
                     throw new mercurius.ErrorWithProps(
                         result.error.message,
                         result.error
@@ -294,6 +301,7 @@ const resolvers = {
             if (context.authed) {
                 let result = await deleteStudyset(args.id, context.authedUser.id);
                 if (result.error) {
+                    context.request.log.error(result.error);
                     throw new mercurius.ErrorWithProps(
                         result.error.message,
                         result.error
@@ -409,7 +417,6 @@ async function getPublicStudyset(id) {
             };
         }
     } catch (error) {
-        fastify.log.error(error);
         return {
             error: error
         }
@@ -455,7 +462,6 @@ async function getStudyset(id, authedUserId) {
         }
     } catch (error) {
         await client.query("ROLLBACK");
-        fastify.log.error(error);
         result = {
             error: error
         }
@@ -499,7 +505,6 @@ async function createStudyset(studyset, authedUserId) {
         }
     } catch (error) {
         await client.query("ROLLBACK");
-        fastify.log.error(error);
         result = {
             error: error
         }
@@ -555,7 +560,6 @@ async function updateStudyset(id, studyset, authedUserId) {
         }
     } catch (error) {
         await client.query("ROLLBACK");
-        request.log.error(error);
         result = {
             error: error
         }
@@ -587,7 +591,6 @@ async function deleteStudyset(id, authedUserId) {
         }
     } catch (error) {
         await client.query("ROLLBACK");
-        request.log.error(error);
         result = {
             error: error
         }
@@ -627,7 +630,6 @@ async function getUser(id) {
             return null;
         }
     } catch (error) {
-        fastify.log.error(error);
         return {
             error: error
         }
@@ -646,7 +648,6 @@ async function featuredStudysets(limit) {
             data: result.rows
         }
     } catch (error) {
-        request.log.error(error);
         return {
             error: error
         }
@@ -665,7 +666,6 @@ async function recentStudysets(limit) {
             data: result.rows
         }
     } catch (error) {
-        request.log.error(error);
         return {
             error: error
         }
@@ -1137,6 +1137,7 @@ fastify.patch("/user", {
 fastify.get("/public/users/:userid", async function (request, reply) {
     let result = await getUser(request.params.id);
     if (result.error) {
+        request.log.error(result.error);
         return reply.code(500).send({
             error: result.error
         })
@@ -1174,6 +1175,7 @@ fastify.post("/studysets", {
     if (authContext.authed) {
         let result = await createStudyset(request.body.studyset, authContext.authedUser.id);
         if (result.error) {
+            request.log.error(result.error);
             return reply.code(500).send({
                 error: result.error
             })
@@ -1200,6 +1202,7 @@ fastify.get("/studysets/:studysetid", async function (request, reply) {
     if (authContext.authed) {
         let result = await getStudyset(request.params.id, authContext.authedUser);
         if (result.error) {
+            request.log.error(result.error);
             return reply.code(500).send({
                 error: result.error
             })
@@ -1246,6 +1249,7 @@ fastify.put("/studysets/:studysetid", {
     if (authContext.authed) {
         let result = await updateStudyset(request.params.id, request.body.studyset, authContext.authedUser.id);
         if (result.error) {
+            request.log.error(result.error);
             return reply.code(500).send({
                 error: result.error
             })
@@ -1274,6 +1278,7 @@ fastify.delete("/studysets/:studysetid", async function (request, reply) {
     if (authContext.authed) {
         let result = await deleteStudyset(request.params.id, authContext.authedUser.id);
         if (result.error) {
+            request.log.error(result.error);
             return reply.code(500).send({
                 error: result.error
             })
@@ -1300,6 +1305,7 @@ fastify.delete("/studysets/:studysetid", async function (request, reply) {
 fastify.get("/public/studysets/:studysetid", async function (request, reply) {
     let result = await getPublicStudyset(request.params.id);
     if (result.error) {
+        request.log.error(result.error);
         return reply.code(500).send({
             error: result.error
         })
