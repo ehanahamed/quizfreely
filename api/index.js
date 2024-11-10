@@ -341,7 +341,7 @@ const resolvers = {
         },
         updateUser: async function (_, args, context) {
             if (context.authed) {
-                let result = await updateUser({
+                let result = await updateUser(context.authedUser.id, {
                     display_name: args?.display_name
                 });
                 if (result.error) {
