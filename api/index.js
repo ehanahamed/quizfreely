@@ -1201,7 +1201,7 @@ fastify.post("/studysets", {
 fastify.get("/studysets/:studysetid", async function (request, reply) {
     const authContext = await context(request, reply);
     if (authContext.authed) {
-        let result = await getStudyset(request.params.studysetid, authContext.authedUser);
+        let result = await getStudyset(request.params.studysetid, authContext.authedUser.id);
         if (result.error) {
             request.log.error(result.error);
             return reply.code(500).send({
