@@ -583,9 +583,7 @@ async function deleteStudyset(id, authedUserId) {
         );
         await client.query("COMMIT")
         result = {
-            data: {
-                id: id
-            }
+            data: id
         }
     } catch (error) {
         await client.query("ROLLBACK");
