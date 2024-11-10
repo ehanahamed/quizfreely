@@ -10,10 +10,9 @@ create role quizfreely_auth nologin noinherit;
 create role quizfreely_auth_user nologin noinherit;
 
 /* let quizfreely_api become quizfreely_auth */
-grant quizfreely_auth to quizfreely_api;
-/* let quizfreely_auth become quizfreely_auth_user
-quizfreely_api has to become quizfreely_auth before becoming quizfreely_auth_user */
-grant quizfreely_auth_user to quizfreely_auth;
+grant quizfreely_auth, quizfreely_auth_user to quizfreely_api;
+grant quizfreely_api, quizfreely_auth_user to quizfreely_auth;
+grant quizfreely_api, quizfreely_auth to quizfreely_auth_user;
 
 create schema auth;
 
