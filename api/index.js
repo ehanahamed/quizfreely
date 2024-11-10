@@ -142,6 +142,7 @@ const schema = `
         createStudyset(studyset: StudysetInput!): Studyset
         updateStudyset(id: ID!, studyset: StudysetInput): Studyset
         deleteStudyset(id: ID!): ID
+        updateUser(display_name: String): AuthedUser
     }
     type User {
         id: ID
@@ -263,6 +264,30 @@ const resolvers = {
             } else {
                 return result.data
             }
+        },
+        searchStudysets: async function (_, args, context) {
+            let result = await searchStudysets(args.q, args?.limit, args?.offset);
+            if (result.error) {
+                context.reply.request.log.error(result.error);
+                throw new mercurius.ErrorWithProps(
+                    result.error.message,
+                    result.error
+                );
+            } else {
+                return result.data
+            }
+        },
+        searchQueries: async function (_, args, context) {
+            let result = await searchQueries(args.q, args?.limit, args?.offset);
+            if (result.error) {
+                context.reply.request.log.error(result.error);
+                throw new mercurius.ErrorWithProps(
+                    result.error.message,
+                    result.error
+                );
+            } else {
+                return result.data
+            }
         }
     },
     Mutation: {
@@ -312,6 +337,22 @@ const resolvers = {
                 }
             } else /* auth is false (not signed in) */ {
                 throw new mercurius.ErrorWithProps("Not signed in while trying to delete studyset", { code: "NOT_AUTHED" });
+            }
+        },
+        updateUser: async function (_, args, context) {
+            if (context.authed) {
+                let result = await updateUser({
+                    display_name: args?.display_name
+                });
+                if (result.error) {
+                    context.reply.request.log.error(result.error);
+                    throw new mercurius.ErrorWithProps(
+                        result.error.message,
+                        result.error
+                    )
+                } else {
+                    return result.data;
+                }
             }
         }
     }
