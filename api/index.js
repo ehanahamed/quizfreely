@@ -200,7 +200,7 @@ const resolvers = {
             if (args.withAuth == false) {
                 let result = await getPublicStudyset(args.id);
                 if (result.error) {
-                    context.request.log.error(result.error);
+                    context.reply.request.log.error(result.error);
                     throw new mercurius.ErrorWithProps(
                         result.error.message,
                         result.error
@@ -212,7 +212,7 @@ const resolvers = {
             } else if (context.authed) /* withAuth is true, and context.authed is true (signed in) */ {
                 let result = await getStudyset(args.id, context.authedUser.id);
                 if (result.error) {
-                    context.request.log.error(result.error);
+                    context.reply.request.log.error(result.error);
                     throw new mercurius.ErrorWithProps(
                         result.error.message,
                         result.error
@@ -228,7 +228,7 @@ const resolvers = {
         user: async function (_, args, context) {
             let result = await getUser(args.id);
             if (result.error) {
-                context.request.log.error(result.error);
+                context.reply.request.log.error(result.error);
                 throw new mercurius.ErrorWithProps(
                     result.error.message,
                     result.error
@@ -241,7 +241,7 @@ const resolvers = {
             /* use nullish coalescing thingy, `??`, to default to 3 for limit and 0 for offset */
             let result = await featuredStudysets(args.limit ?? 3, args.offset ?? 0)
             if (result.error) {
-                context.request.log.error(result.error);
+                context.reply.request.log.error(result.error);
                 throw new mercurius.ErrorWithProps(
                     result.error.message,
                     result.error
@@ -254,7 +254,7 @@ const resolvers = {
             /* use nullish coalescing thingy, `??`, to default to 3 for limit and 0 for offset */
             let result = await recentStudysets(args.limit ?? 3, args.offset ?? 0)
             if (result.error) {
-                context.request.log.error(result.error);
+                context.reply.request.log.error(result.error);
                 throw new mercurius.ErrorWithProps(
                     result.error.message,
                     result.error
@@ -269,7 +269,7 @@ const resolvers = {
             if (context.authed) {
                 let result = await createStudyset(args.studyset, context.authedUser.id);
                 if (result.error) {
-                    context.request.log.error(result.error);
+                    context.reply.request.log.error(result.error);
                     throw new mercurius.ErrorWithProps(
                         result.error.message,
                         result.error
@@ -285,7 +285,7 @@ const resolvers = {
             if (context.authed) {
                 let result = await updateStudyset(args.id, args.studyset, context.authedUser.id);
                 if (result.error) {
-                    context.request.log.error(result.error);
+                    context.reply.request.log.error(result.error);
                     throw new mercurius.ErrorWithProps(
                         result.error.message,
                         result.error
@@ -301,7 +301,7 @@ const resolvers = {
             if (context.authed) {
                 let result = await deleteStudyset(args.id, context.authedUser.id);
                 if (result.error) {
-                    context.request.log.error(result.error);
+                    context.reply.request.log.error(result.error);
                     throw new mercurius.ErrorWithProps(
                         result.error.message,
                         result.error
