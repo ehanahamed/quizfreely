@@ -1097,7 +1097,7 @@ fastify.patch("/user", {
                             return reply.callNotFound();
                         }
                     }
-                    /* using if, NOT using else, so we can update multiple OR just one value in a reqeust */
+                    /* using if, NOT using else, so we can update multiple OR just one value in a request */
                     // if (request.body. ) {
                     //
                     // }
@@ -1137,7 +1137,7 @@ fastify.patch("/user", {
 })
 
 fastify.get("/public/users/:userid", async function (request, reply) {
-    let result = await getUser(reqest.params.id);
+    let result = await getUser(request.params.id);
     if (result.error) {
         return reply.code(500).send({
             error: result.error
