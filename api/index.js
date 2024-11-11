@@ -950,7 +950,7 @@ fastify.get('/oauth/google/callback', function (request, reply) {
             googleAuthCallback(result.token).then(
                 function (result) {
                     if (result.error) {
-                        request.log.error(result.error.error)
+                        request.log.error(result.error)
                         reply.redirect(WEB_OAUTH_CALLBACK + "?error=oauth-error")
                     } else {
                         reply.setCookie(
@@ -1047,7 +1047,7 @@ fastify.post("/auth/sign-up", {
                     error: {
                         code: "USERNAME_TAKEN",
                         statusCode: 400,
-                        message: "Username taken"
+                        message: "Username taken/already being used"
                     }
                 })
             }
