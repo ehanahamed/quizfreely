@@ -228,5 +228,5 @@ create table public.search_queries (
   subject text
 );
 
-grant select on public.search_queries to quizfreely_api, quizfreely_auth_user;
+grant select on public.search_queries to quizfreely_api, quizfreely_auth, quizfreely_auth_user;
 alter table public.search_queries disable row level security;
