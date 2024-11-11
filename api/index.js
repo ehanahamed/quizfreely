@@ -927,20 +927,14 @@ async function googleAuthCallback(tokenObj) {
         } catch (error) {
             await client.query("ROLLBACK");
             return {
-                error: {
-                    type: "db-error",
-                    error: error
-                }
+                error: error
             }
         } finally {
             client.release();
         }
     } catch (error) {
         return {
-            error: {
-                type: "fetch-error",
-                error: error
-            }
+            error: error
         }
     }
 }
@@ -990,7 +984,7 @@ fastify.post("/auth/sign-up", {
         body: {
             type: "object",
             properties: {
-                username: { type: "string" },
+                username: { type: "string", minLength: 1 },
                 password: { type: "string", minLength: 8, maxLength: 9000 }
             },
             required: ["username", "password"]
@@ -999,7 +993,7 @@ fastify.post("/auth/sign-up", {
 }, async function (request, reply) {
     let username = request.body.username;
      /* regex to check if username has letters (any alphabet, but no uppercase) or numbers (any alphabet) or dot, underscore, or dash */
-    if (/^(?!.*\p{Lu})[\p{L}\p{M}\p{N}._-]+$/u.test(username) && username.length >= 2 && username.length < 100) {
+    if (/^(?!.*\p{Lu})[\p{L}\p{M}\p{N}._-]+$/u.test(username) && username.length < 100) {
         let client = await pool.connect();
         try {
             await client.query("BEGIN");
@@ -1051,7 +1045,9 @@ fastify.post("/auth/sign-up", {
                 await client.query("ROLLBACK");
                 return reply.code(400).send({
                     error: {
-                        type: "username-taken"
+                        code: "USERNAME_TAKEN",
+                        statusCode: 400,
+                        message: "Username taken"
                     }
                 })
             }
@@ -1059,9 +1055,7 @@ fastify.post("/auth/sign-up", {
             await client.query("ROLLBACK");
             request.log.error(error);
             return reply.code(500).send({
-                error: {
-                    type: "db-error"
-                }
+                error: error
             })
         } finally {
             /* finally block will execute even though we put return statements in try block or catch block
@@ -1073,7 +1067,9 @@ fastify.post("/auth/sign-up", {
         return reply.code(400).send(
             {
                 error: {
-                    type: "username-invalid"
+                    code: "USERNAME_INVALID",
+                    statusCode: 400,
+                    message: "Usernames must be less than 100 characters & can only have letters/numbers (any alphabet), underscores, dots/periods, or dashes/hyphens"
                 }
             }
         )
@@ -1136,19 +1132,32 @@ fastify.post("/auth/sign-in", {
             })
         } else {
             await client.query("ROLLBACK");
-            return reply.code(400).send({
-                error: {
-                    type: "sign-in-incorrect"
-                }
-            })
+            let checkUsername = await client.query("select username from auth.users where username = $1 limit 1", [
+                request.body.username
+            ]);
+            if (checkUsername?.rows?.length == 1) {
+                return reply.code(400).send({
+                    error: {
+                        code: "INCORRECT_PASSWORD",
+                        statusCode: 400,
+                        message: "Incorrect password"
+                    }
+                })
+            } else {
+                return reply.code(400).send({
+                    error: {
+                        code: "INCORRECT_USERNAME",
+                        statusCode: 400,
+                        message: "Incorrect username"
+                    }
+                })
+            }
         }
     } catch (error) {
         await client.query("ROLLBACK");
         request.log.error(error);
         return reply.code(500).send({
-            error: {
-                type: "db-error"
-            }
+            error: error
         })
     } finally {
         client.release();
@@ -1211,11 +1220,13 @@ fastify.post("/auth/sign-out", async function (request, reply) {
         /*
             401 Unauthorized means the client is NOT logged in or authenticated
             403 Forbidden means the client is logged in but not allowed,
-            so in this case we're responding with a 401 if our Authentication header is missing
+            so in this case we're responding with a 401 if our `Authentication` header or `auth` cookie is missing
         */
         return reply.code(401).send({
             error: {
-                type: "auth-missing"
+                code: "NOT_AUTHED",
+                statusCode: 401,
+                message: "Already signed out"
             }
         })
     }
