@@ -16,16 +16,16 @@
                     "/api/v0/public/search/queries?q=" + encodeURIComponent(event.target.value)
                 ).then(function (response) {
                     response.json().then(function (responseJson) {
-                        if (responseJson.data && responseJson.data.rows && responseJson.data.rows.length > 0) {
+                        if (responseJson.data && responseJson.data.queries && responseJson.data.queries.length > 0) {
                             /* clear old items */
                             document.getElementById("searchbar-autocomplete").innerHTML = "";
-                            /* iterate over rows and add their link element to the list */
-                            for(var i = 0; i < responseJson.data.rows.length; i++) {
+                            /* iterate over queries and add their link element to the list */
+                            for(var i = 0; i < responseJson.data.queries.length; i++) {
                                 var link = document.createElement("a");
                                 link.href = "/search?q=" + encodeURIComponent(
-                                    responseJson.data.rows[i].query
+                                    responseJson.data.queries[i].query
                                 );
-                                link.innerText = responseJson.data.rows[i].query;
+                                link.innerText = responseJson.data.queries[i].query;
                                 document.getElementById("searchbar-autocomplete").appendChild(link);
                             }
                             /* show the container */
