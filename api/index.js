@@ -1253,35 +1253,29 @@ fastify.patch("/auth/user", {
         }
     }
 }, async function (request, reply) {
-    if (
-        (
-            /* check for Authorization header */
-            request.headers.authorization &&
-            request.headers.authorization.toLowerCase().startsWith("bearer ")
-        ) || (
-            /* or check for Auth cookie */
-            request.cookies && request.cookies.auth
-        )
-    ) {
-        /*
-            "Bearer " (with space) is 6 characters, so 7 is where our token starts
-            We're using optional chaining (?.) with an OR (||), so that if the auth header isn't there, it uses the auth cookie
-        */
-        let authToken = request.headers?.authorization?.substring(7) || request.cookies.auth;
-        if (
-            (request.body.display_name /* || request.body. */)
-        ) { 
+    let authContext = await context(request, reply);
+    if (authContext.authed) {
+        let result = await updateUser(authContext.authedUser.id, {
+            display_name: request?.body?.display_name
+        });
+        if (result.error) {
+            request.log.error(result.error);
+            return reply.code(500).send({
+                error: result.error
+            })
         } else {
-            return reply.code(400).send({
-                error: {
-                    code: "fields missing but different"
+            return reply.send({
+                data: {
+                    user: result.data
                 }
             })
         }
     } else {
         return reply.code(401).send({
             error: {
-                type: "auth-missing"
+                code: "NOT_AUTHED",
+                statusCode: 401,
+                message: "Not signed in while trying to update account details"
             }
         })
     }
@@ -1478,20 +1472,36 @@ fastify.get("/public/search/studysets", {
         querystring: {
             type: "object",
             properties: {
-                q: { type: "string", maxLength: 9000 },
+                q: { type: "string", maxLength: 9000, minLength: 1 },
                 limit: {
                     type: "number",
                     default: 10,
                     minimum: 1,
                     maximum: 9000
+                },
+                offset: {
+                    type: "number",
+                    default: 0,
+                    minimum: 0
                 }
             },
             required: ["q"]
         }
     }
 }, async function (request, reply) {
-    limit = request.query.limit;
-    
+    let result = await searchStudysets(request.query.q, request.query?.limit ?? 5, request.query?.offset ?? 0);
+    if (result.error) {
+        request.log.error(result.error);
+        return reply.code(500).send({
+            error: result.error
+        })
+    } else {
+        return reply.send({
+            data: {
+                results: result.data
+            }
+        })
+    }
 })
 
 fastify.get("/public/search/queries", {
@@ -1499,20 +1509,36 @@ fastify.get("/public/search/queries", {
         querystring: {
             type: "object",
             properties: {
-                q: { type: "string", maxLength: 50 },
+                q: { type: "string", maxLength: 50, minLength: 1 },
                 limit: {
                     type: "number",
                     default: 5,
                     minimum: 1,
                     maximum: 9000
+                },
+                offset: {
+                    type: "number",
+                    default: 0,
+                    minimum: 0
                 }
             },
             required: ["q"]
         }
     }
 }, async function (request, reply) {
-    let limit = request.query.limit;
-    
+    let result = await searchQueries(request.query.q, request.query?.limit ?? 5, request.query?.offset ?? 0);
+    if (result.error) {
+        request.log.error(result.error);
+        return reply.code(500).send({
+            error: result.error
+        })
+    } else {
+        return reply.send({
+            data: {
+                queries: result.data
+            }
+        })
+    }
 })
 
 fastify.get("/public/list/recent", {
