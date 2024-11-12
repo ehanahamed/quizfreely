@@ -179,35 +179,69 @@ async function userData(request) {
 }
 
 function landingPage(request, reply) {
-  userData(request).then(function (userResult) {
-    fetch(API_URL + "/v0/public/list/featured?limit=3")
-    .then(function (response) {
-      response.json().then(function (responseJson) {
-        if (responseJson.error) {
-          reply.view("home.html", {
-            ...themeData(request),
-            featuredRows: false,
-            authed: userResult.authed,
-            authedUser: userResult?.authedUser
-          });
-        } else {
-          reply.view("home.html", {
-            ...themeData(request),
-            featuredRows: responseJson.data.rows,
-            authed: userResult.authed,
-            authedUser: userResult?.authedUser
-          });
+  fetch(API_URL + "/graphql", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: {
+      query: `query {
+        authed
+        authedUser {
+          id
+          username
+          display_name
         }
-      });
+        featuredStudysets {
+          id
+          title
+          user_id
+          user_display_name
+          terms_count
+        }
+      }`
+    }
+  }).then(function (response) {
+    response.json().then(function (responseJson) {
+      let authed = false;
+      let authedUser;
+      if (responseJson?.data?.authed) {
+        authed = responseJson.data.authed;
+        authedUser = responseJson.data?.authedUser;
+      }
+      if (responseJson?.data?.featuredStudysets?.length >= 0) {
+        reply.view("home.html", {
+          ...themeData(request),
+          featuredRows: responseJson.data.featuredStudysets,
+          authed: authed,
+          authedUser: authedUser
+        });
+      } else {
+        reply.view("home.html", {
+          ...themeData(request),
+          featuredRows: false,
+          authed: authed,
+          authedUser: authedUser
+        });
+      }
     }).catch(function (error) {
+      request.log.error(error);
       reply.view("home.html", {
         ...themeData(request),
         featuredRows: false,
-        authed: userResult.authed,
-        authedUser: userResult?.authedUser
+        authed: false,
+        authedUser: undefined
       });
     });
-  })
+  }).catch(function (error) {
+    request.log.error(error);
+    reply.view("home.html", {
+      ...themeData(request),
+      featuredRows: false,
+      authed: false,
+      authedUser: undefined
+    });
+  });
 }
 
 function dashboard(request, reply) {
