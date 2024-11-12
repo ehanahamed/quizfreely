@@ -198,6 +198,7 @@ function landingPage(request, reply) {
           user_id
           user_display_name
           terms_count
+          updated_at
         }
       }`
     }
@@ -217,6 +218,11 @@ function landingPage(request, reply) {
           authedUser: authedUser
         });
       } else {
+        if (responseJson?.errors?.length >= 1) {
+          responseJson.errors.forEach(function (error) {
+            request.log.error(error);
+          })
+        }
         reply.view("home.html", {
           ...themeData(request),
           featuredRows: false,
@@ -247,54 +253,65 @@ function landingPage(request, reply) {
 function dashboard(request, reply) {
   let themeDataObj = themeData(request);
   let cookieOptionsObj = cookieOptions();
-  userData(request).then(function (userResult) {
-    /*
-      cookies are not permanent, they eventually expire
-      resetting the expiration date on every page doesn't make sense
-      instead we refresh/update the expiration date when users visit the dashboard
-    */
-    reply.setCookie(
-      "dashboard",
-      "true",
-      cookieOptionsObj
-    ).setCookie(
-      "theme",
-      themeDataObj.theme,
-      cookieOptionsObj
-    )
-    if (userResult.authed) {
-      fetch(API_URL + "/v0/list/my-studysets", {
-        method: "GET",
-        headers: {
-          "Authorization": "Bearer " + request.cookies.auth
+  /*
+    cookies are not permanent, they eventually expire
+    resetting the expiration date on every page doesn't make sense
+    instead we refresh/update the expiration date when users visit the dashboard
+  */
+  reply.setCookie(
+    "dashboard",
+    "true",
+    cookieOptionsObj
+  ).setCookie(
+    "theme",
+    themeDataObj.theme,
+    cookieOptionsObj
+  )
+  fetch(API_URL + "/graphql", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: {
+      query: `query {
+        authed
+        authedUser {
+          id
+          username
+          display_name
         }
-      }).then(function (rawRes) {
-        rawRes.json().then(function (response) {
-          if (response.error) {
-            request.log.error(response.error);
-          }
+        myStudysets {
+          id
+          title
+          terms_count
+          updated_at
+        }
+      }`
+    }
+  }).then(function (rawApiRes) {
+    rawApiRes.json(function (apiRes) {
+      if (apiRes?.data?.authed) {
+        if (apiRes?.data?.myStudysets) {
           reply.view("dashboard.html", {
             ...themeDataObj,
-            authed: userResult.authed,
-            authedUser: userResult?.authedUser,
-            studysetList: response?.data?.studysets
+            authed: apiRes.data.authed,
+            authedUser: apiRes.data.authedUser,
+            studysetList: apiRes.data.myStudysets
           })
-        }).catch(function (error) {
-          request.log.error(error);
-          reply.send("work in progress oopsie woopsie")
+        }
+      } else {
+        reply.view("dashboard.html", {
+          ...themeDataObj,
+          authed: false
         })
-      }).catch(function (error) {
-        request.log.error(error);
-        reply.send("work in progress oopsie woopsie")
-      })
-    } else {
-      /* userResult.authed is false, user isn't signed in */
-      reply.view("dashboard.html", {
-        ...themeDataObj,
-        authed: userResult.authed,
-        authedUser: userResult?.authedUser
-      })
-    }
+      }
+    }).catch(function (error) {
+      request.log.error(error);
+      reply.send("work in progress error message error during api response json parse")
+    })
+  }).catch(function (error) {
+    request.log.error(error);
+    reply.send("work in progress error message error during api graphql fetch")
   })
 }
 
@@ -406,12 +423,14 @@ fastify.get("/explore", async function (request, reply) {
             title
             user_display_name
             terms_count
+            updated_at
           }
           recentStudysets {
             id
             title
             user_display_name
             terms_count
+            updated_at
           }
         }`
       })
