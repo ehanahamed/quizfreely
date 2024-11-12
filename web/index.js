@@ -311,7 +311,12 @@ function dashboard(request, reply) {
     })
   }).catch(function (error) {
     request.log.error(error);
-    reply.send("work in progress error message error during api graphql fetch")
+    //reply.send("work in progress error message error during api graphql fetch")
+    // in addition to an error message, our dashboard.html view should still be sent so that stuff like offline studysets are still usable
+    reply.view("dashboard.html", {
+      ...themeDataObj,
+      authed: false
+    })
   })
 }
 
