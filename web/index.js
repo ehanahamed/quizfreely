@@ -307,7 +307,11 @@ function dashboard(request, reply) {
       }
     }).catch(function (error) {
       request.log.error(error);
-      reply.send("work in progress error message error during api response json parse")
+      //reply.send("work in progress error message error during api response json parse")
+      reply.view("dashboard.html", {
+        ...themeDataObj,
+        authed: false
+      })
     })
   }).catch(function (error) {
     request.log.error(error);
