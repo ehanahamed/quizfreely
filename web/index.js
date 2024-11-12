@@ -267,61 +267,69 @@ function dashboard(request, reply) {
     themeDataObj.theme,
     cookieOptionsObj
   )
-  fetch(API_URL + "/graphql", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: {
-      query: `query {
-        authed
-        authedUser {
-          id
-          username
-          display_name
-        }
-        myStudysets {
-          id
-          title
-          terms_count
-          updated_at
-        }
-      }`
-    }
-  }).then(function (rawApiRes) {
-    rawApiRes.json(function (apiRes) {
-      if (apiRes?.data?.authed) {
-        if (apiRes?.data?.myStudysets) {
+  if (request.cookies.auth) {
+    fetch(API_URL + "/graphql", {
+      method: "POST",
+      headers: {
+        "Authorization": "Bearer " + request.cookies.auth,
+        "Content-Type": "application/json"
+      },
+      body: {
+        query: `query {
+          authed
+          authedUser {
+            id
+            username
+            display_name
+          }
+          myStudysets {
+            id
+            title
+            terms_count
+            updated_at
+          }
+        }`
+      }
+    }).then(function (rawApiRes) {
+      rawApiRes.json(function (apiRes) {
+        if (apiRes?.data?.authed) {
+          if (apiRes?.data?.myStudysets) {
+            reply.view("dashboard.html", {
+              ...themeDataObj,
+              authed: apiRes.data.authed,
+              authedUser: apiRes.data.authedUser,
+              studysetList: apiRes.data.myStudysets
+            })
+          }
+        } else {
           reply.view("dashboard.html", {
             ...themeDataObj,
-            authed: apiRes.data.authed,
-            authedUser: apiRes.data.authedUser,
-            studysetList: apiRes.data.myStudysets
+            authed: false
           })
         }
-      } else {
+      }).catch(function (error) {
+        request.log.error(error);
+        //reply.send("work in progress error message error during api response json parse")
         reply.view("dashboard.html", {
           ...themeDataObj,
           authed: false
         })
-      }
+      })
     }).catch(function (error) {
       request.log.error(error);
-      //reply.send("work in progress error message error during api response json parse")
+      //reply.send("work in progress error message error during api graphql fetch")
+      // in addition to an error message, our dashboard.html view should still be sent so that stuff like offline studysets are still usable
       reply.view("dashboard.html", {
         ...themeDataObj,
         authed: false
       })
     })
-  }).catch(function (error) {
-    request.log.error(error);
-    //reply.send("work in progress error message error during api graphql fetch")
-    // in addition to an error message, our dashboard.html view should still be sent so that stuff like offline studysets are still usable
+  } else {
     reply.view("dashboard.html", {
       ...themeDataObj,
       authed: false
     })
-  })
+  }
 }
 
 function home(request, reply) {
@@ -414,7 +422,7 @@ fastify.get("/explore", async function (request, reply) {
     let rawApiRes = await fetch(API_URL + "/graphql", {
       method: "POST",
       headers: {
-        "Authorization": "Bearer " + request.cookies.auth,
+        "Authorization": "Bearer " + request?.cookies?.auth,
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
@@ -484,6 +492,59 @@ fastify.get("/studyset/create", function (request, reply) {
 })
 
 fastify.get("/studysets/:studyset", function (request, reply) {
+  let headers = {
+    "Content-Type": "application/json"
+  };
+  if (request.cookies.auth) {
+    headers = {
+      "Authorization": "Bearer " + request.cookies.auth,
+      "Content-Type": "application/json"
+    };
+  }
+  fetch(API_URL + "/graphql", {
+    method: "POST",
+    headers: headers,
+    body: JSON.stringify({
+      query: `query {
+        authed
+        authedUser
+        studyset(id: $1, withAuth: false) {
+          id
+          title
+          user_id
+          user_display_name
+          data {
+            terms
+          }
+          terms_count
+        }
+      }`
+    })
+  }).then(function (rawApiRes) {
+    rawApiRes.json(function (apiRes) {
+      let authed = false;
+      let authedUser;
+      if (apiRes?.data?.authed) {
+        authed = apiRes.data.authed;
+        authedUser = apiRes.data?.authedUser;
+      }
+      if (apiRes?.data?.studyset) {
+        reply.view("studyset.html", {
+          ...themeData(request),
+          local: false,
+          studyset: apiRes.data.studyset,
+          studysetPage: "/studysets/" + request.params.studyset,
+          studysetEditPage: "/studyset/edit/" + request.params.studyset,
+          authed: authed,
+          authedUser: authedUser
+        })
+      } else {
+        // work in progess should we implement a way to send the already fetched user data from this request to the not found handler
+        // that would save an extra api request because our callnotfound handler has 
+        reply.callNotFound();
+      }
+    })
+  })
   userData(request).then(function (userResult) {
     fetch(API_URL + "/v0/public/studysets/" + request.params.studyset)
     .then(function (response) {
@@ -491,15 +552,7 @@ fastify.get("/studysets/:studyset", function (request, reply) {
         if (responseJson.error) {
           reply.callNotFound()
         } else {
-          reply.view("studyset.html", {
-            ...themeData(request),
-            local: false,
-            studyset: responseJson.data.studyset,
-            studysetPage: "/studysets/" + request.params.studyset,
-            studysetEditPage: "/studyset/edit/" + request.params.studyset,
-            authed: userResult.authed,
-            authedUser: userResult?.authedUser
-          })
+          
         }
       });
     }).catch(function (error) {
