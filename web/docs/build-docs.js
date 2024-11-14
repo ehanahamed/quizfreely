@@ -4,16 +4,27 @@ import Showdown from "showdown"
 const markdown = new Showdown.Converter();
 
 /*
-    iterates over all files (and subfolders) in dir
-    callback function is called for each file,
-    and the callback's parameter is each file's full path.
-    usage example:
-    recursiveAllFiles("/path/goes/here", function (eachFilepath) {
-        console.log(eachFilePath);
-        doSomething(eachFilepath);
+    recursiveAllFiles(dir, { eachFile, eachFolderBefore })
+
+    iterates over all files (and subfolders) in directory/folder.
+    callback object needs two functions: `eachFile` and `eachFolderBefore`.
+    eachFile runs for every file (even in subfolders).
+    eachFolderBefore runs for each subfolder the function had to travel through,
+    it's called before the eachFile is called for that subfolder's contents.
+    
+    example:
+    recursiveAllFiles("/path/goes/here", {
+        eachFile: function (filePath) {
+            console.log(filePath);
+            doSomething(filePath);
+        },
+        eachFolderBefore: function (folderPath) {
+            console.log(folderPath);
+            doSomethingElse(folderPath);
+        }
     })
 */
-function recursiveAllFiles(dir, callback) {
+function recursiveAllFiles(dir, callbacks) {
     fs.readdir(
         dir,
         function (error, files) {
@@ -27,11 +38,12 @@ function recursiveAllFiles(dir, callback) {
                             console.error(error);
                         } else {
                             if (fileStat.isDirectory()) {
-                                /* if this is a subfolder, do the whole thing again */
-                                recursiveAllFiles(path.join(dir, filename), callback);
+                                callbacks.eachFolderBefore(path.join(dir, filename));
+                                /* this is a subfolder, do the whole thing again */
+                                recursiveAllFiles(path.join(dir, filename), callbacks);
                             } else {
                                 /* if this is a file, run the callback function */
-                                callback(path.join(dir, filename));
+                                callbacks.eachFile(path.join(dir, filename));
                             }
                         }
                     })
@@ -42,29 +54,58 @@ function recursiveAllFiles(dir, callback) {
 }
 
 let docsSourceDir = path.resolve(import.meta.dirname, "..", "..", "docs");
-let docsBuiltDir = path.resolve(import.meta.dirname, "docs", "content");
+let docsBuiltDir = path.resolve(import.meta.dirname, "built");
 try {
-    recursiveAllFiles(docsSourceDir, function (filePath) {
-        fs.readFile(filePath, {
-            encoding: "utf8"
-        }, function (error, data) {
-            if (error) {
-                console.error(error);
-            } else {
-                let relativeFilePath = path.relative(docsSourceDir, filePath);
-                fs.writeFile(
-                    path.join(docsBuiltDir, relativeFilePath),
-                    markdown.convert(data),
-                    function (error) {
-                        if (error) {
-                            console.error(error);
-                        } else {
-                            console.log("Successfully built: " + relativeFilePath);
+    fs.rm(docsBuiltDir, {
+        recursive: true,
+        force: true
+    }, function (error) {
+        if (error) {
+            console.error(error);
+        } else {
+            fs.mkdir(docsBuiltDir, function (error) {
+                if (error) {
+                    console.error(error);
+                } else {
+                    recursiveAllFiles(docsSourceDir, {
+                        eachFolderBefore: function (folderPath) {
+                            let relativeFolderPath = path.relative(docsSourceDir, folderPath);
+                            fs.mkdir(
+                                path.join(docsBuiltDir, relativeFolderPath),
+                                { recursive: true },
+                                function (error) {
+                                    if (error) {
+                                        console.error(error);
+                                    }
+                                }
+                            )
+                        },
+                        eachFile: function (filePath) {
+                            let relativeFilePath = path.relative(docsSourceDir, filePath);
+                            fs.readFile(filePath, {
+                                encoding: "utf8"
+                            }, function (error, data) {
+                                if (error) {
+                                    console.error(error);
+                                } else {
+                                    fs.writeFile(
+                                        path.join(docsBuiltDir, relativeFilePath),
+                                        markdown.makeHtml(data),
+                                        function (error) {
+                                            if (error) {
+                                                console.error(error);
+                                            } else {
+                                                console.log("✅ " + relativeFilePath);
+                                            }
+                                        }
+                                    )
+                                }
+                            });
                         }
-                    }
-                )
-            }
-        });
+                    })
+                }
+            })
+        }
     })
 } catch (error) {
     console.error(error);
