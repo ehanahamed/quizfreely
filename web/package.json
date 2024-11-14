@@ -21,6 +21,7 @@
     "fastify": "^5.0.0"
   },
   "devDependencies": {
-    "pino-pretty": "^11.3.0"
+    "pino-pretty": "^11.3.0",
+    "showdown": "^2.1.0"
   }
 }
