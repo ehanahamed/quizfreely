@@ -53,25 +53,26 @@ function recursiveAllFiles(dir, callbacks) {
     )
 }
 
-let docsSourceDir = path.resolve(import.meta.dirname, "..", "..", "docs");
-let docsBuiltDir = path.resolve(import.meta.dirname, "built");
+let docsSourceDir = path.resolve(import.meta.dirname, "..", "docs");
+let docsOutputDir = path.resolve(import.meta.dirname, "docs");
 try {
-    fs.rm(docsBuiltDir, {
+    fs.rm(docsOutputDir, {
         recursive: true,
         force: true
     }, function (error) {
         if (error) {
             console.error(error);
         } else {
-            fs.mkdir(docsBuiltDir, function (error) {
+            fs.mkdir(docsOutputDir, function (error) {
                 if (error) {
                     console.error(error);
                 } else {
                     recursiveAllFiles(docsSourceDir, {
                         eachFolderBefore: function (folderPath) {
                             let relativeFolderPath = path.relative(docsSourceDir, folderPath);
+                            let outputFolderPath = path.join(docsOutputDir, relativeFolderPath)
                             fs.mkdir(
-                                path.join(docsBuiltDir, relativeFolderPath),
+                                outputFolderPath,
                                 { recursive: true },
                                 function (error) {
                                     if (error) {
@@ -82,6 +83,7 @@ try {
                         },
                         eachFile: function (filePath) {
                             let relativeFilePath = path.relative(docsSourceDir, filePath);
+                            let outputFilePath = path.join(docsOutputDir, relativeFilePath);
                             fs.readFile(filePath, {
                                 encoding: "utf8"
                             }, function (error, data) {
@@ -89,7 +91,7 @@ try {
                                     console.error(error);
                                 } else {
                                     fs.writeFile(
-                                        path.join(docsBuiltDir, relativeFilePath),
+                                        outputFilePath,
                                         markdown.makeHtml(data),
                                         function (error) {
                                             if (error) {
