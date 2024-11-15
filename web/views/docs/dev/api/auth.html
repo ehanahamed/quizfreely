@@ -1,0 +1,51 @@
+<h1 id="howauthenticationoauthworksinquizfreelysapi">How Authentication &amp; OAuth works in Quizfreely's API</h1>
+<h2 id="authwithausernameandpassword">Auth with a Username and Password</h2>
+<p>When a user signs up with a username &amp; password, Quizfreely's website makes a http request to Quizfreely's API. The API stores the username &amp; hashed/encrypted password in Quizfreely's PostgreSQL database. Then it creates a session token in the database, and sends it to the user in a cookie.</p>
+<p>Then, when the user does some action, like creating a studyset, the cookie with the session token is in that http request. Quizfreely's API checks our Postgres database to make sure the session is valid.</p>
+<p>These sessions expire after 10 days. If a user's session is expired, they just log in again to get a new session. When they log in with a username and password, the api checks if the password is correct by comparing the inputted password's hash with the hashed/encrypted password stored in the database. If they match, the user is given a new session. There is no "refresh token", users just sign in again to get a new session.</p>
+<p>Hashing/encryption uses postgres' cryptographic functions (<code>pgcrypto</code>), so it's reliable &amp; secure :3</p>
+<h2 id="oauthgoogleetc">OAuth (Google, etc)</h2>
+<p>Quizfreely Web (SSR and client js and website) (source code in <code>web/</code>) links to <code>https://quizfreely.com/api/oauth/google</code> in the little "sign in with google" button on the sign in and sign up pages. That <code>/oauth/google</code> is where <code>@fastify/oauth2</code> generates a redirect url to google's "sign in with google" page. After a user chooses their google account, google redirects them to <code>https://quizfreely.com/api/oauth/google/callback</code>. Our api's js code for <code>/oauth/google/callback</code> sends a request to google's api to get the user's google account id, google display name, and email using the token we got from the redirect. Then our js upserts (inserts or updates if that user already exists) the user's google account id, display name, and email into our postgres database. Then, quizfreely-api creates a session token, and sends it as a cookie (just like username+password auth).</p>
+<p>These sessions also expire after 10 days. When they expire, users will have to sign in again using the same "sign in with google" button (which uses that same process explained above).</p>
+<h2 id="technicalinfo">Technical Info</h2>
+<h3 id="authcookieandauthorizationheader">Auth Cookie and Authorization Header</h3>
+<p>When a user signs in (or signs up, or signs in with oauth) quizfreely-api gives the user a cookie named <code>auth</code> that has the user's session token. It's a <code>Secure</code>, <code>HttpOnly</code>, <code>SameSite</code> cookie that will only be sent using <code>https</code> and can't be accessed by client (and can not be stolen by XSS attacks).</p>
+<p>When client js code in quizfreely-web makes requests to quizfreely-api, the browser sends that <code>auth</code> cookie, and the API uses that to authenticate the user.</p>
+<p>When SSR/server-side js code in quizfreely-web makes requests to quizfreely-api, the server processs sends the user's token in an <code>Authorization</code> header as a bearer token. (Like this: <code>Authorization: Bearer tokengoeshere</code>). Since quizfreely-web is at the root/base of a domain (like <code>https://quizfreely.com</code> or <code>http://localhost:8080</code>) and quizfreely-api is at <code>/api</code> on the same domain, (like <code>https://quizfreely.com/api/</code> or <code>http://localhost:8080/api/</code>), the <code>auth</code> cookie can be used by quizfreely-web (because the cookie has SameSite for <code>quizfreely.com</code> (or <code>localhost</code> for development)). So when quizfreely-web's server side js code needs to make a request to quizfreely-api for server-side rendering (SSR) or something, quizfreely-web gets the user's <code>auth</code> cookie, but it needs to "forward"/send the session token to quizfreely-api too, so it takes the token from the <code>auth</code> cookie and puts it into an <code>Authorization</code> http header in the server-side request to quizfreely-api.</p>
+<p>That SameSite attribute of the auth cookie is configured in quizfreely-api's <code>.env</code> file with <code>COOKIES_DOMAIN=</code>, so that they can be easily configured AND secure in production and development. See <a href="./api-dotenv.md">developer docs > api > api-dotenv.md</a> for more documentation.</p>
+<h3 id="postgresroles">Postgres roles</h3>
+<p>When we setup our PostgreSQL database we create three roles: <code>quizfreely_api</code>, <code>quizfreely_auth</code>, and <code>quizfreely_auth_user</code>. (The commands to setup the database are in <a href="../../../config/db/quizfreely-db-setup.sql"><code>config/db/quizfreely-db-setup.sql</code></a> and the process is explained in <a href="../production/api-setup.md#postgres-setup">developer docs > production > api-setup.md > Postgres setup</a>)</p>
+<ul>
+<li><code>quizfreely_api</code> role<ul>
+<li>can be logged in/connected as</li>
+<li>has a password (set it using <code>\password quizfreely_api</code> in the database shell (<code>psql -d quizfreely_db</code>))</li>
+<li>can view public information<ul>
+<li>can view <code>public.studysets</code> rows where <code>private = false</code></li>
+<li>can view <code>public.profiles</code></li></ul></li></ul></li>
+<li><code>quizfreely_auth</code> role<ul>
+<li>can NOT be logged in/connected as<ul>
+<li>the server process/js code connects as <code>quizfreely_api</code> and then switches to this role when it needs to</li></ul></li>
+<li>can view and edit sensitive information<ul>
+<li>can view and edit <code>auth.users</code></li>
+<li>can view and edit <code>auth.sessions</code></li>
+<li>we use this role to manage users' accounts, so this role needs permissions for account data and encrypted/hashed passwords to let users log in or sign up</li></ul></li></ul></li>
+<li><code>quizfreely_auth_user</code> role<ul>
+<li>can NOT be logged in/connected as<ul>
+<li>the server process/js code connects as <code>quizfreely_api</code> and then switches to <code>quizfreely_auth</code> and then after logging in/verifying a user's session, it switches to <code>quizfreely_auth_user</code></li></ul></li>
+<li>can view public information<ul>
+<li>can view <code>public.studysets</code> rows where <code>private = false</code></li></ul></li>
+<li>sets <code>quizfreely_auth.user_id</code> to the specific quizfreely user's id, so they can only get permission to access their own data</li>
+<li>can view &amp; edit their own account data, sessions, and studysetes<ul>
+<li>can view and edit their own user data in <code>auth.users</code></li>
+<li>can view and edit their own sessions in <code>auth.sessions</code></li>
+<li>can view and edit their own studysets in <code>public.studysets</code></li></ul></li></ul></li>
+</ul>
+<p>The server process/js code connects to the database as the <code>quizfreely_api</code> role.</p>
+<p><code>quizfreely_api</code> can switch to other roles (<code>quizfreely_auth</code> or <code>quizfreely_auth_user</code>) after it connects, so that it only has permissions when we decide/the server js code decides it needs those permissions. It uses <code>set role role_goes_here;</code>, it can only become roles we allow it to become. When we setup the database with <a href="../../../config/db/quizfreely-db-setup.sql"><code>config/db/quizfreely-db-setup.sql</code></a> (explained in <a href="../production/api-setup.md#postgres-setup">developer docs > production > api-setup.md > Postgres setup</a>) we grant <code>quizfreely_api</code> permission to become <code>quizfreely_auth</code>, and grant <code>quizfreely_auth</code> permission to become <code>quizfreely_auth_user</code>.</p>
+<p>The api's paths that return public information (like <code>https://quizfreely.com/api/v0/studysets/public/studyset-id-goes-here</code>) do a simple postgres query and return the requested data. <code>quizfreely_api</code> has permission to view public stuff.</p>
+<p>The api's paths that verify or modify auth/account information (like <code>https://api.quizfrely.com/sign-up</code>) start a postgres transaction and do queries after switching to the <code>quizfreely_auth</code> role, because <code>quizfreely_api</code> can NOT view or edit auth/account info (<code>auth.users</code> or <code>auth.sessions</code>). <code>quizfreely_auth</code> can manage auth/account info, so the api switches to it before doing postgres queries that need those permissions.</p>
+<p>The api's paths that manage user's stuff like studysets (like <code>https://quizfreely.com/api/v0/studysets/create</code>) start a postgres transaction. Then it switches to the <code>quizfreely_auth</code> user to make queries that verifiy the user's session/check if they should actually be logged in, then it switches to the <code>quizfreely_auth_user</code> role to make queries that edit the user's studyset(s), because <code>quizfreely_auth_user</code> has permission to view and edit their own studysets, while <code>quizfreely_api</code> only has permission to view public studysets.</p>
+<p>(We use postgres transactions when we need to do multiple "related" queries so that if one of them has an error, none of the other changes apply. This makes sure there is no "mismatching data" where one thing was updated but another related thing was not.)</p>
+<h3 id="sessionexpirycrondeletion">Session Expiry &amp; Cron Deletion</h3>
+<p>Sessions expire after 10 days. Users need to log in again to get a new session. When the API tries to validate a session, it checks the expire_at time. Expired sessions are deleted for storage space &amp; performance, but they still expire/become-invalid even if they haven't been deleted yet. (maximum secuirity for real)</p>
+<p>Expired sessions are deleted every day. Our API's nodejs process (<code>api/index.js</code>) has the cron job/function which runs <code>auth.delete_expired_sessions()</code> on our postgres db (see <code>quizfreely-db-setup.sql</code>).</p>

@@ -1,0 +1,21 @@
+<h1 id="installingnodejs">Installing NodeJS</h1>
+<h2 id="archlinux">Arch Linux</h2>
+<p>Arch Linux always has recent versions of almost everything.</p>
+<p>We need nodejs v20 LTS ("lts-iron") or higher. We can install it with <code>pacman</code>:</p>
+<pre><code>sudo pacman -S nodejs-lts-iron
+</code></pre>
+<h2 id="debian">Debian</h2>
+<p>Debian only has older versions of packages (cause it's more stable)</p>
+<p>We should install NodeJS v20 LTS "manually" without a package manager for our production server/droplet.</p>
+<ul>
+<li>Download NodeJS LTS v20 from their <a href="https://nodejs.org/en/download/prebuilt-binaries">prebuilt binaries</a><ul>
+<li>You can right click the download button/link, and then paste the download url into a curl command in the droplet's console</li>
+<li>for example: <code>curl -o nodejs.tar.xz https://nodejs.org/dist/v20.17.0/node-v20.17.0-linux-x64.tar.xz</code></li></ul></li>
+<li>Extract the archive<ul>
+<li><code>tar -xf nodejs.tar.xz</code></li></ul></li>
+<li>Install it by copying the folders<ul>
+<li><code>sudo cp -r node-v20.17.0-linux-x64/{bin,include,lib,share} /usr/</code></li></ul></li>
+<li>NodeJS &amp; npm should be installed now! Check <code>node --version</code> and <code>npm --version</code></li>
+<li>We can delete the tarball and extracted folder after copying the contents<ul>
+<li><code>rm -r nodejs.tar.xz node-v20.17.0-linux-x64</code></li></ul></li>
+</ul>

@@ -1,0 +1,35 @@
+<h1 id="quizfreelyweb">Quizfreely Web</h1>
+<p>Quizfreely's website is written in JavaScript with NodeJS. It gets data from (and saves data with) Quizfreely's API.</p>
+<p>To setup quizfreely-web for production see <a href="../production/web-setup.md">developer docs > production > web-setup.md</a></p>
+<h2 id="localquizfreelywebsetup">Local Quizfreely Web setup</h2>
+<p>Clone Quizfreely's source code repo (if you didn't already)</p>
+<pre><code class="sh language-sh">git clone https://github.com/ehanahamed/quizfreely
+# or, from codeberg:
+# git clone https://codeberg.org/ehanahamed/quizfreely
+</code></pre>
+<p>Copy the .env.example file:</p>
+<pre><code class="sh language-sh">cd quizfreely/web/
+cp .env.example .env
+</code></pre>
+<p>The .env file already has reasonable defaults for local devleopment. See <a href="./web-dotenv.md">web-dotenv.md</a> for all .env options &amp; more info</p>
+<p>You need NodeJS (v20 or higher) installed</p>
+<p>Install NodeJS dependencies</p>
+<pre><code class="sh language-sh">npm install
+</code></pre>
+<p>Now, start quizfreely-web:</p>
+<pre><code class="sh language-sh">npm run start
+</code></pre>
+<p>quizfreely-web runs on http://localhost:8080 by default. You can change this in <code>.env</code></p>
+<p>See <a href="../api/README.md">developer docs > api</a> to set up quizfreely-api.</p>
+<h2 id="extrainfoforgithubcodespaces">Extra Info for GitHub Codespaces</h2>
+<p>If your/our Codespaces url is <code>https://abc-example-123456.github.dev/</code>, your/our <code>localhost:8080</code> will be at <code>https://abc-example-123456-8080.app.github.dev/</code>.</p>
+<p>When <code>PRETTY_PRINT=true</code> (see <a href="./web-dotenv.md">developer docs > web > web-dotenv.md</a>), Quizfreely-web will print our internal/localhost url, and codespaces will send you to the correct <code>...app.github.dev</code> url when you click the link in our terminal.</p>
+<p>Codespaces will show you a little pop-up/button/link thingy when you start a process (like quizfreely-web) on any port, that link will bring you to the correct <code>...app.github.dev</code> url thingy.</p>
+<p>On Codespaces, edit quizfreely-web's dotenv file (<code>.env</code>) to have <code>COOKIES_DOMAIN=</code> set to our <code>...app.github.dev</code> url:</p>
+<pre><code class="sh language-sh">PORT=8080
+HOST=0.0.0.0
+# ...
+COOKIES_DOMAIN=abc-example-123456-8080.app.github.dev
+# ...
+</code></pre>
+<p>Most of the other dotenv default values for local development already work perfectly with Codespaces. See <a href="./web-dotenv.md">developer docs > web > web-dotenv.md</a> for all dotenv options and more details.</p>
