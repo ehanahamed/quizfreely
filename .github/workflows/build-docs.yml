@@ -1,0 +1,25 @@
+on:
+  workflow_dispatch:
+jobs:
+  build:
+    name: Build Docs
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone from GitHub
+        run: git clone https://github.com/ehanahamed/quizfreely.git
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Run npm script
+        run: |
+          cd quizfreely/web
+          npm install
+          npm run build-docs
+      - name: Commit & push to GitHub
+        run: |
+          cd quizfreely
+          git add .
+          git config --global user.name "Ehan"
+          git config --global user.email "ehanahamed@ehan.dev"
+          git commit -m "Build documentation in web/views/docs/ from docs/"
+          git push https://ehanahamed:${{ secrets.GH_TOKEN }}@github.com/ehanahamed/quizfreely.git --all
