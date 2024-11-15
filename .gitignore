@@ -2,4 +2,3 @@ node_modules/
 .env
 api/quizfreely-api.log
 web/quizfreely-web.log
-web/views/docs
