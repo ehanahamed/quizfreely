@@ -8,7 +8,10 @@ import fastifyHttpProxy from "@fastify/http-proxy";
 import path from "path";
 import { Eta } from "eta";
 import { Cron } from "croner";
-import { themes } from "./themes.js";
+import { createRequire } from "module";
+const require = createRequire(import.meta.url);
+const themes = require("./themes.json");
+const docs = require("./docs.json");
 
 const PORT = process.env.PORT
 const HOST = process.env.HOST
