@@ -9,8 +9,8 @@ const markdown = new Showdown.Converter();
     iterates over all files (and subfolders) in directory/folder.
     callback object needs two functions: `eachFile` and `eachFolderBefore`.
     eachFile runs for every file (even in subfolders).
-    eachFolderBefore runs for each subfolder the function had to travel through,
-    it's called before the eachFile is called for that subfolder's contents.
+    eachFolderBefore (optional) runs for each subfolder the function had to travel through,
+    it's ran/called before eachFile is called for that subfolder's contents.
     
     example:
     recursiveAllFiles("/path/goes/here", {
@@ -38,7 +38,9 @@ function recursiveAllFiles(dir, callbacks) {
                             console.error(error);
                         } else {
                             if (fileStat.isDirectory()) {
-                                callbacks.eachFolderBefore(path.join(dir, filename));
+                                if (callbacks.eachFolderBefore) {
+                                    callbacks.eachFolderBefore(path.join(dir, filename));
+                                }
                                 /* this is a subfolder, do the whole thing again */
                                 recursiveAllFiles(path.join(dir, filename), callbacks);
                             } else {
@@ -54,7 +56,7 @@ function recursiveAllFiles(dir, callbacks) {
 }
 
 let docsSourceDir = path.resolve(import.meta.dirname, "..", "docs");
-let docsOutputDir = path.resolve(import.meta.dirname, "docs");
+let docsOutputDir = path.join(import.meta.dirname, "views", "docs");
 try {
     fs.rm(docsOutputDir, {
         recursive: true,
@@ -82,27 +84,32 @@ try {
                             )
                         },
                         eachFile: function (filePath) {
-                            let relativeFilePath = path.relative(docsSourceDir, filePath);
-                            let outputFilePath = path.join(docsOutputDir, relativeFilePath);
-                            fs.readFile(filePath, {
-                                encoding: "utf8"
-                            }, function (error, data) {
-                                if (error) {
-                                    console.error(error);
-                                } else {
-                                    fs.writeFile(
-                                        outputFilePath,
-                                        markdown.makeHtml(data),
-                                        function (error) {
-                                            if (error) {
-                                                console.error(error);
-                                            } else {
-                                                console.log("✅ " + relativeFilePath);
+                            if (filePath.endsWith(".md")) {
+                                let relativeFilePath = path.relative(docsSourceDir, filePath);
+                                /* remove .md (3 characters) with `.substring(...)` and then add ".html" to change extension */
+                                let relativeFilePathNewExt = relativeFilePath.substring(0, relativeFilePath.length - 3) + ".html";
+                                let outputFilePath = path.join(docsOutputDir, relativeFilePathNewExt);
+
+                                fs.readFile(filePath, {
+                                    encoding: "utf8"
+                                }, function (error, data) {
+                                    if (error) {
+                                        console.error(error);
+                                    } else {
+                                        fs.writeFile(
+                                            outputFilePath,
+                                            markdown.makeHtml(data),
+                                            function (error) {
+                                                if (error) {
+                                                    console.error(error);
+                                                } else {
+                                                    console.log("✅ " + relativeFilePath);
+                                                }
                                             }
-                                        }
-                                    )
-                                }
-                            });
+                                        )
+                                    }
+                                });
+                            }
                         }
                     })
                 }
