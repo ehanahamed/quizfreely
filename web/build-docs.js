@@ -1,121 +1,57 @@
-import * as fs from "node:fs";
 import path from "node:path";
+import { promises as fsPromises } from "node:fs";
 import Showdown from "showdown"
 const markdown = new Showdown.Converter();
 
-/*
-    recursiveAllFiles(dir, { eachFile, eachFolderBefore })
+let srcDir = path.resolve(import.meta.dirname, "..", "docs");
+let outputDir = path.join(import.meta.dirname, "views", "docs");
 
-    iterates over all files (and subfolders) in directory/folder.
-    callback object needs two functions: `eachFile` and `eachFolderBefore`.
-    eachFile runs for every file (even in subfolders).
-    eachFolderBefore (optional) runs for each subfolder the function had to travel through,
-    it's ran/called before eachFile is called for that subfolder's contents.
-    
-    example:
-    recursiveAllFiles("/path/goes/here", {
-        eachFile: function (filePath) {
-            console.log(filePath);
-            doSomething(filePath);
-        },
-        eachFolderBefore: function (folderPath) {
-            console.log(folderPath);
-            doSomethingElse(folderPath);
+let srcFiles = [];
+let srcSubfolders = [];
+async function recursiveDir(dir) {
+    let dirEnts = await fsPromises.readdir(dir, {
+        withFileTypes: true
+    });
+    for (var i = 0; i < dirEnts.length; i++) {
+        if (dirEnts[i].isDirectory()) {
+            srcSubfolders.push(path.join(dir, dirEnts[i].name));
+            await recursiveDir(path.join(dir, dirEnts[i].name));
+        } else if (dirEnts[i].isFile()) {
+            srcFiles.push(path.join(dir, dirEnts[i].name));
         }
-    })
-*/
-function recursiveAllFiles(dir, callbacks) {
-    fs.readdir(
-        dir,
-        function (error, files) {
-            if (error) {
-                console.error(error);
-            } else {
-                files.forEach(function (filename) {
-                    path.join()
-                    fs.stat(path.join(dir, filename), function (error, fileStat) {
-                        if (error) {
-                            console.error(error);
-                        } else {
-                            if (fileStat.isDirectory()) {
-                                if (callbacks.eachFolderBefore) {
-                                    callbacks.eachFolderBefore(path.join(dir, filename));
-                                }
-                                /* this is a subfolder, do the whole thing again */
-                                recursiveAllFiles(path.join(dir, filename), callbacks);
-                            } else {
-                                /* if this is a file, run the callback function */
-                                callbacks.eachFile(path.join(dir, filename));
-                            }
-                        }
-                    })
-                })
-            }
-        }
-    )
+    }
+};
+
+await recursiveDir(srcDir);
+await fsPromises.rm(outputDir, {
+    recursive: true,
+    force: true
+});
+await fsPromises.mkdir(outputDir);
+let outputFiles = [];
+let outputSubfolders = [];
+for (var i = 0; i < srcSubfolders.length; i++) {
+    let relativeFolderPath = path.relative(srcDir, srcSubfolders[i]);
+    let outputFolderPath = path.join(outputDir, relativeFolderPath);
+    await fsPromises.mkdir(outputFolderPath);
+    outputSubfolders.push(relativeFolderPath);
 }
-
-let docsSourceDir = path.resolve(import.meta.dirname, "..", "docs");
-let docsOutputDir = path.join(import.meta.dirname, "views", "docs");
-try {
-    fs.rm(docsOutputDir, {
-        recursive: true,
-        force: true
-    }, function (error) {
-        if (error) {
-            console.error(error);
-        } else {
-            fs.mkdir(docsOutputDir, function (error) {
-                if (error) {
-                    console.error(error);
-                } else {
-                    recursiveAllFiles(docsSourceDir, {
-                        eachFolderBefore: function (folderPath) {
-                            let relativeFolderPath = path.relative(docsSourceDir, folderPath);
-                            let outputFolderPath = path.join(docsOutputDir, relativeFolderPath)
-                            fs.mkdir(
-                                outputFolderPath,
-                                { recursive: true },
-                                function (error) {
-                                    if (error) {
-                                        console.error(error);
-                                    }
-                                }
-                            )
-                        },
-                        eachFile: function (filePath) {
-                            if (filePath.endsWith(".md")) {
-                                let relativeFilePath = path.relative(docsSourceDir, filePath);
-                                /* remove .md (3 characters) with `.substring(...)` and then add ".html" to change extension */
-                                let relativeFilePathNewExt = relativeFilePath.substring(0, relativeFilePath.length - 3) + ".html";
-                                let outputFilePath = path.join(docsOutputDir, relativeFilePathNewExt);
-
-                                fs.readFile(filePath, {
-                                    encoding: "utf8"
-                                }, function (error, data) {
-                                    if (error) {
-                                        console.error(error);
-                                    } else {
-                                        fs.writeFile(
-                                            outputFilePath,
-                                            markdown.makeHtml(data),
-                                            function (error) {
-                                                if (error) {
-                                                    console.error(error);
-                                                } else {
-                                                    console.log("✅ " + relativeFilePath);
-                                                }
-                                            }
-                                        )
-                                    }
-                                });
-                            }
-                        }
-                    })
-                }
-            })
-        }
-    })
-} catch (error) {
-    console.error(error);
+for (var i = 0; i < srcFiles.length; i++) {
+    if (srcFiles[i].endsWith(".md")) {
+        let relativeFilePath = path.relative(srcDir, srcFiles[i]);
+        /* remove `.md` (last 3 chars) & add `.html` ext */
+        relativeFilePath = (relativeFilePath.substring(0, (relativeFilePath.length - 3)) + ".html");
+        let outputFilePath = path.join(outputDir, relativeFilePath);
+        let fileContent = await fsPromises.readFile(
+            srcFiles[i],
+            { encoding: "utf8" }
+        );
+        await fsPromises.writeFile(
+            outputFilePath,
+            markdown.makeHtml(fileContent)
+        )
+        outputFiles.push(relativeFilePath);
+    }
 }
+console.log(outputFiles);
+console.log(outputSubfolders);
