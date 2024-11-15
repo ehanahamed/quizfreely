@@ -777,16 +777,22 @@ function cookieOptions() {
 }
 
 fastify.get("/docs/*", function (request, reply) {
-  try {
+  let filename = request.url.replace("/docs/", "")
+  if (request.url.endsWith(".md")) {
+    filename = filename.substring(0, filename.length - 3) + ".html"
+  } else if (!request.url.endsWith(".html")) {
+    filename = filename + ".html";
+  }
+  if (docs.files.includes(filename)) {
     userData(request).then(function (userResult) {
       reply.view("docs-page.html", {
         ...themeData(request),
         authed: userResult.authed,
         authedUser: userResult?.authedUser,
-        page: request.url
+        filepath: "./docs/" + filename
       })
     })
-  } catch (error) {
+  } else {
     reply.callNotFound();
   }
 })
