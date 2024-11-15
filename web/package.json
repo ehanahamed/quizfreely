@@ -4,7 +4,8 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "start": "node index.js"
+    "start": "node index.js",
+    "build-docs": "node build-docs.js"
   },
   "author": "Ehan Ahamed",
   "license": "MIT",
