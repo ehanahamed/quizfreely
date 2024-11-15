@@ -1,7 +1,7 @@
 import path from "node:path";
 import { promises as fsPromises } from "node:fs";
 import Showdown from "showdown"
-const markdown = new Showdown.Converter();
+const markdown = new Showdown.Converter({ tables: true });
 
 let srcDir = path.resolve(import.meta.dirname, "..", "docs");
 let outputDir = path.join(import.meta.dirname, "views", "docs");
