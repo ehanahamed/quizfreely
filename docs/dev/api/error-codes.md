@@ -21,22 +21,22 @@ Sometimes Quizfreely-API sends an error message from Node.js, PostgreSQL, Fastif
 
 Here is a list of Quizfreely's error codes:
 - `"NOT_FOUND"`
-  - a 404; whatever you tried to get or update was not found
+    - a 404; whatever you tried to get or update was not found
 - `"NOT_AUTHED"`
-  - Not signed in while trying to do something that requires you to be signed in
-  - Quizfreely-API uses an Authorization header OR an auth cookie to send the user's token
-  - The cookie is supposed to be named `auth`, and its value is supposed to be the token
-  - Auth headers are supposed to look like this: `Authorization: Bearer tokenGoesHere`
+    - Not signed in while trying to do something that requires you to be signed in
+    - Quizfreely-API uses an Authorization header OR an auth cookie to send the user's token
+    - The cookie is supposed to be named `auth`, and its value is supposed to be the token
+    - Auth headers are supposed to look like this: `Authorization: Bearer tokenGoesHere`
 - `"INCORRECT_USERNAME"`
-  - username is wrong (when trying to sign in)
+    - username is wrong (when trying to sign in)
 - `"INCORRECT_PASSWORD"`
-  - password is wrong (when trying to sign in)
+    - password is wrong (when trying to sign in)
 - `"USERNAME_INVALID"`
-  - username contains spaces or special characters (when trying to create an account)
-  - usernames can have letters or numbers (any alphabet), dot (`.`), underscore (`_`), or dash (`-`)
-  - usernames must be 1 or more characters and less than 100 characters
+    - username contains spaces or special characters (when trying to create an account)
+    - usernames can have letters or numbers (any alphabet), dot (`.`), underscore (`_`), or dash (`-`)
+    - usernames must be 1 or more characters and less than 100 characters
 - `"USERNAME_TAKEN"`
-  - another account already uses that username (when trying to create an account)
+    - another account already uses that username (when trying to create an account)
 - `?error=oauth-error`
-  - querystring sent in redirect to sign in/sign up page if there is an error when trying to sign up or sign in with OAuth
-  - all the other error codes are sent in the API's response body as json in `error.code`, but this error is a querystring only for OAuth redirects
+    - querystring sent in redirect to sign in/sign up page if there is an error when trying to sign up or sign in with OAuth
+    - all the other error codes are sent in the API's response body as json in `error.code`, but this error is a querystring only for OAuth redirects

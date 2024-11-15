@@ -4,21 +4,21 @@ Right now, Quizfreely's website and api run on the same server/droplet.
 
 Important thingies:
 - `/root/quizfreely/api/`
-  - `.env`
-  - `quizfreely-api.service`
-  - `quizfreely-db-setup.sql`
+    - `.env`
+    - `quizfreely-api.service`
+    - `quizfreely-db-setup.sql`
 - `/root/quizfreely/web/`
-  - `.env`
-  - `quizfreely-web.service`
+    - `.env`
+    - `quizfreely-web.service`
 - `/etc/caddy/Caddyfile`
 - `/etc/systemd/system/`
-  - `quizfreely-web.service`
-  - `quizfreely-api.service`
-  - `caddy.service`
+    - `quizfreely-web.service`
+    - `quizfreely-api.service`
+    - `caddy.service`
 - `/usr/bin/`
-  - `caddy`
-  - `node`
-  - `npm`
+    - `caddy`
+    - `node`
+    - `npm`
 
 Quizfreely's website (`/root/quizfreely/web/`, "quizfreely-web") runs on port `:8080`. See [web-setup.md](./web-setup.md)
 

@@ -3,80 +3,80 @@
 To setup quizfreely-api & it's .env file for **production** see [production > api-setup.md](../production/api-setup.md)
 
 - `PORT=`
-  - port number to use
-  - should be `PORT=8008` for production and development
+    - port number to use
+    - should be `PORT=8008` for production and development
 - `HOST=`
-  - `::` to listen on all IPv6 and IPv4 addresses, `0.0.0.0` to listen on all all IPv4 addresses, or `localhost` to only listen on the same machine (IPv6 and IPv4)
-    - see https://fastify.dev/docs/latest/Reference/Server/#listentextresolver for all details
-    - "Using `::` for the address will listen on all IPv6 addresses and, depending on OS, may also listen on all IPv4 addresses" (https://fastify.dev/docs/latest/Reference/Server/#listentextresolver and https://nodejs.org/api/net.html#serverlistenport-host-backlog-callback)
-  - Quizfreely-API's server process is proxied by quizfreely-web so that it can be accessed from `/api` on quizfreely-web (like https://quizfreely.com/api). In production, if quizfreely-api and quizfreely-web are running on the same machine, then quizfreely-api should have `HOST=localhost`, because quizfreely-web will proxy quizfreely-api's process from `localhost:8008`. For production if quizfreely-api and quizfreely-web are on different machines, we will also have `HOST=localhost` and we will use caddy to reverse-proxy quizfreely-web's server process (that listens on localhost) so it can be accessed from a domain with https and stuff (see [developer docs > production > README.md](../production/README.md) and [developer docs > production > caddy-setup.md](../production/caddy-setup.md)) and then quizfreely-web lets that domain be accessed from `/api`. (Requests between quizfreely-api and quizfreely-web on the same machine use localhost with http, but requests between quizfreely-api and quizfreely-web on different machines use https) We only need caddy and it's reverse-proxy for production when web and api are running on different machines, developers can just access the server process itself for development.
-  - if you need IPv4 only, use `HOST=0.0.0.0` for development
-  - should be `HOST=localhost` for production
-  - should be `HOST=::` for development
+    - `::` to listen on all IPv6 and IPv4 addresses, `0.0.0.0` to listen on all all IPv4 addresses, or `localhost` to only listen on the same machine (IPv6 and IPv4)
+        - see https://fastify.dev/docs/latest/Reference/Server/#listentextresolver for all details
+        - "Using `::` for the address will listen on all IPv6 addresses and, depending on OS, may also listen on all IPv4 addresses" (https://fastify.dev/docs/latest/Reference/Server/#listentextresolver and https://nodejs.org/api/net.html#serverlistenport-host-backlog-callback)
+    - Quizfreely-API's server process is proxied by quizfreely-web so that it can be accessed from `/api` on quizfreely-web (like https://quizfreely.com/api). In production, if quizfreely-api and quizfreely-web are running on the same machine, then quizfreely-api should have `HOST=localhost`, because quizfreely-web will proxy quizfreely-api's process from `localhost:8008`. For production if quizfreely-api and quizfreely-web are on different machines, we will also have `HOST=localhost` and we will use caddy to reverse-proxy quizfreely-web's server process (that listens on localhost) so it can be accessed from a domain with https and stuff (see [developer docs > production > README.md](../production/README.md) and [developer docs > production > caddy-setup.md](../production/caddy-setup.md)) and then quizfreely-web lets that domain be accessed from `/api`. (Requests between quizfreely-api and quizfreely-web on the same machine use localhost with http, but requests between quizfreely-api and quizfreely-web on different machines use https) We only need caddy and it's reverse-proxy for production when web and api are running on different machines, developers can just access the server process itself for development.
+    - if you need IPv4 only, use `HOST=0.0.0.0` for development
+    - should be `HOST=localhost` for production
+    - should be `HOST=::` for development
 - `LOG_LEVEL=`
-  - log level for fastify using pino
-  - can be `trace`, `debug`, `info`, `warn`, `error`, `fatal`
-  - should be `LOG_LEVEL=warn` or `LOG_LEVEL=error` for production
-  - we switch between them for development
+    - log level for fastify using pino
+    - can be `trace`, `debug`, `info`, `warn`, `error`, `fatal`
+    - should be `LOG_LEVEL=warn` or `LOG_LEVEL=error` for production
+    - we switch between them for development
 - `LOG_PRETTY=`
-  - `true` or `false` to enable or disable pretty-printing/formatting logs
-  - when enabled, logs are pretty-printed to the terminal/console (STDOUT) AND written into the log file (`api/quizfreely-api.log`)
-  - when disabled, logs are only printed into the log file (`api/quizfreely-api.log`) in their default json format (no pretty printing/fancy formatting)
-  - formatting/pretty-printing makes every request/response slightly slower, which is why we disable it for production
-  - should be `LOG_PRETTY=false` for production
-  - should be `LOG_PRETTY=true` for development
+    - `true` or `false` to enable or disable pretty-printing/formatting logs
+    - when enabled, logs are pretty-printed to the terminal/console (STDOUT) AND written into the log file (`api/quizfreely-api.log`)
+    - when disabled, logs are only printed into the log file (`api/quizfreely-api.log`) in their default json format (no pretty printing/fancy formatting)
+    - formatting/pretty-printing makes every request/response slightly slower, which is why we disable it for production
+    - should be `LOG_PRETTY=false` for production
+    - should be `LOG_PRETTY=true` for development
 - `POSTGRES_URI=`
-  - PostgreSQL connection URI
-  - should be `POSTGRES_URI=postgres://quizfreely_api:PASSWORD@localhost/quizfreely_db`
-  - replace `PASSWORD` with your/our password
-  - Most other .env variables replace localhost in production, but we keep "@localhost" in POSTGRES_URI= because the server process connects to the database through localhost, because both are on the same machine
+    - PostgreSQL connection URI
+    - should be `POSTGRES_URI=postgres://quizfreely_api:PASSWORD@localhost/quizfreely_db`
+    - replace `PASSWORD` with your/our password
+    - Most other .env variables replace localhost in production, but we keep "@localhost" in POSTGRES_URI= because the server process connects to the database through localhost, because both are on the same machine
 - `CORS_ORIGIN=`
-  - allowed CORS origin, see https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Allow-Origin
-  - should be `CORS_ORIGIN=https://quizfreely.com` for production
-  - should be `CORS_ORIGIN=http://localhost:8080` for development
+    - allowed CORS origin, see https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Allow-Origin
+    - should be `CORS_ORIGIN=https://quizfreely.com` for production
+    - should be `CORS_ORIGIN=http://localhost:8080` for development
 - `COOKIES_DOMAIN=`
-  - This is used for the domain flag of auth cookies in api
-  - NO protocol (`example.com`, NOT `https://example.com`)
-  - NO trailing slash (`example.com`, NOT `example.com/`)
-  - should be `COOKIES_DOMAIN=quizfreely.com` for production
-  - should be `COOKIES_DOMAIN=localhost` for development
+    - This is used for the domain flag of auth cookies in api
+    - NO protocol (`example.com`, NOT `https://example.com`)
+    - NO trailing slash (`example.com`, NOT `example.com/`)
+    - should be `COOKIES_DOMAIN=quizfreely.com` for production
+    - should be `COOKIES_DOMAIN=localhost` for development
 - `OAUTH_GOOGLE_CLIENT_ID=`
-  - google oauth client id
-  - get it from google cloud something: https://console.cloud.google.com/apis/credentials
+    - google oauth client id
+    - get it from google cloud something: https://console.cloud.google.com/apis/credentials
 - `OAUTH_GOOGLE_CLIENT_SECRET=`
-  - google oauth client secret
-  - get it from google cloud something: https://console.cloud.google.com/apis/credentials
+    - google oauth client secret
+    - get it from google cloud something: https://console.cloud.google.com/apis/credentials
 - `API_OAUTH_CALLBACK_URL=`
-  - url to handle oauth signin/signup
-  - remember to put this url under "Authorized redirect URIs" in google cloud something
-    - see https://console.cloud.google.com/apis/credentials
-    - find it under: "apis & services" > "credidentials" > "OAuth 2.0 Client IDs" > "Authorized redirect URIs"
-    - google decided you have to put the full url (`http://localhost:1234/abc/def`, NOT `http://localhost:1234`)
-  - should be `API_OAUTH_CALLBACK_URL=https://quizfreely.com/api/oauth/google/callback` for production
-  - should be `API_OAUTH_CALLBACK_URL=http://localhost:8080/api/oauth/google/callback` for development
+    - url to handle oauth signin/signup
+    - remember to put this url under "Authorized redirect URIs" in google cloud something
+        - see https://console.cloud.google.com/apis/credentials
+        - find it under: "apis & services" > "credidentials" > "OAuth 2.0 Client IDs" > "Authorized redirect URIs"
+        - google decided you have to put the full url (`http://localhost:1234/abc/def`, NOT `http://localhost:1234`)
+    - should be `API_OAUTH_CALLBACK_URL=https://quizfreely.com/api/oauth/google/callback` for production
+    - should be `API_OAUTH_CALLBACK_URL=http://localhost:8080/api/oauth/google/callback` for development
 - `WEB_OAUTH_CALLBACK_URL=`
-  - url to redirect/callback to after oauth signin/signup is done
-  - this does not need to be added as an authorized redirect thingy under that google cloud thingy
-  - should be `WEB_OAUTH_CALLBACK_URL=https://quizfreely.com/sign-up` for production
-  - should be `WEB_OAUTH_CALLBACK_URL=http://localhost:8080/sign-up` for development
+    - url to redirect/callback to after oauth signin/signup is done
+    - this does not need to be added as an authorized redirect thingy under that google cloud thingy
+    - should be `WEB_OAUTH_CALLBACK_URL=https://quizfreely.com/sign-up` for production
+    - should be `WEB_OAUTH_CALLBACK_URL=http://localhost:8080/sign-up` for development
 - `CRON_CLEAR_LOGS=`
-  - `true` or `false` to enable or disable cron job to clear logs (clears contents of `quizfreely-api.log`) every hour, day, week, or month, etc (interval set with `CRON_CLEAR_LOGS_INTERVAL=`)
-  - should be `CRON_CLEAR_LOGS=true` for production
+    - `true` or `false` to enable or disable cron job to clear logs (clears contents of `quizfreely-api.log`) every hour, day, week, or month, etc (interval set with `CRON_CLEAR_LOGS_INTERVAL=`)
+    - should be `CRON_CLEAR_LOGS=true` for production
 - `CRON_CLEAR_LOGS_INTERVAL=`
-  - croner pattern to schedule when to run cron job to clear logs (https://croner.56k.guru/usage/pattern/)
-    - for example: daily is `CRON_CLEAR_LOGS_INTERVAL="0 0 * * *"`
-    - another example, weekly is `CRON_CLEAR_LOGS_INTERVAL="0 0 * * 0"`
-  - this does not matter if `CRON_CLEAR_LOGS` is `false`. You/we can comment it out or leave it blank if you have `CRON_CLEAR_LOGS=false`, but you must give it a valid value if you have `CRON_CLEAR_LOGS=true`
-  - Hourly is probably too frequent for most use cases. Daily or weekly are reccomended
+    - croner pattern to schedule when to run cron job to clear logs (https://croner.56k.guru/usage/pattern/)
+        - for example: daily is `CRON_CLEAR_LOGS_INTERVAL="0 0 * * *"`
+        - another example, weekly is `CRON_CLEAR_LOGS_INTERVAL="0 0 * * 0"`
+    - this does not matter if `CRON_CLEAR_LOGS` is `false`. You/we can comment it out or leave it blank if you have `CRON_CLEAR_LOGS=false`, but you must give it a valid value if you have `CRON_CLEAR_LOGS=true`
+    - Hourly is probably too frequent for most use cases. Daily or weekly are reccomended
 - `CRON_DELETE_EXPIRED_SESSIONS=`
-  - `true` or `false` to enable or disable cron job to delete expired sessions from `auth.sessions` in your/our PostgreSQL database every hour, day, week, or month, etc (interval set with `CRON_DELETE_EXPIRED_SESSIONS_INTERVAL=`)
-  - This is NOT security-related. Session tokens will always stop working after they expire (see [developer docs > api > auth.md](./auth.md) for details). We only delete them for storage space and performance.
-  - should be `CRON_DELETE_EXPIRED_SESSIONS=true` for production
+    - `true` or `false` to enable or disable cron job to delete expired sessions from `auth.sessions` in your/our PostgreSQL database every hour, day, week, or month, etc (interval set with `CRON_DELETE_EXPIRED_SESSIONS_INTERVAL=`)
+    - This is NOT security-related. Session tokens will always stop working after they expire (see [developer docs > api > auth.md](./auth.md) for details). We only delete them for storage space and performance.
+    - should be `CRON_DELETE_EXPIRED_SESSIONS=true` for production
 - `CRON_DELETE_EXPIRED_SESSIONS_INTERVAL=`
-  - croner pattern to schedule when to run cron job to delete expired sessions (https://croner.56k.guru/usage/pattern/)
-    - for example: hourly is `CRON_DELETE_EXPIRED_SESSIONS_INTERVAL="0 * * * *"`
-    - another example, daily is `CRON_DELETE_EXPIRED_SESSIONS_INTERVAL="0 0 * * *"`
-    - another example, weekly is `CRON_DELETE_EXPIRED_SESSIONS_INTERVAL="0 0 * * 0"`
-  - This is NOT security-related. Session tokens will always stop working after they expire (see [developer docs > api > auth.md](./auth.md) for details). We only delete them for storage space and performance.
-  - this does not matter if `CRON_DELETE_EXPIRED_SESSIONS` is `false`. You/we can comment it out or leave it blank if you have `CRON_DELETE_EXPIRED_SESSIONS=false`, but you must give it a valid value if you have `CRON_DELETE_EXPIRED_SESSIONS=true`
-  - Daily or weekly are reccomended
+    - croner pattern to schedule when to run cron job to delete expired sessions (https://croner.56k.guru/usage/pattern/)
+        - for example: hourly is `CRON_DELETE_EXPIRED_SESSIONS_INTERVAL="0 * * * *"`
+        - another example, daily is `CRON_DELETE_EXPIRED_SESSIONS_INTERVAL="0 0 * * *"`
+        - another example, weekly is `CRON_DELETE_EXPIRED_SESSIONS_INTERVAL="0 0 * * 0"`
+    - This is NOT security-related. Session tokens will always stop working after they expire (see [developer docs > api > auth.md](./auth.md) for details). We only delete them for storage space and performance.
+    - this does not matter if `CRON_DELETE_EXPIRED_SESSIONS` is `false`. You/we can comment it out or leave it blank if you have `CRON_DELETE_EXPIRED_SESSIONS=false`, but you must give it a valid value if you have `CRON_DELETE_EXPIRED_SESSIONS=true`
+    - Daily or weekly are reccomended

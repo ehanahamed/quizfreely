@@ -33,29 +33,29 @@ That SameSite attribute of the auth cookie is configured in quizfreely-api's `.e
 When we setup our PostgreSQL database we create three roles: `quizfreely_api`, `quizfreely_auth`, and `quizfreely_auth_user`. (The commands to setup the database are in [`config/db/quizfreely-db-setup.sql`](../../../config/db/quizfreely-db-setup.sql) and the process is explained in [developer docs > production > api-setup.md > Postgres setup](../production/api-setup.md#postgres-setup))
 
 - `quizfreely_api` role
-  - can be logged in/connected as
-  - has a password (set it using `\password quizfreely_api` in the database shell (`psql -d quizfreely_db`))
-  - can view public information
-    - can view `public.studysets` rows where `private = false`
-    - can view `public.profiles`
+    - can be logged in/connected as
+    - has a password (set it using `\password quizfreely_api` in the database shell (`psql -d quizfreely_db`))
+    - can view public information
+        - can view `public.studysets` rows where `private = false`
+        - can view `public.profiles`
 - `quizfreely_auth` role
-  - can NOT be logged in/connected as
-    - the server process/js code connects as `quizfreely_api` and then switches to this role when it needs to
-  - can view and edit sensitive information
-    - can view and edit `auth.users`
-    - can view and edit `auth.sessions`
-    - we use this role to manage users' accounts, so this role needs permissions for account data and encrypted/hashed passwords to let users log in or sign up
+    - can NOT be logged in/connected as
+        - the server process/js code connects as `quizfreely_api` and then switches to this role when it needs to
+    - can view and edit sensitive information
+        - can view and edit `auth.users`
+        - can view and edit `auth.sessions`
+        - we use this role to manage users' accounts, so this role needs permissions for account data and encrypted/hashed passwords to let users log in or sign up
 - `quizfreely_auth_user` role
-  - can NOT be logged in/connected as
-    - the server process/js code connects as `quizfreely_api` and then switches to `quizfreely_auth` and then after logging in/verifying a user's session, it switches to `quizfreely_auth_user`
-  - can view public information
-    - can view `public.studysets` rows where `private = false`
-  - sets `quizfreely_auth.user_id` to the specific quizfreely user's id, so they can only get permission to access their own data
-  - can view & edit their own account data, sessions, and studysetes
-    - can view and edit their own user data in `auth.users`
-    - can view and edit their own sessions in `auth.sessions`
-    - can view and edit their own studysets in `public.studysets`
-
+    - can NOT be logged in/connected as
+        - the server process/js code connects as `quizfreely_api` and then switches to `quizfreely_auth` and then after logging in/verifying a user's session, it switches to `quizfreely_auth_user`
+    - can view public information
+        - can view `public.studysets` rows where `private = false`
+    - sets `quizfreely_auth.user_id` to the specific quizfreely user's id, so they can only get permission to access their own data
+    - can view & edit their own account data, sessions, and studysetes
+        - can view and edit their own user data in `auth.users`
+        - can view and edit their own sessions in `auth.sessions`
+        - can view and edit their own studysets in `public.studysets`
+  
 The server process/js code connects to the database as the `quizfreely_api` role.
 
 `quizfreely_api` can switch to other roles (`quizfreely_auth` or `quizfreely_auth_user`) after it connects, so that it only has permissions when we decide/the server js code decides it needs those permissions. It uses `set role role_goes_here;`, it can only become roles we allow it to become. When we setup the database with [`config/db/quizfreely-db-setup.sql`](../../../config/db/quizfreely-db-setup.sql) (explained in [developer docs > production > api-setup.md > Postgres setup](../production/api-setup.md#postgres-setup)) we grant `quizfreely_api` permission to become `quizfreely_auth`, and grant `quizfreely_auth` permission to become `quizfreely_auth_user`.
