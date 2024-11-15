@@ -773,6 +773,21 @@ function cookieOptions() {
   }
 }
 
+fastify.get("/docs/*", function (request, reply) {
+  try {
+    userData(request).then(function (userResult) {
+      reply.view("docs-page.html", {
+        ...themeData(request),
+        authed: userResult.authed,
+        authedUser: userResult?.authedUser,
+        page: request.url
+      })
+    })
+  } catch (error) {
+    reply.callNotFound();
+  }
+})
+
 fastify.get("/settings/themes/:theme", function (request, reply) {
   if (themes.includes(request.params.theme)) {
     reply.setCookie(
