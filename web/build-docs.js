@@ -5,6 +5,7 @@ const markdown = new Showdown.Converter();
 
 let srcDir = path.resolve(import.meta.dirname, "..", "docs");
 let outputDir = path.join(import.meta.dirname, "views", "docs");
+let outputListFile = path.join(import.meta.dirname, "docs.json")
 
 let srcFiles = [];
 let srcSubfolders = [];
@@ -40,8 +41,8 @@ for (var i = 0; i < srcFiles.length; i++) {
     if (srcFiles[i].endsWith(".md")) {
         let relativeFilePath = path.relative(srcDir, srcFiles[i]);
         /* remove `.md` (last 3 chars) & add `.html` ext */
-        relativeFilePath = (relativeFilePath.substring(0, (relativeFilePath.length - 3)) + ".html");
-        let outputFilePath = path.join(outputDir, relativeFilePath);
+        let newRelativeFilePath = (relativeFilePath.substring(0, (relativeFilePath.length - 3)) + ".html");
+        let outputFilePath = path.join(outputDir, newRelativeFilePath);
         let fileContent = await fsPromises.readFile(
             srcFiles[i],
             { encoding: "utf8" }
@@ -50,8 +51,15 @@ for (var i = 0; i < srcFiles.length; i++) {
             outputFilePath,
             markdown.makeHtml(fileContent)
         )
-        outputFiles.push(relativeFilePath);
+        outputFiles.push(newRelativeFilePath);
+        console.log("✅ " + relativeFilePath);
     }
 }
-console.log(outputFiles);
-console.log(outputSubfolders);
+
+await fsPromises.writeFile(
+    outputListFile,
+    JSON.stringify({
+        files: outputFiles,
+        folders: outputSubfolders
+    })
+)
