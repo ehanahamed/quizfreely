@@ -165,6 +165,7 @@ const schema = `
         id: ID
         title: String
         private: Boolean
+        updated_at: String
         user_id: ID
         user_display_name: String
         data: StudysetData
