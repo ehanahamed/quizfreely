@@ -294,7 +294,7 @@ function dashboard(request, reply) {
         }`
       }
     }).then(function (rawApiRes) {
-      rawApiRes.json(function (apiRes) {
+      rawApiRes.json().then(function (apiRes) {
         if (apiRes?.data?.authed) {
           if (apiRes?.data?.myStudysets) {
             reply.view("dashboard.html", {
