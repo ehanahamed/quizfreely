@@ -277,7 +277,7 @@ function dashboard(request, reply) {
         "Authorization": "Bearer " + request.cookies.auth,
         "Content-Type": "application/json"
       },
-      body: {
+      body: JSON.stringify({
         query: `query {
           authed
           authedUser {
@@ -292,7 +292,7 @@ function dashboard(request, reply) {
             updated_at
           }
         }`
-      }
+      })
     }).then(function (rawApiRes) {
       rawApiRes.json().then(function (apiRes) {
         if (apiRes?.data?.authed) {
