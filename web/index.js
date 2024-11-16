@@ -187,7 +187,7 @@ function landingPage(request, reply) {
     headers: {
       "Content-Type": "application/json"
     },
-    body: {
+    body: JSON.stringify({
       query: `query {
         authed
         authedUser {
@@ -204,7 +204,7 @@ function landingPage(request, reply) {
           updated_at
         }
       }`
-    }
+    })
   }).then(function (response) {
     response.json().then(function (responseJson) {
       let authed = false;
@@ -508,12 +508,17 @@ fastify.get("/studysets/:studyset", function (request, reply) {
     method: "POST",
     headers: headers,
     body: JSON.stringify({
-      query: `query {
+      query: `query publicStudyset($id: ID!) {
         authed
-        authedUser
-        studyset(id: $1, withAuth: false) {
+        authedUser {
+          id
+          username
+          display_name
+        }
+        studyset(id: $id, withAuth: false) {
           id
           title
+          updated_at
           user_id
           user_display_name
           data {
@@ -521,10 +526,13 @@ fastify.get("/studysets/:studyset", function (request, reply) {
           }
           terms_count
         }
-      }`
+      }`,
+      variables: {
+        id: request.params.studyset
+      }
     })
   }).then(function (rawApiRes) {
-    rawApiRes.json(function (apiRes) {
+    rawApiRes.json().then(function (apiRes) {
       let authed = false;
       let authedUser;
       if (apiRes?.data?.authed) {
@@ -548,22 +556,7 @@ fastify.get("/studysets/:studyset", function (request, reply) {
       }
     })
   })
-  userData(request).then(function (userResult) {
-    fetch(API_URL + "/v0/public/studysets/" + request.params.studyset)
-    .then(function (response) {
-      response.json().then(function (responseJson) {
-        if (responseJson.error) {
-          reply.callNotFound()
-        } else {
-          
-        }
-      });
-    }).catch(function (error) {
-      request.log.error(error)
-      reply.callNotFound();
-    });
-  })
-})
+});
 
 fastify.get("/studyset/private/:studyset", function (request, reply) {
   userData(request).then(function (userResult) {
