@@ -25,16 +25,23 @@
   <eta> } </eta>
   <div class="status">
     <eta> if (data.authed) { </eta>
-    <div class="dropdown">
-      <button class="icon-only-button" style="margin-top:0px;margin-bottom:0px;margin-left:1rem;margin-right:1rem">
+    <div class="dropdown" style="margin-top:0px;margin-bottom:0px;margin-left:1rem;margin-right:1rem">
+      <eta> if (data.authedUser.display_name.length < 10) { </eta>
+      <button class="icon-only-button">
         <i class="nf nf-fa-user"></i>
         <eta>= data.authedUser.display_name </eta>
       </button>
+      <eta> } else { </eta>
+      <button class="icon-only-button">
+        <i class="nf nf-fa-user"></i>
+        Signed in
+      </button>
+      <eta> } </eta>
+      <div></div>
     </div>
     <eta> } else { </eta>
       <div class="flex" style="margin-top:0px;margin-bottom:0px;margin-left:1rem;margin-right:1rem">
-        <a href="/sign-in" class="button alt">Log in</a>
-        <a href="/sign-up" class="button">Sign up</a>
+        <a href="/sign-in" class="button alt">Sign in</a>
       </div>
     <eta> } </eta>
   </div>
