@@ -464,7 +464,7 @@ await fastify.register(mercurius, {
 async function getPublicStudyset(id) {
     try {
         let result = await pool.query(
-            "select s.id, s.user_id, u.display_name as user_display_name, s.title, s.data, s.updated_at, s.terms_count " +
+            "select s.id, s.user_id, u.display_name as user_display_name, s.title, s.data, to_char(s.updated_at, 'YYYY-MM-DD\"T\"HH24:MI:SS.MSTZH:TZM') as updated_at, s.terms_count " +
             "from public.studysets s inner join public.profiles u on s.user_id = u.id " +
             "where s.id = $1 and s.private = false limit 1",
             [ id ]
@@ -507,7 +507,7 @@ async function getStudyset(id, authedUserId) {
             [ authedUserId ]
         );
         let selectedStudyset = await client.query(
-            "select id, user_id, title, private, data, updated_at from public.studysets " +
+            "select id, user_id, title, private, data, to_char(updated_at, 'YYYY-MM-DD\"T\"HH24:MI:SS.MSTZH:TZM') as updated_at, from public.studysets " +
             "where id = $1 and (private = false or user_id = $2)",
             [ id, authedUserId ]
         );
@@ -544,7 +544,7 @@ async function createStudyset(studyset, authedUserId) {
         ]);
         let insertedStudyset = await client.query(
             "insert into public.studysets (user_id, title, private, data, terms_count) " +
-            "values ($1, $2, $3, $4, $5) returning id, user_id, title, private, terms_count, updated_at",
+            "values ($1, $2, $3, $4, $5) returning id, user_id, title, private, terms_count, to_char(updated_at, 'YYYY-MM-DD\"T\"HH24:MI:SS.MSTZH:TZM') as updated_at",
             [
                 authedUserId,
                 studyset.title,
@@ -587,7 +587,7 @@ async function updateStudyset(id, studyset, authedUserId) {
         ]);
         let updatedStudyset = await client.query(
             "update public.studysets set title = $2, private = $3, data = $4, terms_count = $5, updated_at = clock_timestamp() " +
-            "where id = $1 returning id, user_id, title, private, terms_count, updated_at",
+            "where id = $1 returning id, user_id, title, private, terms_count, to_char(updated_at, 'YYYY-MM-DD\"T\"HH24:MI:SS.MSTZH:TZM') as updated_at",
             [
                 id,
                 studyset.title,
@@ -701,7 +701,7 @@ async function getUser(id) {
 async function featuredStudysets(limit, offset) {
     try {
         let result = await pool.query(
-            "select s.id, s.user_id, u.display_name as user_display_name, s.title, s.updated_at, s.terms_count " +
+            "select s.id, s.user_id, u.display_name as user_display_name, s.title, to_char(s.updated_at, 'YYYY-MM-DD\"T\"HH24:MI:SS.MSTZH:TZM') as updated_at, s.terms_count " +
             "from public.studysets s inner join public.profiles u on s.user_id = u.id " +
             "where s.featured = true and s.private = false order by s.updated_at desc limit $1 offset $2",
             [ limit, offset ]
@@ -719,7 +719,7 @@ async function featuredStudysets(limit, offset) {
 async function recentStudysets(limit, offset) {
     try {
         let result = await pool.query(
-            "select s.id, s.user_id, u.display_name as user_display_name, s.title, s.updated_at, s.terms_count " +
+            "select s.id, s.user_id, u.display_name as user_display_name, s.title, to_char(s.updated_at, 'YYYY-MM-DD\"T\"HH24:MI:SS.MSTZH:TZM') as updated_at, s.terms_count " +
             "from public.studysets s inner join public.profiles u on s.user_id = u.id " +
             "where s.private = false order by s.updated_at desc limit $1 offset $2",
             [ limit, offset ]
@@ -783,7 +783,7 @@ async function updateUser(authedUserId, updatedThingies) {
 async function searchStudysets(query, limit, offset) {
     try {
         let result = await pool.query(
-            "select s.id, s.user_id, u.display_name, s.title, s.updated_at, s.terms_count " +
+            "select s.id, s.user_id, u.display_name, s.title, to_char(s.updated_at, 'YYYY-MM-DD\"T\"HH24:MI:SS.MSTZH:TZM') as updated_at, s.terms_count " +
             "from public.studysets s inner join public.profiles u on s.user_id = u.id " +
             "where s.private = false and tsvector_title @@ websearch_to_tsquery('english', $1) " +
             "limit $2 offset $3",
@@ -862,7 +862,7 @@ async function myStudysets(authedUserId, limit, offset) {
             authedUserId
         ]);
         let studysets = await client.query(
-            "select id, user_id, title, private, updated_at from public.studysets " +
+            "select id, user_id, title, private, to_char(updated_at, 'YYYY-MM-DD\"T\"HH24:MI:SS.MSTZH:TZM') as updated_at from public.studysets " +
             "where user_id = $1 order by updated_at desc limit $2 offset $3",
             [
                 authedUserId,
@@ -1633,6 +1633,7 @@ fastify.get("/list/my-studysets", async function (request, reply) {
                 error: result.error
             })
         } else {
+            console.log(result.data)
             return reply.send({
                 data: {
                     studysets: result.data
