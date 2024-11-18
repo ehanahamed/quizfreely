@@ -250,40 +250,18 @@
     <eta> if (data.new) { </eta>
     <script>
       editTermsTable.add();
-      /* indexeddb stuff */
-      /*var db;
-        var dbReq = indexedDB.open("quizfreelydata", 1);
-        dbReq.onerror = function (event) {
-          alert("Oh no! IndexedDB errored. Better error message coming soon?");
-        }
-        dbReq.onupgradeneeded = function (event) {
-          db = event.target.result;
-          if (db.objectStoreNames.contains("studysets") == false) {
-            var studysetsObjectStore = db.createObjectStore("studysets", { keyPath: "id", autoIncrement: true });
-            studysetsObjectStore.createIndex("title_idx", "title");
-          }
-        }
-        dbReq.onsuccess = function (event) {
-          db = event.target.result;
-          db.onerror = function (event) {
-            console.error(event);
-            alert("Oh no! An IndexedDB error!");
-          };
-          document.getElementById("create-button-local").addEventListener("click", function () {
-            var dbtrans = db.transaction("studysets", "readwrite");
-            var studysetsObjectStore = dbtrans.objectStore("studysets");
-            var addReq = studysetsObjectStore.add({
-              title: document.getElementById("edit-title").value,
-              data: {
-                terms: editTermsTable.arrayFromTable()
-              },
-              updated_at: (new Date()).toUTCString()
-            });
-            addReq.onsuccess = function () {
-              alert(objectStore.autoIncrement);
+      document.getElementById("create-local-button").addEventListener("click", function () {
+        openIndexedDB(function (db) {
+          var studysetsObjectStore = db.transaction("studysets", "readwrite").objectStore("studysets");
+          studysetsObjectStore.add({
+            title: document.getElementById("edit-title").value,
+            private: private,
+            data: {
+              terms: editTermsTable.arrayFromTable()
             }
           });
-        };*/
+        })
+      })
     </script>
     <eta> if (data.authed) { </eta>
     <!-- and data.new is true (creating a new studyset, not updating one) -->
@@ -292,6 +270,7 @@
       document.getElementById("create-button-authed").addEventListener("click", function () {
         var private = document.getElementById("edit-private-true").classList.contains("selected");
         if (doubleReq == false) {
+          doubleReq = true;
           fetch("/api/v0/studysets", {
             method: "POST",
             headers: {
@@ -328,7 +307,6 @@
             alert("fetch error?");
             console.error(error);
           })
-          doubleReq = true;
         }
       })
     </script>
