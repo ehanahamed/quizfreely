@@ -591,13 +591,14 @@ fastify.get("/studyset/private/:studyset", function (request, reply) {
   })
 })
 
-fastify.get("/studyset/local/:studyset", function (request, reply) {
+fastify.get("/studyset/local", function (request, reply) {
   userData(request).then(function (userResult) {
     reply.view("studyset.html", {
       ...themeData(request),
       local: true,
-      studysetPage: "/studyset/local/" + request.params.studyset,
-      studysetEditPage: "/studyset/edit-local/" + request.params.studyset,
+      id: request?.query?.id,
+      studysetPage: "/studyset/local/?id=" + request?.query?.id,
+      studysetEditPage: "/studyset/edit-local/" + request?.query?.id,
       authed: userResult.authed,
       authedUser: userResult?.authedUser
     })
@@ -655,6 +656,18 @@ fastify.get("/studyset/edit/:studyset", function (request, reply) {
         authedUser: userResult?.authedUser
         /* work in progress add error thingy */
       })
+    })
+  })
+})
+
+fastify.get("/studyset/edit-local", function (request, reply) {
+  userData(request).then(function (userResult) {
+    reply.view("edit.html", {
+      ...themeData(request),
+      new: false,
+      studyset: res.data.studyset,
+      authed: userResult.authed,
+      authedUser: userResult?.authedUser
     })
   })
 })
