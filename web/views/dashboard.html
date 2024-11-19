@@ -166,6 +166,7 @@
           } else {
             var emptyMessageElement = document.getElementById("local-list-empty");
             if (emptyMessageElement) {
+              document.getElementById("local-list").classList.remove("hide");
               emptyMessageElement.classList.remove("hide");
             }
           }
