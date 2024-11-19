@@ -200,14 +200,35 @@
                 <i class="nf nf-md-card_multiple"></i>
                 Flashcards
               </button>
-              <a href="<eta>= data.studysetPage </eta>/review" class="button alt">
+              <eta> if (data.local) { </eta>
+              <a href="/studyset/local/review?id=<eta> data.localId </eta>" class="button alt">
                 <i class="nf nf-fa-book"></i>
                 Review Mode
               </a>
-              <a href="<eta>= data.studysetPage </eta>/test" class="button alt">
+              <a href="/studyset/local/quiz?id=<eta> data.localId </eta>" class="button alt">
                 <i class="nf nf-md-list_status"></i>
                 Practice Test
               </a>
+              <eta> } else if (data.studyset?.private) { </eta>
+              <a href="/studyset/private/<eta>= data.studyset.id </eta>/review" class="button alt">
+                <i class="nf nf-fa-book"></i>
+                Review Mode
+              </a>
+              <a href="/studyset/private/<eta>= data.studyset.id </eta>/test" class="button alt">
+                <i class="nf nf-md-list_status"></i>
+                Practice Test
+              </a>
+              <eta> } else if (data.studyset) { </eta>
+                <a href="/studysets/<eta>= data.studyset.id </eta>/review" class="button alt">
+                  <i class="nf nf-fa-book"></i>
+                  Review Mode
+                </a>
+                <a href="/studysets/<eta>= data.studyset.id </eta>/test" class="button alt">
+                  <i class="nf nf-md-list_status"></i>
+                  Practice Test
+                </a>
+              <eta> } </eta>
+              
             </div>
             <!-- Add "this study set is private/public..." thingy here too -->
             <table class="outer caption box" id="terms-table">

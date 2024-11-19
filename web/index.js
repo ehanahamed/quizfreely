@@ -544,8 +544,6 @@ fastify.get("/studysets/:studyset", function (request, reply) {
           ...themeData(request),
           local: false,
           studyset: apiRes.data.studyset,
-          studysetPage: "/studysets/" + request.params.studyset,
-          studysetEditPage: "/studyset/edit/" + request.params.studyset,
           authed: authed,
           authedUser: authedUser
         })
@@ -577,8 +575,6 @@ fastify.get("/studyset/private/:studyset", function (request, reply) {
                 ...themeData(request),
                 local: false,
                 studyset: responseJson.data.studyset,
-                studysetPage: "/studyset/private/" + request.params.studyset,
-                studysetEditPage: "/studyset/edit/" + request.params.studyset,
                 authed: userResult.authed,
                 authedUser: userResult?.authedUser
             })
@@ -597,8 +593,6 @@ fastify.get("/studyset/local", function (request, reply) {
       ...themeData(request),
       local: true,
       localId: request?.query?.id,
-      studysetPage: "/studyset/local?id=" + request?.query?.id,
-      studysetEditPage: "/studyset/edit-local?id=" + request?.query?.id,
       authed: userResult.authed,
       authedUser: userResult?.authedUser
     })
