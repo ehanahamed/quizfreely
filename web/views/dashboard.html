@@ -44,8 +44,9 @@
                 Create new
               </a>
             </div>
+            <eta> if (data.authed) { </eta>
             <div class="grid list" id="studyset-list">
-              <eta> if (data.authed && data.studysetList && data.studysetList.length > 0 ) { </eta>
+              <eta> if (data.studysetList && data.studysetList.length > 0 ) { </eta>
                 <eta> data.studysetList.forEach(function (studyset) { </eta>
                   <div class="box">
                     <eta> if (studyset.private) { </eta>
@@ -62,6 +63,14 @@
               </div>
               <eta> } </eta>
             </div>
+            <eta> } </eta>
+            <p class="h3 hide" id="local-list-title">Offline Studysets</p>
+            <div class="grid list hide" id="local-list"></div>
+            <eta> if (!data.authed) { </eta>
+            <div class="grid list hide" id="local-list-empty">
+              <div>Tap "create new" to create a studyset</div>
+            </div>
+            <eta> } </eta>
             <div id="mainDashboardImportother" class="modal hide">
               <div class="content">
                 <h2>Import from another app</h2>
@@ -120,5 +129,36 @@
       }
     </script>
     <eta> } </eta>
+    <script src="/assets/js/indexedDB.js"></script>
+    <script>
+      openIndexedDB(function (db) {
+        var studysetsObjectStore = db.transaction(["studysets"]).objectStore("studysets");
+        var index = studysetsObjectStore.index("title_idx");
+        var cursorReq = index.openCursor();
+        cursorReq.onsuccess = function (event) {
+          var cursor = event.target.result;
+          if (cursor) {
+            document.getElementById("local-studysets-list").classList.remove("hide");
+            var div = document.createElement("div");
+            div.classList.add("box");
+            var title = document.createElement("a");
+            title.innerText = cursor.title;
+            title.href = "/studyset/local?id=" + cursor.id;
+            var timestamp = document.createElement("p");
+            timestamp.classList.add("h6");
+            timestamp.innerText = fancyTimestamp.format(cursor.updated_at);
+            div.appendChild(title);
+            div.appendChild(timestamp);
+            document.getElementById("local-studysets-list").appendChild(div);
+            cursor.continue();
+          } else {
+            var emptyMessage = document.getElementById("local-studysets-list-empty");
+            if (emptyMessage) {
+              emptyMessage.classList.remove("hide");
+            }
+          }
+        }
+      })
+    </script>
   </body>
 </html>
