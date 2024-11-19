@@ -596,9 +596,9 @@ fastify.get("/studyset/local", function (request, reply) {
     reply.view("studyset.html", {
       ...themeData(request),
       local: true,
-      id: request?.query?.id,
-      studysetPage: "/studyset/local/?id=" + request?.query?.id,
-      studysetEditPage: "/studyset/edit-local/" + request?.query?.id,
+      localId: request?.query?.id,
+      studysetPage: "/studyset/local?id=" + request?.query?.id,
+      studysetEditPage: "/studyset/edit-local?id=" + request?.query?.id,
       authed: userResult.authed,
       authedUser: userResult?.authedUser
     })
