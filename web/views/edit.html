@@ -250,7 +250,8 @@
     <eta> if (data.new) { </eta>
     <script>
       editTermsTable.add();
-      document.getElementById("create-local-button").addEventListener("click", function () {
+      document.getElementById("create-button-local").addEventListener("click", function () {
+        var private = document.getElementById("edit-private-true").classList.contains("selected");
         openIndexedDB(function (db) {
           var studysetsObjectStore = db.transaction("studysets", "readwrite").objectStore("studysets");
           studysetsObjectStore.add({
