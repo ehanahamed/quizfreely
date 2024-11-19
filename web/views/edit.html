@@ -254,13 +254,25 @@
         var private = document.getElementById("edit-private-true").classList.contains("selected");
         openIndexedDB(function (db) {
           var studysetsObjectStore = db.transaction("studysets", "readwrite").objectStore("studysets");
-          studysetsObjectStore.add({
+          var dbAddReq = studysetsObjectStore.add({
             title: document.getElementById("edit-title").value,
             private: private,
             data: {
               terms: editTermsTable.arrayFromTable()
             }
           });
+          dbAddReq.onsuccess = function (event) {
+            /*
+              "If the operation is successful,
+              the value of the request's result property is the key
+              for the new record" (https://developer.mozilla.org/en-US/docs/Web/API/IDBObjectStore/add)
+            */
+            window.location.replace("/studyset/local?id=" + dbAddReq.result)
+          }
+          dbAddReq.onerror = function (error) {
+            console.error(error);
+            alert("indexeddb error while trying to add studyset")
+          }
         })
       })
     </script>
