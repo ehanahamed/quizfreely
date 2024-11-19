@@ -64,13 +64,19 @@
               <eta> } </eta>
             </div>
             <eta> } </eta>
+            <eta> if (data.authed) { </eta>
+            <!-- only show "Offline Studysets" title to tell the difference from studysets saved to an account when logged in -->
+            <!-- also, the element has class="... hide" cause client/browser js only shows it if there are local studysets and the user is signed in -->
             <p class="h3 hide" id="local-list-title">Offline Studysets</p>
-            <div class="grid list hide" id="local-list"></div>
-            <eta> if (!data.authed) { </eta>
-            <div class="grid list hide" id="local-list-empty">
-              <div>Tap "create new" to create a studyset</div>
-            </div>
             <eta> } </eta>
+            <div class="grid list hide" id="local-list">
+              <eta> if (data.authed == false) { </eta>
+              <!-- only show empty message if user is logged out and can therefore only have local studysets -->
+              <div class="hide box flex center-h center-v" id="local-list-empty">
+                <div>Tap "create new" to create a studyset</div>
+              </div>
+              <eta> } </eta>
+            </div>
             <div id="mainDashboardImportother" class="modal hide">
               <div class="content">
                 <h2>Import from another app</h2>
@@ -132,31 +138,41 @@
     <script src="/assets/js/indexedDB.js"></script>
     <script>
       openIndexedDB(function (db) {
-        var studysetsObjectStore = db.transaction(["studysets"]).objectStore("studysets");
-        var index = studysetsObjectStore.index("title_idx");
-        var cursorReq = index.openCursor();
-        cursorReq.onsuccess = function (event) {
-          var cursor = event.target.result;
-          if (cursor) {
-            document.getElementById("local-studysets-list").classList.remove("hide");
-            var div = document.createElement("div");
-            div.classList.add("box");
-            var title = document.createElement("a");
-            title.innerText = cursor.title;
-            title.href = "/studyset/local?id=" + cursor.id;
-            var timestamp = document.createElement("p");
-            timestamp.classList.add("h6");
-            timestamp.innerText = fancyTimestamp.format(cursor.updated_at);
-            div.appendChild(title);
-            div.appendChild(timestamp);
-            document.getElementById("local-studysets-list").appendChild(div);
-            cursor.continue();
+        var studysetsObjectStore = db.transaction(["studysets"], "readonly").objectStore("studysets");
+        var dbStudysetsReq = studysetsObjectStore.getAll();
+        dbStudysetsReq.onsuccess = function (event) {
+          var studysets = dbStudysetsReq.result;
+          if (studysets.length >= 1) {
+            var localListTitleElement = document.getElementById("local-list-title");
+            if (localListTitleElement) {
+              localListTitleElement.classList.remove("hide");
+            }
+            document.getElementById("local-list").classList.remove("hide");
+            for (var i = 0; i < studysets.length; i++) {
+              var div = document.createElement("div");
+              div.classList.add("box");
+              var title = document.createElement("a");
+              title.innerText = studysets[i].title;
+              title.href = "/studyset/local?id=" + studysets[i].id;
+              div.appendChild(title);
+              if (studysets[i].updated_at) {
+                var timestamp = document.createElement("p");
+                timestamp.classList.add("h6");
+                timestamp.innerText = fancyTimestamp.format(studysets[i].updated_at);
+                div.appendChild(timestamp);
+              }
+              document.getElementById("local-list").appendChild(div);
+            }
           } else {
-            var emptyMessage = document.getElementById("local-studysets-list-empty");
-            if (emptyMessage) {
-              emptyMessage.classList.remove("hide");
+            var emptyMessageElement = document.getElementById("local-list-empty");
+            if (emptyMessageElement) {
+              emptyMessageElement.classList.remove("hide");
             }
           }
+        }
+        dbStudysetsReq.onerror = function (error) {
+          alert("error getting local studysets list from indexeddb");
+          console.error(error);
         }
       })
     </script>
