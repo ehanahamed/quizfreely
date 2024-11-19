@@ -228,22 +228,28 @@
     <script>
       openIndexedDB(function (db) {
         var studysetsObjectStore = db.transaction(["studysets"]).objectStore("studysets");
-        var dbGetReq = studysetsObjectStore.get("<eta>= data.localId </eta>");
+        var dbGetReq = studysetsObjectStore.get(<eta>= data.localId </eta>);
         dbGetReq.onerror = function (event) {
           alert("oopsie woopsie, indexeddb error");
         }
         dbGetReq.onsuccess = function (event) {
-          if (dbGetReq.result && dbGetReq.result.data && dbGetReq.result.data.terms) {
-            var termsTable = document.getElementById("terms-table");
-            for (var i = 0; i < dbGetReq.result.data.terms.length; i++) {
-              var newRow = termsTable.insertRow();
-              var newCol0 = newRow.insertColumn();
-              var newCol1 = newRow.insertColumn();
-              newCol0.innerText = dbGetReq.result.data.terms[i][0];
-              newCol1.innerText = dbGetReq.result.data.terms[i][1];
+          if (dbGetReq.result) {
+            if (dbGetReq.result.title) {
+              document.getElementById("studyset-title").innerText = dbGetReq.result.title;
+            }
+            if (dbGetReq.result.data && dbGetReq.result.data.terms) {
+              var termsTable = document.getElementById("terms-table");
+              for (var i = 0; i < dbGetReq.result.data.terms.length; i++) {
+                var newRow = termsTable.insertRow();
+                var newCell0 = newRow.insertCell();
+                var newCell1 = newRow.insertCell();
+                newCell0.innerText = dbGetReq.result.data.terms[i][0];
+                newCell1.innerText = dbGetReq.result.data.terms[i][1];
+              }
+              flashcardsChange();
             }
           } else {
-            alert("studyset loaded but no terms???")
+            alert("studyset not found :(")
           }
         }
       })
