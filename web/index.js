@@ -659,7 +659,7 @@ fastify.get("/studyset/edit-local", function (request, reply) {
     reply.view("edit.html", {
       ...themeData(request),
       new: false,
-      studyset: res.data.studyset,
+      localId: request.query.id,
       authed: userResult.authed,
       authedUser: userResult?.authedUser
     })
