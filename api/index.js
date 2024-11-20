@@ -18,6 +18,7 @@ const CORS_ORIGIN = process.env.CORS_ORIGIN;
 const COOKIES_DOMAIN = process.env.COOKIES_DOMAIN;
 const LOG_LEVEL = process.env.LOG_LEVEL;
 const LOG_PRETTY = process.env.LOG_PRETTY || "false";
+const ENABLE_OAUTH_GOOGLE = process.env.ENABLE_OAUTH_GOOGLE || "false";
 const OAUTH_GOOGLE_ID = process.env.OAUTH_GOOGLE_CLIENT_ID;
 const OAUTH_GOOGLE_SECRET = process.env.OAUTH_GOOGLE_CLIENT_SECRET;
 const API_OAUTH_CALLBACK = process.env.API_OAUTH_CALLBACK_URL
@@ -73,26 +74,28 @@ await fastify.register(fastifyCors, {
     you will need to register it before @fastify/oauth2"
 */
 await fastify.register(fastifyCookie)
-await fastify.register(fastifyOauth2, {
-    name: "googleOAuth2",
-    scope: ["openid", "profile", "email"],
-    credentials: {
-      client: {
-        id: OAUTH_GOOGLE_ID,
-        secret: OAUTH_GOOGLE_SECRET
-      },
-      auth: fastifyOauth2.GOOGLE_CONFIGURATION
-    },
-    startRedirectPath: "/oauth/google",
-    callbackUri: API_OAUTH_CALLBACK,
-    cookie: {
-        path: "/",
-        secure: true,
-        sameSite: "lax",
-        httpOnly: true
-    },
-    pkce: "S256"
-})
+if (ENABLE_OAUTH_GOOGLE == "true") {
+    await fastify.register(fastifyOauth2, {
+        name: "googleOAuth2",
+        scope: ["openid", "profile", "email"],
+        credentials: {
+          client: {
+            id: OAUTH_GOOGLE_ID,
+            secret: OAUTH_GOOGLE_SECRET
+          },
+          auth: fastifyOauth2.GOOGLE_CONFIGURATION
+        },
+        startRedirectPath: "/oauth/google",
+        callbackUri: API_OAUTH_CALLBACK,
+        cookie: {
+            path: "/",
+            secure: true,
+            sameSite: "lax",
+            httpOnly: true
+        },
+        pkce: "S256"
+    })
+}
 
 fastify.setErrorHandler(function (error, request, reply) {
     if (error.statusCode < 500) {
@@ -884,100 +887,102 @@ async function myStudysets(authedUserId, limit, offset) {
     }
 }
 
-async function googleAuthCallback(tokenObj) {
-    try {
-        let response = await fetch("https://www.googleapis.com/oauth2/v2/userinfo", {
-            method: "GET",
-            headers: {
-                Authorization: "Bearer " + tokenObj.access_token
-            }
-          }
-        );
-        let userinfo = await response.json();
-        let client = await pool.connect();
+if (ENABLE_OAUTH_GOOGLE == "true") {
+    async function googleAuthCallback(tokenObj) {
         try {
-            await client.query("BEGIN");
-            await client.query("set role quizfreely_auth");
-            let upsertedUser = await client.query(
-                "insert into auth.users (display_name, auth_type, oauth_google_id, oauth_google_email) " +
-                "values ($1, 'oauth_google', $2, $3) on conflict (oauth_google_id) do update " +
-                "set oauth_google_email = $3 returning id, display_name",
-                [
-                    userinfo.name,
-                    userinfo.id,
-                    userinfo.email
-                ]
+            let response = await fetch("https://www.googleapis.com/oauth2/v2/userinfo", {
+                method: "GET",
+                headers: {
+                    Authorization: "Bearer " + tokenObj.access_token
+                }
+              }
             );
-            /* after using google auth token and user id, create new session and get quizfreely auth token */
-            let newSession = await client.query(
-                "insert into auth.sessions (user_id) values ($1) returning token, user_id",
-                [upsertedUser.rows[0].id]
-            )
-            await client.query("COMMIT");
-            return {
-                error: false,
-                data: {
-                    user: {
-                        id: upsertedUser.rows[0].id,
-                        display_name: upsertedUser.rows[0].id
+            let userinfo = await response.json();
+            let client = await pool.connect();
+            try {
+                await client.query("BEGIN");
+                await client.query("set role quizfreely_auth");
+                let upsertedUser = await client.query(
+                    "insert into auth.users (display_name, auth_type, oauth_google_id, oauth_google_email) " +
+                    "values ($1, 'oauth_google', $2, $3) on conflict (oauth_google_id) do update " +
+                    "set oauth_google_email = $3 returning id, display_name",
+                    [
+                        userinfo.name,
+                        userinfo.id,
+                        userinfo.email
+                    ]
+                );
+                /* after using google auth token and user id, create new session and get quizfreely auth token */
+                let newSession = await client.query(
+                    "insert into auth.sessions (user_id) values ($1) returning token, user_id",
+                    [upsertedUser.rows[0].id]
+                )
+                await client.query("COMMIT");
+                return {
+                    error: false,
+                    data: {
+                        user: {
+                            id: upsertedUser.rows[0].id,
+                            display_name: upsertedUser.rows[0].id
+                        },
                     },
-                },
-                /* send quizfreely auth token in return obj to use setCookie with it (below) */
-                auth: newSession.rows[0].token
+                    /* send quizfreely auth token in return obj to use setCookie with it (below) */
+                    auth: newSession.rows[0].token
+                }
+            } catch (error) {
+                await client.query("ROLLBACK");
+                return {
+                    error: error
+                }
+            } finally {
+                client.release();
             }
         } catch (error) {
-            await client.query("ROLLBACK");
             return {
                 error: error
             }
-        } finally {
-            client.release();
-        }
-    } catch (error) {
-        return {
-            error: error
         }
     }
-}
-
-fastify.get('/oauth/google/callback', function (request, reply) {
-    // Note that in this example a "reply" is also passed, it's so that code verifier cookie can be cleaned before
-    // token is requested from token endpoint
-    fastify.googleOAuth2.getAccessTokenFromAuthorizationCodeFlow(request, reply, function (error, result) {
-        if (error) {
-            request.log.error(error);
-            reply.redirect(WEB_OAUTH_CALLBACK + "?error=oauth-error");
-        } else {
-            googleAuthCallback(result.token).then(
-                function (result) {
-                    if (result.error) {
-                        request.log.error(result.error)
-                        reply.redirect(WEB_OAUTH_CALLBACK + "?error=oauth-error")
-                    } else {
-                        reply.setCookie(
-                            "auth",
-                            result.auth,
-                            {
-                                domain: COOKIES_DOMAIN,
-                                path: "/",
-                                signed: false,
-                                /* 10 days * 24 h per day * 60 min per h * 60 sec per min = 864000 seconds in 10 days */
-                                maxAge: 864000,
-                                httpOnly: true,
-                                sameSite: "lax",
-                                /* when secure is true,
-                                browsers only send the cookie through https,
-                                on localhost, browsers send it even if localhost isn't using https */
-                                secure: true
-                            }
-                        );
-                        reply.redirect(WEB_OAUTH_CALLBACK)
+    
+    fastify.get('/oauth/google/callback', function (request, reply) {
+        // Note that in this example a "reply" is also passed, it's so that code verifier cookie can be cleaned before
+        // token is requested from token endpoint
+        fastify.googleOAuth2.getAccessTokenFromAuthorizationCodeFlow(request, reply, function (error, result) {
+            if (error) {
+                request.log.error(error);
+                reply.redirect(WEB_OAUTH_CALLBACK + "?error=oauth-error");
+            } else {
+                googleAuthCallback(result.token).then(
+                    function (result) {
+                        if (result.error) {
+                            request.log.error(result.error)
+                            reply.redirect(WEB_OAUTH_CALLBACK + "?error=oauth-error")
+                        } else {
+                            reply.setCookie(
+                                "auth",
+                                result.auth,
+                                {
+                                    domain: COOKIES_DOMAIN,
+                                    path: "/",
+                                    signed: false,
+                                    /* 10 days * 24 h per day * 60 min per h * 60 sec per min = 864000 seconds in 10 days */
+                                    maxAge: 864000,
+                                    httpOnly: true,
+                                    sameSite: "lax",
+                                    /* when secure is true,
+                                    browsers only send the cookie through https,
+                                    on localhost, browsers send it even if localhost isn't using https */
+                                    secure: true
+                                }
+                            );
+                            reply.redirect(WEB_OAUTH_CALLBACK)
+                        }
                     }
-                }
-            )
-        }
+                )
+            }
+        })
     })
-})
+}
 
 function routes(fastify, options, done) {
 fastify.post("/auth/sign-up", {
