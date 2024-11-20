@@ -382,7 +382,7 @@
     </script>
     <eta> } </eta>
     <eta> } </eta>
-    <eta> if (data.local) { </eta>
+    <eta> if (data.local && !data.new) { </eta>
     <script>
       var studysetIDBRecord;
       openIndexedDB(function (db) {
@@ -390,26 +390,30 @@
         var dbGetReq = studysetsObjectStore.get(<eta>= data.localId </eta>);
         dbGetReq.onsuccess = function (event) {
           if (dbGetReq.result) {
-            studysetIDBRecord = dbGetReq.result;
             document.getElementById("edit-title").value = dbGetReq.result.title;
             if (dbGetReq.result.data && dbGetReq.result.data.terms) {
               editTermsTable.tableFromArray(dbGetReq.result.data.terms);
             }
 
             document.getElementById("save-button").addEventListener("click", function (_) {
-            var updatedStudysetIDBRecord = studysetIDBRecord;
-            updatedStudysetIDBRecord.title = document.getElementById("edit-title").value;
-            updatedStudysetIDBRecord.data = {
-              terms: editTermsTable.arrayFromTable()
-            }
-            openIndexedDB(function (db) {
-              var studysetsObjectStore = db.transaction(["studysets"], "readwrite").objectStore("studysets");
-              var dbPutReq = studysetsObjectStore.put(updatedStudysetIDBRecord, <eta>= data.localId </eta>);
-              dbPutReq.onsuccess = function (event) {
-                window.location.replace("/studyset/local?id=" + <eta>= data.localId </eta>);
+              var updatedStudyset = {
+                title: document.getElementById("edit-title").value,
+                data: {
+                  terms: editTermsTable.arrayFromTable()
+                }
               }
+              openIndexedDB(function (db) {
+                var studysetsObjectStore = db.transaction(["studysets"], "readwrite").objectStore("studysets");
+                var dbPutReq = studysetsObjectStore.put(updatedStudyset, <eta>= data.localId </eta>);
+                dbPutReq.onsuccess = function (event) {
+                  window.location.replace("/studyset/local?id=" + <eta>= data.localId </eta>);
+                }
+                dbPutReq.onerror = function (error) {
+                  console.error(error);
+                  alert("indexeddb error while trying to update studyset")
+                }
+              })
             })
-          })
           } else {
             alert("couldn't load local studyset, mabye it doesn't exist?")
           }
@@ -421,5 +425,7 @@
       })
     </script>
     <eta> } </eta>
+    <script src="https://cdn.jsdelivr.net/npm/eruda"></script>
+    <script>eruda.init();</script>
   </body>
 </html>
