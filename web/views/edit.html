@@ -50,6 +50,7 @@
               </div>
             </div>
             <input id="edit-title" type="text" placeholder="Title" />
+            <eta> if (data.authed && !data.local) { </eta>
             <div id="edit-private-div">
               <div class="combo-select">
                 <button class="left selected" id="edit-private-false">
@@ -62,6 +63,7 @@
                 </button>
               </div>
             </div>
+            <eta> } </eta>
             <table class="outer" id="edit-terms-table">
               <!--
                 IMPORTANT:
@@ -386,17 +388,10 @@
     <script>
       openIndexedDB(function (db) {
         var studysetsObjectStore = db.transaction(["studysets"], "readonly").objectStore("studysets");
-        var dbGetReq = studysetsObjectStore.get(<eta> data.localId </eta>);
+        var dbGetReq = studysetsObjectStore.get(<eta>= data.localId </eta>);
         dbGetReq.onsuccess = function (event) {
           if (dbGetReq.result) {
             document.getElementById("edit-title").value = dbGetReq.result.title;
-            if (dbGetReq.result.private) {
-              document.getElementById("edit-private-false").classList.remove("selected");
-              document.getElementById("edit-private-true").classList.add("selected");
-            } else {
-              document.getElementById("edit-private-false").classList.add("selected");
-              document.getElementById("edit-private-true").classList.remove("selected");
-            }
             if (dbGetReq.result.terms) {
               editTermsTable.tableFromArray(dbGetReq.result.terms);
             }
