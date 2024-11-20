@@ -115,7 +115,7 @@ Now edit `.env`:
 6. Get/find our client ID & secret for Google OAuth from Google Cloud Console Thingy, add them in `OAUTH_GOOGLE_CLIENT_ID=` and `OAUTH_GOOGLE_CLIENT_SECRET=`
 7. Set `ENABLE_OAUTH_GOOGLE=` to `ENABLE_OAUTH_GOOGLE=true`, also check quizfreely-web's dotenv file
 8. Set `OAUTH_GOOGLE_CALLBACK_URI=` to `OAUTH_GOOGLE_CALLBACK_URI=https://quizfreely.com/api/oauth/google/callback`
-9. Set `WEB_OAUTH_CALLBACK_URL=` to `WEB_OAUTH_CALLBACK_URL=https://quizfreely.com/sign-up`
+9. Set `OAUTH_REDIRECT_URL=` to `OAUTH_REDIRECT_URL=https://quizfreely.com/sign-in`
 
 All details and options for quizfreely-api's .env file are documented in [api-dotenv.md](../api/api-dotenv.md)
 
@@ -159,9 +159,9 @@ OAUTH_GOOGLE_CLIENT_SECRET=ACTUAL_SECRET_GOES_HERE
 # development: OAUTH_GOOGLE_CALLBACK_URI=http://localhost:8080/api/oauth/google/callback
 OAUTH_GOOGLE_CALLBACK_URI=https://quizfreely.com/api/oauth/google/callback
 
-# production: WEB_OAUTH_CALLBACK_URL=https://quizfreely.com/sign-up
-# development: WEB_OAUTH_CALLBACK_URL=http://localhost:8080/sign-up
-WEB_OAUTH_CALLBACK_URL=https://quizfreely.com/sign-up
+# production: OAUTH_REDIRECT_URL=https://quizfreely.com/sign-in
+# development: OAUTH_REDIRECT_URL=http://localhost:8080/sign-in
+OAUTH_REDIRECT_URL=https://quizfreely.com/sign-in
 ```
 
 For more details about quizfreely-api's .env file, see [api-dotenv.md](../api/api-dotenv.md)
