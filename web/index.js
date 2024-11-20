@@ -21,6 +21,7 @@ const LOG_LEVEL = process.env.LOG_LEVEL
 const LOG_PRETTY = process.env.LOG_PRETTY || "false"
 const CRON_CLEAR_LOGS = process.env.CRON_CLEAR_LOGS || "false";
 const CRON_CLEAR_LOGS_INTERVAL = process.env.CRON_CLEAR_LOGS_INTERVAL;
+const ENABLE_OAUTH_GOOGLE = process.env.ENABLE_OAUTH_GOOGLE || "false";
 
 if (PORT == undefined || HOST == undefined) {
   console.error(
@@ -363,7 +364,8 @@ fastify.get("/sign-up", function (request, reply) {
       signup: true,
       ...themeData(request),
       authed: userResult.authed,
-      authedUser: userResult?.authedUser
+      authedUser: userResult?.authedUser,
+      enableOAuthGoogle: (ENABLE_OAUTH_GOOGLE == "true")
     })
   })
 })
@@ -374,7 +376,8 @@ fastify.get("/sign-in", function (request, reply) {
       signup: false,
       ...themeData(request),
       authed: userResult.authed,
-      authedUser: userResult?.authedUser
+      authedUser: userResult?.authedUser,
+      enableOAuthGoogle: (ENABLE_OAUTH_GOOGLE == "true")
     })
   })
 })
