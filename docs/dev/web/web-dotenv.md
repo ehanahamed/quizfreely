@@ -49,3 +49,6 @@ To setup quizfreely-web & it's .env file for **production** see [production > we
         - another example, weekly is `CRON_CLEAR_LOGS_INTERVAL="0 0 * * 0"`
     - this does not matter if `CRON_CLEAR_LOGS` is `false`. You/we can comment it out or leave it blank if you have `CRON_CLEAR_LOGS=false`, but you must give it a valid value if you have `CRON_CLEAR_LOGS=true`
     - Hourly is probably too frequent for most use cases. Daily or weekly are reccomended
+- `ENABLE_OAUTH_GOOGLE=`
+    - true or false to show or hide Google OAuth buttons/menus/etc
+    - you should also check quizfreely-api's dotenv file for it's oauth configuration stuff

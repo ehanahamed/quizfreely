@@ -112,9 +112,10 @@ Now edit `.env`:
 3. Set `CORS_ORIGIN=` to `CORS_ORIGIN=https://quizfreely.com`
 4. Set `COOKIES_DOMAIN=` to `COOKIES_DOMAIN=quizfreely.com`
 5. Set `LOG_PRETTY=` to `LOG_PRETTY=false`
-5. Get/find our client ID & secret for Google OAuth from Google Cloud Console Thingy, add them in `OAUTH_GOOGLE_CLIENT_ID=` and `OAUTH_GOOGLE_CLIENT_SECRET=`
-6. Set `API_OAUTH_CALLBACK_URL=` to `API_OAUTH_CALLBACK_URL=https://quizfreely.com/api/oauth/google/callback`
-7. Set `WEB_OAUTH_CALLBACK_URL=` to `WEB_OAUTH_CALLBACK_URL=https://quizfreely.com/sign-up`
+6. Get/find our client ID & secret for Google OAuth from Google Cloud Console Thingy, add them in `OAUTH_GOOGLE_CLIENT_ID=` and `OAUTH_GOOGLE_CLIENT_SECRET=`
+7. Set `ENABLE_OAUTH_GOOGLE=` to `ENABLE_OAUTH_GOOGLE=true`, also check quizfreely-web's dotenv file
+8. Set `API_OAUTH_CALLBACK_URL=` to `API_OAUTH_CALLBACK_URL=https://quizfreely.com/api/oauth/google/callback`
+9. Set `WEB_OAUTH_CALLBACK_URL=` to `WEB_OAUTH_CALLBACK_URL=https://quizfreely.com/sign-up`
 
 All details and options for quizfreely-api's .env file are documented in [api-dotenv.md](../api/api-dotenv.md)
 
@@ -123,8 +124,16 @@ When you're done, the edited .env file should look similar to this:
 PORT=8008
 
 # for production: HOST=localhost
-# for development: HOST=0.0.0.0
+# for development (only IPv4): HOST=0.0.0.0
+# for development (IPv6 and IPv4): HOST="::"
 HOST=localhost
+
+# fatal, error, warn, info, debug, or trace
+LOG_LEVEL=warn
+
+# for production: LOG_PRETTY=false
+# for development: LOG_PRETTY=true
+LOG_PRETTY=true
 
 # replace PASSWORD_GOES_HERE and check database name
 POSTGRES_URI=postgres://quizfreely_api:ACTUAL_PASSWORD@localhost/quizfreely_db
@@ -139,12 +148,9 @@ CORS_ORIGIN=https://quizfreely.com
 # for development: COOKIES_DOMAIN=localhost
 COOKIES_DOMAIN=quizfreely.com
 
-# fatal, error, warn, info, debug, or trace
-LOG_LEVEL=warn
-
-# for production: LOG_PRETTY=false
-# for development: LOG_PRETTY=false
-LOG_PRETTY=false
+# enable or disable Google OAuth
+# when true, OAUTH_GOOGLE_CLIENT_ID and OAUTH_GOOGLE_CLIENT_SECRET must be set
+ENABLE_OAUTH_GOOGLE=true
 
 OAUTH_GOOGLE_CLIENT_ID=ACTUAL_ID_GOES_HERE
 OAUTH_GOOGLE_CLIENT_SECRET=ACTUAL_SECRET_GOES_HERE

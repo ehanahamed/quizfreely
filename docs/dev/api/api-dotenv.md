@@ -40,11 +40,16 @@ To setup quizfreely-api & it's .env file for **production** see [production > ap
     - NO trailing slash (`example.com`, NOT `example.com/`)
     - should be `COOKIES_DOMAIN=quizfreely.com` for production
     - should be `COOKIES_DOMAIN=localhost` for development
+- `ENABLE_OAUTH_GOOGLE=`
+    - enable or disable Google OAuth
+    - When it's set to true, `OAUTH_GOOGLE_CLIENT_ID=` and `OAUTH_GOOGLE_CLIENT_SECRET=` must be configured
 - `OAUTH_GOOGLE_CLIENT_ID=`
     - google oauth client id
+    - can comment out or leave empty if `ENABLE_OAUTH_GOOGLE=false`
     - get it from google cloud something: https://console.cloud.google.com/apis/credentials
 - `OAUTH_GOOGLE_CLIENT_SECRET=`
     - google oauth client secret
+    - can comment out or leave empty if `ENABLE_OAUTH_GOOGLE=false`
     - get it from google cloud something: https://console.cloud.google.com/apis/credentials
 - `API_OAUTH_CALLBACK_URL=`
     - url to handle oauth signin/signup

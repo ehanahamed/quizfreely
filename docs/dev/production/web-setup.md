@@ -48,6 +48,7 @@ Now edit `.env`:
 1. Set `HOST=` to `HOST=localhost`
 2. Set `COOKIES_DOMAIN=` to `COOKIES_DOMAIN=quizfreely.com`
 3. Set `LOG_PRETTY=` to `LOG_PRETTY=false`
+4. Set `ENABLE_OAUTH_GOOGLE=` to `ENABLE_OAUTH_GOOGLE=true` OR `ENABLE_OAUTH_GOOGLE=false` (check your/our quizfreely-api dotenv too)
 
 Quizfreely-web's .env file is documented with detail in [web-dotenv.md](../web/web-dotenv.md)
 
@@ -56,11 +57,21 @@ When you're done, the edited .env file should look similar to this:
 PORT=8080
 
 # for production: HOST=localhost
-# for development: HOST=0.0.0.0
+# for development (only IPv4): HOST=0.0.0.0
+# for development (IPv6 and IPv4): HOST="::"
 HOST=localhost
 
+# fatal, error, warn, info, debug, or trace
+LOG_LEVEL=warn
+
+# for production: LOG_PRETTY=false
+# for development: LOG_PRETTY=true
+LOG_PRETTY=false
+
 # no trailing slash: https://example.com NOT https://example.com/
-# for development AND production: API_URL=http://localhost:8008
+# production api & web on same machine: API_URL=http://localhost:8008
+# production api on different host: API_URL=https://example.com
+# for development: API_URL=http://localhost:8008
 API_URL=http://localhost:8008
 
 # no trailing slash: example.com NOT example.com/
@@ -69,12 +80,17 @@ API_URL=http://localhost:8008
 # for development: COOKIES_DOMAIN=localhost
 COOKIES_DOMAIN=quizfreely.com
 
-# fatal, error, warn, info, debug, or trace
-LOG_LEVEL=warn
+# for production: CRON_CLEAR_LOGS=true
+CRON_CLEAR_LOGS=true
 
-# for production: LOG_PRETTY=false
-# for development: LOG_PRETTY=true
-LOG_PRETTY=false
+# croner syntax: https://croner.56k.guru/usage/pattern/
+# weekly: CRON_CLEAR_LOGS_INTERVAL="0 0 * * 0"
+# daily: CRON_CLEAR_LOGS_INTERVAL="0 0 * * *"
+CRON_CLEAR_LOGS_INTERVAL="0 0 * * *"
+
+# show/hide google oauth buttons/menus/etc
+# also check api/.env for related oauth configuration
+ENABLE_OAUTH_GOOGLE=actual_true_or_false_value
 ```
 
 For more details about the .env file, see [web-dotenv.md](../web/web-dotenv.md)
