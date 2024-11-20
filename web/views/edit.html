@@ -253,12 +253,10 @@
     <script>
       editTermsTable.add();
       document.getElementById("create-button-local").addEventListener("click", function () {
-        var private = document.getElementById("edit-private-true").classList.contains("selected");
         openIndexedDB(function (db) {
           var studysetsObjectStore = db.transaction("studysets", "readwrite").objectStore("studysets");
           var dbAddReq = studysetsObjectStore.add({
             title: document.getElementById("edit-title").value,
-            private: private,
             data: {
               terms: editTermsTable.arrayFromTable()
             }
