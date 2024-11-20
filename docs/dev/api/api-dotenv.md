@@ -42,28 +42,30 @@ To setup quizfreely-api & it's .env file for **production** see [production > ap
     - should be `COOKIES_DOMAIN=localhost` for development
 - `ENABLE_OAUTH_GOOGLE=`
     - enable or disable Google OAuth
-    - When it's set to true, `OAUTH_GOOGLE_CLIENT_ID=` and `OAUTH_GOOGLE_CLIENT_SECRET=` must be configured
+    - When it's set to true, we must configure/set values for `OAUTH_GOOGLE_CLIENT_ID=`, `OAUTH_GOOGLE_CLIENT_SECRET=`, and `OAUTH_GOOGLE_CALLBACK_URI=`
 - `OAUTH_GOOGLE_CLIENT_ID=`
     - google oauth client id
-    - can comment out or leave empty if `ENABLE_OAUTH_GOOGLE=false`
-    - get it from google cloud something: https://console.cloud.google.com/apis/credentials
+    - can comment out or leave empty if `ENABLE_OAUTH_GOOGLE` is false
+    - get it from "google auth platform" in google cloud something: https://console.cloud.google.com/auth/clients
 - `OAUTH_GOOGLE_CLIENT_SECRET=`
     - google oauth client secret
-    - can comment out or leave empty if `ENABLE_OAUTH_GOOGLE=false`
-    - get it from google cloud something: https://console.cloud.google.com/apis/credentials
-- `API_OAUTH_CALLBACK_URL=`
-    - url to handle oauth signin/signup
+    - can comment out or leave empty if `ENABLE_OAUTH_GOOGLE` is false
+    - get it from "google auth platform" google cloud something: https://console.cloud.google.com/auth/clients
+- `OAUTH_GOOGLE_CALLBACK_URI=`
+    - url to handle google oauth signin/signup
+    - can comment out or leave empty if `ENABLE_OAUTH_GOOGLE` is false
     - remember to put this url under "Authorized redirect URIs" in google cloud something
-        - see https://console.cloud.google.com/apis/credentials
-        - find it under: "apis & services" > "credidentials" > "OAuth 2.0 Client IDs" > "Authorized redirect URIs"
-        - google decided you have to put the full url (`http://localhost:1234/abc/def`, NOT `http://localhost:1234`)
-    - should be `API_OAUTH_CALLBACK_URL=https://quizfreely.com/api/oauth/google/callback` for production
-    - should be `API_OAUTH_CALLBACK_URL=http://localhost:8080/api/oauth/google/callback` for development
-- `WEB_OAUTH_CALLBACK_URL=`
-    - url to redirect/callback to after oauth signin/signup is done
-    - this does not need to be added as an authorized redirect thingy under that google cloud thingy
-    - should be `WEB_OAUTH_CALLBACK_URL=https://quizfreely.com/sign-up` for production
-    - should be `WEB_OAUTH_CALLBACK_URL=http://localhost:8080/sign-up` for development
+        - see https://console.cloud.google.com/auth/clients
+        - find it under: "Google Auth Platform" > "Clients" > "OAuth 2.0 Client IDs" > "Authorized redirect URIs"
+        - It used to be named "APIs & Services" > "Credidentials" > "OAuth 2.0 Client IDs" > "Authorized redirect URIs"
+        - You have to put the full uri (`http://localhost:1234/abc/def`, NOT `http://localhost:1234`)
+    - should be `OAUTH_GOOGLE_CALLBACK_URI=https://quizfreely.com/api/oauth/google/callback` for production
+    - should be `OAUTH_GOOGLE_CALLBACK_URI=http://localhost:8080/api/oauth/google/callback` for development
+- `OAUTH_REDIRECT=`
+    - url to redirect to after oauth signin/signup is done
+    - this does NOT need to be added as an authorized redirect thingy under that google cloud thingy
+    - should be `OAUTH_REDIRECT=https://quizfreely.com/sign-in` for production
+    - should be `OAUTH_REDIRECT=http://localhost:8080/sign-in` for development
 - `CRON_CLEAR_LOGS=`
     - `true` or `false` to enable or disable cron job to clear logs (clears contents of `quizfreely-api.log`) every hour, day, week, or month, etc (interval set with `CRON_CLEAR_LOGS_INTERVAL=`)
     - should be `CRON_CLEAR_LOGS=true` for production

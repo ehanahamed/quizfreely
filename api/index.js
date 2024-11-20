@@ -21,7 +21,7 @@ const LOG_PRETTY = process.env.LOG_PRETTY || "false";
 const ENABLE_OAUTH_GOOGLE = process.env.ENABLE_OAUTH_GOOGLE || "false";
 const OAUTH_GOOGLE_ID = process.env.OAUTH_GOOGLE_CLIENT_ID;
 const OAUTH_GOOGLE_SECRET = process.env.OAUTH_GOOGLE_CLIENT_SECRET;
-const API_OAUTH_CALLBACK = process.env.API_OAUTH_CALLBACK_URL
+const OAUTH_GOOGLE_CALLBACK = process.env.OAUTH_GOOGLE_CALLBACK_URI
 const WEB_OAUTH_CALLBACK = process.env.WEB_OAUTH_CALLBACK_URL;
 const CRON_DELETE_EXPIRED_SESSIONS = process.env.CRON_DELETE_EXPIRED_SESSIONS || "false";
 const CRON_DELETE_EXPIRED_SESSIONS_INTERVAL = process.env.CRON_DELETE_EXPIRED_SESSIONS_INTERVAL;
@@ -86,7 +86,7 @@ if (ENABLE_OAUTH_GOOGLE == "true") {
           auth: fastifyOauth2.GOOGLE_CONFIGURATION
         },
         startRedirectPath: "/oauth/google",
-        callbackUri: API_OAUTH_CALLBACK,
+        callbackUri: OAUTH_GOOGLE_CALLBACK,
         cookie: {
             path: "/",
             secure: true,
