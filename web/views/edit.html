@@ -386,15 +386,32 @@
     <eta> } </eta>
     <eta> if (data.local) { </eta>
     <script>
+      var studysetIDBRecord;
       openIndexedDB(function (db) {
         var studysetsObjectStore = db.transaction(["studysets"], "readonly").objectStore("studysets");
         var dbGetReq = studysetsObjectStore.get(<eta>= data.localId </eta>);
         dbGetReq.onsuccess = function (event) {
           if (dbGetReq.result) {
+            studysetIDBRecord = dbGetReq.result;
             document.getElementById("edit-title").value = dbGetReq.result.title;
             if (dbGetReq.result.data && dbGetReq.result.data.terms) {
               editTermsTable.tableFromArray(dbGetReq.result.data.terms);
             }
+
+            document.getElementById("save-button").addEventListener("click", function (_) {
+            var updatedStudysetIDBRecord = studysetIDBRecord;
+            updatedStudysetIDBRecord.title = document.getElementById("edit-title").value;
+            updatedStudysetIDBRecord.data = {
+              terms: editTermsTable.arrayFromTable()
+            }
+            openIndexedDB(function (db) {
+              var studysetsObjectStore = db.transaction(["studysets"], "readwrite").objectStore("studysets");
+              var dbPutReq = studysetsObjectStore.put(updatedStudysetIDBRecord, <eta>= data.localId </eta>);
+              dbPutReq.onsuccess = function (event) {
+                window.location.replace("/studyset/local?id=" + <eta>= data.localId </eta>);
+              }
+            })
+          })
           } else {
             alert("couldn't load local studyset, mabye it doesn't exist?")
           }
