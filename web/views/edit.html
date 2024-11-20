@@ -392,8 +392,8 @@
         dbGetReq.onsuccess = function (event) {
           if (dbGetReq.result) {
             document.getElementById("edit-title").value = dbGetReq.result.title;
-            if (dbGetReq.result.terms) {
-              editTermsTable.tableFromArray(dbGetReq.result.terms);
+            if (dbGetReq.result.data && dbGetReq.result.data.terms) {
+              editTermsTable.tableFromArray(dbGetReq.result.data.terms);
             }
           } else {
             alert("couldn't load local studyset, mabye it doesn't exist?")
