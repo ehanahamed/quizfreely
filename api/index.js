@@ -22,7 +22,7 @@ const ENABLE_OAUTH_GOOGLE = process.env.ENABLE_OAUTH_GOOGLE || "false";
 const OAUTH_GOOGLE_ID = process.env.OAUTH_GOOGLE_CLIENT_ID;
 const OAUTH_GOOGLE_SECRET = process.env.OAUTH_GOOGLE_CLIENT_SECRET;
 const OAUTH_GOOGLE_CALLBACK = process.env.OAUTH_GOOGLE_CALLBACK_URI
-const WEB_OAUTH_CALLBACK = process.env.WEB_OAUTH_CALLBACK_URL;
+const OAUTH_REDIRECT = process.env.OAUTH_REDIRECT_URL;
 const CRON_DELETE_EXPIRED_SESSIONS = process.env.CRON_DELETE_EXPIRED_SESSIONS || "false";
 const CRON_DELETE_EXPIRED_SESSIONS_INTERVAL = process.env.CRON_DELETE_EXPIRED_SESSIONS_INTERVAL;
 const CRON_CLEAR_LOGS = process.env.CRON_CLEAR_LOGS || "false";
@@ -950,13 +950,13 @@ if (ENABLE_OAUTH_GOOGLE == "true") {
         fastify.googleOAuth2.getAccessTokenFromAuthorizationCodeFlow(request, reply, function (error, result) {
             if (error) {
                 request.log.error(error);
-                reply.redirect(WEB_OAUTH_CALLBACK + "?error=oauth-error");
+                reply.redirect(OAUTH_REDIRECT + "?error=oauth-error");
             } else {
                 googleAuthCallback(result.token).then(
                     function (result) {
                         if (result.error) {
                             request.log.error(result.error)
-                            reply.redirect(WEB_OAUTH_CALLBACK + "?error=oauth-error")
+                            reply.redirect(OAUTH_REDIRECT + "?error=oauth-error")
                         } else {
                             reply.setCookie(
                                 "auth",
@@ -975,7 +975,7 @@ if (ENABLE_OAUTH_GOOGLE == "true") {
                                     secure: true
                                 }
                             );
-                            reply.redirect(WEB_OAUTH_CALLBACK)
+                            reply.redirect(OAUTH_REDIRECT)
                         }
                     }
                 )
