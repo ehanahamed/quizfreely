@@ -39,25 +39,32 @@
 <li>NO trailing slash (<code>example.com</code>, NOT <code>example.com/</code>)</li>
 <li>should be <code>COOKIES_DOMAIN=quizfreely.com</code> for production</li>
 <li>should be <code>COOKIES_DOMAIN=localhost</code> for development</li></ul></li>
+<li><code>ENABLE_OAUTH_GOOGLE=</code><ul>
+<li>enable or disable Google OAuth</li>
+<li>When it's set to true, we must configure/set values for <code>OAUTH_GOOGLE_CLIENT_ID=</code>, <code>OAUTH_GOOGLE_CLIENT_SECRET=</code>, and <code>OAUTH_GOOGLE_CALLBACK_URI=</code></li></ul></li>
 <li><code>OAUTH_GOOGLE_CLIENT_ID=</code><ul>
 <li>google oauth client id</li>
-<li>get it from google cloud something: https://console.cloud.google.com/apis/credentials</li></ul></li>
+<li>can comment out or leave empty if <code>ENABLE_OAUTH_GOOGLE</code> is false</li>
+<li>get it from "google auth platform" in google cloud something: https://console.cloud.google.com/auth/clients</li></ul></li>
 <li><code>OAUTH_GOOGLE_CLIENT_SECRET=</code><ul>
 <li>google oauth client secret</li>
-<li>get it from google cloud something: https://console.cloud.google.com/apis/credentials</li></ul></li>
-<li><code>API_OAUTH_CALLBACK_URL=</code><ul>
-<li>url to handle oauth signin/signup</li>
+<li>can comment out or leave empty if <code>ENABLE_OAUTH_GOOGLE</code> is false</li>
+<li>get it from "google auth platform" google cloud something: https://console.cloud.google.com/auth/clients</li></ul></li>
+<li><code>OAUTH_GOOGLE_CALLBACK_URI=</code><ul>
+<li>url to handle google oauth signin/signup</li>
+<li>can comment out or leave empty if <code>ENABLE_OAUTH_GOOGLE</code> is false</li>
 <li>remember to put this url under "Authorized redirect URIs" in google cloud something<ul>
-<li>see https://console.cloud.google.com/apis/credentials</li>
-<li>find it under: "apis &amp; services" &gt; "credidentials" &gt; "OAuth 2.0 Client IDs" &gt; "Authorized redirect URIs"</li>
-<li>google decided you have to put the full url (<code>http://localhost:1234/abc/def</code>, NOT <code>http://localhost:1234</code>)</li></ul></li>
-<li>should be <code>API_OAUTH_CALLBACK_URL=https://quizfreely.com/api/oauth/google/callback</code> for production</li>
-<li>should be <code>API_OAUTH_CALLBACK_URL=http://localhost:8080/api/oauth/google/callback</code> for development</li></ul></li>
-<li><code>WEB_OAUTH_CALLBACK_URL=</code><ul>
-<li>url to redirect/callback to after oauth signin/signup is done</li>
-<li>this does not need to be added as an authorized redirect thingy under that google cloud thingy</li>
-<li>should be <code>WEB_OAUTH_CALLBACK_URL=https://quizfreely.com/sign-up</code> for production</li>
-<li>should be <code>WEB_OAUTH_CALLBACK_URL=http://localhost:8080/sign-up</code> for development</li></ul></li>
+<li>see https://console.cloud.google.com/auth/clients</li>
+<li>find it under: "Google Auth Platform" &gt; "Clients" &gt; "OAuth 2.0 Client IDs" &gt; "Authorized redirect URIs"</li>
+<li>It used to be named "APIs &amp; Services" &gt; "Credidentials" &gt; "OAuth 2.0 Client IDs" &gt; "Authorized redirect URIs"</li>
+<li>You have to put the full uri (<code>http://localhost:1234/abc/def</code>, NOT <code>http://localhost:1234</code>)</li></ul></li>
+<li>should be <code>OAUTH_GOOGLE_CALLBACK_URI=https://quizfreely.com/api/oauth/google/callback</code> for production</li>
+<li>should be <code>OAUTH_GOOGLE_CALLBACK_URI=http://localhost:8080/api/oauth/google/callback</code> for development</li></ul></li>
+<li><code>OAUTH_REDIRECT=</code><ul>
+<li>url to redirect to after oauth signin/signup is done</li>
+<li>this does NOT need to be added as an authorized redirect thingy under that google cloud thingy</li>
+<li>should be <code>OAUTH_REDIRECT=https://quizfreely.com/sign-in</code> for production</li>
+<li>should be <code>OAUTH_REDIRECT=http://localhost:8080/sign-in</code> for development</li></ul></li>
 <li><code>CRON_CLEAR_LOGS=</code><ul>
 <li><code>true</code> or <code>false</code> to enable or disable cron job to clear logs (clears contents of <code>quizfreely-api.log</code>) every hour, day, week, or month, etc (interval set with <code>CRON_CLEAR_LOGS_INTERVAL=</code>)</li>
 <li>should be <code>CRON_CLEAR_LOGS=true</code> for production</li></ul></li>

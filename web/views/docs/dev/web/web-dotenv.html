@@ -47,4 +47,7 @@
 <li>another example, weekly is <code>CRON_CLEAR_LOGS_INTERVAL="0 0 * * 0"</code></li></ul></li>
 <li>this does not matter if <code>CRON_CLEAR_LOGS</code> is <code>false</code>. You/we can comment it out or leave it blank if you have <code>CRON_CLEAR_LOGS=false</code>, but you must give it a valid value if you have <code>CRON_CLEAR_LOGS=true</code></li>
 <li>Hourly is probably too frequent for most use cases. Daily or weekly are reccomended</li></ul></li>
+<li><code>ENABLE_OAUTH_GOOGLE=</code><ul>
+<li>true or false to show or hide Google OAuth buttons/menus/etc</li>
+<li>you should also check quizfreely-api's dotenv file for it's oauth configuration stuff</li></ul></li>
 </ul>
