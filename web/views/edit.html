@@ -397,6 +397,7 @@
 
             document.getElementById("save-button").addEventListener("click", function (_) {
               var updatedStudyset = {
+                id: <eta>= data.localId </eta>,
                 title: document.getElementById("edit-title").value,
                 data: {
                   terms: editTermsTable.arrayFromTable()
@@ -404,7 +405,7 @@
               }
               openIndexedDB(function (db) {
                 var studysetsObjectStore = db.transaction(["studysets"], "readwrite").objectStore("studysets");
-                var dbPutReq = studysetsObjectStore.put(updatedStudyset, <eta>= data.localId </eta>);
+                var dbPutReq = studysetsObjectStore.put(updatedStudyset);
                 dbPutReq.onsuccess = function (event) {
                   window.location.replace("/studyset/local?id=" + <eta>= data.localId </eta>);
                 }
