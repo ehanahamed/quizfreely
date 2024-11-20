@@ -254,7 +254,6 @@
                   document.getElementById("error-text").innerHTML =
                   "<b>Error</b>: " + response.error;
                 }
-                
               } else {
                 window.location.reload();
               }
@@ -293,8 +292,13 @@
           rawResponse.json().then(function (response) {
             if (response.error) {
               document.getElementById("error-div").classList.remove("hide");
-              document.getElementById("error-text").innerHTML =
-              "<b>Error</b>: " + response.error.type;
+              if (response.error.code) {
+                document.getElementById("error-text").innerHTML =
+                "<b>Error</b>: " + response.error.code;
+              } else {
+                document.getElementById("error-text").innerHTML =
+                "<b>Error</b>: " + response.error;
+              }
             } else {
               window.location.reload();
             }
