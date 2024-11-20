@@ -379,16 +379,6 @@ fastify.get("/sign-in", function (request, reply) {
   })
 })
 
-fastify.get("/edit", function (request, reply) {
-  userData(request).then(function (userResult) {
-    reply.view("edit.html", {
-      ...themeData(request),
-      authed: userResult.authed,
-      authedUser: userResult?.authedUser
-    })
-  })
-})
-
 fastify.get("/privacy", function (request, reply) {
   userData(request).then(function (userResult) {
     reply.view("privacy.html", {
@@ -659,6 +649,7 @@ fastify.get("/studyset/edit-local", function (request, reply) {
     reply.view("edit.html", {
       ...themeData(request),
       new: false,
+      local: true,
       localId: request.query.id,
       authed: userResult.authed,
       authedUser: userResult?.authedUser
