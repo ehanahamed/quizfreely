@@ -30,43 +30,7 @@ That SameSite attribute of the auth cookie is configured in quizfreely-api's `.e
 
 ### Postgres roles
 
-When we setup our PostgreSQL database we create three roles: `quizfreely_api`, `quizfreely_auth`, and `quizfreely_auth_user`. (The commands to setup the database are in [`config/db/quizfreely-db-setup.sql`](../../../config/db/quizfreely-db-setup.sql) and the process is explained in [developer docs > production > api-setup.md > Postgres setup](../production/api-setup.md#postgres-setup))
-
-- `quizfreely_api` role
-    - can be logged in/connected as
-    - has a password (set it using `\password quizfreely_api` in the database shell (`psql -d quizfreely_db`))
-    - can view public information
-        - can view `public.studysets` rows where `private = false`
-        - can view `public.profiles`
-- `quizfreely_auth` role
-    - can NOT be logged in/connected as
-        - the server process/js code connects as `quizfreely_api` and then switches to this role when it needs to
-    - can view and edit sensitive information
-        - can view and edit `auth.users`
-        - can view and edit `auth.sessions`
-        - we use this role to manage users' accounts, so this role needs permissions for account data and encrypted/hashed passwords to let users log in or sign up
-- `quizfreely_auth_user` role
-    - can NOT be logged in/connected as
-        - the server process/js code connects as `quizfreely_api` and then switches to `quizfreely_auth` and then after logging in/verifying a user's session, it switches to `quizfreely_auth_user`
-    - can view public information
-        - can view `public.studysets` rows where `private = false`
-    - sets `quizfreely_auth.user_id` to the specific quizfreely user's id, so they can only get permission to access their own data
-    - can view & edit their own account data, sessions, and studysetes
-        - can view and edit their own user data in `auth.users`
-        - can view and edit their own sessions in `auth.sessions`
-        - can view and edit their own studysets in `public.studysets`
-  
-The server process/js code connects to the database as the `quizfreely_api` role.
-
-`quizfreely_api` can switch to other roles (`quizfreely_auth` or `quizfreely_auth_user`) after it connects, so that it only has permissions when we decide/the server js code decides it needs those permissions. It uses `set role role_goes_here;`, it can only become roles we allow it to become. When we setup the database with [`config/db/quizfreely-db-setup.sql`](../../../config/db/quizfreely-db-setup.sql) (explained in [developer docs > production > api-setup.md > Postgres setup](../production/api-setup.md#postgres-setup)) we grant `quizfreely_api` permission to become `quizfreely_auth`, and grant `quizfreely_auth` permission to become `quizfreely_auth_user`.
-
-The api's paths that return public information (like `https://quizfreely.com/api/v0/studysets/public/studyset-id-goes-here`) do a simple postgres query and return the requested data. `quizfreely_api` has permission to view public stuff.
-
-The api's paths that verify or modify auth/account information (like `https://api.quizfrely.com/sign-up`) start a postgres transaction and do queries after switching to the `quizfreely_auth` role, because `quizfreely_api` can NOT view or edit auth/account info (`auth.users` or `auth.sessions`). `quizfreely_auth` can manage auth/account info, so the api switches to it before doing postgres queries that need those permissions.
-
-The api's paths that manage user's stuff like studysets (like `https://quizfreely.com/api/v0/studysets/create`) start a postgres transaction. Then it switches to the `quizfreely_auth` user to make queries that verifiy the user's session/check if they should actually be logged in, then it switches to the `quizfreely_auth_user` role to make queries that edit the user's studyset(s), because `quizfreely_auth_user` has permission to view and edit their own studysets, while `quizfreely_api` only has permission to view public studysets.
-
-(We use postgres transactions when we need to do multiple "related" queries so that if one of them has an error, none of the other changes apply. This makes sure there is no "mismatching data" where one thing was updated but another related thing was not.)
+When we setup our PostgreSQL database we create a role named `quizfreely_api`. The server process/js code connects to the database as the `quizfreely_api` role, with the login info from qzfr-api's dotenv file.
 
 ### Session Expiry & Cron Deletion
 
