@@ -511,7 +511,7 @@ async function getStudyset(id, authedUserId) {
             [ authedUserId ]
         );
         let selectedStudyset = await client.query(
-            "select id, user_id, title, private, data, to_char(updated_at, 'YYYY-MM-DD\"T\"HH24:MI:SS.MSTZH:TZM') as updated_at, from public.studysets " +
+            "select id, user_id, title, private, data, to_char(updated_at, 'YYYY-MM-DD\"T\"HH24:MI:SS.MSTZH:TZM') as updated_at from public.studysets " +
             "where id = $1 and (private = false or user_id = $2)",
             [ id, authedUserId ]
         );
