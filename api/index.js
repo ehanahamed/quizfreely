@@ -466,14 +466,12 @@ await fastify.register(mercurius, {
 */
 async function getPublicStudyset(id) {
     try {
-        console.log("getPublicStudyset() before pool.query" + await pool.query("select current_user"));
         let result = await pool.query(
             "select s.id, s.user_id, u.display_name as user_display_name, s.title, s.data, to_char(s.updated_at, 'YYYY-MM-DD\"T\"HH24:MI:SS.MSTZH:TZM') as updated_at, s.terms_count " +
             "from public.studysets s inner join public.profiles u on s.user_id = u.id " +
             "where s.id = $1 and s.private = false limit 1",
             [ id ]
         )
-        console.log("getPublicStudyset() after pool.query" + await pool.query("select current_user"));
         
         if (result.rows.length == 1) {
             return {
@@ -505,7 +503,6 @@ async function getPublicStudyset(id) {
 async function getStudyset(id, authedUserId) {
     let result;
     let client = await pool.connect();
-    console.log("getStudyset() after pool.connect()" + await client.query("select current_user"));
     try {
         await client.query("BEGIN");
         await client.query("set role quizfreely_auth_user");
@@ -543,7 +540,6 @@ async function getStudyset(id, authedUserId) {
 async function createStudyset(studyset, authedUserId) {
     let result;
     let client = await pool.connect();
-    console.log("createStudyset() after pool.connect()" + await client.query("select current_user"));
     try {
         await client.query("BEGIN");
         await client.query("set role quizfreely_auth_user");
@@ -587,7 +583,6 @@ async function createStudyset(studyset, authedUserId) {
 async function updateStudyset(id, studyset, authedUserId) {
     let result;
     let client = await pool.connect();
-    console.log("updateStudyset() after pool.connect()" + await client.query("select current_user"));
     try {
         await client.query("BEGIN");
         await client.query("set role quizfreely_auth_user");
@@ -643,7 +638,6 @@ async function updateStudyset(id, studyset, authedUserId) {
 async function deleteStudyset(id, authedUserId) {
     let result;
     let client = await pool.connect();
-    console.log("deleteStudyset() after pool.connect()" + await client.query("select current_user"));
     try {
         await client.query("BEGIN");
         await client.query("set role quizfreely_auth_user");
@@ -685,14 +679,11 @@ async function deleteStudyset(id, authedUserId) {
 */
 async function getUser(id) {
     try {
-        console.log("getUser() before pool.query()" + await pool.query("select current_user"));
         let result = await pool.query(
             "select id, username, display_name from public.profiles " +
             "where id = $1",
             [ id ]
         )
-        console.log("getUser() after pool.query()" + await pool.query("select current_user"));
-        
         if (result.rows.length == 1) {
             return {
                 data: {
@@ -713,14 +704,12 @@ async function getUser(id) {
 
 async function featuredStudysets(limit, offset) {
     try {
-        console.log("featuredStudysets() before pool.query()" + await pool.query("select current_user"));
         let result = await pool.query(
             "select s.id, s.user_id, u.display_name as user_display_name, s.title, to_char(s.updated_at, 'YYYY-MM-DD\"T\"HH24:MI:SS.MSTZH:TZM') as updated_at, s.terms_count " +
             "from public.studysets s inner join public.profiles u on s.user_id = u.id " +
             "where s.featured = true and s.private = false order by s.updated_at desc limit $1 offset $2",
             [ limit, offset ]
         )
-        console.log("featuredStudysets() after pool.query()" + await pool.query("select current_user"));
         return {
             data: result.rows
         }
@@ -733,15 +722,12 @@ async function featuredStudysets(limit, offset) {
 
 async function recentStudysets(limit, offset) {
     try {
-        console.log("recentStudysets() before pool.query()" + await pool.query("select current_user"));
         let result = await pool.query(
             "select s.id, s.user_id, u.display_name as user_display_name, s.title, to_char(s.updated_at, 'YYYY-MM-DD\"T\"HH24:MI:SS.MSTZH:TZM') as updated_at, s.terms_count " +
             "from public.studysets s inner join public.profiles u on s.user_id = u.id " +
             "where s.private = false order by s.updated_at desc limit $1 offset $2",
             [ limit, offset ]
         )
-
-        console.log("recentStudysets() after pool.query()" + await pool.query("select current_user"));
         return {
             data: result.rows
         }
@@ -756,8 +742,6 @@ async function recentStudysets(limit, offset) {
 async function updateUser(authedUserId, updatedThingies) {
     let result;
     let client = await pool.connect();
-    console.log("updatedUser() after pool.connect()" + await client.query("select current_user"));
-        
     try {
         await client.query("BEGIN");
         await client.query("set role quizfreely_auth");
@@ -875,7 +859,6 @@ async function searchQueries(query, limit, offset) {
 
 async function myStudysets(authedUserId, limit, offset) {
     let client = await pool.connect();
-    console.log(await client.query("select current_user"));
     try {
         await client.query("BEGIN");
         await client.query("set role quizfreely_auth_user");
@@ -917,7 +900,6 @@ if (ENABLE_OAUTH_GOOGLE == "true") {
             );
             let userinfo = await response.json();
             let client = await pool.connect();
-            console.log(await client.query("select current_user"));
             try {
                 await client.query("BEGIN");
                 await client.query("set role quizfreely_auth");
@@ -1020,7 +1002,6 @@ fastify.post("/auth/sign-up", {
      /* regex to check if username has letters (any alphabet, but no uppercase) or numbers (any alphabet) or dot, underscore, or dash */
     if (/^(?!.*\p{Lu})[\p{L}\p{M}\p{N}._-]+$/u.test(username) && username.length < 100) {
         let client = await pool.connect();
-        console.log(await client.query("select current_user"));
         try {
             await client.query("BEGIN");
             await client.query("set role quizfreely_auth");
@@ -1115,7 +1096,6 @@ fastify.post("/auth/sign-in", {
     }
 }, async function (request, reply) {
     let client = await pool.connect();
-    console.log(await client.query("select current_user"));
     try {
         await client.query("BEGIN");
         await client.query("set role quizfreely_auth");
@@ -1208,7 +1188,6 @@ fastify.post("/auth/sign-out", async function (request, reply) {
         */
         let authToken = request.headers?.authorization?.substring(7) || request.cookies.auth;
         let client = await pool.connect();
-        console.log(await client.query("select current_user"));
         try {
             await client.query("BEGIN");
             await client.query("set role quizfreely_auth");
@@ -1660,7 +1639,6 @@ fastify.get("/list/my-studysets", async function (request, reply) {
                 error: result.error
             })
         } else {
-            console.log(result.data)
             return reply.send({
                 data: {
                     studysets: result.data
