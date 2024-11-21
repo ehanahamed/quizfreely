@@ -289,6 +289,7 @@ function dashboard(request, reply) {
           myStudysets {
             id
             title
+            private
             terms_count
             updated_at
           }
