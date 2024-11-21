@@ -38,7 +38,10 @@ as permissive
 for select
 to quizfreely_api
 using (
-  (select current_setting('qzfr_api.scope')) = 'auth'
+  ((select current_setting('qzfr_api.scope')) = 'auth') or (
+    (select current_setting('qzfr_api.scope')) = 'user' and
+    (select current_setting('qzfr_api.user_id'))::uuid = id
+  )
 );
 
 create policy insert_users on auth.users
