@@ -1,28 +1,17 @@
 create extension if not exists pgcrypto;
 create extension if not exists pg_trgm;
 
-/* the server process/api's js code connects to the database as quizfreely_api
-we can log in/connect as quizfreely_api using the password we set
-we can NOT log in to quizfreely_auth or quizfreely_auth_user
-we must switch to/become those users after logging in/connecting as quizfreely_api */
 create role quizfreely_api noinherit login;
-create role quizfreely_auth nologin noinherit;
-create role quizfreely_auth_user nologin noinherit;
-
-/* let quizfreely_api become quizfreely_auth */
-grant quizfreely_auth, quizfreely_auth_user to quizfreely_api;
-grant quizfreely_api, quizfreely_auth_user to quizfreely_auth;
-grant quizfreely_api, quizfreely_auth to quizfreely_auth_user;
 
 create schema auth;
 
-grant usage on schema auth to quizfreely_api, quizfreely_auth, quizfreely_auth_user;
+grant usage on schema auth to quizfreely_api;
 
-create function auth.get_user_id() returns uuid
+/*create function auth.get_user_id() returns uuid
 language sql
 as $$
-select current_setting('quizfreely_auth.user_id')::uuid
-$$;
+select current_setting('quizfreely_authed_user.user_id')::uuid
+$$;*/
 
 create type auth_type_enum as enum ('username_password', 'oauth_google');
 create table auth.users (
@@ -37,49 +26,51 @@ create table auth.users (
   unique (oauth_google_id)
 );
 
-grant select on auth.users to quizfreely_auth;
-grant insert on auth.users to quizfreely_auth;
-grant update on auth.users to quizfreely_auth, quizfreely_auth_user;
-grant delete on auth.users to quizfreely_auth, quizfreely_auth_user;
+grant select on auth.users to quizfreely_api;
+grant insert on auth.users to quizfreely_api;
+grant update on auth.users to quizfreely_api;
+grant delete on auth.users to quizfreely_api;
 
 alter table auth.users enable row level security;
 
-create policy select_users_for_quizfreely_auth on auth.users
+create policy select_users on auth.users
 as permissive
 for select
-to quizfreely_auth
-using (true);
+to quizfreely_api
+using (
+  select current_setting('qzfr_api.scope') = 'auth'
+);
 
-create policy insert_users_for_quizfreely_auth on auth.users
+create policy insert_users on auth.users
 as permissive
 for insert
-to quizfreely_auth
-with check (true);
+to quizfreely_api
+with check (
+  select current_setting('qzfr_api.scope') = 'auth'
+);
 
-create policy update_users_for_quizfreely_auth on auth.users
+create policy update_users on auth.users
 as permissive
 for update
-to quizfreely_auth
-using (true)
+to quizfreely_api
+using (
+  select current_setting('qzfr_api.scope') = 'user' and
+  select current_setting('qzfr_api.user') = id
+)
 with check (true);
 
-create policy update_users_for_auth_user_by_user_id on auth.users
-as permissive
-for update
-to quizfreely_auth_user
-using ((select auth.get_user_id()) = id)
-with check ((select auth.get_user_id()) = id);
-
-create policy delete_users_for_auth_user_by_user_id on auth.users
+create policy delete_users on auth.users
 as permissive
 for delete
-to quizfreely_auth_user
-using ((select auth.get_user_id()) = id);
+to quizfreely_api
+using (
+  (select current_setting('qzfr_api.scope')) = 'auth'
+);
 
 create view public.profiles as select
 id, username, display_name from auth.users;
 
-grant select on public.profiles to quizfreely_api, quizfreely_auth, quizfreely_auth_user;
+grant select on public.profiles to quizfreely_api;
 
 create table auth.sessions (
   token text primary key default encode(gen_random_bytes(32), 'base64'),
@@ -87,55 +78,60 @@ create table auth.sessions (
   expire_at timestamptz default now() + '10 days'::interval
 );
 
-grant select on auth.sessions to quizfreely_auth, quizfreely_auth_user;
-grant insert on auth.sessions to quizfreely_auth, quizfreely_auth_user;
-grant update on auth.sessions to quizfreely_auth, quizfreely_auth_user;
-grant delete on auth.sessions to quizfreely_api, quizfreely_auth, quizfreely_auth_user;
+grant select on auth.sessions to quizfreely_api;
+grant insert on auth.sessions to quizfreely_api;
+grant update on auth.sessions to quizfreely_api;
+grant delete on auth.sessions to quizfreely_api;
 
 alter table auth.sessions enable row level security;
 
-create policy select_sessions_for_quizfreely_auth on auth.sessions
+create policy select_sessions on auth.sessions
 as permissive
 for select
-to quizfreely_auth
-using (true);
+to quizfreely_api
+using (
+  (
+    select current_setting('qzfr_api.scope') = 'auth'
+  ) or (
+    select current_setting('qzfr_api.scope') = 'user' and
+    select current_setting('qzfr_api.user') = user_id
+  )
+);
 
-create policy insert_sessions_for_quizfreely_auth on auth.sessions
+create policy insert_sessions on auth.sessions
 as permissive
 for insert
-to quizfreely_auth
-with check (true);
+to quizfreely_api
+with check (
+  select current_setting('qzfr_api.scope') = 'auth'
+);
 
-create policy update_sessions_for_quizfreely_auth on auth.sessions
+create policy update_sessions on auth.sessions
 as permissive
 for update
-to quizfreely_auth
-using (true)
+to quizfreely_api
+using (
+  (
+    select current_setting('qzfr_api.scope') = 'auth'
+  ) or (
+    select current_setting('qzfr_api.scope') = 'user' and
+    select current_setting('qzfr_api.user') = user_id
+  )
+)
 with check (true);
 
-create policy select_sessions_for_auth_user_by_user_id on auth.sessions
-as permissive
-for select
-to quizfreely_auth_user
-using ((select auth.get_user_id()) = user_id);
-
-create policy insert_sessions_for_auth_user_by_user_id on auth.sessions
-as permissive
-for insert
-to quizfreely_auth_user
-with check ((select auth.get_user_id()) = user_id);
-
-create policy delete_sessions_for_auth_user_by_user_id on auth.sessions
+create policy delete_sessions on auth.sessions
 as permissive
 for delete
-to quizfreely_auth_user
-using ((select auth.get_user_id()) = user_id);
-
-create policy delete_expired_sessions on auth.sessions
-as permissive
-for delete
-to quizfreely_api, quizfreely_auth, quizfreely_auth_user
-using (expire_at < now());
+to quizfreely_api
+using (
+  (
+    select current_setting('qzfr_api.scope') = 'user' and
+    select current_setting('qzfr_api.user') = user_id
+  ) or (
+    expire_at < (select now())
+  )
+);
 
 /*
   usage:
@@ -147,13 +143,13 @@ create function auth.verify_session(session_token text)
 returns table(user_id uuid)
 language sql
 as $$
-select user_id from auth.sessions where token = $1 and expire_at > now()
+select user_id from auth.sessions where token = $1 and expire_at > (select now())
 $$;
 
 create procedure auth.delete_expired_sessions()
 language sql
 as $$
-delete from auth.sessions where expire_at < now()
+delete from auth.sessions where expire_at < (select now())
 $$;
 
 create table public.studysets (
@@ -170,57 +166,51 @@ create table public.studysets (
 
 create index textsearch_title_idx on public.studysets using GIN (tsvector_title);
 
-grant select on public.studysets to quizfreely_api, quizfreely_auth, quizfreely_auth_user;
-grant insert on public.studysets to quizfreely_auth_user;
-grant update on public.studysets to quizfreely_auth_user;
-grant delete on public.studysets to quizfreely_auth_user;
+grant select on public.studysets to quizfreely_api;
+grant insert on public.studysets to quizfreely_api;
+grant update on public.studysets to quizfreely_api;
+grant delete on public.studysets to quizfreely_api;
 
 alter table public.studysets enable row level security;
 
-create policy select_studysets_by_not_private on public.studysets
+create policy select_studysets on public.studysets
 as permissive
 for select
-to quizfreely_api, quizfreely_auth
-using (private = false);
-
-create policy select_studysets_for_auth_user_by_private_or_user_id on
-public.studysets
-as permissive
-for select
-to quizfreely_auth_user
+to quizfreely_api
 using (
-  (private = false) or
-  ((select auth.get_user_id()) = user_id)
+  (private = false) or (
+    select current_setting('qzfr_api.scope') = 'user' and
+    select current_setting('qzfr_api.user') = user_id
+  )
 );
 
-create policy insert_studysets_for_auth_user_by_user_id on
+create policy insert_studysets on
 public.studysets
 as permissive
 for insert
-to quizfreely_auth_user
+to quizfreely_api
 with check (
-  (select auth.get_user_id()) = user_id
+  select current_setting('qzfr_api.scope') = 'user' and
+  select current_setting('qzfr_api.user') = user_id
 );
 
-create policy
-update_studysets_for_auth_user_by_user_id on public.studysets
+create policy update_studysets on public.studysets
 as permissive
 for update
-to quizfreely_auth_user
+to quizfreely_api
 using (
-  (select auth.get_user_id()) = user_id
+  select current_setting('qzfr_api.scope') = 'user' and
+  select current_setting('qzfr_api.user') = user_id
 )
-with check (
-  (select auth.get_user_id()) = user_id
-);
+with check (true);
 
-create policy
-delete_studysets_for_auth_user_by_user_id on public.studysets
+create policy delete_studysets on public.studysets
 as permissive
 for delete
-to quizfreely_auth_user
+to quizfreely_api
 using (
-  (select auth.get_user_id()) = user_id
+  select current_setting('qzfr_api.scope') = 'user' and
+  select current_setting('qzfr_api.user') = user_id
 );
 
 create table public.search_queries (
@@ -228,5 +218,5 @@ create table public.search_queries (
   subject text
 );
 
-grant select on public.search_queries to quizfreely_api, quizfreely_auth, quizfreely_auth_user;
+grant select on public.search_queries to quizfreely_api;
 alter table public.search_queries disable row level security;
