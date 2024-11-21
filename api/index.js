@@ -398,7 +398,7 @@ async function context(request, reply) {
         let client = await pool.connect();
         try {
             await client.query("BEGIN");
-            await client.query("set role quizfreely_auth");
+            await client.query("select set_config('qzfr_api.scope', 'auth', true)");
             let session = await client.query(
                 "select user_id from auth.verify_session($1)",
                 [ authToken ]
@@ -505,9 +505,9 @@ async function getStudyset(id, authedUserId) {
     let client = await pool.connect();
     try {
         await client.query("BEGIN");
-        await client.query("set role quizfreely_auth_user");
+        await client.query("select set_config('qzfr_api.scope', 'user', true)");
         await client.query(
-            "select set_config('quizfreely_auth.user_id', $1, true)",
+            "select set_config('qzfr_api.user_id', $1, true)",
             [ authedUserId ]
         );
         let selectedStudyset = await client.query(
@@ -542,8 +542,8 @@ async function createStudyset(studyset, authedUserId) {
     let client = await pool.connect();
     try {
         await client.query("BEGIN");
-        await client.query("set role quizfreely_auth_user");
-        await client.query("select set_config('quizfreely_auth.user_id', $1, true)", [
+        await client.query("select set_config('qzfr_api.scope', 'user', true)");
+        await client.query("select set_config('qzfr_api.user_id', $1, true)", [
             authedUserId
         ]);
         let insertedStudyset = await client.query(
@@ -585,8 +585,8 @@ async function updateStudyset(id, studyset, authedUserId) {
     let client = await pool.connect();
     try {
         await client.query("BEGIN");
-        await client.query("set role quizfreely_auth_user");
-        await client.query("select set_config('quizfreely_auth.user_id', $1, true)", [
+        await client.query("select set_config('qzfr_api.scope', 'user', true)");
+        await client.query("select set_config('qzfr_api.user_id', $1, true)", [
             authedUserId
         ]);
         let updatedStudyset = await client.query(
@@ -640,8 +640,8 @@ async function deleteStudyset(id, authedUserId) {
     let client = await pool.connect();
     try {
         await client.query("BEGIN");
-        await client.query("set role quizfreely_auth_user");
-        await client.query("select set_config('quizfreely_auth.user_id', $1, true)", [
+        await client.query("select set_config('qzfr_api.scope', 'user', true)");
+        await client.query("select set_config('qzfr_api.user_id', $1, true)", [
             authedUserId
         ]);
         await client.query(
@@ -744,7 +744,10 @@ async function updateUser(authedUserId, updatedThingies) {
     let client = await pool.connect();
     try {
         await client.query("BEGIN");
-        await client.query("set role quizfreely_auth");
+        await client.query("select set_config('qzfr_api.scope', 'user', true)");
+        await client.query("select set_config('qzfr_api.user_id', $1, true)", [
+            authedUserId
+        ]);
         if (updatedThingies.display_name) {
             let userData = await client.query(
                 "update auth.users set display_name = $2 " +
@@ -861,8 +864,8 @@ async function myStudysets(authedUserId, limit, offset) {
     let client = await pool.connect();
     try {
         await client.query("BEGIN");
-        await client.query("set role quizfreely_auth_user");
-        await client.query("select set_config('quizfreely_auth.user_id', $1, true)", [
+        await client.query("select set_config('qzfr_api.scope', 'user', true)");
+        await client.query("select set_config('qzfr_api.user_id', $1, true)", [
             authedUserId
         ]);
         let studysets = await client.query(
@@ -902,7 +905,7 @@ if (ENABLE_OAUTH_GOOGLE == "true") {
             let client = await pool.connect();
             try {
                 await client.query("BEGIN");
-                await client.query("set role quizfreely_auth");
+                await client.query("select set_config('qzfr_api.scope', 'auth', true)");
                 let upsertedUser = await client.query(
                     "insert into auth.users (display_name, auth_type, oauth_google_id, oauth_google_email) " +
                     "values ($1, 'oauth_google', $2, $3) on conflict (oauth_google_id) do update " +
@@ -1004,7 +1007,7 @@ fastify.post("/auth/sign-up", {
         let client = await pool.connect();
         try {
             await client.query("BEGIN");
-            await client.query("set role quizfreely_auth");
+            await client.query("select set_config('qzfr_api.scope', 'auth', true)");
             let result = await client.query(
                 "select username from auth.users where username = $1 limit 1",
                 [username]
@@ -1098,7 +1101,7 @@ fastify.post("/auth/sign-in", {
     let client = await pool.connect();
     try {
         await client.query("BEGIN");
-        await client.query("set role quizfreely_auth");
+        await client.query("select set_config('qzfr_api.scope', 'auth', true)");
         let result = await client.query(
             "select id, username, display_name from auth.users " +
             "where username = $1 and encrypted_password = crypt($2, encrypted_password) limit 1",
@@ -1190,7 +1193,7 @@ fastify.post("/auth/sign-out", async function (request, reply) {
         let client = await pool.connect();
         try {
             await client.query("BEGIN");
-            await client.query("set role quizfreely_auth");
+            await client.query("select set_config('qzfr_api.scope', 'auth', true)");
             await client.query(
                 "delete from auth.sessions where token = $1",
                 [ authToken ]
@@ -1702,7 +1705,6 @@ if (CRON_DELETE_EXPIRED_SESSIONS == "true") {
             let client = await pool.connect();
             try {
                 await client.query("BEGIN");
-                await client.query("set role quizfreely_auth");
                 await client.query("call auth.delete_expired_sessions()");
                 await client.query("COMMIT");
                 fastify.log.info("ran cron job for auth.delete_expired_sessions()")
