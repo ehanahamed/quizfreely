@@ -54,8 +54,10 @@ as permissive
 for update
 to quizfreely_api
 using (
-  (select current_setting('qzfr_api.scope')) = 'user' and
-  (select current_setting('qzfr_api.user_id'))::uuid = id
+  ((select current_setting('qzfr_api.scope')) = 'auth') or (
+    (select current_setting('qzfr_api.scope')) = 'user' and
+    (select current_setting('qzfr_api.user_id'))::uuid = id
+  )
 )
 with check (true);
 
