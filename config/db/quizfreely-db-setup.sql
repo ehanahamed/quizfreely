@@ -38,7 +38,7 @@ as permissive
 for select
 to quizfreely_api
 using (
-  select current_setting('qzfr_api.scope') = 'auth'
+  (select current_setting('qzfr_api.scope')) = 'auth'
 );
 
 create policy insert_users on auth.users
@@ -46,7 +46,7 @@ as permissive
 for insert
 to quizfreely_api
 with check (
-  select current_setting('qzfr_api.scope') = 'auth'
+  (select current_setting('qzfr_api.scope')) = 'auth'
 );
 
 create policy update_users on auth.users
@@ -54,8 +54,8 @@ as permissive
 for update
 to quizfreely_api
 using (
-  select current_setting('qzfr_api.scope') = 'user' and
-  select current_setting('qzfr_api.user') = id
+  (select current_setting('qzfr_api.scope')) = 'user' and
+  (select current_setting('qzfr_api.user_id'))::uuid = id
 )
 with check (true);
 
@@ -91,10 +91,10 @@ for select
 to quizfreely_api
 using (
   (
-    select current_setting('qzfr_api.scope') = 'auth'
+    (select current_setting('qzfr_api.scope')) = 'auth'
   ) or (
-    select current_setting('qzfr_api.scope') = 'user' and
-    select current_setting('qzfr_api.user') = user_id
+    (select current_setting('qzfr_api.scope')) = 'user' and
+    (select current_setting('qzfr_api.user_id'))::uuid = user_id
   )
 );
 
@@ -103,7 +103,7 @@ as permissive
 for insert
 to quizfreely_api
 with check (
-  select current_setting('qzfr_api.scope') = 'auth'
+  (select current_setting('qzfr_api.scope')) = 'auth'
 );
 
 create policy update_sessions on auth.sessions
@@ -112,10 +112,10 @@ for update
 to quizfreely_api
 using (
   (
-    select current_setting('qzfr_api.scope') = 'auth'
+    (select current_setting('qzfr_api.scope')) = 'auth'
   ) or (
-    select current_setting('qzfr_api.scope') = 'user' and
-    select current_setting('qzfr_api.user') = user_id
+    (select current_setting('qzfr_api.scope')) = 'user' and
+    (select current_setting('qzfr_api.user_id'))::uuid = user_id
   )
 )
 with check (true);
@@ -126,8 +126,10 @@ for delete
 to quizfreely_api
 using (
   (
-    select current_setting('qzfr_api.scope') = 'user' and
-    select current_setting('qzfr_api.user') = user_id
+    (select current_setting('qzfr_api.scope')) = 'auth'
+  ) or (
+    (select current_setting('qzfr_api.scope')) = 'user' and
+    (select current_setting('qzfr_api.user_id'))::uuid = user_id
   ) or (
     expire_at < (select now())
   )
@@ -179,8 +181,8 @@ for select
 to quizfreely_api
 using (
   (private = false) or (
-    select current_setting('qzfr_api.scope') = 'user' and
-    select current_setting('qzfr_api.user') = user_id
+    (select current_setting('qzfr_api.scope')) = 'user' and
+    (select current_setting('qzfr_api.user_id'))::uuid = user_id
   )
 );
 
@@ -190,8 +192,8 @@ as permissive
 for insert
 to quizfreely_api
 with check (
-  select current_setting('qzfr_api.scope') = 'user' and
-  select current_setting('qzfr_api.user') = user_id
+  (select current_setting('qzfr_api.scope')) = 'user' and
+  (select current_setting('qzfr_api.user_id'))::uuid = user_id
 );
 
 create policy update_studysets on public.studysets
@@ -199,8 +201,8 @@ as permissive
 for update
 to quizfreely_api
 using (
-  select current_setting('qzfr_api.scope') = 'user' and
-  select current_setting('qzfr_api.user') = user_id
+  (select current_setting('qzfr_api.scope')) = 'user' and
+  (select current_setting('qzfr_api.user_id'))::uuid = user_id
 )
 with check (true);
 
@@ -209,8 +211,8 @@ as permissive
 for delete
 to quizfreely_api
 using (
-  select current_setting('qzfr_api.scope') = 'user' and
-  select current_setting('qzfr_api.user') = user_id
+  (select current_setting('qzfr_api.scope')) = 'user' and
+  (select current_setting('qzfr_api.user_id'))::uuid = user_id
 );
 
 create table public.search_queries (
