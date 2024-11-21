@@ -91,11 +91,11 @@
             <eta> } </eta>
             <eta> if (data.studyset && data.authed && (data.authedUser.id == data.studyset.user_id)) { </eta>
             <div id="edit-menu" class="flex">
-              <a href="<eta>= data.studysetEditPage </eta>" class="button">
+              <a href="/studyset/edit/<eta>= data.studyset.id </eta>" class="button">
                 <i class="nf nf-fa-pencil"></i>
                 Edit
               </a>
-              <a href="<eta>= data.studysetEditPage </eta>" class="button alt">
+              <a href="/studyset/edit/<eta>= data.studyset.id </eta>" class="button alt">
                 <i class="nf nf-md-cog"></i>
                 Settings
               </a>
