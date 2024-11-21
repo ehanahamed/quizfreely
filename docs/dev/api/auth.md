@@ -32,6 +32,12 @@ That SameSite attribute of the auth cookie is configured in quizfreely-api's `.e
 
 When we setup our PostgreSQL database we create a role named `quizfreely_api`. The server process/js code connects to the database as the `quizfreely_api` role, with the login info from qzfr-api's dotenv file.
 
+Quizfreely-API uses two postgres session settings, `qzfr_api.scope` and `qzfr_api.user_id`, in it's database's RLS (row-level-security) policies, with `set_config()` and `current_setting()`.
+
+`qzfr_api.scope` can be `auth`, `user`, or unset. When the API is checking a user's session token or password, it should be `auth` to give it permission for `auth.sessions` and `auth.users`. When the API has logged in a user, it should be `user` to give it permission to for that specific user's stuff. When the API is 
+
+`qzfr_api._user_id` is the id of the currently logged in user when `current_setting('qzfr_api.scope') = 'user'`.
+
 ### Session Expiry & Cron Deletion
 
 Sessions expire after 10 days. Users need to log in again to get a new session. When the API tries to validate a session, it checks the expire_at time. Expired sessions are deleted for storage space & performance, but they still expire/become-invalid even if they haven't been deleted yet. (maximum secuirity for real)
