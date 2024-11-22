@@ -541,14 +541,18 @@ async function createStudyset(studyset, authedUserId) {
     let result;
     let client = await pool.connect();
     try {
-        let title = studyset.title;
-        /* if removing all spaces makes it an empty string, then it's only spaces, so we just rename it to untitled */
+        let title = "Untitled Studyset";
         if (
             studyset.title.length > 0 &&
             studyset.title.length < 200 &&
-            studyset.title.replaceAll(/\s+/gu, "") == ""
+            /*
+                use regex to make sure title is not just a bunch of spaces
+                (if removing all spaces makes it equal to an empty string, it's all spaces)
+                notice the exclamation mark for negation
+            */
+            !(studyset.title.replaceAll(/\s+/gu, "") == "")
         ) {
-            title = "Untitled Studyset";
+            title = studyset.title;
         }
         await client.query("BEGIN");
         await client.query("select set_config('qzfr_api.scope', 'user', true)");
