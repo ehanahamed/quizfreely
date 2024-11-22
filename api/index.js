@@ -541,6 +541,15 @@ async function createStudyset(studyset, authedUserId) {
     let result;
     let client = await pool.connect();
     try {
+        let title = studyset.title;
+        /* if removing all spaces makes it an empty string, then it's only spaces, so we just rename it to untitled */
+        if (
+            studyset.title.length > 0 &&
+            studyset.title.length < 200 &&
+            studyset.title.replaceAll(/\s+/gu, "") == ""
+        ) {
+            title = "Untitled Studyset";
+        }
         await client.query("BEGIN");
         await client.query("select set_config('qzfr_api.scope', 'user', true)");
         await client.query("select set_config('qzfr_api.user_id', $1, true)", [
@@ -551,7 +560,7 @@ async function createStudyset(studyset, authedUserId) {
             "values ($1, $2, $3, $4, $5) returning id, user_id, title, private, terms_count, to_char(updated_at, 'YYYY-MM-DD\"T\"HH24:MI:SS.MSTZH:TZM') as updated_at",
             [
                 authedUserId,
-                studyset.title,
+                title,
                 studyset.private,
                 studyset.data,
                 /* we use optional chaining (that .?) and nullish coalescing (that ??) to default to 0 (without throwing an error) if terms or terms.length are undefined */
