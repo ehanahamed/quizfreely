@@ -597,6 +597,19 @@ async function updateStudyset(id, studyset, authedUserId) {
     let result;
     let client = await pool.connect();
     try {
+        let title = "Untitled Studyset";
+        if (
+            studyset.title.length > 0 &&
+            studyset.title.length < 200 &&
+            /*
+                use regex to make sure title is not just a bunch of spaces
+                (if removing all spaces makes it equal to an empty string, it's all spaces)
+                notice the exclamation mark for negation
+            */
+            !(studyset.title.replaceAll(/\s+/gu, "") == "")
+        ) {
+            title = studyset.title;
+        }
         await client.query("BEGIN");
         await client.query("select set_config('qzfr_api.scope', 'user', true)");
         await client.query("select set_config('qzfr_api.user_id', $1, true)", [
@@ -607,7 +620,7 @@ async function updateStudyset(id, studyset, authedUserId) {
             "where id = $1 returning id, user_id, title, private, terms_count, to_char(updated_at, 'YYYY-MM-DD\"T\"HH24:MI:SS.MSTZH:TZM') as updated_at",
             [
                 id,
-                studyset.title,
+                title,
                 studyset.private,
                 studyset.data,
                 /* we use optional chaining (that .?) and nullish coalescing (that ??) to default to 0 (without throwing an error) if terms or terms.length are undefined */
