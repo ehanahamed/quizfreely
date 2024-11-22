@@ -550,7 +550,7 @@ async function createStudyset(studyset, authedUserId) {
                 (if removing all spaces makes it equal to an empty string, it's all spaces)
                 notice the exclamation mark for negation
             */
-            !(studyset.title.replaceAll(/\s+/gu, "") == "")
+            !(studyset.title.replaceAll(/[\s\p{C}]+/gu, "") == "")
         ) {
             title = studyset.title;
         }
@@ -606,7 +606,7 @@ async function updateStudyset(id, studyset, authedUserId) {
                 (if removing all spaces makes it equal to an empty string, it's all spaces)
                 notice the exclamation mark for negation
             */
-            !(studyset.title.replaceAll(/\s+/gu, "") == "")
+            !(studyset.title.replaceAll(/[\s\p{C}]+/gu, "") == "")
         ) {
             title = studyset.title;
         }
@@ -774,7 +774,16 @@ async function updateUser(authedUserId, updatedThingies) {
         await client.query("select set_config('qzfr_api.user_id', $1, true)", [
             authedUserId
         ]);
-        if (updatedThingies.display_name) {
+        if (
+            updatedThingies.display_name &&
+            /*
+                make sure display name has characters other than just spaces or invisible special characters
+                we do this using a regex to remove all invisible characters and check if that makes the string empty
+                invisible characters ARE ALLOWED, this just makes sure the whole display name isn't invisible
+                notice the exclamation mark for negation
+            */
+            !(updatedThingies.display_name.replaceAll(/[\s\p{C}]+/gu, "") == "")
+        ) {
             let userData = await client.query(
                 "update auth.users set display_name = $2 " +
                 "where id = $1 returning id, username, display_name",
