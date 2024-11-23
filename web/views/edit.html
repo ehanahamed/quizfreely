@@ -255,8 +255,22 @@
       document.getElementById("create-button-local").addEventListener("click", function () {
         openIndexedDB(function (db) {
           var studysetsObjectStore = db.transaction("studysets", "readwrite").objectStore("studysets");
+          var title = "Untitled Studyset";
+          var newTitle = document.getElementById("edit-title").value;
+          if (
+            newTitle.length > 0 &&
+            newTitle.length < 9000 &&
+            /*
+                use regex to make sure title is not just a bunch of spaces
+                (if removing all spaces makes it equal to an empty string, it's all spaces)
+                notice the exclamation mark for negation
+            */
+            !(newTitle.replace(/[\s\p{C}]+/gu, "") == "")
+          ) {
+              title = newTitle;
+          }
           var dbAddReq = studysetsObjectStore.add({
-            title: document.getElementById("edit-title").value,
+            title: title,
             data: {
               terms: editTermsTable.arrayFromTable()
             }
@@ -396,9 +410,23 @@
             }
 
             document.getElementById("save-button").addEventListener("click", function (_) {
+              var title = "Untitled Studyset";
+              var newTitle = document.getElementById("edit-title").value;
+              if (
+                newTitle.length > 0 &&
+                newTitle.length < 9000 &&
+                /*
+                    use regex to make sure title is not just a bunch of spaces
+                    (if removing all spaces makes it equal to an empty string, it's all spaces)
+                    notice the exclamation mark for negation
+                */
+                !(newTitle.replace(/[\s\p{C}]+/gu, "") == "")
+              ) {
+                  title = newTitle;
+              }
               var updatedStudyset = {
                 id: <eta>= data.localId </eta>,
-                title: document.getElementById("edit-title").value,
+                title: title,
                 data: {
                   terms: editTermsTable.arrayFromTable()
                 }
