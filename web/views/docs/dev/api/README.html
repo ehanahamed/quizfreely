@@ -1,8 +1,8 @@
-<h1 id="quizfreelyapi">Quizfreely API</h1>
+<h1 id="quizfreely-api">Quizfreely API</h1>
 <p>Quizfreely's API connects to Quizfreely's PostgreSQL database to store our data.</p>
 <p>The actual api server process is written in JavaScript with NodeJS. It uses Fastify and node-postgres (<code>pg</code>).</p>
 <p>To set up quizfreely-api (and database) for production see <a href="../production/api-setup.md">developer docs > production > api-setup.md</a></p>
-<h2 id="localquizfreelyapisetup">Local Quizfreely API setup</h2>
+<h2 id="local-quizfreely-api-setup">Local Quizfreely API setup</h2>
 <p>Clone Quizfreely's source code repo (if you didn't already)</p>
 <pre><code class="sh language-sh">git clone https://github.com/ehanahamed/quizfreely
 # or, from codeberg:
@@ -38,7 +38,7 @@ cd ~
 <p>And stop being the <code>postgres</code> linux user:</p>
 <pre><code class="sh language-sh">exit
 </code></pre>
-<h3 id="dotenvfile">Dotenv file</h3>
+<h3 id="dotenv-file">Dotenv file</h3>
 <p>Copy the .env.example file:</p>
 <pre><code class="sh language-sh">cd quizfreely/api/
 cp .env.example .env
@@ -46,7 +46,7 @@ cp .env.example .env
 <p>Edit <code>.env</code> and replace <code>PASSWORD</code> with your/our password for the "quizfreely_api" postgres user in <code>POSTGRES_URI=postgres://quizfreely_api:PASSWORD@localhost/quizfreely_db</code></p>
 <p>All the other values are already set up with reasonable defaults for local development.</p>
 <p>See <a href="./api-dotenv.md">developer docs > api > api-dotenv.md</a> for all <code>.env</code> options &amp; more info.</p>
-<h3 id="installdependenciesstartapi">Install dependencies &amp; start API</h3>
+<h3 id="install-dependencies--start-api">Install dependencies &amp; start API</h3>
 <p>You need NodeJS (v20 or above) installed.</p>
 <p>Now, go to <code>api/</code> and install nodejs dependencies.</p>
 <pre><code class="sh language-sh">cd quizfreely/api/

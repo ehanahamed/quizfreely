@@ -1,4 +1,4 @@
-<h2 id="productionsetupforapi">Production setup for api</h2>
+<h2 id="production-setup-for-api">Production setup for api</h2>
 <p>Clone <code>ehanahamed/quizfreely</code> without downloading the whole repo:</p>
 <pre><code class="sh language-sh"># for main branch:
 git clone --filter=blob:none --no-checkout --depth 1 --sparse https://github.com/ehanahamed/quizfreely
@@ -17,7 +17,7 @@ git checkout
 </code></pre>
 <p>Now you will have <code>quizfreely/api/</code> without downloading the whole source code repository.</p>
 <p>For the production server/droplet, we usually run these commands in <code>/root/</code> (<code>root</code> user's home dir), which means we get <code>/root/quizfreely/api/</code>.</p>
-<h3 id="installingdependencies">Installing dependencies</h3>
+<h3 id="installing-dependencies">Installing dependencies</h3>
 <p>Make sure you have nodejs v20 LTS (or higher) installed.
 Make sure it exists in <code>/usr/bin/</code> (<code>/usr/bin/node</code> and <code>/usr/bin/npm</code>)
 For more nodejs installation info, see <a href="./install-nodejs.md">install-nodejs.md</a></p>
@@ -25,7 +25,7 @@ For more nodejs installation info, see <a href="./install-nodejs.md">install-nod
 <pre><code class="sh language-sh">cd /root/quizfreely/api/
 npm install
 </code></pre>
-<h3 id="postgressetup">Postgres setup</h3>
+<h3 id="postgres-setup">Postgres setup</h3>
 <p>Install PostgreSQL from your/our package manager</p>
 <pre><code class="sh language-sh">sudo apt install postgresql
 # or
@@ -63,7 +63,7 @@ cd ~
 <p>And stop being the <code>postgres</code> linux user:</p>
 <pre><code class="sh language-sh">exit
 </code></pre>
-<h3 id="dotenvconfig">Dotenv config</h3>
+<h3 id="dotenv-config">Dotenv config</h3>
 <p>Copy the .env.example file:</p>
 <pre><code class="sh language-sh">cd /root/quizfreely/api/
 cp .env.example .env
@@ -125,7 +125,7 @@ OAUTH_GOOGLE_CALLBACK_URI=https://quizfreely.com/api/oauth/google/callback
 OAUTH_REDIRECT_URL=https://quizfreely.com/sign-in
 </code></pre>
 <p>For more details about quizfreely-api's .env file, see <a href="../api/api-dotenv.md">api-dotenv.md</a></p>
-<h3 id="servicefile">Service file</h3>
+<h3 id="service-file">Service file</h3>
 <p>Copy the systemd service file into its correct location (usually <code>/etc/systemd/system/</code>)</p>
 <pre><code class="sh language-sh">cd /root/quizfreely/api/
 sudo cp ./quizfreely-api.service /etc/systemd/system/
