@@ -55,7 +55,7 @@ cd ~
 <p>After you run those commands, there will be a user named <code>quizfreely_api</code>. We need to set its password:</p>
 <pre><code class="sh language-sh">\password quizfreely_api
 </code></pre>
-<p>We will use this password in <code>POSTGRES_URI=</code> in the <code>.env</code> file that we will configure next. (The api server process/js code connects to the database as the <code>quizfreely_api</code> user. See <a href="../api/auth.md#postgres-roles">api > auth.md > Postgres roles</a> for more details.)</p>
+<p>We will use this password in <code>POSTGRES_URI=</code> in the <code>.env</code> file that we will configure next. (The api server process/js code connects to the database as this <code>quizfreely_api</code> postgres user)</p>
 <p>Now that all the tables, functions, etc are set up, we can add some data. <code>quizfreely/config/db/search-queries.sql</code> has phrases/queries for autocomplete/search predictions, you/we should run the commands in that file (you can just copy and paste).</p>
 <p>Now, when you're done with SQL commands, exit the database shell:</p>
 <pre><code class="sh language-sh">\q

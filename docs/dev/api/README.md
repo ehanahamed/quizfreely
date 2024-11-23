@@ -51,7 +51,7 @@ After you run those commands, there will be a postgres user named `quizfreely_ap
 \password quizfreely_api
 ```
 
-We will use this password in `POSTGRES_URI=` in the `.env` file that we will configure next. (The api server process/js code connects to the database as the `quizfreely_api` user. See [api > auth.md > Postgres roles](./auth.md#postgresql-roles) for more details.)
+We will use this password in `POSTGRES_URI=` in the `.env` file that we will configure next. (The api server process/js code connects to the database as this `quizfreely_api` postgres user)
 
 `quizfreely/config/db/search-queries.sql` has a list of autocomplete/search prediction phrases/queries. These are "optional", we need them for autocomplete, but quizfreely will run perfectly fune without them. If you want them, you can just copy and paste the whole file into psql (the database's shell).
 
