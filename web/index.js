@@ -694,7 +694,7 @@ fastify.get("/search", async function (request, reply) {
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
-          query: `query SearchResults($q: String) {
+          query: `query SearchResults($q: String!) {
             authed
             authedUser {
               id
@@ -708,7 +708,7 @@ fastify.get("/search", async function (request, reply) {
               title
               user_id
               user_display_name
-              termsCount
+              terms_count
             }
           }`,
           variables: {
@@ -732,6 +732,7 @@ fastify.get("/search", async function (request, reply) {
           authedUser: authedUser
         })
       } else {
+        console.log(apiRes);
         return reply.send("work in progress error message mabye")
       }
     } catch (error) {
