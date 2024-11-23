@@ -77,7 +77,8 @@ await fastify.register(
 await fastify.register(fastifyCookie);
 await fastify.register(fastifyView, {
   engine: {
-    eta
+    eta,
+    production: true
   },
   root: path.join(import.meta.dirname, "views"),
   //defaultContext: {}
