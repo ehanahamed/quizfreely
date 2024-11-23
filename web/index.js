@@ -19,6 +19,7 @@ const API_URL = process.env.API_URL
 const COOKIES_DOMAIN = process.env.COOKIES_DOMAIN
 const LOG_LEVEL = process.env.LOG_LEVEL
 const LOG_PRETTY = process.env.LOG_PRETTY || "false"
+const CACHE_VIEWS = process.env.CACHE_VIEWS || "false"
 const CRON_CLEAR_LOGS = process.env.CRON_CLEAR_LOGS || "false";
 const CRON_CLEAR_LOGS_INTERVAL = process.env.CRON_CLEAR_LOGS_INTERVAL;
 const ENABLE_OAUTH_GOOGLE = process.env.ENABLE_OAUTH_GOOGLE || "false";
@@ -77,9 +78,9 @@ await fastify.register(
 await fastify.register(fastifyCookie);
 await fastify.register(fastifyView, {
   engine: {
-    eta,
-    production: true
+    eta
   },
+  production: (CACHE_VIEWS == "true"),
   root: path.join(import.meta.dirname, "views"),
   //defaultContext: {}
 });
