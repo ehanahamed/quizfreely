@@ -84,7 +84,7 @@ After you run those commands, there will be a user named `quizfreely_api`. We ne
 \password quizfreely_api
 ```
 
-We will use this password in `POSTGRES_URI=` in the `.env` file that we will configure next. (The api server process/js code connects to the database as the `quizfreely_api` user. See [api > auth.md > Postgres roles](../api/auth.md#postgres-roles) for more details.)
+We will use this password in `POSTGRES_URI=` in the `.env` file that we will configure next. (The api server process/js code connects to the database as the `quizfreely_api` user. See [api > auth.md > Postgres roles](../api/auth.md#postgresql-roles) for more details.)
 
 Now that all the tables, functions, etc are set up, we can add some data. `quizfreely/config/db/search-queries.sql` has phrases/queries for autocomplete/search predictions, you/we should run the commands in that file (you can just copy and paste).
 

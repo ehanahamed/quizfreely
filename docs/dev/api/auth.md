@@ -28,15 +28,15 @@ When SSR/server-side js code in quizfreely-web makes requests to quizfreely-api,
 
 That SameSite attribute of the auth cookie is configured in quizfreely-api's `.env` file with `COOKIES_DOMAIN=`, so that they can be easily configured AND secure in production and development. See [developer docs > api > api-dotenv.md](./api-dotenv.md) for more documentation.
 
-### Postgres roles
+### PostgreSQL Roles
 
-When we setup our PostgreSQL database we create a role named `quizfreely_api`. The server process/js code connects to the database as the `quizfreely_api` role, with the login info from qzfr-api's dotenv file.
+When we setup our PostgreSQL database, we create a role named `quizfreely_api`. The server process/js code connects to the database as the `quizfreely_api` role, with the login info from qzfr-api's dotenv file.
 
 Quizfreely-API uses two postgres session settings, `qzfr_api.scope` and `qzfr_api.user_id`, in it's database's RLS (row-level-security) policies, with `set_config()` and `current_setting()`.
 
-`qzfr_api.scope` can be `auth`, `user`, or unset. When the API is checking a user's session token or password, it should be `auth` to give it permission for `auth.sessions` and `auth.users`. When the API has logged in a user, it should be `user` to give it permission to for that specific user's stuff. When the API is 
+`qzfr_api.scope` can be `'auth'`, `'user'`, or unset. When the API is checking a user's session token or password, it should be `'auth'` to give it permission for `auth.sessions` and `auth.users`. When the API has logged in a user, it should be `user` to give it permission to for that specific user's stuff. When the API is making unauthenticated requests for public data and stuff, then it should be unset.
 
-`qzfr_api._user_id` is the id of the currently logged in user when `current_setting('qzfr_api.scope') = 'user'`.
+`qzfr_api.user_id` is the id of the currently logged in user when `current_setting('qzfr_api.scope') = 'user'`. We have to set it to the current user's id whenever `qzfr_api.scope` is `'user'`, because our RLS policies use that id to allow our postgres role, `quizfreely_api`, permissions for that user's info.
 
 ### Session Expiry & Cron Deletion
 
