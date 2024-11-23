@@ -40,6 +40,10 @@ To setup quizfreely-web & it's .env file for **production** see [production > we
     - NO trailing slash (`example.com`, NOT `example.com/`)
     - should be `COOKIES_DOMAIN=quizfreely.com` for production
     - should be `COOKIES_DOMAIN=localhost` for development
+- `CACHE_VIEWS=`
+    - Enable or disable caching Eta views/templates & rendering thingies with @fastify/view
+    - `CACHE_VIEWS=true` for production
+    - `CACHE_VIEWS=false` for development
 - `CRON_CLEAR_LOGS=`
     - `true` or `false` to enable or disable cron job to clear logs (clears contents of `quizfreely-web.log`) every hour, day, week, or month, etc (interval set with `CRON_CLEAR_LOGS_INTERVAL=`)
     - should be `CRON_CLEAR_LOGS=true` for production
