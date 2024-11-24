@@ -13,8 +13,8 @@
   "dependencies": {
     "@fastify/compress": "^8.0.1",
     "@fastify/cookie": "^11.0.1",
-    "@fastify/http-proxy": "^10.0.1",
-    "@fastify/static": "^8.0.2",
+    "@fastify/http-proxy": "^10.0.2",
+    "@fastify/static": "^8.0.3",
     "@fastify/view": "^10.0.1",
     "croner": "^9.0.0",
     "dotenv": "^16.4.5",
