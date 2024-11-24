@@ -808,7 +808,8 @@ fastify.get("/settings/themes/:theme", function (request, reply) {
 })
 
 fastify.get("/settings/clear-cookies", function (request, reply) {
-  reply.clearCookie("theme", cookieOptions()).clearCookie("dashboard", cookieOptions()).view(
+  var cookieOptionsRn = cookieOptions()
+  reply.clearCookie("theme", cookieOptionsRn).clearCookie("dashboard", cookieOptionsRn).clearCookie("auth", cookieOptionsRn).view(
     "settings.html",
     {
       ...themeData(request),
