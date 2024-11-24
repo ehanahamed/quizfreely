@@ -273,7 +273,8 @@
             title: title,
             data: {
               terms: editTermsTable.arrayFromTable()
-            }
+            },
+            updated_at: (new Date()).toISOString()
           });
           dbAddReq.onsuccess = function (event) {
             /*
@@ -429,7 +430,8 @@
                 title: title,
                 data: {
                   terms: editTermsTable.arrayFromTable()
-                }
+                },
+                updated_at: (new Date()).toISOString()
               }
               openIndexedDB(function (db) {
                 var studysetsObjectStore = db.transaction(["studysets"], "readwrite").objectStore("studysets");
