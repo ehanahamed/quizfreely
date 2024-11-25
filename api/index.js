@@ -668,16 +668,25 @@ async function deleteStudyset(id, authedUserId) {
         await client.query("select set_config('qzfr_api.user_id', $1, true)", [
             authedUserId
         ]);
-        await client.query(
+        let deleteResult = await client.query(
             "delete from public.studysets " +
             "where id = $1",
             [
                 id
             ]
         );
-        await client.query("COMMIT")
-        result = {
-            data: id
+        if (deleteResult.rowCount == 1) {
+            await client.query("COMMIT")
+            result = {
+                data: id
+            }
+        } else {
+            await client.query("ROLLBACK");
+            result = {
+                error: {
+                    message: "Studyset does not exist under this account",
+                }
+            }
         }
     } catch (error) {
         await client.query("ROLLBACK");
