@@ -37,14 +37,17 @@
           <h3>Appearance</h3>
           <p>Theme</p>
           <div class="grid list">
-            <a href="/settings/themes/auto" class="box link-box">
-              Auto
+            <a href="/settings/themes/auto" class="button box no-clickable-effect <eta> if (data.theme == 'auto') { </eta> selected <eta> } </eta>">
+              <img src="/assets/img/themes/theme-preview-auto.png" style="width:100%;border-radius:0.8rem">
+              <p>Auto</p>
             </a>
-            <a href="/settings/themes/dark" class="box link-box">
-              Dark
+            <a href="/settings/themes/dark" class="button box no-clickable-effect <eta> if (data.theme == 'dark') { </eta> selected <eta> } </eta>">
+              <img src="/assets/img/themes/theme-preview-dark.png" style="width:100%;border-radius:0.8rem">
+              <p>Dark</p>
             </a>
-            <a href="/settings/themes/light" class="box link-box">
-              Light
+            <a href="/settings/themes/light" class="button box no-clickable-effect <eta> if (data.theme == 'light') { </eta> selected <eta> } </eta>">
+              <img src="/assets/img/themes/theme-preview-light.png" style="width:100%;border-radius:0.8rem">
+              <p>Light</p>
             </a>
           </div>
           <p>Date & Time</p>
@@ -142,7 +145,6 @@
     </main>
     <eta>~ include("./partials/footer") </eta>
     <script>
-      //document.getElementById("theme-<eta>= data.theme </eta>").checked = true
       document.getElementById("time-24h").addEventListener("click", function () {
         document.getElementById("time-24h").classList.add("selected")
         document.getElementById("time-12h").classList.remove("selected")
