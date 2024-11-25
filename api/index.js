@@ -546,11 +546,10 @@ async function createStudyset(studyset, authedUserId) {
             studyset.title.length > 0 &&
             studyset.title.length < 200 &&
             /*
-                use regex to make sure title is not just a bunch of spaces
-                (if removing all spaces makes it equal to an empty string, it's all spaces)
-                notice the exclamation mark for negation
+                use regex to make sure title contains at least some alphanumeric characters (any lanugage)
+                (if removing all alphanumeric chars makes it equal to itself, it's invalid)
             */
-            !(studyset.title.replaceAll(/[\s\p{C}]+/gu, "") == "")
+            studyset.title.replaceAll(/[\p{L}\p{M}\p{N}]+/gu, "") != studyset.title
         ) {
             title = studyset.title;
         }
@@ -602,11 +601,10 @@ async function updateStudyset(id, studyset, authedUserId) {
             studyset.title.length > 0 &&
             studyset.title.length < 200 &&
             /*
-                use regex to make sure title is not just a bunch of spaces
-                (if removing all spaces makes it equal to an empty string, it's all spaces)
-                notice the exclamation mark for negation
+                use regex to make sure title contains at least some alphanumeric characters (any lanugage)
+                (if removing all alphanumeric chars makes it equal to itself, it's invalid)
             */
-            !(studyset.title.replaceAll(/[\s\p{C}]+/gu, "") == "")
+            studyset.title.replaceAll(/[\p{L}\p{M}\p{N}]+/gu, "") != studyset.title
         ) {
             title = studyset.title;
         }
@@ -777,12 +775,10 @@ async function updateUser(authedUserId, updatedThingies) {
         if (
             updatedThingies.display_name &&
             /*
-                make sure display name has characters other than just spaces or invisible special characters
-                we do this using a regex to remove all invisible characters and check if that makes the string empty
-                invisible characters ARE ALLOWED, this just makes sure the whole display name isn't invisible
-                notice the exclamation mark for negation
+                use regex to make sure display name contains at least some alphanumeric characters (any lanugage)
+                (if removing all alphanumeric chars makes it equal to itself, it's invalid)
             */
-            !(updatedThingies.display_name.replaceAll(/[\s\p{C}]+/gu, "") == "")
+            updatedThingies.display_name.replaceAll(/[\p{L}\p{M}\p{N}]+/gu, "") != updatedThingies.display_name
         ) {
             let userData = await client.query(
                 "update auth.users set display_name = $2 " +
