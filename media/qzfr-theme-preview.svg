@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="1920"
+   height="1080"
+   viewBox="0 0 1920 1080"
+   version="1.1"
+   id="svg1"
+   inkscape:version="1.4 (e7c3feb100, 2024-10-09)"
+   sodipodi:docname="qzfr-theme-preview.svg"
+   inkscape:export-filename="qzfr-theme-preview.png"
+   inkscape:export-xdpi="48"
+   inkscape:export-ydpi="48"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#505050"
+     bordercolor="#eeeeee"
+     borderopacity="1"
+     inkscape:showpageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#505050"
+     inkscape:document-units="px"
+     inkscape:zoom="0.3178031"
+     inkscape:cx="972.30016"
+     inkscape:cy="484.57678"
+     inkscape:window-width="1880"
+     inkscape:window-height="967"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1"
+     showguides="false" />
+  <defs
+     id="defs1" />
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <rect
+       style="fill:#20202e;fill-opacity:1;stroke:none;stroke-width:45.1077;paint-order:stroke fill markers"
+       id="rect1"
+       width="1920"
+       height="1080"
+       x="0"
+       y="0"
+       inkscape:label="background_bg1" />
+    <rect
+       style="fill:#c3cce9;fill-opacity:1;stroke:none;stroke-width:64.8075;paint-order:stroke fill markers"
+       id="rect5"
+       width="1400"
+       height="60"
+       x="200"
+       y="380"
+       rx="30"
+       ry="30"
+       inkscape:label="text2_fg1" />
+    <rect
+       style="fill:#c3cce9;fill-opacity:1;stroke:none;stroke-width:67.0822;paint-order:stroke fill markers"
+       id="rect4"
+       width="1500"
+       height="60"
+       x="200"
+       y="260"
+       rx="30"
+       ry="30"
+       inkscape:label="text_fg1" />
+    <rect
+       style="fill:#2b2b3d;fill-opacity:1;stroke:none;stroke-width:47.7494;paint-order:stroke fill markers"
+       id="rect7"
+       width="380"
+       height="120"
+       x="720"
+       y="520"
+       rx="60"
+       ry="60"
+       inkscape:label="button_bg2" />
+    <rect
+       style="fill:#9466ff;fill-opacity:1;stroke:none;stroke-width:52.5357;paint-order:stroke fill markers"
+       id="rect2"
+       width="460"
+       height="120"
+       x="200"
+       y="520"
+       rx="55.200001"
+       ry="60"
+       inkscape:label="button_main" />
+  </g>
+</svg>
