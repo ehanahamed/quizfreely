@@ -131,7 +131,7 @@
           "<textarea class='vertical' rows='2' placeholder='Definition'></textarea>";
         col1.addEventListener("input", function(event) {
           event.target.style.height = "auto";
-          event.target.style.height = event.target.scrollHeight + "px";
+          event.target.style.height = (event.target.scrollHeight + 10) + "px";
         });
         var actions = newRow.insertCell(2);
         actions.innerHTML =
@@ -233,7 +233,7 @@
           table.rows[i + 1].children[0].children[0].value = array[i][0];
           var col1Textarea = table.rows[i + 1].children[1].children[0];
           col1Textarea.value = array[i][1];
-          col1Textarea.style.height = col1Textarea.scrollHeight + "px";
+          col1Textarea.style.height = (col1Textarea.scrollHeight + 10) + "px";
         }
       },
     };
