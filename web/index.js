@@ -597,55 +597,12 @@ fastify.get("/studyset/local", function (request, reply) {
 
 fastify.get("/studyset/edit/:studyset", function (request, reply) {
   userData(request).then(function (userResult) {
-    fetch(API_URL + "/v0/studysets/" + request.params.studyset, {
-      method: "GET",
-      headers: {
-        "Authorization": "Bearer " + request.cookies.auth
-      }
-    }).then(function (rawRes) {
-      rawRes.json().then(function (res) {
-        if (res.data) {
-          reply.view("edit.html", {
-            ...themeData(request),
-            new: false,
-            studysetId: request.params.studyset,
-            studyset: res.data.studyset,
-            authed: userResult.authed,
-            authedUser: userResult?.authedUser
-          })
-        } else {
-          /* something something res.error, res.error.type */
-          request.log.error(res.error);
-          reply.view("edit.html", {
-            ...themeData(request),
-            new: false,
-            studysetId: request.params.studyset,
-            authed: userResult.authed,
-            authedUser: userResult?.authedUser
-            /* work in progress: show actual error message */
-          });  
-        }
-      }).catch(function (error) {
-        request.log.error(error);
-        reply.view("edit.html", {
-          ...themeData(request),
-          new: false,
-          studysetId: request.params.studyset,
-          authed: userResult.authed,
-          authedUser: userResult?.authedUser
-          /* work in progress add actual error message */
-        });
-      })
-    }).catch(function (error) {
-      request.log.error(error);
-      reply.view("edit.html", {
-        ...themeData(request),
-        new: false,
-        studysetId: request.params.studyset,
-        authed: userResult.authed,
-        authedUser: userResult?.authedUser
-        /* work in progress add error thingy */
-      })
+    reply.view("edit.html", {
+      ...themeData(request),
+      new: false,
+      studysetId: request.params.studyset,
+      authed: userResult.authed,
+      authedUser: userResult?.authedUser
     })
   })
 })

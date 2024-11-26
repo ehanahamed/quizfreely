@@ -346,11 +346,11 @@
       })
     </script>
     <eta> } </eta>
-    <eta> } else if (data.studyset) { </eta>
+    <eta> } else if (data.studysetId) { </eta>
     <!-- data.new is false (updating an existing studyset, not creating one) -->
     <eta> if (data.authed) { </eta>
     <script>
-        fetch("/api/v0/studysets/<eta>= data.studyset.id </eta>", {
+        fetch("/api/v0/studysets/<eta>= data.studysetId </eta>", {
           method: "GET",
           credentials: "same-origin"
         }).then(function (rawResponse) {
@@ -372,7 +372,7 @@
         })
         document.getElementById("save-button").addEventListener("click", function () {
           var private = document.getElementById("edit-private-true").classList.contains("selected");
-          fetch("/api/v0/studysets/<eta>= data.studyset.id </eta>", {
+          fetch("/api/v0/studysets/<eta>= data.studysetId </eta>", {
             method: "PUT",
             credentials: "same-origin",
             headers: {
