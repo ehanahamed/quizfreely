@@ -128,7 +128,7 @@
         newRow.insertCell(0).innerHTML = "<input type='text' placeholder='Term' />";
         var col1 = newRow.insertCell(1);
         col1.innerHTML =
-          "<textarea class='vertical' rows='2' placeholder='Definition' style='overflow-y:hidden'></textarea>";
+          "<textarea class='vertical' rows='2' placeholder='Definition'></textarea>";
         col1.addEventListener("input", function(event) {
           event.target.style.height = "auto";
           event.target.style.height = event.target.scrollHeight + "px";
