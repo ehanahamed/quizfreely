@@ -146,19 +146,19 @@
                 >
                   <eta> if (data.studyset && data.studyset.data && data.studyset.data.terms && data.studyset.data.terms.length >= 1) { </eta>
                   <div class="content">
-                    <div class="front" id="flashcard-front">
+                    <div class="front" id="flashcard-front" style="white-space:pre-line">
                       <eta>= data.studyset.data.terms[0][0] </eta>
                     </div>
-                    <div class="back" id="flashcard-back">
+                    <div class="back" id="flashcard-back" style="white-space:pre-line">
                       <eta>= data.studyset.data.terms[0][1] </eta>
                     </div>
                   </div>
                   <eta> } else { </eta>
                   <div class="content">
-                    <div class="front" id="flashcard-front">
+                    <div class="front" id="flashcard-front" style="white-space:pre-line">
                       ...
                     </div>
-                    <div class="back" id="flashcard-back">
+                    <div class="back" id="flashcard-back" style="white-space:pre-line">
                       ...
                     </div>
                   </div>
@@ -239,10 +239,10 @@
                 </tr>
                 <eta> if (data.studyset && data.studyset.data && data.studyset.data.terms) { data.studyset.data.terms.forEach(function (term) { </eta>
                 <tr>
-                  <td>
+                  <td style="white-space:pre-line">
                     <eta>= term[0]</eta>
                   </td>
-                  <td>
+                  <td style="white-space:pre-line">
                     <eta>= term[1]</eta>
                   </td>
                 </tr>
@@ -284,7 +284,9 @@
                 var newCell0 = newRow.insertCell();
                 var newCell1 = newRow.insertCell();
                 newCell0.innerText = dbGetReq.result.data.terms[i][0];
+                newCell0.style.whiteSpace = "pre-line";
                 newCell1.innerText = dbGetReq.result.data.terms[i][1];
+                newCell1.style.whiteSpace = "pre-line";
               }
               flashcardsChange();
             }
