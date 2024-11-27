@@ -149,8 +149,11 @@
                   </button>
                 </div>
                 <div class="flex end">
-                  <button>
+                  <button id="flashcards-maximize-button">
                     <i class="nf nf-md-fullscreen"></i>
+                  </button>
+                  <button id="flashcards-unmaximize-button" class="hide">
+                    <i class="nf nf-md-fullscreen_exit"></i>
                   </button>
                 </div>
               </div>
@@ -158,7 +161,7 @@
           </div>
           <div class="terms-and-stuff-outer-div">
             <div class="caption grid list">
-              <button id="fullscreen-flashcards-button" class="alt">
+              <button id="flashcards-button" class="alt">
                 <i class="nf nf-md-card_multiple"></i>
                 Flashcards
               </button>
@@ -317,6 +320,27 @@
           document.getElementById("delete-modal").classList.add("hide");
         })
       }
+      function maximizeFlashcards() {
+        document.getElementById("title-and-menu-outer-div").classList.add("hide");
+        document.getElementById("terms-and-stuff-outer-div").classList.add("hide");
+        document.getElementById("footer-wave").classList.add("hide");
+        document.getElementById("footer").classList.add("hide");
+
+        document.getElementById("flashcards-maximize-button").classList.add("hide");
+        document.getElementById("flashcards-unmaximize-button").classList.remove("hide");
+      }
+      function unmaximizeFlashcards() {
+        document.getElementById("title-and-menu-outer-div").classList.remove("hide");
+        document.getElementById("terms-and-stuff-outer-div").classList.remove("hide");
+        document.getElementById("footer-wave").classList.remove("hide");
+        document.getElementById("footer").classList.remove("hide");
+
+        document.getElementById("flashcards-maximize-button").classList.remove("hide");
+        document.getElementById("flashcards-unmaximize-button").classList.add("hide");
+      }
+      document.getElementById("flashcards-maximize-button").addEventListener("click", maximizeFlashcards);
+      document.getElementById("flashcards-unmaximize-button").addEventListener("click", unmaximizeFlashcards);
+      document.getElementById("flashcards-button").addEventListener("click", maximizeFlashcards);
     </script>
     <eta> if (data?.studyset?.id) { </eta>
     <script>
