@@ -96,7 +96,7 @@
           <div id="flashcards-outer-div">
             <button
               class="exitFullscreen"
-              onclick="document.getElementById('mainOpenFlashcarddiv').classList.remove('fullscreen')"
+              onclick="document.getElementById('flashcards-outer-div').classList.remove('fullscreen')"
             >
               Exit Fullscreen
             </button>
@@ -304,7 +304,7 @@
       document.getElementById("flashcards-prev-button").addEventListener("click", flashcardsPrev);
 
       document.getElementById("fullscreen-flashcards-button").addEventListener("click", function () {
-        document.getElementById('mainOpenFlashcarddiv').classList.add('fullscreen')
+        document.getElementById('flashcards-outer-div').classList.add('fullscreen')
       })
 
       /* the modal's html is the same for local and authed */
