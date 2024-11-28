@@ -1182,7 +1182,7 @@ fastify.post("/auth/sign-in", {
             })
         } else {
             await client.query("ROLLBACK");
-            let checkUsername = await client.query("select username from auth.users where username = $1 limit 1", [
+            let checkUsername = await client.query("select username from public.profiles where username = $1 limit 1", [
                 request.body.username
             ]);
             if (checkUsername?.rows?.length == 1) {
