@@ -94,7 +94,7 @@
             <eta> } </eta>
           </div>
           <div id="flashcards-outer-div">
-            <button id="another-flashcards-unmaximize-button" class="faint hide">
+            <button id="flashcards-unmaximize" class="faint hide">
               <i class="nf nf-fa-long_arrow_left"></i> Back
             </button>
             <div>
@@ -146,19 +146,19 @@
                   </button>
                 </div>
                 <div class="flex end">
-                  <button id="flashcards-maximize-button">
+                  <!--<button id="flashcards-maximize-button">
                     <i class="nf nf-md-fullscreen"></i>
                   </button>
                   <button id="flashcards-unmaximize-button" class="hide">
                     <i class="nf nf-md-fullscreen_exit"></i>
-                  </button>
+                  </button>-->
                 </div>
               </div>
             </div>
           </div>
           <div id="terms-and-stuff-outer-div">
             <div class="caption grid list">
-              <button id="another-flashcards-maximize-button" class="alt">
+              <button id="flashcards-maximize" class="alt">
                 <i class="nf nf-md-card_multiple"></i>
                 Flashcards
               </button>
@@ -319,9 +319,7 @@
         document.getElementById("footer-wave").classList.add("hide");
         document.getElementById("footer").classList.add("hide");
 
-        document.getElementById("flashcards-maximize-button").classList.add("hide");
-        document.getElementById("flashcards-unmaximize-button").classList.remove("hide");
-        document.getElementById("another-flashcards-unmaximize-button").classList.remove("hide");
+        document.getElementById("flashcards-unmaximize").classList.remove("hide");
       }
       function unmaximizeFlashcards() {
         document.getElementById("title-and-menu-outer-div").classList.remove("hide");
@@ -329,14 +327,10 @@
         document.getElementById("footer-wave").classList.remove("hide");
         document.getElementById("footer").classList.remove("hide");
 
-        document.getElementById("flashcards-maximize-button").classList.remove("hide");
-        document.getElementById("flashcards-unmaximize-button").classList.add("hide");
-        document.getElementById("another-flashcards-unmaximize-button").classList.add("hide");
+        document.getElementById("flashcards-unmaximize").classList.add("hide");
       }
-      document.getElementById("flashcards-maximize-button").addEventListener("click", maximizeFlashcards);
-      document.getElementById("flashcards-unmaximize-button").addEventListener("click", unmaximizeFlashcards);
-      document.getElementById("another-flashcards-maximize-button").addEventListener("click", maximizeFlashcards);
-      document.getElementById("another-flashcards-unmaximize-button").addEventListener("click", unmaximizeFlashcards);
+      document.getElementById("flashcards-maximize").addEventListener("click", maximizeFlashcards);
+      document.getElementById("flashcards-unmaximize").addEventListener("click", unmaximizeFlashcards);
     </script>
     <eta> if (data?.studyset?.id) { </eta>
     <script>
