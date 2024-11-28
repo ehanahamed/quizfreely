@@ -620,6 +620,80 @@ fastify.get("/studyset/edit-local", function (request, reply) {
   })
 })
 
+fastify.get("/studyset/local/review-mode", function (request, reply) {
+  userData(request).then(function (userResult) {
+    reply.view("review-mode.html", {
+      ...themeData(request),
+      local: true,
+      localId: request?.query?.id,
+      authed: userResult.authed,
+      authedUser: userResult?.authedUser
+    })
+  })
+})
+
+fastify.get("/studysets/:studyset/review-mode", function (request, reply) {
+  let headers = {
+    "Content-Type": "application/json"
+  };
+  if (request.cookies.auth) {
+    headers = {
+      "Authorization": "Bearer " + request.cookies.auth,
+      "Content-Type": "application/json"
+    };
+  }
+  fetch(API_URL + "/graphql", {
+    method: "POST",
+    headers: headers,
+    body: JSON.stringify({
+      query: `query publicStudyset($id: ID!) {
+        authed
+        authedUser {
+          id
+          username
+          display_name
+        }
+        studyset(id: $id, withAuth: false) {
+          id
+          title
+          updated_at
+          user_id
+          user_display_name
+          data {
+            terms
+          }
+          terms_count
+        }
+      }`,
+      variables: {
+        id: request.params.studyset
+      }
+    })
+  }).then(function (rawApiRes) {
+    rawApiRes.json().then(function (apiRes) {
+      let authed = false;
+      let authedUser;
+      if (apiRes?.data?.authed) {
+        authed = apiRes.data.authed;
+        authedUser = apiRes.data?.authedUser;
+      }
+      if (apiRes?.data?.studyset) {
+        reply.view("review-mode.html", {
+          ...themeData(request),
+          local: false,
+          studyset: apiRes.data.studyset,
+          authed: authed,
+          authedUser: authedUser
+        })
+      } else {
+        // work in progess should we implement a way to send the already fetched user data from this request to the not found handler
+        // that would save an extra api request because our callnotfound handler has 
+        reply.callNotFound();
+      }
+    })
+  })
+});
+
 fastify.get("/users/:userid", function (request, reply) {
   userData(request).then(function (userResult) {
     fetch(API_URL + "/v0/public/users/" + request.params.userid)
