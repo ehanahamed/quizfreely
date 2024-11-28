@@ -163,7 +163,7 @@
                 Flashcards
               </button>
               <eta> if (data.local) { </eta>
-              <a href="/studyset/local/review?id=<eta>= data.localId </eta>" class="button alt">
+              <a href="/studyset/local/review-mode?id=<eta>= data.localId </eta>" class="button alt">
                 <i class="nf nf-fa-book"></i>
                 Review Mode
               </a>
@@ -172,7 +172,7 @@
                 Practice Test
               </a>
               <eta> } else if (data.studyset?.private) { </eta>
-              <a href="/studyset/private/<eta>= data.studyset.id </eta>/review" class="button alt">
+              <a href="/studyset/private/<eta>= data.studyset.id </eta>/review-mode" class="button alt">
                 <i class="nf nf-fa-book"></i>
                 Review Mode
               </a>
@@ -181,7 +181,7 @@
                 Practice Test
               </a>
               <eta> } else if (data.studyset) { </eta>
-                <a href="/studysets/<eta>= data.studyset.id </eta>/review" class="button alt">
+                <a href="/studysets/<eta>= data.studyset.id </eta>/review-mode" class="button alt">
                   <i class="nf nf-fa-book"></i>
                   Review Mode
                 </a>
