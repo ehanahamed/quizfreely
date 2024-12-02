@@ -83,7 +83,7 @@ cd quizfreely/api/
 cp .env.example .env
 ```
 
-Edit `.env` and replace `PASSWORD` with your/our password for the "quizfreely_api" postgres user in `POSTGRES_URI=postgres://quizfreely_api:PASSWORD@localhost/quizfreely_db`
+Edit `.env` and replace `PASSWORD_GOES_HERE` with your/our password for the "quizfreely_api" postgres user in `POSTGRES_URI=postgres://quizfreely_api:PASSWORD_GOES_HERE@localhost/quizfreely_db`
 
 All the other values are already set up with reasonable defaults for local development.
 
