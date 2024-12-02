@@ -50,9 +50,19 @@ Check if `postgresql.service` is running
 sudo systemctl status postgresql.service
 # if it's not running, run:
 # sudo systemctl start postgresql.service
+
+# if `systemctl start...` says "postgresql.service failed because the control process exited with error code.", run `systemctl status...` (again) to see the error:
+# sudo systemctl status postgresql.service
+
+# if `systemctl status...` says `"/var/lib/postgres/data" is missing or empty.`, then run:
+# sudo su postgres
+# cd ~
+# initdb --locale=C.UTF-8 --encoding=UTF8 -D /var/lib/postgres/data
+# exit
+# sudo systemctl start postgresql.service
 ```
 
-Then switch to the `postgres` linux user: (and go to its home dir)
+Then switch to the `postgres` linux user (do it again, if you already did)
 ```sh
 sudo su postgres
 cd ~
