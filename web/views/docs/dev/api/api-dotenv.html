@@ -26,8 +26,8 @@
 <li>should be <code>LOG_PRETTY=true</code> for development</li></ul></li>
 <li><code>POSTGRES_URI=</code><ul>
 <li>PostgreSQL connection URI</li>
-<li>should be <code>POSTGRES_URI=postgres://quizfreely_api:PASSWORD@localhost/quizfreely_db</code></li>
-<li>replace <code>PASSWORD</code> with your/our password</li>
+<li>should be <code>POSTGRES_URI=postgres://quizfreely_api:PASSWORD_GOES_HERE@localhost/quizfreely_db</code></li>
+<li>replace <code>PASSWORD_GOES_HERE</code> with your/our password</li>
 <li>Most other .env variables replace localhost in production, but we keep "@localhost" in POSTGRES_URI= because the server process connects to the database through localhost, because both are on the same machine</li></ul></li>
 <li><code>CORS_ORIGIN=</code><ul>
 <li>allowed CORS origin, see https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Allow-Origin</li>

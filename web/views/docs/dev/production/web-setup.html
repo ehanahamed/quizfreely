@@ -35,7 +35,8 @@ cp .env.example .env
 <li>Set <code>HOST=</code> to <code>HOST=localhost</code></li>
 <li>Set <code>COOKIES_DOMAIN=</code> to <code>COOKIES_DOMAIN=quizfreely.com</code></li>
 <li>Set <code>LOG_PRETTY=</code> to <code>LOG_PRETTY=false</code></li>
-<li>Set <code>ENABLE_OAUTH_GOOGLE=</code> to <code>ENABLE_OAUTH_GOOGLE=true</code> OR <code>ENABLE_OAUTH_GOOGLE=false</code> (check your/our quizfreely-api dotenv too)</li>
+<li>Check your/our quizfreely-api dotenv and then set <code>ENABLE_OAUTH_GOOGLE=</code></li>
+<li>Set <code>CACHE_VIEWS=</code> to <code>CACHE_VIEWS=true</code></li>
 </ol>
 <p>Quizfreely-web's .env file is documented with detail in <a href="../web/web-dotenv.md">web-dotenv.md</a></p>
 <p>When you're done, the edited .env file should look similar to this:</p>
@@ -64,6 +65,10 @@ API_URL=http://localhost:8008
 # for production: COOKIES_DOMAIN=quizfreely.com
 # for development: COOKIES_DOMAIN=localhost
 COOKIES_DOMAIN=quizfreely.com
+
+# for production: CACHE_VIEWS=true
+# for development: CACHE_VIEWS=false
+CACHE_VIEWS=true
 
 # for production: CRON_CLEAR_LOGS=true
 CRON_CLEAR_LOGS=true

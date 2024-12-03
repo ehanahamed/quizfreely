@@ -12,10 +12,20 @@
 <p>You need PostgreSQL (v15 or above) installed.</p>
 <p>Check if <code>postgresql.service</code> is running</p>
 <pre><code class="sh language-sh">sudo systemctl status postgresql.service
-# if it's not running, start it:
+# if it's not running, run:
+# sudo systemctl start postgresql.service
+
+# if `systemctl start...` says "postgresql.service failed because the control process exited with error code.", run `systemctl status...` (again) to see the error:
+# sudo systemctl status postgresql.service
+
+# if `systemctl status...` says `"/var/lib/postgres/data" is missing or empty.`, then run:
+# sudo su postgres
+# cd ~
+# initdb --locale=C.UTF-8 --encoding=UTF8 -D /var/lib/postgres/data
+# exit
 # sudo systemctl start postgresql.service
 </code></pre>
-<p>Switch to the <code>postgres</code> linux user (and go to its home dir)</p>
+<p>Then switch to the <code>postgres</code> linux user (do it again, if you already did)</p>
 <pre><code class="sh language-sh">sudo su postgres
 cd ~
 </code></pre>
@@ -43,7 +53,7 @@ cd ~
 <pre><code class="sh language-sh">cd quizfreely/api/
 cp .env.example .env
 </code></pre>
-<p>Edit <code>.env</code> and replace <code>PASSWORD</code> with your/our password for the "quizfreely_api" postgres user in <code>POSTGRES_URI=postgres://quizfreely_api:PASSWORD@localhost/quizfreely_db</code></p>
+<p>Edit <code>.env</code> and replace <code>PASSWORD_GOES_HERE</code> with your/our password for the "quizfreely_api" postgres user in <code>POSTGRES_URI=postgres://quizfreely_api:PASSWORD_GOES_HERE@localhost/quizfreely_db</code></p>
 <p>All the other values are already set up with reasonable defaults for local development.</p>
 <p>See <a href="./api-dotenv.md">developer docs > api > api-dotenv.md</a> for all <code>.env</code> options &amp; more info.</p>
 <h3 id="install-dependencies--start-api">Install dependencies &amp; start API</h3>
@@ -57,3 +67,7 @@ npm install
 </code></pre>
 <p>quizfreely-api runs on http://localhost:8008 by default. You can change this in <code>.env</code></p>
 <p>See <a href="../web/README.md">developer docs > web</a> to set up quizfreely-web.</p>
+<h2 id="domains-and-forwarded-addresses">Domains and Forwarded Addresses</h2>
+<p>In qzfr-api's dotenv file, <code>HOST=</code> is always an internal or localhost address.</p>
+<p><code>COOKIES_DOMAIN=</code> is the forwarded address or user-facing/devleoper-facing domain. (For development, this might be <code>localhost</code>, but it might also be an actual domain. In production, we have <code>COOKIES_DOMAIN=quizfreely.com</code>, because the api is accessible from <code>https://quizfreely.com/api</code>)</p>
+<p>All details about Quizfreely-API's dotenv file is documented and explained under <a href="./api-dotenv.md">developer docs > api > api-dotenv.md</a></p>

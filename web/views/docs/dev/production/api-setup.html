@@ -35,8 +35,18 @@ npm install
 <pre><code class="sh language-sh">sudo systemctl status postgresql.service
 # if it's not running, run:
 # sudo systemctl start postgresql.service
+
+# if `systemctl start...` says "postgresql.service failed because the control process exited with error code.", run `systemctl status...` (again) to see the error:
+# sudo systemctl status postgresql.service
+
+# if `systemctl status...` says `"/var/lib/postgres/data" is missing or empty.`, then run:
+# sudo su postgres
+# cd ~
+# initdb --locale=C.UTF-8 --encoding=UTF8 -D /var/lib/postgres/data
+# exit
+# sudo systemctl start postgresql.service
 </code></pre>
-<p>Then switch to the <code>postgres</code> linux user: (and go to its home dir)</p>
+<p>Then switch to the <code>postgres</code> linux user (do it again, if you already did)</p>
 <pre><code class="sh language-sh">sudo su postgres
 cd ~
 </code></pre>

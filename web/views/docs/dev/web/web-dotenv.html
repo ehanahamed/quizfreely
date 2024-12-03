@@ -38,6 +38,10 @@
 <li>NO trailing slash (<code>example.com</code>, NOT <code>example.com/</code>)</li>
 <li>should be <code>COOKIES_DOMAIN=quizfreely.com</code> for production</li>
 <li>should be <code>COOKIES_DOMAIN=localhost</code> for development</li></ul></li>
+<li><code>CACHE_VIEWS=</code><ul>
+<li>Enable or disable caching Eta views/templates &amp; rendering thingies with @fastify/view</li>
+<li><code>CACHE_VIEWS=true</code> for production</li>
+<li><code>CACHE_VIEWS=false</code> for development</li></ul></li>
 <li><code>CRON_CLEAR_LOGS=</code><ul>
 <li><code>true</code> or <code>false</code> to enable or disable cron job to clear logs (clears contents of <code>quizfreely-web.log</code>) every hour, day, week, or month, etc (interval set with <code>CRON_CLEAR_LOGS_INTERVAL=</code>)</li>
 <li>should be <code>CRON_CLEAR_LOGS=true</code> for production</li></ul></li>
