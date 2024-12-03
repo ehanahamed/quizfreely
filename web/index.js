@@ -683,20 +683,20 @@ fastify.get("/studysets/:studyset/review-mode", function (request, reply) {
           if (
             request.query.max <= apiRes.data.studyset.data.terms.length
           ) {
-            let max = request.query.max;
+            max = request.query.max;
           }
 
           let questions = [];
           let randomTermIndex = Math.floor(
-            Math.random() * (max + 1)
-          )
+            Math.random() * (max)
+          );
           while (questions.length < max) {
             let answers = [];
             if (Math.floor(Math.random() * 2) == 1) {
               answers.push(
                 apiRes.data.studyset.data.terms[
                   Math.floor(
-                    Math.random() * (max + 1)
+                    Math.random() * (max)
                   )
                 ][0]
               )
@@ -714,7 +714,7 @@ fastify.get("/studysets/:studyset/review-mode", function (request, reply) {
               answers.push(
                 apiRes.data.studyset.data.terms[
                   Math.floor(
-                    Math.random() * (max + 1)
+                    Math.random() * (max)
                   )
                 ][1]
               )
@@ -729,18 +729,27 @@ fastify.get("/studysets/:studyset/review-mode", function (request, reply) {
                 answers: answers
               })
             }
-            let randomTermIndex = Math.floor(
-              Math.random() * (max + 1)
+            randomTermIndex = Math.floor(
+              Math.random() * (max)
             )
           }
+          reply.view("review-mode.html", {
+            ...themeData(request),
+            local: false,
+            questions: questions,
+            authed: authed,
+            authedUser: authedUser
+          })
+        } else {
+          reply.view("review-mode.html", {
+            ...themeData(request),
+            local: false,
+            questions: [],
+            max: max,
+            authed: authed,
+            authedUser: authedUser
+          })
         }
-        reply.view("review-mode.html", {
-          ...themeData(request),
-          local: false,
-          questions: questions,
-          authed: authed,
-          authedUser: authedUser
-        })
       } else {
         // work in progess should we implement a way to send the already fetched user data from this request to the not found handler
         // that would save an extra api request because our callnotfound handler has 
