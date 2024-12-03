@@ -693,17 +693,23 @@ fastify.get("/studysets/:studyset/review-mode", function (request, reply) {
           while (questions.length < max) {
             let answers = [];
             if (Math.floor(Math.random() * 2) == 1) {
-              answers.push(
-                apiRes.data.studyset.data.terms[
-                  Math.floor(
-                    Math.random() * (max)
-                  )
-                ][0]
-              )
+              for (let i = 0; i < 3; i++) {
+                answers.push({
+                  content: apiRes.data.studyset.data.terms[
+                    Math.floor(
+                      Math.random() * (max)
+                    )
+                  ][0],
+                  correct: false
+                })
+              }
               answers.splice(
                 Math.floor(Math.random() * (4 + 1)),
                 0,
-                apiRes.data.studyset.data.terms[randomTermIndex][0]
+                {
+                  content: apiRes.data.studyset.data.terms[randomTermIndex][0],
+                  correct: true
+                }
               )
               questions.push({
                 answerWith: "term",
@@ -711,17 +717,23 @@ fastify.get("/studysets/:studyset/review-mode", function (request, reply) {
                 answers: answers
               })
             } else {
-              answers.push(
-                apiRes.data.studyset.data.terms[
-                  Math.floor(
-                    Math.random() * (max)
-                  )
-                ][1]
-              )
+              for (let i = 0; i < 3; i++) {
+                answers.push({
+                  content: apiRes.data.studyset.data.terms[
+                    Math.floor(
+                      Math.random() * (max)
+                    )
+                  ][1],
+                  correct: false
+                })
+              }
               answers.splice(
                 Math.floor(Math.random() * (4 + 1)),
                 0,
-                apiRes.data.studyset.data.terms[randomTermIndex][1]
+                {
+                  content: apiRes.data.studyset.data.terms[randomTermIndex][1],
+                  correct: true
+                }
               )
               questions.push({
                 answerWith: "definition",
@@ -733,10 +745,12 @@ fastify.get("/studysets/:studyset/review-mode", function (request, reply) {
               Math.random() * (max)
             )
           }
+          console.log(JSON.stringify(questions))
           reply.view("review-mode.html", {
             ...themeData(request),
             local: false,
             questions: questions,
+            max: max,
             authed: authed,
             authedUser: authedUser
           })
@@ -744,8 +758,6 @@ fastify.get("/studysets/:studyset/review-mode", function (request, reply) {
           reply.view("review-mode.html", {
             ...themeData(request),
             local: false,
-            questions: [],
-            max: max,
             authed: authed,
             authedUser: authedUser
           })
