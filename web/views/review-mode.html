@@ -38,20 +38,35 @@
     <main>
       <div class="grid page">
         <div class="content">
-          <eta> if (data?.reorderedTerms?.length >= 1) { </eta>
-          <eta> data.reorderedTerms.forEach(function (term) { </eta>
-          <div class="card"><eta>= term[0] </eta></div>
+          <eta> if (data?.questions?.length >= 1) { </eta>
+          <eta> data.questions.forEach(function (question) { </eta>
+          <div class="card">
+            <div class="content"><eta>= question.question </eta></div>
+          </div>
           <div class="flex">
-            <button class="box"><eta>= term[1] </eta></button>
-            <button class="box"><eta>= data.studyset.terms[] </eta></button>
+            <button class="box" onclick="checkAnswer(event)" data-correct="<eta>= question.answers[0].correct </eta>"><eta>= question.answers[0].content </eta></button>
+            <button class="box" onclick="checkAnswer(event)" data-correct="<eta>= question.answers[0].correct </eta>"><eta>= question.answers[1].content </eta></button>
+            <button class="box" onclick="checkAnswer(event)" data-correct="<eta>= question.answers[0].correct </eta>"><eta>= question.answers[2].content </eta></button>
+            <button class="box" onclick="checkAnswer(event)" data-correct="<eta>= question.answers[0].correct </eta>"><eta>= question.answers[3].content </eta></button>
           </div>
           <eta> }) </eta>
+          <eta> } else { </eta>
+          <p>oopsie woopsie no questions???</p>
           <eta> } </eta>
         </div>
       </div>
     </main>
     <eta>~ include("./partials/footer") </eta>
-    <eta> if (data.local) {</eta>
+    <script>
+      function checkAnswer(event) {
+        if (event.target.dataset.correct == "true") {
+          event.target.classList.add("yay");
+        } else {
+          event.target.classList.add("ohno");
+        }
+      }
+    </script>
+    <eta> if (data.local) { </eta>
     <script src="/assets/js/indexedDB.js"></script>
     <script>
       openIndexedDB(function (db) {
