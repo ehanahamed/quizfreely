@@ -933,11 +933,12 @@ fastify.listen({
     process.exit(1);
   } else if (LOG_PRETTY == "true") {
     var link = address;
-    if (COOKIES_DOMAIN == "localhost") {
-      link = link.replace("://[::]:", "://localhost:")
-      link = link.replace("://127.0.0.1:", "://localhost:")
-    }
+    link = link.replace("://[::]:", "://localhost:")
+    link = link.replace("://127.0.0.1:", "://localhost:")
     console.log("Quizfreely-web is running at " + link);
+    if (link.includes(COOKIES_DOMAIN) == false) {
+      console.log("COOKIES_DOMAIN is " + COOKIES_DOMAIN)
+    }
   }
 })
 
