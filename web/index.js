@@ -745,7 +745,6 @@ fastify.get("/studysets/:studyset/review-mode", function (request, reply) {
               Math.random() * (max)
             )
           }
-          console.log(JSON.stringify(questions))
           reply.view("review-mode.html", {
             ...themeData(request),
             local: false,
@@ -842,7 +841,6 @@ fastify.get("/search", async function (request, reply) {
           authedUser: authedUser
         })
       } else {
-        console.log(apiRes);
         return reply.send("work in progress error message mabye")
       }
     } catch (error) {
