@@ -678,10 +678,66 @@ fastify.get("/studysets/:studyset/review-mode", function (request, reply) {
         authedUser = apiRes.data?.authedUser;
       }
       if (apiRes?.data?.studyset) {
+        if (apiRes.data.studyset?.data?.terms.length >= 1) {
+          let max = apiRes.data.studyset.data.terms.length;
+          if (
+            request.query.max <= apiRes.data.studyset.data.terms.length
+          ) {
+            let max = request.query.max;
+          }
+
+          let questions = [];
+          let randomTermIndex = Math.floor(
+            Math.random() * (max + 1)
+          )
+          while (questions.length < max) {
+            let answers = [];
+            if (Math.floor(Math.random() * 2) == 1) {
+              answers.push(
+                apiRes.data.studyset.data.terms[
+                  Math.floor(
+                    Math.random() * (max + 1)
+                  )
+                ][0]
+              )
+              answers.splice(
+                Math.floor(Math.random() * (4 + 1)),
+                0,
+                apiRes.data.studyset.data.terms[randomTermIndex][0]
+              )
+              questions.push({
+                answerWith: "term",
+                question: apiRes.data.studyset.data.terms[randomTermIndex][1],
+                answers: answers
+              })
+            } else {
+              answers.push(
+                apiRes.data.studyset.data.terms[
+                  Math.floor(
+                    Math.random() * (max + 1)
+                  )
+                ][1]
+              )
+              answers.splice(
+                Math.floor(Math.random() * (4 + 1)),
+                0,
+                apiRes.data.studyset.data.terms[randomTermIndex][1]
+              )
+              questions.push({
+                answerWith: "definition",
+                question: apiRes.data.studyset.data.terms[randomTermIndex][0],
+                answers: answers
+              })
+            }
+            let randomTermIndex = Math.floor(
+              Math.random() * (max + 1)
+            )
+          }
+        }
         reply.view("review-mode.html", {
           ...themeData(request),
           local: false,
-          studyset: apiRes.data.studyset,
+          questions: questions,
           authed: authed,
           authedUser: authedUser
         })
