@@ -38,21 +38,17 @@
     <main>
       <div class="grid page">
         <div class="content">
-          <eta> if (data?.questions?.length >= 1) { </eta>
-          <eta> data.questions.forEach(function (question) { </eta>
+          <h3 id="answer-with-term">Select the correct term:</h3>
+          <h3 id="answer-with-definition">Select the correct definition:</h3>
           <div class="card">
-            <div class="content"><eta>= question.question </eta></div>
+            <div id="question" class="content">...</div>
           </div>
           <div class="flex">
-            <button class="box" onclick="checkAnswer(event)" data-correct="<eta>= question.answers[0].correct </eta>"><eta>= question.answers[0].content </eta></button>
-            <button class="box" onclick="checkAnswer(event)" data-correct="<eta>= question.answers[1].correct </eta>"><eta>= question.answers[1].content </eta></button>
-            <button class="box" onclick="checkAnswer(event)" data-correct="<eta>= question.answers[2].correct </eta>"><eta>= question.answers[2].content </eta></button>
-            <button class="box" onclick="checkAnswer(event)" data-correct="<eta>= question.answers[3].correct </eta>"><eta>= question.answers[3].content </eta></button>
+            <button id="answer-0" class="box">...</button>
+            <button id="answer-1" class="box">...</button>
+            <button id="answer-2" class="box">...</button>
+            <button id="answer-3" class="box">...</button>
           </div>
-          <eta> }) </eta>
-          <eta> } else { </eta>
-          <p>oopsie woopsie no questions???</p>
-          <eta> } </eta>
         </div>
       </div>
     </main>
