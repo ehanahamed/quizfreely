@@ -38,8 +38,8 @@
     <main>
       <div class="grid page">
         <div class="content">
-          <h3 id="answer-with-term">Select the correct term:</h3>
-          <h3 id="answer-with-definition">Select the correct definition:</h3>
+          <p class="h4" id="answer-with-term">Select the matching term:</p>
+          <p class="h4" id="answer-with-definition">Select the matching definition:</p>
           <div class="card">
             <div id="question" class="content">...</div>
           </div>
@@ -108,91 +108,22 @@
         })
       })
     </script>
-    <eta> } </eta>
+    <eta> } else { </eta>
     <script>
-      var flashcardsIndex = 0;
-      function flashcardsFlip() {
-        document.getElementById("flashcard").classList.toggle("flip");
-      }
-      document.getElementById("flashcard").addEventListener("click", flashcardsFlip);
-      document.getElementById("flashcards-flip-button").addEventListener("click", flashcardsFlip);
-      
-      function flashcardsChange() {
-        var termsList = document.getElementById("terms-table").children[0];
-        document.getElementById("flashcard-front").innerText = termsList.children[flashcardsIndex + 1].children[0].innerText
-        document.getElementById("flashcard-back").innerText = termsList.children[flashcardsIndex + 1].children[1].innerText
-        document.getElementById("flashcards-count").innerText = (flashcardsIndex + 1) + "/" + (termsList.children.length - 1);
-      }
-
-      function flashcardsNext() {
-        if (flashcardsIndex < (document.getElementById("terms-table").children[0].children.length - 2)) {
-          flashcardsIndex += 1
-          flashcardsChange()
-        }
-      }
-      document.getElementById("flashcards-next-button").addEventListener("click", flashcardsNext);
-
-      function flashcardsPrev() {
-        if (flashcardsIndex > 0) {
-          flashcardsIndex -= 1
-          flashcardsChange()
-        }
-      }
-      document.getElementById("flashcards-prev-button").addEventListener("click", flashcardsPrev);
-
-      /* the modal's html is the same for local and authed */
-      if (document.getElementById("delete-button")) {
-        document.getElementById("delete-button").addEventListener("click", function () {
-          document.getElementById("delete-modal").classList.remove("hide");
-        })
-        
-        document.getElementById("delete-cancel-button").addEventListener("click", function () {
-          document.getElementById("delete-modal").classList.add("hide");
-        })
-      }
-      function maximizeFlashcards() {
-        document.getElementById("title-and-menu-outer-div").classList.add("hide");
-        document.getElementById("terms-and-stuff-outer-div").classList.add("hide");
-        document.getElementById("footer-wave").classList.add("hide");
-        document.getElementById("footer").classList.add("hide");
-
-        document.getElementById("flashcards-unmaximize").classList.remove("hide");
-      }
-      function unmaximizeFlashcards() {
-        document.getElementById("title-and-menu-outer-div").classList.remove("hide");
-        document.getElementById("terms-and-stuff-outer-div").classList.remove("hide");
-        document.getElementById("footer-wave").classList.remove("hide");
-        document.getElementById("footer").classList.remove("hide");
-
-        document.getElementById("flashcards-unmaximize").classList.add("hide");
-      }
-      document.getElementById("flashcards-maximize").addEventListener("click", maximizeFlashcards);
-      document.getElementById("flashcards-unmaximize").addEventListener("click", unmaximizeFlashcards);
-    </script>
-    <eta> if (data?.studyset?.id) { </eta>
-    <script>
-      document.getElementById("delete-confirm-button").addEventListener("click", function () {
-        fetch("/api/v0/studysets/<eta>= data.studyset.id </eta>", {
-          method: "DELETE",
-          credentials: "same-origin"
-        }).then(function (rawResponse) {
-          rawResponse.json().then(function (response) {
-            if (response.error) {
-              console.log(response)
-              alert(response.error)
-            } else {
-              window.location.replace("/dashboard");
-            }
-          }).catch(function (error) {
-            console.error(error);
-            alert("json parsing fetch error");
-            /* work in progress error msgs */
-          })
+      fetch("/api/graphql", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: '{"query":"{ studyset(id: \\"<eta>= data.studysetId </eta>\\", withAuth: <eta>= data.authed </eta>) { data { terms } } }"}'
+      }).then(function (rawApiRes) {
+        rawApiRes.json().then(function (apiResponse) {
+          console.log(apiResponse)
         }).catch(function (error) {
           console.error(error);
-          alert("fetch error")
-          /* work in progress error messages? */
         })
+      }).catch(function (error) {
+        console.error(error);
       })
     </script>
     <eta> } </eta>
