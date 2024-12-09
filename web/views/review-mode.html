@@ -106,7 +106,7 @@
         body: JSON.stringify({
           query: "query getStudysetAndProgress($id: ID!) {" +
           " studyset(id: $id, withAuth: <eta>= data.authed </eta>) { data { terms } }" +
-          " <eta> if (data.authed && false) { </eta> studysetProgress(id: $id) { data } <eta> } </eta>" + 
+          " <eta> if (data.authed) { </eta> studysetProgress(id: $id) { data } <eta> } </eta>" + 
           " }",
           variables: {
             "id": "<eta>= data.studysetId </eta>"
