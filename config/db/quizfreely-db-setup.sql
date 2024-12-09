@@ -224,7 +224,7 @@ create table public.studyset_progress (
   id uuid primary key default gen_random_uuid(),
   studyset_id uuid references public.studysets (id) on delete cascade,
   user_id uuid references auth.users (id) on delete cascade,
-  data jsonb not null,
+  terms jsonb not null,
   updated_at timestamptz default now()
 );
 
