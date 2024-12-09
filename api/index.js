@@ -141,15 +141,15 @@ const schema = `
         searchStudysets(q: String!, limit: Int, offset: Int): [Studyset]
         searchQueries(q: String!, limit: Int, offset: Int): [SearchQuery]
         myStudysets(limit: Int, offset: Int): [Studyset]
-        studysetProgress(id: ID!): StudysetProgress
+        studysetProgress(studyset_id: ID!): StudysetProgress
     }
     type Mutation {
         createStudyset(studyset: StudysetInput!): Studyset
         updateStudyset(id: ID!, studyset: StudysetInput): Studyset
         deleteStudyset(id: ID!): ID
         updateUser(display_name: String): AuthedUser
-        updateStudysetProgress(id: ID!, StudysetProgressInput!)
-        deleteStudysetProgress(id: ID!)
+        updateStudysetProgress(studyset_id: ID!, termProgressChanges: [StudysetProgressTermInput!]!): StudysetProgress
+        deleteStudysetProgress(studyset_id: ID!): ID
     }
     type User {
         id: ID
@@ -193,7 +193,11 @@ const schema = `
         subject: String
     }
     type StudysetProgress {
+        id: ID!
+        user_id: ID!
+        studyset_id: ID!
         terms: [StudysetProgressTerm!]!
+        updated_at: String
     }
     type StudysetProgressTerm {
         term: String!
@@ -202,9 +206,6 @@ const schema = `
         termIncorrect: Int!
         defCorrect: Int!
         defIncorrect: Int!
-    }
-    input StudysetProgressInput {
-        terms: [StudysetProgressTermInput!]!
     }
     input StudysetProgressTermInput {
         term: String!
