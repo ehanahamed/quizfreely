@@ -66,10 +66,10 @@
           alert("impossible error?")
         }
       }
-      document.getElementById("answer-1").addEventListener(checkAnswer);
-      document.getElementById("answer-2").addEventListener(checkAnswer);
-      document.getElementById("answer-3").addEventListener(checkAnswer);
-      document.getElementById("answer-4").addEventListener(checkAnswer);
+      document.getElementById("answer-1").addEventListener("click", checkAnswer);
+      document.getElementById("answer-2").addEventListener("click", checkAnswer);
+      document.getElementById("answer-3").addEventListener("click", checkAnswer);
+      document.getElementById("answer-4").addEventListener("click", checkAnswer);
     </script>
     <eta> if (data.local) { </eta>
     <script src="/assets/js/indexedDB.js"></script>
@@ -103,7 +103,15 @@
         headers: {
           "Content-Type": "application/json"
         },
-        body: '{"query":"{ studyset(id: \\"<eta>= data.studysetId </eta>\\", withAuth: <eta>= data.authed </eta>) { data { terms } } }"}'
+        body: JSON.stringify({
+          query: "query getStudysetAndProgress($id: ID!) {" +
+          " studyset(id: $id, withAuth: <eta>= data.authed </eta>) { data { terms } }" +
+          " <eta> if (data.authed && false) { </eta> studysetProgress(id: $id) { data } <eta> } </eta>" + 
+          " }",
+          variables: {
+            "id": "<eta>= data.studysetId </eta>"
+          }
+        })
       }).then(function (rawApiRes) {
         rawApiRes.json().then(function (apiResponse) {
           console.log(apiResponse)
