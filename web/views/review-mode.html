@@ -44,29 +44,38 @@
             <div id="question" class="content">...</div>
           </div>
           <div class="flex">
-            <button id="answer-0" class="box">...</button>
-            <button id="answer-1" class="box">...</button>
-            <button id="answer-2" class="box">...</button>
-            <button id="answer-3" class="box">...</button>
+            <button id="answer-1" answer="incorrect" class="box">...</button>
+            <button id="answer-2" answer="incorrect" class="box">...</button>
+            <button id="answer-3" answer="incorrect" class="box">...</button>
+            <button id="answer-4" answer="incorrect" class="box">...</button>
           </div>
         </div>
       </div>
     </main>
     <eta>~ include("./partials/footer") </eta>
     <script>
+      var sessionPastTerms = [];
+      function generateQuestion(studysetTermsArray) {
+      }
       function checkAnswer(event) {
-        if (event.target.dataset.correct == "true") {
+        if (event.target.dataset.answer == "correct") {
           event.target.classList.add("yay");
-        } else {
+        } else if (event.target.dataset.answer == "incorrect") {
           event.target.classList.add("ohno");
+        } else{
+          alert("impossible error?")
         }
       }
+      document.getElementById("answer-1").addEventListener(checkAnswer);
+      document.getElementById("answer-2").addEventListener(checkAnswer);
+      document.getElementById("answer-3").addEventListener(checkAnswer);
+      document.getElementById("answer-4").addEventListener(checkAnswer);
     </script>
     <eta> if (data.local) { </eta>
     <script src="/assets/js/indexedDB.js"></script>
     <script>
       openIndexedDB(function (db) {
-        var studysetsObjectStore = db.transaction(["studysets"]).objectStore("studysets");
+        var studysetsObjectStore = db.transaction(["studysets", ""]).objectStore("studysets");
         var dbGetReq = studysetsObjectStore.get(<eta>= data.localId </eta>);
         dbGetReq.onerror = function (event) {
           alert("oopsie woopsie, indexeddb error");
@@ -77,35 +86,14 @@
               document.getElementById("studyset-title").innerText = dbGetReq.result.title;
             }
             if (dbGetReq.result.data && dbGetReq.result.data.terms) {
-              var termsTable = document.getElementById("terms-table");
-              for (var i = 0; i < dbGetReq.result.data.terms.length; i++) {
-                var newRow = termsTable.insertRow();
-                var newCell0 = newRow.insertCell();
-                var newCell1 = newRow.insertCell();
-                newCell0.innerText = dbGetReq.result.data.terms[i][0];
-                newCell0.style.whiteSpace = "pre-line";
-                newCell1.innerText = dbGetReq.result.data.terms[i][1];
-                newCell1.style.whiteSpace = "pre-line";
-              }
-              flashcardsChange();
+              generateQuestion(dbGetReq.result.data.terms);
+            } else {
+              alert("studyset found but no terms :(")
             }
           } else {
             alert("studyset not found :(")
           }
         }
-      })
-      document.getElementById("delete-confirm-button").addEventListener("click", function () {
-        openIndexedDB(function (db) {
-          studysetsObjectStore = db.transaction(["studysets"], "readwrite").objectStore("studysets");
-          var dbDeleteReq = studysetsObjectStore.delete(<eta>= data.localId </eta>);
-          dbDeleteReq.onsuccess = function (event) {
-            window.location.replace("/dashboard");
-          }
-          dbDeleteReq.onerror = function (error) {
-            console.error(error);
-            alert("indexeddb error while trying to delete local studyset")
-          }
-        })
       })
     </script>
     <eta> } else { </eta>
