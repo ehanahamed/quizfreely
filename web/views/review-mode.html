@@ -38,8 +38,8 @@
     <main>
       <div class="grid page">
         <div class="content">
-          <p class="h4" id="answer-with-term">Select the matching term:</p>
-          <p class="h4" id="answer-with-definition">Select the matching definition:</p>
+          <p class="h4" id="answer-with-term" class="hide">Select the matching term:</p>
+          <p class="h4" id="answer-with-definition" class="hide">Select the matching definition:</p>
           <div class="card">
             <div id="question" class="content">...</div>
           </div>
@@ -49,13 +49,29 @@
             <button id="answer-3" answer="incorrect" class="box">...</button>
             <button id="answer-4" answer="incorrect" class="box">...</button>
           </div>
+          <div class="caption">
+            <div class="flex end">
+              <button id="next-button" class="hide"><i class="nf nf-fa-long_arrow_right"></i> Next</button>
+            </div>
+          </div>
         </div>
       </div>
     </main>
     <eta>~ include("./partials/footer") </eta>
     <script>
+      var studysetTerms;
       var sessionPastTerms = [];
-      function generateQuestion(studysetTermsArray) {
+      /* first question after loading studyset (and/or studyset progress) needs one (or both) parameters
+      next questions can leave both parameters blank to use already loaded terms and term progress
+      for example, right after loading the studyset: generateQuestion(studyset.data.terms, studysetProgress.terms)
+      for example, a "next question" button: generateQuestion() */
+      function generateQuestion(studysetTermsArray, progressTermsObj) {
+        if (studysetTermsArray.length >= 1) {
+          studysetTerms = studysetTermsArray;
+        }
+        if (progressTermsObj) {
+
+        }
       }
       function checkAnswer(event) {
         if (event.target.dataset.answer == "correct") {
@@ -75,18 +91,31 @@
     <script src="/assets/js/indexedDB.js"></script>
     <script>
       openIndexedDB(function (db) {
-        var studysetsObjectStore = db.transaction(["studysets", ""]).objectStore("studysets");
-        var dbGetReq = studysetsObjectStore.get(<eta>= data.localId </eta>);
-        dbGetReq.onerror = function (event) {
+        var dbTransaction = db.transaction(["studysets", "studysetprogress"]);
+        var studysetsObjectStore = dbTransaction.objectStore("studysets");
+        var studysetprogressObjectStore = dbTransaction.objectStore("studysetprogress");
+        var dbStudysetGetReq = studysetsObjectStore.get(<eta>= data.localId </eta>);
+        dbStudysetGetReq.onerror = function (event) {
           alert("oopsie woopsie, indexeddb error");
         }
-        dbGetReq.onsuccess = function (event) {
-          if (dbGetReq.result) {
-            if (dbGetReq.result.title) {
-              document.getElementById("studyset-title").innerText = dbGetReq.result.title;
+        dbStudysetGetReq.onsuccess = function (event) {
+          if (dbStudysetGetReq.result) {
+            if (dbStudysetGetReq.result.data.terms.length >= 1) {
+              var dbProgressGetReq = studysetprogressObjectStore.get(<eta>= data.localId </eta>);
+              dbProgressGetReq.onerror = function (event) {
+                alert("indexeddb error while trying to get studyset progress");
+              }
+              dbProgressGetReq.onsuccess = function (event) {
+                generateQuestion(dbStudysetGetReq.result.data.terms, dbProgressGetReq.result.terms);
+              }
+            } else {
+              alert("oopsie woopsie no terms?")
             }
-            if (dbGetReq.result.data && dbGetReq.result.data.terms) {
-              generateQuestion(dbGetReq.result.data.terms);
+            if (dbStudysetGetReq.result.title) {
+              document.getElementById("studyset-title").innerText = dbStudysetGetReq.result.title;
+            }
+            if (dbStudysetGetReq.result.data && dbStudysetGetReq.result.data.terms) {
+              generateQuestion(dbStudysetGetReq.result.data.terms);
             } else {
               alert("studyset found but no terms :(")
             }
