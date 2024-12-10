@@ -134,7 +134,7 @@ const schema = `
     type Query {
         authed: Boolean
         authedUser: AuthedUser
-        studyset(id: ID!, withAuth: Boolean!): Studyset
+        studyset(id: ID!): Studyset
         user(id: ID!): User
         featuredStudysets(limit: Int, offset: Int): [Studyset]
         recentStudysets(limit: Int, offset: Int): [Studyset]
@@ -490,76 +490,65 @@ await fastify.register(mercurius, {
         error: errorObj
     }
 */
-async function getPublicStudyset(id) {
-    try {
-        let result = await pool.query(
-            "select s.id, s.user_id, u.display_name as user_display_name, s.title, s.data, to_char(s.updated_at, 'YYYY-MM-DD\"T\"HH24:MI:SS.MSTZH:TZM') as updated_at, s.terms_count " +
-            "from public.studysets s inner join public.profiles u on s.user_id = u.id " +
-            "where s.id = $1 and s.private = false limit 1",
-            [ id ]
-        )
-        
-        if (result.rows.length == 1) {
-            return {
-                data: result.rows[0]
-            };
-        } else {
-            return {
-                data: null
-            };
-        }
-    } catch (error) {
-        return {
-            error: error
-        }
-    }
-}
-
-/*
-    on sucess, returns: {
-        data: studysetJson
-    }
-    on not found, returns: {
-        data: null
-    }
-    on error, returns: {
-        error: errorObj
-    }
-*/
-async function getStudyset(id, authedUserId) {
-    let result;
-    let client = await pool.connect();
-    try {
-        await client.query("BEGIN");
-        await client.query("select set_config('qzfr_api.scope', 'user', true)");
-        await client.query(
-            "select set_config('qzfr_api.user_id', $1, true)",
-            [ authedUserId ]
-        );
-        let selectedStudyset = await client.query(
-            "select id, user_id, title, private, data, to_char(updated_at, 'YYYY-MM-DD\"T\"HH24:MI:SS.MSTZH:TZM') as updated_at from public.studysets " +
-            "where id = $1 and (private = false or user_id = $2)",
-            [ id, authedUserId ]
-        );
-        if (selectedStudyset.rows.length == 1) {
-            await client.query("COMMIT")
-            result = {
-                data: selectedStudyset.rows[0]
+async function getStudyset(id, authed, authedUserId) {
+    if (authed) {
+        let result;
+        let client = await pool.connect();
+        try {
+            await client.query("BEGIN");
+            await client.query("select set_config('qzfr_api.scope', 'user', true)");
+            await client.query(
+                "select set_config('qzfr_api.user_id', $1, true)",
+                [ authedUserId ]
+            );
+            let selectedStudyset = await client.query(
+                "select id, user_id, title, private, data, to_char(updated_at, 'YYYY-MM-DD\"T\"HH24:MI:SS.MSTZH:TZM') as updated_at from public.studysets " +
+                "where id = $1 and (private = false or user_id = $2)",
+                [ id, authedUserId ]
+            );
+            if (selectedStudyset.rows.length == 1) {
+                await client.query("COMMIT")
+                result = {
+                    data: selectedStudyset.rows[0]
+                }
+            } else {
+                await client.query("ROLLBACK");
+                result = {
+                    data: null
+                };
             }
-        } else {
+        } catch (error) {
             await client.query("ROLLBACK");
             result = {
-                data: null
-            };
+                error: error
+            }
+        } finally {
+            client.release()
+            return result;
         }
-    } catch (error) {
-        await client.query("ROLLBACK");
-        result = {
-            error: error
+    } else {
+        try {
+            let result = await pool.query(
+                "select s.id, s.user_id, u.display_name as user_display_name, s.title, s.data, to_char(s.updated_at, 'YYYY-MM-DD\"T\"HH24:MI:SS.MSTZH:TZM') as updated_at, s.terms_count " +
+                "from public.studysets s inner join public.profiles u on s.user_id = u.id " +
+                "where s.id = $1 and s.private = false limit 1",
+                [ id ]
+            )
+            
+            if (result.rows.length == 1) {
+                return {
+                    data: result.rows[0]
+                };
+            } else {
+                return {
+                    data: null
+                };
+            }
+        } catch (error) {
+            return {
+                error: error
+            }
         }
-    } finally {
-        client.release()
-        return result;
     }
 }
 
