@@ -930,6 +930,8 @@ async function myStudysets(authedUserId, limit, offset) {
     }
 }
 
+async function getStudysetProgress()
+
 if (ENABLE_OAUTH_GOOGLE == "true") {
     async function googleAuthCallback(tokenObj) {
         try {
