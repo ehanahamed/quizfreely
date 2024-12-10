@@ -511,12 +511,13 @@ fastify.get("/studysets/:studyset", function (request, reply) {
           username
           display_name
         }
-        studyset(id: $id, withAuth: false) {
+        studyset(id: $id) {
           id
           title
           updated_at
           user_id
           user_display_name
+          private
           data {
             terms
           }
@@ -551,37 +552,6 @@ fastify.get("/studysets/:studyset", function (request, reply) {
     })
   })
 });
-
-fastify.get("/studyset/private/:studyset", function (request, reply) {
-  userData(request).then(function (userResult) {
-    fetch(API_URL + "/v0/studysets/" + request.params.studyset, {
-        method: "GET",
-        headers: {
-            "Authorization": "Bearer " + request.cookies.auth
-        }
-    }).then(function (response) {
-      response.json().then(function (responseJson) {
-        if (responseJson.error) {
-          reply.callNotFound()
-        } else if (responseJson?.data?.studyset?.private == false) {
-          /* redirect to public url if set is not private */
-          reply.redirect("/studysets/" + request.params.studyset);
-        } else {
-            reply.view("studyset.html", {
-                ...themeData(request),
-                local: false,
-                studyset: responseJson.data.studyset,
-                authed: userResult.authed,
-                authedUser: userResult?.authedUser
-            })
-        }
-      });
-    }).catch(function (error) {
-      request.log.error(error)
-      reply.callNotFound();
-    });
-  })
-})
 
 fastify.get("/studyset/local", function (request, reply) {
   userData(request).then(function (userResult) {
