@@ -49,11 +49,7 @@
               <eta> if (data.studysetList && data.studysetList.length > 0 ) { </eta>
                 <eta> data.studysetList.forEach(function (studyset) { </eta>
                   <div class="box">
-                    <eta> if (studyset.private) { </eta>
-                      <a href="/studyset/private/<eta>= studyset.id </eta>"><eta>= studyset.title </eta></a>
-                    <eta> } else { </eta>
-                      <a href="/studysets/<eta>= studyset.id </eta>"><eta>= studyset.title </eta></a>
-                    <eta> } </eta>
+                    <a href="/studysets/<eta>= studyset.id </eta>"><eta>= studyset.title </eta></a>
                     <p class="h6" data-timestamp="<eta>= studyset.updated_at </eta>">...</p>
                   </div>
                 <eta> }) </eta>

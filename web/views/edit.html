@@ -323,11 +323,7 @@
           }).then(function (rawRes) {
             rawRes.json().then(function (result) {
               if (result.data && result.data.studyset) {
-                if (private) {
-                  window.location.replace("/studyset/private/" + result.data.studyset.id)
-                } else {
-                  window.location.replace("/studysets/" + result.data.studyset.id)
-                }
+                window.location.replace("/studysets/" + result.data.studyset.id)
               } else if (result.error) {
                 var errorModal = document.createElement("div");
                 errorModal.classList.add("modal")
@@ -392,11 +388,7 @@
               if (result.error) {
                 alert("error while trying to update studyset")
               } else {
-                if (private) {
-                  window.location.replace("/studyset/private/" + result.data.studyset.id)
-                } else {
-                  window.location.replace("/studysets/" + result.data.studyset.id)
-                }
+                window.location.replace("/studysets/" + result.data.studyset.id)
               }
             })
           })
