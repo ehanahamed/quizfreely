@@ -230,32 +230,16 @@ const resolvers = {
             }
         },
         studyset: async function (_, args, context) {
-            if (args.withAuth == false) {
-                let result = await getPublicStudyset(args.id);
-                if (result.error) {
-                    context.reply.request.log.error(result.error);
-                    throw new mercurius.ErrorWithProps(
-                        result.error.message,
-                        result.error
-                    )
-                } else {
-                    /* getPublicStudyset().data is studyset json on sucess, null on not found, and undefined on error */
-                    return result.data;
-                }
-            } else if (context.authed) /* withAuth is true, and context.authed is true (signed in) */ {
-                let result = await getStudyset(args.id, context.authedUser.id);
-                if (result.error) {
-                    context.reply.request.log.error(result.error);
-                    throw new mercurius.ErrorWithProps(
-                        result.error.message,
-                        result.error
-                    )
-                } else {
-                    /* getStudyset().data is studyset json on success, null on not found, and undefined on error */
-                    return result.data;
-                }
-            } else /* withAuth is true, but context.auth is false (not signed in) */ {
-                throw new mercurius.ErrorWithProps("Not signed in while trying to view studyset. Use `withAuth: false` for unauthed requests", { code: "NOT_AUTHED" });
+            let result = await getStudyset(args.id, context.authed, (context?.authedUser?.id ?? undefined));
+            if (result.error) {
+                context.reply.request.log.error(result.error);
+                throw new mercurius.ErrorWithProps(
+                    result.error.message,
+                    result.error
+                )
+            } else {
+                /* getStudyset().data is studyset json on success, null on not found, and undefined on error */
+                return result.data;
             }
         },
         user: async function (_, args, context) {
