@@ -1406,28 +1406,18 @@ fastify.post("/studysets", {
 
 fastify.get("/studysets/:studysetid", async function (request, reply) {
     const authContext = await context(request, reply);
-    if (authContext.authed) {
-        let result = await getStudyset(request.params.studysetid, authContext.authedUser.id);
-        if (result.error) {
-            request.log.error(result.error);
-            return reply.code(500).send({
-                error: result.error
-            })
-        } else if (result.data === null) {
-            return reply.callNotFound();
-        } else {
-            return reply.send({
-                data: {
-                    studyset: result.data
-                }
-            })
-        }
+    let result = await getStudyset(request.params.studysetid, authContext.authed, authContext?.authedUser?.id ?? undefined);
+    if (result.error) {
+        request.log.error(result.error);
+        return reply.code(500).send({
+            error: result.error
+        })
+    } else if (result.data === null) {
+        return reply.callNotFound();
     } else {
-        return reply.code(401).send({
-            error: {
-                code: "NOT_AUTHED",
-                statusCode: 401,
-                message: "Not signed in while trying to view a studyset. Use /public/studysets/ for unauthed requests"
+        return reply.send({
+            data: {
+                studyset: result.data
             }
         })
     }
@@ -1504,24 +1494,6 @@ fastify.delete("/studysets/:studysetid", async function (request, reply) {
                 code: "NOT_AUTHED",
                 statusCode: 401,
                 message: "Not signed in while trying to delete a studyset"
-            }
-        })
-    }
-})
-
-fastify.get("/public/studysets/:studysetid", async function (request, reply) {
-    let result = await getPublicStudyset(request.params.studysetid);
-    if (result.error) {
-        request.log.error(result.error);
-        return reply.code(500).send({
-            error: result.error
-        })
-    } else if (result.data === null) {
-        return reply.callNotFound();
-    } else {
-        return reply.send({
-            data: {
-                studyset: result.data
             }
         })
     }
