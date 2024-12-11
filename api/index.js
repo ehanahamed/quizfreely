@@ -403,6 +403,25 @@ const resolvers = {
             } else /* ontext.authed is false (not signed in) */ {
                 throw new mercurius.ErrorWithProps("Not signed in while trying to update user", { code: "NOT_AUTHED" });
             }
+        },
+        updateStudysetProgress: async function (_, args, context) {
+
+        },
+        deleteStudysetProgress: async function (_, args, context) {
+            if (context.authed) {
+                let result = await deleteProgressByStudysetId(args.studysetId, context.authedUser.id);
+                if (result.error) {
+                    context.reply.request.log.error(result.error);
+                    throw new mercurius.ErrorWithProps(
+                        result.error.message,
+                        result.error
+                    )
+                } else {
+                    return result.data;
+                }
+            } else /* auth is false (not signed in) */ {
+                throw new mercurius.ErrorWithProps("Not signed in while trying to delete/clear studyset progress", { code: "NOT_AUTHED" });
+            }
         }
     }
 }
@@ -971,6 +990,113 @@ async function getProgressByStudysetId(studysetId, authedUserId) {
             result = {
                 data: null
             };
+        }
+    } catch (error) {
+        await client.query("ROLLBACK");
+        result = {
+            error: error
+        }
+    } finally {
+        client.release()
+        return result;
+    }
+}
+
+// work in progress
+async function updateProgressByStudysetId(studysetId, progressChanges, authedUserId) {
+    let result;
+    let client = await pool.connect();
+    try {
+        if (
+            studyset.title.length > 0 &&
+            studyset.title.length < 200 &&
+            /*
+                use regex to make sure title contains at least some alphanumeric characters (any lanugage)
+                (if removing all alphanumeric chars makes it equal to itself, it's invalid)
+            */
+            studyset.title.replaceAll(/[\p{L}\p{M}\p{N}]+/gu, "") != studyset.title
+        ) {
+            title = studyset.title;
+        }
+        await client.query("BEGIN");
+        await client.query("select set_config('qzfr_api.scope', 'user', true)");
+        await client.query("select set_config('qzfr_api.user_id', $1, true)", [
+            authedUserId
+        ]);
+        let updatedStudyset = await client.query(
+            "update public.studysets set title = $2, private = $3, data = $4, terms_count = $5, updated_at = clock_timestamp() " +
+            "where id = $1 returning id, user_id, title, private, terms_count, to_char(updated_at, 'YYYY-MM-DD\"T\"HH24:MI:SS.MSTZH:TZM') as updated_at",
+            [
+                id,
+                title,
+                studyset.private,
+                studyset.data,
+                /* we use optional chaining (that .?) and nullish coalescing (that ??) to default to 0 (without throwing an error) if terms or terms.length are undefined */
+                studyset.data?.terms?.length ?? 0
+            ]
+        );
+        if (updatedStudyset.rows.length == 1) {
+            await client.query("COMMIT")
+            result = {
+                data: {
+                    id: updatedStudyset.rows[0].id,
+                    user_id: updatedStudyset.rows[0].user_id,
+                    title: updatedStudyset.rows[0].title,
+                    private: updatedStudyset.rows[0].private,
+                    terms_count: updatedStudyset.rows[0].terms_count,
+                    updated_at: updatedStudyset.rows[0].updated_at
+                }
+            }
+        } else {
+            await client.query("ROLLBACK");
+            /*
+                returns { data: studysetJson } on sucess,
+                returns { data: null } on not found
+                returns { error: errorObj } on error
+            */
+            result = {
+                data: null
+            };
+        }
+    } catch (error) {
+        await client.query("ROLLBACK");
+        result = {
+            error: error
+        }
+    } finally {
+        client.release()
+        return result;
+    }
+}
+
+async function deleteProgressByStudysetId(studysetId, authedUserId) {
+    let result;
+    let client = await pool.connect();
+    try {
+        await client.query("BEGIN");
+        await client.query("select set_config('qzfr_api.scope', 'user', true)");
+        await client.query("select set_config('qzfr_api.user_id', $1, true)", [
+            authedUserId
+        ]);
+        let deleteResult = await client.query(
+            "delete from public.studyset_progress " +
+            "where studyset_id = $1 and user_id = $2",
+            [
+                studysetId, authedUserId
+            ]
+        );
+        if (deleteResult.rowCount == 1) {
+            await client.query("COMMIT")
+            result = {
+                data: studysetId
+            }
+        } else {
+            await client.query("ROLLBACK");
+            result = {
+                error: {
+                    message: "Progress doesn't exist for this studyset under this account",
+                }
+            }
         }
     } catch (error) {
         await client.query("ROLLBACK");
