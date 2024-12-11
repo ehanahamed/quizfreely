@@ -148,7 +148,7 @@ const schema = `
         updateStudyset(id: ID!, studyset: StudysetInput): Studyset
         deleteStudyset(id: ID!): ID
         updateUser(display_name: String): AuthedUser
-        updateStudysetProgress(studysetId: ID!, termProgressChanges: [StudysetProgressTermInput!]!): StudysetProgress
+        updateStudysetProgress(studysetId: ID!, newProgress: [StudysetProgressTermInput!]!): StudysetProgress
         deleteStudysetProgress(studysetId: ID!): ID
     }
     type User {
