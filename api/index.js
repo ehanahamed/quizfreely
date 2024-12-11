@@ -141,15 +141,15 @@ const schema = `
         searchStudysets(q: String!, limit: Int, offset: Int): [Studyset]
         searchQueries(q: String!, limit: Int, offset: Int): [SearchQuery]
         myStudysets(limit: Int, offset: Int): [Studyset]
-        studysetProgress(studyset_id: ID!): StudysetProgress
+        studysetProgress(studysetId: ID!): StudysetProgress
     }
     type Mutation {
         createStudyset(studyset: StudysetInput!): Studyset
         updateStudyset(id: ID!, studyset: StudysetInput): Studyset
         deleteStudyset(id: ID!): ID
         updateUser(display_name: String): AuthedUser
-        updateStudysetProgress(studyset_id: ID!, termProgressChanges: [StudysetProgressTermInput!]!): StudysetProgress
-        deleteStudysetProgress(studyset_id: ID!): ID
+        updateStudysetProgress(studysetId: ID!, termProgressChanges: [StudysetProgressTermInput!]!): StudysetProgress
+        deleteStudysetProgress(studysetId: ID!): ID
     }
     type User {
         id: ID
