@@ -319,6 +319,22 @@ const resolvers = {
             } else {
                 throw new mercurius.ErrorWithProps("Not signed in while trying to view current account's studysets, `myStudysets`", { code: "NOT_AUTHED" });
             }
+        },
+        studysetProgress: async function (_, args, context) {
+            if (context.authed) {
+                let result = await getProgressByStudysetId(args.studysetId, context.authedUser.id);
+                if (result.error) {
+                    context.reply.request.log.error(result.error);
+                    throw new mercurius.ErrorWithProps(
+                        result.error.message,
+                        result.error
+                    )
+                } else {
+                    return result.data;
+                }
+            } else {
+                throw new mercurius.ErrorWithProps("Not signed in while trying to get studyset progress", { code: "NOT_AUTHED" });
+            }
         }
     },
     Mutation: {
@@ -930,7 +946,42 @@ async function myStudysets(authedUserId, limit, offset) {
     }
 }
 
-async function getStudysetProgress()
+async function getProgressByStudysetId(studysetId, authedUserId) {
+    let result;
+    let client = await pool.connect();
+    try {
+        await client.query("BEGIN");
+        await client.query("select set_config('qzfr_api.scope', 'user', true)");
+        await client.query(
+            "select set_config('qzfr_api.user_id', $1, true)",
+            [ authedUserId ]
+        );
+        let selectedStudysetProgress = await client.query(
+            "select id, studyset_id, user_id, terms, to_char(updated_at, 'YYYY-MM-DD\"T\"HH24:MI:SS.MSTZH:TZM') as updated_at " +
+            "from public.studyset_progress where user_id = $1 and studyset_id = $2",
+            [ authedUserId, studysetId ]
+        );
+        if (selectedStudysetProgress.rows.length == 1) {
+            await client.query("COMMIT")
+            result = {
+                data: selectedStudysetProgress.rows[0]
+            }
+        } else {
+            await client.query("ROLLBACK");
+            result = {
+                data: null
+            };
+        }
+    } catch (error) {
+        await client.query("ROLLBACK");
+        result = {
+            error: error
+        }
+    } finally {
+        client.release()
+        return result;
+    }
+}
 
 if (ENABLE_OAUTH_GOOGLE == "true") {
     async function googleAuthCallback(tokenObj) {
