@@ -60,21 +60,21 @@
     <eta>~ include("./partials/footer") </eta>
     <script>
       var studysetTerms;
+      var newTerms;
+      var 
       var sessionPastTerms = [];
-      /* first question after loading studyset (and/or studyset progress) needs one (or both) parameters
-      next questions can leave both parameters blank to use already loaded terms and term progress
-      for example, right after loading the studyset: generateQuestion(studyset.data.terms, studysetProgress.terms)
-      for example, a "next question" button: generateQuestion() */
-      /*function generateQuestion(studysetTermsArray, progressTermsObj) {
+      /*
+        first param, studysetTermsArray loads terms, you only need to give that parameter in a function call once
+        second param, progressTermsObj loads existing progress, you only need to give that parameter if the user has existing progress,
+        and you only need to give that param once.
+      */
+      function generateQuestion(studysetTermsArray, progressTerms) {
         if (studysetTermsArray.length >= 1) {
           studysetTerms = studysetTermsArray;
         }
-        if (progressTermsObj) {
-
+        if (progressTerms.length >= 1) {
+          
         }
-      }*/
-      function generateQuestion(_, _2, _3) {
-        alert("everything (will have) worked perfectly")
       }
       function checkAnswer(event) {
         if (event.target.dataset.answer == "correct") {
