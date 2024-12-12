@@ -65,13 +65,16 @@
       next questions can leave both parameters blank to use already loaded terms and term progress
       for example, right after loading the studyset: generateQuestion(studyset.data.terms, studysetProgress.terms)
       for example, a "next question" button: generateQuestion() */
-      function generateQuestion(studysetTermsArray, progressTermsObj) {
+      /*function generateQuestion(studysetTermsArray, progressTermsObj) {
         if (studysetTermsArray.length >= 1) {
           studysetTerms = studysetTermsArray;
         }
         if (progressTermsObj) {
 
         }
+      }*/
+      function generateQuestion(_, _2, _3) {
+        alert("everything (will have) worked perfectly")
       }
       function checkAnswer(event) {
         if (event.target.dataset.answer == "correct") {
@@ -106,7 +109,11 @@
                 alert("indexeddb error while trying to get studyset progress");
               }
               dbProgressGetReq.onsuccess = function (event) {
-                generateQuestion(dbStudysetGetReq.result.data.terms, dbProgressGetReq.result.terms);
+                if (dbProgressGetReq.result === undefined) {
+                  alert("oopsie woopsie, progress is new, i didnt implement that yet, womp womp");
+                } else {
+                  generateQuestion(dbStudysetGetReq.result.data.terms, dbProgressGetReq.result.terms);
+                }
               }
             } else {
               alert("oopsie woopsie no terms?")
@@ -156,7 +163,26 @@
         })
       }).then(function (rawApiRes) {
         rawApiRes.json().then(function (apiResponse) {
-          console.log(apiResponse)
+          if (
+            apiResponse.data &&
+            apiResponse.data.studyset &&
+            apiResponse.data.studyset.data &&
+            apiResponse.data.studyset.data.terms &&
+            apiResponse.data.studyset.data.terms.length >= 1
+          ) {
+            if (apiResponse.data.studysetProgress && apiResponse.data.studysetProgress.terms) {
+              generateQuestion(apiResponse.data.studyset.data.terms, apiResponse.data.studysetProgress.terms)
+            } else {
+              alert("work in progress, I didn't implement what happens if studyset progress is new")
+            }
+          } else if (apiResponse.data && apiResponse.data.studyset) {
+            alert("oopsie woopsie, your studyset has zero terms?")
+          } else {
+            if (apiResponse.errors) {
+              console.log(apiResponse.errors);
+            }
+            alert("oh no, studyset failed to load");
+          }
         }).catch(function (error) {
           console.error(error);
         })
@@ -186,7 +212,13 @@
         })
       }).then(function (rawApiRes) {
         rawApiRes.json().then(function (apiResponse) {
-          if (apiResponse.data && apiResponse.data.terms && apiResponse.data.terms.length >= 1) {
+          if (
+            apiResponse.data &&
+            apiResponse.data.studyset &&
+            apiResponse.data.studyset.data &&
+            apiResponse.data.studyset.data.terms &&
+            apiResponse.data.studyset.data.terms.length >= 1
+          ) {
             openIndexedDB(function (db) {
               var studysetprogressObjStore = db.transaction("studysetprogress").objectStore("studysetprogress");
               var dbProgressGetReq = studysetprogressObjStore.get(<eta>= data.studysetId </eta>);
@@ -194,14 +226,18 @@
                 alert("indexeddb error while trying to get progress for non-local studyset");
               }
               dbProgressGetReq.onsuccess = function (event) {
-                generateQuestion(apiResponse.data.terms, dbProgressGetReq.result.terms);
+                if (dbProgressGetReq.result === undefined) {
+                  alert("oopsie woopsie, studyset progress is new, and i didnt implement that yet")
+                } else {
+                  generateQuestion(apiResponse.data.terms, dbProgressGetReq.result.terms);
+                }
               }
             })
-          } else if (apiResponse.data) {
+          } else if (apiResponse.data && apiResponse.data.studyset) {
             alert("oopsie woopsie, studyset has zero terms????")
           } else {
-            if (apiResponse.error) {
-              console.error(apiResponse.error);
+            if (apiResponse.errors) {
+              console.log(apiResponse.errors);
             }
             alert("oopsie woopsie, studyset failed to load?")
           }
