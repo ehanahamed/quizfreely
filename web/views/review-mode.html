@@ -118,9 +118,6 @@
             } else {
               alert("oopsie woopsie no terms?")
             }
-            if (dbStudysetGetReq.result.title) {
-              document.getElementById("studyset-title").innerText = dbStudysetGetReq.result.title;
-            }
             if (dbStudysetGetReq.result.data && dbStudysetGetReq.result.data.terms) {
               generateQuestion(dbStudysetGetReq.result.data.terms);
             } else {
