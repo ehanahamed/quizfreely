@@ -405,7 +405,20 @@ const resolvers = {
             }
         },
         updateStudysetProgress: async function (_, args, context) {
-
+            if (context.authed) {
+                let result = await updateProgressByStudysetId(args.studysetId, args.progressChanges, context.authedUser.id);
+                if (result.error) {
+                    context.reply.request.log.error(result.error);
+                    throw new mercurius.ErrorWithProps(
+                        result.error.message,
+                        result.error
+                    )
+                } else {
+                    return result.data;
+                }
+            } else /* auth is false (not signed in) */ {
+                throw new mercurius.ErrorWithProps("Not signed in while trying to update studyset progress", { code: "NOT_AUTHED" });
+            }
         },
         deleteStudysetProgress: async function (_, args, context) {
             if (context.authed) {
@@ -1012,12 +1025,9 @@ async function updateProgressByStudysetId(studysetId, progressChanges, authedUse
             authedUserId
         ]);
         let existingProgress = await client.query(
-            "select id, studyset_id, user_id, terms from public.studyset_progress " +
-            "where studyset_id = $1 and user_id = $2 limit 1" +
-            [
-                studysetId,
-                authedUserId
-            ]
+            "select id, studyset_id, user_id, terms " +
+            "from public.studyset_progress where user_id = $1 and studyset_id = $2",
+            [ authedUserId, studysetId ]
         );
         if (existingProgress.rows.length == 1) {
             let updatedProgress = existingProgress.rows[0].terms;
@@ -1036,11 +1046,11 @@ async function updateProgressByStudysetId(studysetId, progressChanges, authedUse
                 }
             }
             let updatedRecord = await client.query(
-                "update public.studyset_progress set terms = $2 updated_at = clock_timestamp() " +
+                "update public.studyset_progress set terms = $2, updated_at = clock_timestamp() " +
                 "where id = $1 returning id, studyset_id, user_id, to_char(updated_at, 'YYYY-MM-DD\"T\"HH24:MI:SS.MSTZH:TZM') as updated_at",
                 [
                     existingProgress.rows[0].id,
-                    updatedProgress
+                    JSON.stringify(updatedProgress)
                 ]
             );
             await client.query("COMMIT")
@@ -1061,7 +1071,7 @@ async function updateProgressByStudysetId(studysetId, progressChanges, authedUse
                 [
                     studysetId,
                     authedUserId,
-                    progressChanges
+                    JSON.stringify(progressChanges)
                 ]
             )
             await client.query("COMMIT");
