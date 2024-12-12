@@ -44,13 +44,13 @@
             <eta> } else { </eta>
             <h2 id="studyset-title" class="caption" style="overflow-wrap:anywhere">Title</h2>
             <eta> } </eta>
-            <eta> if (data.studyset && data.studyset.user_display_name) { </eta>
+            <eta> if (data.studyset && data.studyset.private == false && data.studyset.user_display_name) { </eta>
             <p>
               Created by <a href="/users/<eta>= data.studyset.user_id</eta>"><eta>= data.studyset.user_display_name </eta></a>
             </p>
-            <eta> } else if (data.studyset && data.studyset.private && data?.authedUser?.display_name) { </eta>
-            <p>
-              Created by <a href="/users/<eta>= data.studyset.user_id</eta>"><eta>= data?.authedUser?.display_name </eta></a>
+            <eta> } else if (data.studyset && data.studyset.private) { </eta>
+            <p class="fg0">
+              Private Studyset
             </p>
             <eta> } </eta>
             <eta> if (data.studyset && data.authed && (data.authedUser.id == data.studyset.user_id)) { </eta>
