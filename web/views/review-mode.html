@@ -125,7 +125,7 @@
         }
       })
     </script>
-    <eta> } else { </eta>
+    <eta> } else if (data.authed) { </eta>
     <script>
       fetch("/api/graphql", {
         method: "POST",
@@ -133,10 +133,23 @@
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
-          query: "query getStudysetAndProgress($id: ID!) {" +
-          " studyset(id: $id, withAuth: <eta>= data.authed </eta>) { data { terms } }" +
-          " <eta> if (data.authed) { </eta> studysetProgress(studyset_id: $id) { terms { term def term_correct_count term_incorrect_count def_correct_count def_incorrect_count } } <eta> } </eta>" + 
-          " }",
+          query: `query getStudysetAndProgress($id: ID!) {
+            studyset(id: $id) {
+              data {
+                terms
+              }
+            }
+            studysetProgress(studysetId: $id) {
+              terms {
+                term
+                def
+                termCorrect
+                termCncorrect
+                defCorrect
+                defIncorrect
+              }
+            }
+           }`,
           variables: {
             "id": "<eta>= data.studysetId </eta>"
           }
@@ -144,6 +157,54 @@
       }).then(function (rawApiRes) {
         rawApiRes.json().then(function (apiResponse) {
           console.log(apiResponse)
+        }).catch(function (error) {
+          console.error(error);
+        })
+      }).catch(function (error) {
+        console.error(error);
+      })
+    </script>
+    <eta> } else { </eta>
+    <script src="/assets/js/indexedDB.js"></script>
+    <script>
+      fetch("/api/graphql", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          query: `query getStudyset($id: ID!) {
+            studyset(id: $id) {
+              data {
+                terms
+              }
+            }
+           }`,
+          variables: {
+            "id": "<eta>= data.studysetId </eta>"
+          }
+        })
+      }).then(function (rawApiRes) {
+        rawApiRes.json().then(function (apiResponse) {
+          if (apiResponse.data && apiResponse.data.terms && apiResponse.data.terms.length >= 1) {
+            openIndexedDB(function (db) {
+              var studysetprogressObjStore = db.transaction("studysetprogress").objectStore("studysetprogress");
+              var dbProgressGetReq = studysetprogressObjStore.get(<eta>= data.studysetId </eta>);
+              dbProgressGetReq.onerror = function (event) {
+                alert("indexeddb error while trying to get progress for non-local studyset");
+              }
+              dbProgressGetReq.onsuccess = function (event) {
+                generateQuestion(apiResponse.data.terms, dbProgressGetReq.result.terms);
+              }
+            })
+          } else if (apiResponse.data) {
+            alert("oopsie woopsie, studyset has zero terms????")
+          } else {
+            if (apiResponse.error) {
+              console.error(apiResponse.error);
+            }
+            alert("oopsie woopsie, studyset failed to load?")
+          }
         }).catch(function (error) {
           console.error(error);
         })
