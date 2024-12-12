@@ -148,7 +148,7 @@ const schema = `
         updateStudyset(id: ID!, studyset: StudysetInput): Studyset
         deleteStudyset(id: ID!): ID
         updateUser(display_name: String): AuthedUser
-        updateStudysetProgress(studysetId: ID!, newProgress: [StudysetProgressTermInput!]!): StudysetProgress
+        updateStudysetProgress(studysetId: ID!, progressChanges: [StudysetProgressTermInput!]!): StudysetProgress
         deleteStudysetProgress(studysetId: ID!): ID
     }
     type User {
@@ -1002,61 +1002,78 @@ async function getProgressByStudysetId(studysetId, authedUserId) {
     }
 }
 
-// work in progress
 async function updateProgressByStudysetId(studysetId, progressChanges, authedUserId) {
     let result;
     let client = await pool.connect();
     try {
-        if (
-            studyset.title.length > 0 &&
-            studyset.title.length < 200 &&
-            /*
-                use regex to make sure title contains at least some alphanumeric characters (any lanugage)
-                (if removing all alphanumeric chars makes it equal to itself, it's invalid)
-            */
-            studyset.title.replaceAll(/[\p{L}\p{M}\p{N}]+/gu, "") != studyset.title
-        ) {
-            title = studyset.title;
-        }
         await client.query("BEGIN");
         await client.query("select set_config('qzfr_api.scope', 'user', true)");
         await client.query("select set_config('qzfr_api.user_id', $1, true)", [
             authedUserId
         ]);
-        let updatedStudyset = await client.query(
-            "update public.studysets set title = $2, private = $3, data = $4, terms_count = $5, updated_at = clock_timestamp() " +
-            "where id = $1 returning id, user_id, title, private, terms_count, to_char(updated_at, 'YYYY-MM-DD\"T\"HH24:MI:SS.MSTZH:TZM') as updated_at",
+        let existingProgress = await client.query(
+            "select id, studyset_id, user_id, terms from public.studyset_progress " +
+            "where studyset_id = $1 and user_id = $2 limit 1" +
             [
-                id,
-                title,
-                studyset.private,
-                studyset.data,
-                /* we use optional chaining (that .?) and nullish coalescing (that ??) to default to 0 (without throwing an error) if terms or terms.length are undefined */
-                studyset.data?.terms?.length ?? 0
+                studysetId,
+                authedUserId
             ]
         );
-        if (updatedStudyset.rows.length == 1) {
+        if (existingProgress.rows.length == 1) {
+            let updatedProgress = existingProgress.rows[0].terms;
+            let existingProgressMap = new Map(updatedProgress.map(function (term, index) {
+                return [term.term + term.def, index];
+            }));
+            for (let i = 0; i < progressChanges.length; i++) {
+                let existingIndex = existingProgressMap.get(progressChanges[i].term + progressChanges[i].def);
+                if (existingIndex === undefined) {
+                    updatedProgress.push(progressChanges[i])
+                } else {
+                    updatedProgress[existingIndex].termCorrect += progressChanges[i].termCorrect;
+                    updatedProgress[existingIndex].termIncorrect += progressChanges[i].termIncorrect;
+                    updatedProgress[existingIndex].defCorrect += progressChanges[i].defCorrect;
+                    updatedProgress[existingIndex].defIncorrect += progressChanges[i].defIncorrect;
+                }
+            }
+            let updatedRecord = await client.query(
+                "update public.studyset_progress set terms = $2 updated_at = clock_timestamp() " +
+                "where id = $1 returning id, studyset_id, user_id, to_char(updated_at, 'YYYY-MM-DD\"T\"HH24:MI:SS.MSTZH:TZM') as updated_at",
+                [
+                    existingProgress.rows[0].id,
+                    updatedProgress
+                ]
+            );
             await client.query("COMMIT")
             result = {
                 data: {
-                    id: updatedStudyset.rows[0].id,
-                    user_id: updatedStudyset.rows[0].user_id,
-                    title: updatedStudyset.rows[0].title,
-                    private: updatedStudyset.rows[0].private,
-                    terms_count: updatedStudyset.rows[0].terms_count,
-                    updated_at: updatedStudyset.rows[0].updated_at
+                    id: updatedRecord.rows[0].id,
+                    studyset_id: updatedRecord.rows[0].studyset_id,
+                    user_id: updatedRecord.rows[0].user_id,
+                    terms: updatedProgress,
+                    updated_at: updatedRecord.rows[0].updated_at
                 }
             }
         } else {
-            await client.query("ROLLBACK");
-            /*
-                returns { data: studysetJson } on sucess,
-                returns { data: null } on not found
-                returns { error: errorObj } on error
-            */
+            /* if progress doesn't already exist, add/insert a new record */
+            let newRecord = await client.query(
+                "insert into public.studyset_progress (studyset_id, user_id, terms, updated_at) " +
+                "values ($1, $2, $3, clock_timestamp()) returning id, studyset_id, user_id, to_char(updated_at, 'YYYY-MM-DD\"T\"HH24:MI:SS.MSTZH:TZM') as updated_at",
+                [
+                    studysetId,
+                    authedUserId,
+                    progressChanges
+                ]
+            )
+            await client.query("COMMIT");
             result = {
-                data: null
-            };
+                data: {
+                    id: newRecord.rows[0].id,
+                    studyset_id: newRecord.rows[0].studyset_id,
+                    user_id: newRecord.rows[0].user_id,
+                    terms: progressChanges,
+                    updated_at: newRecord.rows[0].updated_at
+                }
+            }
         }
     } catch (error) {
         await client.query("ROLLBACK");
