@@ -103,7 +103,7 @@
         }
         dbStudysetGetReq.onsuccess = function (event) {
           if (dbStudysetGetReq.result) {
-            if (dbStudysetGetReq.result.data.terms.length >= 1) {
+            if (dbStudysetGetReq.result.data && dbStudysetGetReq.result.data.terms && dbStudysetGetReq.result.data.terms.length >= 1) {
               var dbProgressGetReq = studysetprogressObjectStore.get(<eta>= data.localId </eta>);
               dbProgressGetReq.onerror = function (event) {
                 alert("indexeddb error while trying to get studyset progress");
@@ -117,11 +117,6 @@
               }
             } else {
               alert("oopsie woopsie no terms?")
-            }
-            if (dbStudysetGetReq.result.data && dbStudysetGetReq.result.data.terms) {
-              generateQuestion(dbStudysetGetReq.result.data.terms);
-            } else {
-              alert("studyset found but no terms :(")
             }
           } else {
             alert("studyset not found :(")
