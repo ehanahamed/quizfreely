@@ -38,21 +38,29 @@
     <main>
       <div class="grid page">
         <div class="content">
-          <p class="h4" id="answer-with-term" class="hide">Select the matching term:</p>
-          <p class="h4" id="answer-with-definition" class="hide">Select the matching definition:</p>
-          <div class="card">
-            <div id="question" class="content">...</div>
+          <div id="review-mode-setup">
+            
           </div>
-          <div class="flex">
-            <button id="answer-1" answer="incorrect" class="box">...</button>
-            <button id="answer-2" answer="incorrect" class="box">...</button>
-            <button id="answer-3" answer="incorrect" class="box">...</button>
-            <button id="answer-4" answer="incorrect" class="box">...</button>
-          </div>
-          <div class="caption">
-            <div class="flex end">
-              <button id="next-button" class="hide"><i class="nf nf-fa-long_arrow_right"></i> Next</button>
+          <div id="review-mode-questions">
+            <p class="h4" id="answer-with-term" class="hide">Select the matching term:</p>
+            <p class="h4" id="answer-with-definition" class="hide">Select the matching definition:</p>
+            <div class="card">
+              <div id="question" class="content">...</div>
             </div>
+            <div class="flex">
+              <button id="answer-1" answer="incorrect" class="box">...</button>
+              <button id="answer-2" answer="incorrect" class="box">...</button>
+              <button id="answer-3" answer="incorrect" class="box">...</button>
+              <button id="answer-4" answer="incorrect" class="box">...</button>
+            </div>
+            <div class="caption">
+              <div class="flex end">
+                <button id="next-button" class="hide"><i class="nf nf-fa-long_arrow_right"></i> Next</button>
+              </div>
+            </div>
+          </div>
+          <div id="review-mode-summary">
+
           </div>
         </div>
       </div>
@@ -60,8 +68,6 @@
     <eta>~ include("./partials/footer") </eta>
     <script>
       var studysetTerms;
-      var newTerms;
-      var 
       var sessionPastTerms = [];
       /*
         first param, studysetTermsArray loads terms, you only need to give that parameter in a function call once
