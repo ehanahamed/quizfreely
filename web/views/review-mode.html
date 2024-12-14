@@ -40,8 +40,12 @@
         <div class="content">
           <div id="review-mode-setup">
             <p class="h3">There are <span id="total-terms-count">...</span> terms in this set</p>
+            <div class="flex" id="setup-split">
+              <button class="box"></button>
+              <button class="box"></button>
+            </div>
           </div>
-          <div id="review-mode-questions">
+          <div id="review-mode-questions" class="hide">
             <p class="h4" id="answer-with-term" class="hide">Select the matching term:</p>
             <p class="h4" id="answer-with-definition" class="hide">Select the matching definition:</p>
             <div class="card">
@@ -59,7 +63,7 @@
               </div>
             </div>
           </div>
-          <div id="review-mode-summary">
+          <div id="review-mode-summary" class="hide">
 
           </div>
         </div>
@@ -69,20 +73,19 @@
     <script>
       var studysetTerms;
       var sessionPastTerms = [];
-      
-      /*
-        first param, studysetTermsArray sets terms,
-        we only need to give that parameter once after loading terms
-        second param, progressTermsObj calculates term order from existing progress
-        we only need to give that parameter once if the user has existing progress
-      */
-      function generateQuestion(studysetTermsArray, progressTerms) {
-        if (studysetTermsArray && studysetTermsArray.length >= 1) {
-          studysetTerms = studysetTermsArray;
+      function setupStuff(studysetTermsArray, progressTerms) {
+        if (studysetTermsArray && studysetTermsArray.length > 2) {
+          document.getElementById("total-terms-count").innerText = studysetTermsArray.length;
+        } else {
+          alert("Oh no! There are only " + studysetTermsArray.length + " terms in this set, that's not enough to generate any questions lol")
         }
         if (progressTerms && progressTerms.length >= 1) {
-          
+          alert("you have progress")
         }
+      }
+      
+      function generateQuestion() {
+        
       }
       function checkAnswer(event) {
         if (event.target.dataset.answer == "correct") {
@@ -118,9 +121,9 @@
               }
               dbProgressGetReq.onsuccess = function (event) {
                 if (dbProgressGetReq.result === undefined) {
-                  generateQuestion(dbStudysetGetReq.result.data.terms, []);
+                  setupStuff(dbStudysetGetReq.result.data.terms);
                 } else {
-                  generateQuestion(dbStudysetGetReq.result.data.terms, dbProgressGetReq.result.terms);
+                  setupStuff(dbStudysetGetReq.result.data.terms, dbProgressGetReq.result.terms);
                 }
               }
             } else {
@@ -171,9 +174,9 @@
             apiResponse.data.studyset.data.terms.length >= 1
           ) {
             if (apiResponse.data.studysetProgress && apiResponse.data.studysetProgress.terms) {
-              generateQuestion(apiResponse.data.studyset.data.terms, apiResponse.data.studysetProgress.terms)
+              setupStuff(apiResponse.data.studyset.data.terms, apiResponse.data.studysetProgress.terms)
             } else {
-              generateQuestion(apiResponse.data.studyset.data.terms, [])
+              setupStuff(apiResponse.data.studyset.data.terms)
             }
           } else if (apiResponse.data && apiResponse.data.studyset) {
             alert("oopsie woopsie, your studyset has zero terms?")
@@ -227,9 +230,9 @@
               }
               dbProgressGetReq.onsuccess = function (event) {
                 if (dbProgressGetReq.result === undefined) {
-                  generateQuestion(apiResponse.data.terms, []);
+                  setupStuff(apiResponse.data.terms);
                 } else {
-                  generateQuestion(apiResponse.data.terms, dbProgressGetReq.result.terms);
+                  setupStuff(apiResponse.data.terms, dbProgressGetReq.result.terms);
                 }
               }
             })
