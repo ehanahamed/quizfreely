@@ -69,16 +69,18 @@
     <script>
       var studysetTerms;
       var sessionPastTerms = [];
+      
       /*
-        first param, studysetTermsArray loads terms, you only need to give that parameter in a function call once
-        second param, progressTermsObj loads existing progress, you only need to give that parameter if the user has existing progress,
-        and you only need to give that param once.
+        first param, studysetTermsArray sets terms,
+        we only need to give that parameter once after loading terms
+        second param, progressTermsObj calculates term order from existing progress
+        we only need to give that parameter once if the user has existing progress
       */
       function generateQuestion(studysetTermsArray, progressTerms) {
-        if (studysetTermsArray.length >= 1) {
+        if (studysetTermsArray && studysetTermsArray.length >= 1) {
           studysetTerms = studysetTermsArray;
         }
-        if (progressTerms.length >= 1) {
+        if (progressTerms && progressTerms.length >= 1) {
           
         }
       }
@@ -116,7 +118,7 @@
               }
               dbProgressGetReq.onsuccess = function (event) {
                 if (dbProgressGetReq.result === undefined) {
-                  alert("oopsie woopsie, progress is new, i didnt implement that yet, womp womp");
+                  generateQuestion(dbStudysetGetReq.result.data.terms, []);
                 } else {
                   generateQuestion(dbStudysetGetReq.result.data.terms, dbProgressGetReq.result.terms);
                 }
@@ -171,7 +173,7 @@
             if (apiResponse.data.studysetProgress && apiResponse.data.studysetProgress.terms) {
               generateQuestion(apiResponse.data.studyset.data.terms, apiResponse.data.studysetProgress.terms)
             } else {
-              alert("work in progress, I didn't implement what happens if studyset progress is new")
+              generateQuestion(apiResponse.data.studyset.data.terms, [])
             }
           } else if (apiResponse.data && apiResponse.data.studyset) {
             alert("oopsie woopsie, your studyset has zero terms?")
@@ -225,7 +227,7 @@
               }
               dbProgressGetReq.onsuccess = function (event) {
                 if (dbProgressGetReq.result === undefined) {
-                  alert("oopsie woopsie, studyset progress is new, and i didnt implement that yet")
+                  generateQuestion(apiResponse.data.terms, []);
                 } else {
                   generateQuestion(apiResponse.data.terms, dbProgressGetReq.result.terms);
                 }
