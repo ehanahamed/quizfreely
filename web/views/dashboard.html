@@ -35,7 +35,7 @@
           <div id="mainDashboarddiv">
             <eta> if (data.authed == false) { </eta>
               <p id="dashboard-noaccount-alert" class="fg0">
-                You're not signed in, so your sets will be saved offline.
+                You're not signed in, so your sets will be saved locally (on your device, not in an acount).
               </p>
             <eta> } </eta>
             <div class="flex">
@@ -61,9 +61,9 @@
             </div>
             <eta> } </eta>
             <eta> if (data.authed) { </eta>
-            <!-- only show "Offline Studysets" title to tell the difference from studysets saved to an account when logged in -->
+            <!-- only show "Local Studysets" title to tell the difference from studysets saved to an account when logged in -->
             <!-- also, the element has class="... hide" cause client/browser js only shows it if there are local studysets and the user is signed in -->
-            <p class="h3 hide" id="local-list-title">Offline Studysets</p>
+            <p class="h3 hide" id="local-list-title">Local Studysets</p>
             <eta> } </eta>
             <div class="grid list hide" id="local-list">
               <eta> if (data.authed == false) { </eta>
