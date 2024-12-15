@@ -38,12 +38,36 @@
     <main>
       <div class="grid page">
         <div class="content">
+          <div>
+            <eta> if (data.local) { </eta>
+            <a href="/studyset/local?id=<eta>= data.localId </eta>" class="button faint">
+              <i class="nf nf-fa-long_arrow_left"></i> Back
+            </a>
+            <eta> } else { </eta>
+            <a href="/studysets/<eta>= data.studysetId </eta>" class="button faint">
+              <i class="nf nf-fa-long_arrow_left"></i> Back
+            </a>
+            <eta> } </eta>
+          </div>
           <div id="review-mode-setup">
             <p class="h3">There are <span id="total-terms-count">...</span> terms in this set</p>
             <div class="flex" id="setup-split">
-              <button class="button-box"></button>
-              <button class="button-box"></button>
+              <button class="button-box" id="split-true-button">
+                <p class="h4" style="margin-bottom:0px"><i class="nf nf-fa-pie_chart"></i></p>
+                <p style="margin-top:0.8rem"><b>Split into Sections</b></p>
+                <!--<p style="margin-top:0.4rem">Split the </p>-->
+              </button>
+              <button class="button-box" id="split-false-button">
+                <p class="h4" style="margin-bottom:0px"><i class="nf nf-fa-list_check"></i></p>
+                <p style="margin-top:0.4rem"><b>Review Entire Set</b></p>
+                <!--<p style="margin-top:0.4rem">Ni hao</p>-->
+              </button>
             </div>
+          </div>
+          <div id="review-mode-error-min-terms" class="hide">
+            <p id="error-min-terms-count-text" class="h3 hide">There are <span id="error-min-terms-count"></span> terms in this set</p>
+            <p id="error-min-terms-count-text-single" class="h3 hide">There's only 1 term in this set</p>
+            <p>You need at least 4 terms to use review mode or practice quizzes, sorry :(</p>
           </div>
           <div id="review-mode-questions" class="hide">
             <p class="h4" id="answer-with-term" class="hide">Select the matching term:</p>
@@ -77,7 +101,16 @@
         if (studysetTermsArray && studysetTermsArray.length > 2) {
           document.getElementById("total-terms-count").innerText = studysetTermsArray.length;
         } else {
-          alert("Oh no! There are only " + studysetTermsArray.length + " terms in this set, that's not enough to generate any questions lol")
+          document.getElementById("review-mode-error-min-terms").classList.remove("hide");
+          document.getElementById("review-mode-setup").classList.add("hide");
+          if (studysetTermsArray && studysetTermsArray.length == 1) {
+            document.getElementById("error-min-terms-count-text").classList.add("hide");
+            document.getElementById("error-min-terms-count-text-single").classList.remove("hide");
+          } else {
+            document.getElementById("error-min-terms-count-text").classList.remove("hide");
+            document.getElementById("error-min-terms-count-text-single").classList.add("hide");
+            document.getElementById("error-min-terms-count").innerText = studysetTermsArray.length;
+          }
         }
         if (progressTerms && progressTerms.length >= 1) {
           alert("you have progress")
