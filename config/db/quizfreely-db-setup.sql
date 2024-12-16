@@ -191,8 +191,7 @@ using (
   )
 );
 
-create policy insert_studysets on
-public.studysets
+create policy insert_studysets on public.studysets
 as permissive
 for insert
 to quizfreely_api
@@ -244,8 +243,7 @@ using (
   (select current_setting('qzfr_api.user_id', true))::uuid = user_id
 );
 
-create policy insert_studyset_progress on
-public.studyset_progress
+create policy insert_studyset_progress on public.studyset_progress
 as permissive
 for insert
 to quizfreely_api
@@ -265,50 +263,6 @@ using (
 with check (true);
 
 create policy delete_studyset_progress on public.studyset_progress
-as permissive
-for delete
-to quizfreely_api
-using (
-  (select current_setting('qzfr_api.scope', true)) = 'user' and
-  (select current_setting('qzfr_api.user_id', true))::uuid = user_id
-);
-
-create table public.scores (
-  id uuid primary key default gen_random_uuid(),
-  studyset_id uuid references public.studysets (id) on delete cascade,
-  user_id uuid references auth.users (id) on delete cascade,
-  correct int not null,
-  incorrect int not null,
-  data jsonb not null,
-  updated_at timestamptz default now()
-);
-
-grant select on public.scores to quizfreely_api;
-grant insert on public.scores to quizfreely_api;
-grant delete on public.scores to quizfreely_api;
-
-alter table public.scores enable row level security;
-
-create policy select_scores on public.scores
-as permissive
-for select
-to quizfreely_api
-using (
-  (select current_setting('qzfr_api.scope', true)) = 'user' and
-  (select current_setting('qzfr_api.user_id', true))::uuid = user_id
-);
-
-create policy insert_scores on
-public.scores
-as permissive
-for insert
-to quizfreely_api
-with check (
-  (select current_setting('qzfr_api.scope', true)) = 'user' and
-  (select current_setting('qzfr_api.user_id', true))::uuid = user_id
-);
-
-create policy delete_scores on public.scores
 as permissive
 for delete
 to quizfreely_api
