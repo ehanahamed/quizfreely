@@ -181,15 +181,15 @@
               document.getElementById("preview-term-bad-count").innerText = termBad.length;
               document.getElementById("preview-term-bad").classList.remove("hide");
             }
-            if (mewTerms.length >= 1) {
+            if (newTerms.length >= 1) {
               document.getElementById("preview-term-new-count").innerText = newTerms.length;
               document.getElementById("preview-term-new").classList.remove("hide");
             }
           } else {
             newTerms = studysetTermsArray;
-            
+
             document.getElementById("preview-progress").classList.remove("hide");
-            if (mewTerms.length >= 1) {
+            if (newTerms.length >= 1) {
               document.getElementById("preview-term-new-count").innerText = newTerms.length;
               document.getElementById("preview-term-new").classList.remove("hide");
             }
