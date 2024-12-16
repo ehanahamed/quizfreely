@@ -1032,11 +1032,11 @@ async function updateProgressByStudysetId(studysetId, progressChanges, authedUse
         if (existingProgress.rows.length == 1) {
             let updatedProgress = existingProgress.rows[0].terms;
             let existingProgressMap = new Map(updatedProgress.map(function (term, index) {
-                return [term.term + term.def, index];
+                return [JSON.stringify([term.term, term.def]), index];
             }));
             for (let i = 0; i < progressChanges.length; i++) {
-                let existingIndex = existingProgressMap.get(progressChanges[i].term + progressChanges[i].def);
-                if (existingIndex === undefined) {
+                let existingIndex = existingProgressMap.get(JSON.stringify([progressChanges[i].term, progressChanges[i].def]));
+                if (existingIndex == null /* undefined works with `== null` */) {
                     updatedProgress.push(progressChanges[i])
                 } else {
                     updatedProgress[existingIndex].termCorrect += progressChanges[i].termCorrect;
