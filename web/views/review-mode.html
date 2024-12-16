@@ -51,6 +51,10 @@
           </div>
           <div id="review-mode-setup">
             <p class="h3">There are <span id="total-terms-count">...</span> terms in this set</p>
+            <p id="preview-term-good" class="hide"><b class="yay"><span id="preview-term-good-count">...</span> terms</b> over 90% accuracy</p>
+            <p id="preview-term-mid" class="hide"><b class="ohno"><span id="preview-term-mid-count">...</span> terms</b> 80-90% accuracy</p>
+            <p id="preview-term-bad" class="hide"><b class="ohno"><span id="preview-term-bad-count">...</span> terms</b> less than 80% accuracy</p>
+            <p id="preview-term-new" class="hide"><b><span id="preview-term-new-count">...</span></b> new/unreviewed terms</p>
             <div class="flex" id="setup-split">
               <button class="button-box" id="split-true-button">
                 <p class="h4" style="margin-bottom:0px"><i class="nf nf-fa-pie_chart"></i></p>
@@ -62,13 +66,6 @@
                 <p style="margin-top:0.4rem"><b>Review Entire Set</b></p>
                 <!--<p style="margin-top:0.4rem">Ni hao</p>-->
               </button>
-            </div>
-            <div id="preview-progress">
-              <h3>Current Accuracy</h3>
-              <p id="preview-term-good" class="yay hide"><span id="preview-term-good-count">...</span> over 90%</p>
-              <p id="preview-term-mid" class="ohno hide"><span id="preview-term-mid-count">...</span> 80-90%</p>
-              <p id="preview-term-bad" class="ohno hide"><span id="preview-term-bad-count">...</span> less than 80%</p>
-              <p id="preview-term-new" class="hide"><span id="preview-term-new-count">...</span> new/unreviewed terms</p>
             </div>
           </div>
           <div id="review-mode-error-min-terms" class="hide">
@@ -108,7 +105,7 @@
       var onlyDefBad = [];
       var onlyDefMid = [];
       var onlyDefGood = [];
-      var termGood = [];
+      var termBad = [];
       var termMid = [];
       var termGood = [];
       var newTerms = [];
@@ -168,7 +165,6 @@
                 }
               }
             }
-            document.getElementById("preview-progress").classList.remove("hide");
             if (termGood.length >= 1) {
               document.getElementById("preview-term-good-count").innerText = termGood.length;
               document.getElementById("preview-term-good").classList.remove("hide");
@@ -187,12 +183,6 @@
             }
           } else {
             newTerms = studysetTermsArray;
-
-            document.getElementById("preview-progress").classList.remove("hide");
-            if (newTerms.length >= 1) {
-              document.getElementById("preview-term-new-count").innerText = newTerms.length;
-              document.getElementById("preview-term-new").classList.remove("hide");
-            }
           }
         } else {
           document.getElementById("review-mode-error-min-terms").classList.remove("hide");
