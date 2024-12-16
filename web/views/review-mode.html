@@ -102,7 +102,6 @@
       var defMid = [];
       var defGood = [];
       var newTerms = [];
-      var sessionPastTerms = [];
       function setupStuff(studysetTermsArray, progressTerms) {
         if (studysetTermsArray && studysetTermsArray.length > 2) {
           document.getElementById("total-terms-count").innerText = studysetTermsArray.length;
@@ -118,14 +117,29 @@
               } else {
                 var termPercent = progressForThisTerm.termCorrect / (progressForThisTerm.termCorrect + progressForThisTerm.termIncorrect)
                 if (termPercent > 0.9) {
-                  termGood.push(progressForThisTerm);
+                  termGood.push({
+                    index: i,
+                    term: progressForThisTerm.term,
+                    def: progressForThisTerm.def,
+                    termCorrect: progressForThisTerm.termCorrect
+                  });
                 } else if (termPercent > 0.8) {
                   termMid.push(progressForThisTerm);
                 } else {
                   termBad.push(progressForThisTerm);
                 }
+                var defPercent = progressForThisTerm.defCorrect / (progressForThisTerm.defCorrect + progressForThisTerm.defIncorrect)
+                if (defPercent > 0.9) {
+                  defGood.push(progressForThisTerm);
+                } else if (defPercent > 0.8) {
+                  defMid.push(progressForThisTerm);
+                } else {
+                  defBad.push(progressForThisTerm);
+                }
               }
             }
+          } else {
+            newTerms = studysetTermsArray;
           }
         } else {
           document.getElementById("review-mode-error-min-terms").classList.remove("hide");
@@ -142,7 +156,7 @@
       }
       
       function generateQuestion() {
-        
+
       }
       function checkAnswer(event) {
         if (event.target.dataset.answer == "correct") {
