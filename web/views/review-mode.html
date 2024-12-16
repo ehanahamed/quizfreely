@@ -63,6 +63,13 @@
                 <!--<p style="margin-top:0.4rem">Ni hao</p>-->
               </button>
             </div>
+            <div id="preview-progress">
+              <h3>Current Accuracy</h3>
+              <p id="preview-term-good" class="yay hide"><span id="preview-term-good-count">...</span> over 90%</p>
+              <p id="preview-term-mid" class="ohno hide"><span id="preview-term-mid-count">...</span> 80-90%</p>
+              <p id="preview-term-bad" class="ohno hide"><span id="preview-term-bad-count">...</span> less than 80%</p>
+              <p id="preview-term-new" class="hide"><span id="preview-term-new-count">...</span> new/unreviewed terms</p>
+            </div>
           </div>
           <div id="review-mode-error-min-terms" class="hide">
             <p id="error-min-terms-count-text" class="h3 hide">There are <span id="error-min-terms-count"></span> terms in this set</p>
@@ -95,12 +102,15 @@
     </main>
     <eta>~ include("./partials/footer") </eta>
     <script>
-      var termBad = [];
+      var onlyTermBad = [];
+      var onlyTermMid = [];
+      var onlyTermGood = [];
+      var onlyDefBad = [];
+      var onlyDefMid = [];
+      var onlyDefGood = [];
+      var termGood = [];
       var termMid = [];
       var termGood = [];
-      var defBad = [];
-      var defMid = [];
-      var defGood = [];
       var newTerms = [];
       function setupStuff(studysetTermsArray, progressTerms) {
         if (studysetTermsArray && studysetTermsArray.length > 2) {
@@ -117,29 +127,72 @@
               } else {
                 var termPercent = progressForThisTerm.termCorrect / (progressForThisTerm.termCorrect + progressForThisTerm.termIncorrect)
                 if (termPercent > 0.9) {
-                  termGood.push({
+                  onlyTermGood.push({
                     index: i,
                     term: progressForThisTerm.term,
                     def: progressForThisTerm.def,
                     termCorrect: progressForThisTerm.termCorrect
                   });
                 } else if (termPercent > 0.8) {
+                  onlyTermMid.push(progressForThisTerm);
+                } else {
+                  onlyTermBad.push(progressForThisTerm);
+                }
+                var defPercent = progressForThisTerm.defCorrect / (progressForThisTerm.defCorrect + progressForThisTerm.defIncorrect)
+                if (defPercent > 0.9) {
+                  onlyDefGood.push(progressForThisTerm);
+                } else if (defPercent > 0.8) {
+                  onlyDefMid.push(progressForThisTerm);
+                } else {
+                  onlyDefBad.push(progressForThisTerm);
+                }
+                var overallPercent = (
+                  (progressForThisTerm.termCorrect + progressForThisTerm.defCorrect) / (
+                    progressForThisTerm.termCorrect +
+                    progressForThisTerm.termIncorrect +
+                    progressForThisTerm.defCorrect +
+                    progressForThisTerm.defIncorrect
+                  )
+                );
+                if (overallPercent > 0.9) {
+                  termGood.push({
+                    index: i,
+                    term: progressForThisTerm.term,
+                    def: progressForThisTerm.def,
+                    termCorrect: progressForThisTerm.termCorrect
+                  });
+                } else if (overallPercent > 0.8) {
                   termMid.push(progressForThisTerm);
                 } else {
                   termBad.push(progressForThisTerm);
                 }
-                var defPercent = progressForThisTerm.defCorrect / (progressForThisTerm.defCorrect + progressForThisTerm.defIncorrect)
-                if (defPercent > 0.9) {
-                  defGood.push(progressForThisTerm);
-                } else if (defPercent > 0.8) {
-                  defMid.push(progressForThisTerm);
-                } else {
-                  defBad.push(progressForThisTerm);
-                }
               }
+            }
+            document.getElementById("preview-progress").classList.remove("hide");
+            if (termGood.length >= 1) {
+              document.getElementById("preview-term-good-count").innerText = termGood.length;
+              document.getElementById("preview-term-good").classList.remove("hide");
+            }
+            if (termMid.length >= 1) {
+              document.getElementById("preview-term-mid-count").innerText = termMid.length;
+              document.getElementById("preview-term-mid").classList.remove("hide");
+            }
+            if (termBad.length >= 1) {
+              document.getElementById("preview-term-bad-count").innerText = termBad.length;
+              document.getElementById("preview-term-bad").classList.remove("hide");
+            }
+            if (mewTerms.length >= 1) {
+              document.getElementById("preview-term-new-count").innerText = newTerms.length;
+              document.getElementById("preview-term-new").classList.remove("hide");
             }
           } else {
             newTerms = studysetTermsArray;
+            
+            document.getElementById("preview-progress").classList.remove("hide");
+            if (mewTerms.length >= 1) {
+              document.getElementById("preview-term-new-count").innerText = newTerms.length;
+              document.getElementById("preview-term-new").classList.remove("hide");
+            }
           }
         } else {
           document.getElementById("review-mode-error-min-terms").classList.remove("hide");
