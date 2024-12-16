@@ -95,11 +95,38 @@
     </main>
     <eta>~ include("./partials/footer") </eta>
     <script>
-      var studysetTerms;
+      var termBad = [];
+      var termMid = [];
+      var termGood = [];
+      var defBad = [];
+      var defMid = [];
+      var defGood = [];
+      var newTerms = [];
       var sessionPastTerms = [];
       function setupStuff(studysetTermsArray, progressTerms) {
         if (studysetTermsArray && studysetTermsArray.length > 2) {
           document.getElementById("total-terms-count").innerText = studysetTermsArray.length;
+
+          if (progressTerms && progressTerms.length >= 1) {
+            progressTermsMap = new Map(progressTerms.map(function (term) {
+              return [JSON.stringify([term.term, term.def]), term]
+            }))
+            for (var i = 0; i < studysetTermsArray.length; i++) {
+              var progressForThisTerm = progressTermsMap.get(JSON.stringify(studysetTermsArray[i]))
+              if (progressForThisTerm == null /* undefined works with `== null` */) {
+                newTerms.push(studysetTermsArray[i]);
+              } else {
+                var termPercent = progressForThisTerm.termCorrect / (progressForThisTerm.termCorrect + progressForThisTerm.termIncorrect)
+                if (termPercent > 0.9) {
+                  termGood.push(progressForThisTerm);
+                } else if (termPercent > 0.8) {
+                  termMid.push(progressForThisTerm);
+                } else {
+                  termBad.push(progressForThisTerm);
+                }
+              }
+            }
+          }
         } else {
           document.getElementById("review-mode-error-min-terms").classList.remove("hide");
           document.getElementById("review-mode-setup").classList.add("hide");
@@ -111,9 +138,6 @@
             document.getElementById("error-min-terms-count-text-single").classList.add("hide");
             document.getElementById("error-min-terms-count").innerText = studysetTermsArray.length;
           }
-        }
-        if (progressTerms && progressTerms.length >= 1) {
-          alert("you have progress")
         }
       }
       
