@@ -550,6 +550,9 @@ fastify.get("/studysets/:studyset", function (request, reply) {
         reply.callNotFound();
       }
     })
+  }).catch(function (error) {
+    request.log.warn(error);
+    reply.callNotFound();
   })
 });
 
