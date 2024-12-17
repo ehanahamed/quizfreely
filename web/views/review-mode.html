@@ -67,6 +67,25 @@
                 <!--<p style="margin-top:0.4rem">Ni hao</p>-->
               </button>
             </div>
+            <div id="setup-continue">
+              <div class="flex">
+                <button class="button-box" id="continue-continue-button">
+                  <p class="h4" style="margin-bottom:0px"><i class="nf nf-fa-pie_chart"></i></p>
+                  <p style="margin-top:0.8rem"><b>Split into Sections</b></p>
+                  <!--<p style="margin-top:0.4rem">Split the </p>-->
+                </button>
+                <button class="button-box" id="continue-stay-button">
+                  <p class="h4" style="margin-bottom:0px"><i class="nf nf-fa-fast_forward"></i></p>
+                  <p style="margin-top:0.4rem"><b>Review Entire Set</b></p>
+                  <!--<p style="margin-top:0.4rem">Ni hao</p>-->
+                </button>
+                <button class="button-box" id="continue-skip-button">
+                  <p class="h4" style="margin-bottom:0px"><i class="nf nf-fa-fast_forward"></i></p>
+                  <p style="margin-top:0.4rem"><b>Review Entire Set</b></p>
+                  <!--<p style="margin-top:0.4rem">Ni hao</p>-->
+                </button>
+              </div>
+            </div>
           </div>
           <div id="review-mode-error-min-terms" class="hide">
             <p id="error-min-terms-count-text" class="h3 hide">There are <span id="error-min-terms-count"></span> terms in this set</p>
@@ -99,15 +118,9 @@
     </main>
     <eta>~ include("./partials/footer") </eta>
     <script>
-      var onlyTermBad = [];
-      var onlyTermMid = [];
-      var onlyTermGood = [];
-      var onlyDefBad = [];
-      var onlyDefMid = [];
-      var onlyDefGood = [];
-      var termBad = [];
-      var termMid = [];
-      var termGood = [];
+      var termsBad = [];
+      var termsMid = [];
+      var termsGood = [];
       var newTerms = [];
       function setupStuff(studysetTermsArray, progressTerms) {
         if (studysetTermsArray && studysetTermsArray.length > 2) {
@@ -122,28 +135,7 @@
               if (progressForThisTerm == null /* undefined works with `== null` */) {
                 newTerms.push(studysetTermsArray[i]);
               } else {
-                var termPercent = progressForThisTerm.termCorrect / (progressForThisTerm.termCorrect + progressForThisTerm.termIncorrect)
-                if (termPercent > 0.9) {
-                  onlyTermGood.push({
-                    index: i,
-                    term: progressForThisTerm.term,
-                    def: progressForThisTerm.def,
-                    termCorrect: progressForThisTerm.termCorrect
-                  });
-                } else if (termPercent > 0.8) {
-                  onlyTermMid.push(progressForThisTerm);
-                } else {
-                  onlyTermBad.push(progressForThisTerm);
-                }
-                var defPercent = progressForThisTerm.defCorrect / (progressForThisTerm.defCorrect + progressForThisTerm.defIncorrect)
-                if (defPercent > 0.9) {
-                  onlyDefGood.push(progressForThisTerm);
-                } else if (defPercent > 0.8) {
-                  onlyDefMid.push(progressForThisTerm);
-                } else {
-                  onlyDefBad.push(progressForThisTerm);
-                }
-                var overallPercent = (
+                var accuracy = (
                   (progressForThisTerm.termCorrect + progressForThisTerm.defCorrect) / (
                     progressForThisTerm.termCorrect +
                     progressForThisTerm.termIncorrect +
@@ -151,30 +143,30 @@
                     progressForThisTerm.defIncorrect
                   )
                 );
-                if (overallPercent > 0.9) {
-                  termGood.push({
+                if (accuracy > 0.9) {
+                  termsGood.push({
                     index: i,
                     term: progressForThisTerm.term,
                     def: progressForThisTerm.def,
                     termCorrect: progressForThisTerm.termCorrect
                   });
-                } else if (overallPercent > 0.8) {
-                  termMid.push(progressForThisTerm);
+                } else if (accuracy > 0.8) {
+                  termsMid.push(progressForThisTerm);
                 } else {
-                  termBad.push(progressForThisTerm);
+                  termsBad.push(progressForThisTerm);
                 }
               }
             }
-            if (termGood.length >= 1) {
-              document.getElementById("preview-term-good-count").innerText = termGood.length;
+            if (termsGood.length >= 1) {
+              document.getElementById("preview-term-good-count").innerText = termsGood.length;
               document.getElementById("preview-term-good").classList.remove("hide");
             }
-            if (termMid.length >= 1) {
-              document.getElementById("preview-term-mid-count").innerText = termMid.length;
+            if (termsMid.length >= 1) {
+              document.getElementById("preview-term-mid-count").innerText = termsMid.length;
               document.getElementById("preview-term-mid").classList.remove("hide");
             }
-            if (termBad.length >= 1) {
-              document.getElementById("preview-term-bad-count").innerText = termBad.length;
+            if (termsBad.length >= 1) {
+              document.getElementById("preview-term-bad-count").innerText = termsBad.length;
               document.getElementById("preview-term-bad").classList.remove("hide");
             }
             if (newTerms.length >= 1) {
@@ -196,8 +188,19 @@
             document.getElementById("error-min-terms-count").innerText = studysetTermsArray.length;
           }
         }
+        console.log(termsBad)
+        console.log(termsGood)
+        console.log(termsMid)
+        console.log(newTerms)
       }
-      
+      document.getElementById("split-true-button").addEventListener("click", function () {
+        document.getElementById("split-true-button").classList.add("selected");
+        document.getElementById("split-false-button").classList.remove("selected");
+      });
+      document.getElementById("split-false-button").addEventListener("click", function () {
+        document.getElementById("split-true-button").classList.remove("selected");
+        document.getElementById("split-false-button").classList.add("selected");
+      });
       function generateQuestion() {
 
       }
