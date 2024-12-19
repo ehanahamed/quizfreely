@@ -206,6 +206,8 @@ const schema = `
         termIncorrect: Int!
         defCorrect: Int!
         defIncorrect: Int!
+        lastReviewedAt: String!
+        reviewedAtHistory: [[String]]!
     }
     input StudysetProgressTermInput {
         term: String!
@@ -1036,13 +1038,25 @@ async function updateProgressByStudysetId(studysetId, progressChanges, authedUse
             }));
             for (let i = 0; i < progressChanges.length; i++) {
                 let existingIndex = existingProgressMap.get(JSON.stringify([progressChanges[i].term, progressChanges[i].def]));
+                let rnDateTimeString = (new Date()).toISOString();
                 if (existingIndex == null /* undefined works with `== null` */) {
-                    updatedProgress.push(progressChanges[i])
+                    updatedProgress.push({
+                        term: progressChanges[i].term,
+                        def: progressChanges[i].def,
+                        termCorrect: progressChanges[i].termCorrect,
+                        termIncorrect: progressChanges[i].termIncorrect,
+                        defCorrect: progressChanges[i].defCorrect,
+                        defIncorrect: progressChanges[i].defIncorrect,
+                        lastReviewedAt: rnDateTimeString,
+                        reviewedAtHistory: [rnDateTimeString]
+                    })
                 } else {
                     updatedProgress[existingIndex].termCorrect += progressChanges[i].termCorrect;
                     updatedProgress[existingIndex].termIncorrect += progressChanges[i].termIncorrect;
                     updatedProgress[existingIndex].defCorrect += progressChanges[i].defCorrect;
                     updatedProgress[existingIndex].defIncorrect += progressChanges[i].defIncorrect;
+                    updatedProgress[existingIndex].lastReviewedAt = rnDateTimeString;
+                    updatedProgress[existingIndex].reviewedAtHistory.push(rnDateTimeString);
                 }
             }
             let updatedRecord = await client.query(
