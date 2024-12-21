@@ -207,7 +207,7 @@ const schema = `
         defCorrect: Int!
         defIncorrect: Int!
         lastReviewedAt: String!
-        reviewedAtHistory: [[String]]!
+        reviewedAtHistory: [String!]!
     }
     input StudysetProgressTermInput {
         term: String!
