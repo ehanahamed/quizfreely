@@ -118,10 +118,25 @@
     </main>
     <eta>~ include("./partials/footer") </eta>
     <script>
-      var termsBad = [];
-      var termsMid = [];
-      var termsGood = [];
+      var badTermsOverall = [];
+      var midTermsOverall = [];
+      var goodTermsOverall = [];
       var newTerms = [];
+      /*
+        producing/answering-with the term given the definition and
+        producing the definition from the term take different logic/brain power
+        depending on the context and subject,
+        so we record accuracy answering with terms sepratly from accuracy answering with definitions
+      */
+      var termBad = [];
+      var termMid = [];
+      var termGood = [];
+      var defBad = [];
+      var defMid = [];
+      var defGood = [];
+      /*
+        setupStuff() is called right after 
+      */
       function setupStuff(studysetTermsArray, progressTerms) {
         if (studysetTermsArray && studysetTermsArray.length > 2) {
           document.getElementById("total-terms-count").innerText = studysetTermsArray.length;
