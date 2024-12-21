@@ -1036,9 +1036,9 @@ async function updateProgressByStudysetId(studysetId, progressChanges, authedUse
             let existingProgressMap = new Map(updatedProgress.map(function (term, index) {
                 return [JSON.stringify([term.term, term.def]), index];
             }));
+            let rnDateTimeString = (new Date()).toISOString();
             for (let i = 0; i < progressChanges.length; i++) {
                 let existingIndex = existingProgressMap.get(JSON.stringify([progressChanges[i].term, progressChanges[i].def]));
-                let rnDateTimeString = (new Date()).toISOString();
                 if (existingIndex == null /* undefined works with `== null` */) {
                     updatedProgress.push({
                         term: progressChanges[i].term,
@@ -1078,14 +1078,26 @@ async function updateProgressByStudysetId(studysetId, progressChanges, authedUse
                 }
             }
         } else {
-            /* if progress doesn't already exist, add/insert a new record */
+            /* if studyset progress doesn't already exist, add/insert a new record.
+            
+            First add lastReviewedAt and reviewedAtHistory for every object in the array,
+            because the client only sends the change in term/def correct/incorrect counts */
+            let rnDateTimeString = (new Date()).toISOString();
+            let progress = progressChanges.map(function (term) {
+                return {
+                    ...term,
+                    lastReviewedAt: rnDateTimeString,
+                    reviewedAtHistory: [rnDateTimeString]
+                }
+            });
+            /* now add/insert the record */
             let newRecord = await client.query(
                 "insert into public.studyset_progress (studyset_id, user_id, terms, updated_at) " +
                 "values ($1, $2, $3, clock_timestamp()) returning id, studyset_id, user_id, to_char(updated_at, 'YYYY-MM-DD\"T\"HH24:MI:SS.MSTZH:TZM') as updated_at",
                 [
                     studysetId,
                     authedUserId,
-                    JSON.stringify(progressChanges)
+                    JSON.stringify(progress)
                 ]
             )
             await client.query("COMMIT");
@@ -1094,7 +1106,7 @@ async function updateProgressByStudysetId(studysetId, progressChanges, authedUse
                     id: newRecord.rows[0].id,
                     studyset_id: newRecord.rows[0].studyset_id,
                     user_id: newRecord.rows[0].user_id,
-                    terms: progressChanges,
+                    terms: progress,
                     updated_at: newRecord.rows[0].updated_at
                 }
             }
