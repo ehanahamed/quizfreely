@@ -118,36 +118,64 @@
     </main>
     <eta>~ include("./partials/footer") </eta>
     <script>
-      var badTermsOverall = [];
-      var midTermsOverall = [];
-      var goodTermsOverall = [];
-      var newTerms = [];
       /*
         producing/answering-with the term given the definition and
-        producing the definition from the term take different logic/brain power
-        depending on the context and subject,
-        so we record accuracy answering with terms sepratly from accuracy answering with definitions
+        producing the definition from the term require different logic/brain power
+        (depending on the subject/context)
+        so we record accuracy when answering with terms seperatly from accuracy when answering with definitions
       */
       var termBad = [];
       var termMid = [];
       var termGood = [];
-      var defBad = [];
+      var defBad = []; /* "def" is short for "definition" for these variables */
       var defMid = [];
       var defGood = [];
+
       /*
-        setupStuff() is called right after 
+        bad/mid/good "overall" means based on term-producing AND definition-producing accuracy
+        `(termCorrect + defCorrect) / (termCorrect + termIncorrect + defCorrect + defIncorrect)`
+      */
+      var badTermsOverall = [];
+      var midTermsOverall = [];
+      var goodTermsOverall = [];
+      var newTerms = []; /* unreviewed terms */
+      var oldLastReviewedAtTerms = []; /* terms that haven't been reviewed for more than a few weeks (from lastReviewedAt timestamp) */
+
+      /*
+        setupStuff() is called right after the studyset (and/or studyset progress) is/are loaded
+        to show the user their current progress and how many terms there are (or if there is no progress, just how many terms there are)
+        then, with that information the user will select whether to review the studyset in chunks for long-term studying or all at once
+        
+        so this function, setupStuff(), calculates and displays terms' accuracy and how long ago each term was last reviewed
+        and puts/sorts terms into different arrays based on their accuracy and last reviewed date/time
+        so that other parts of this client/browser js code can then use those arrays to display each question
+        and proritize terms that have low accuracy or haven't been reviewed in a while
       */
       function setupStuff(studysetTermsArray, progressTerms) {
+        /* this function also checks if the studyset has enough terms or not and shows a user a message based on that if needed */
         if (studysetTermsArray && studysetTermsArray.length > 2) {
           document.getElementById("total-terms-count").innerText = studysetTermsArray.length;
 
           if (progressTerms && progressTerms.length >= 1) {
+            /*
+              we create a map for the progress array so that we can get data by they term and definition name,
+              using `.find()` on an array iterates over the whole array each time,
+              while using `.get()` on a map does not iterate over it
+              this means we only have to iterate over the progress array once when creating the map
+            */
             progressTermsMap = new Map(progressTerms.map(function (term) {
+              /*
+                the "key" of this map is the term and definition stringified as an array
+              */
               return [JSON.stringify([term.term, term.def]), term]
             }))
+            /*
+              we iterate over terms in the studyset array and check if progress exists for each term in the progress map
+              this means we only iterate over the studyset once, and the progress once (to create the map)
+            */
             for (var i = 0; i < studysetTermsArray.length; i++) {
               var progressForThisTerm = progressTermsMap.get(JSON.stringify(studysetTermsArray[i]))
-              if (progressForThisTerm == null /* undefined works with `== null` */) {
+              if (progressForThisTerm == null /* `undefined == null` is true, so this also checks for undefined */) {
                 newTerms.push(studysetTermsArray[i]);
               } else {
                 var accuracy = (
