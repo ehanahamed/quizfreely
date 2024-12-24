@@ -61,8 +61,8 @@
                 <p id="preview-bad-terms-count-parent-label" style="margin-top: 0.2rem;">&lt; 80% accuracy</p>
               </div>
               <div>
-                <p class="h4" style="margin-bottom: 0.2rem;"><span id="preview-new-terms-count">...</span> terms</p>
-                <p style="margin-top: 0.2rem;">new/unreviewed</p>
+                <p id="preview-new-terms-count-parent" class="h4" style="margin-bottom: 0.2rem;"><span id="preview-new-terms-count">...</span> terms</p>
+                <p id="preview-new-terms-count-parent-label" style="margin-top: 0.2rem;">new/unreviewed</p>
               </div>
             </div>
             <div class="flex" id="setup-split">
@@ -223,6 +223,11 @@
               document.getElementById("preview-bad-terms-count-parent-label").classList.add("fg0");
             }
             document.getElementById("preview-new-terms-count").innerText = newTerms.length;
+            if (newTerms.length == 0) {
+              /* if there are no new terms, grey it out by adding css class fg0 to the parent element(s) and the other label element too */
+              document.getElementById("preview-new-terms-count-parent").classList.add("fg0");
+              document.getElementById("preview-new-terms-count-parent-label").classList.add("fg0");
+            }
           } else {
             /* it reaches this else-statement when there is no progress,
             which means all the terms are "new/unreviewed" */
