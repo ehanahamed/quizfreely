@@ -51,10 +51,20 @@
           </div>
           <div id="review-mode-setup">
             <p class="h3">There are <span id="total-terms-count">...</span> terms in this set</p>
-            <p id="preview-term-good" class="hide"><b class="yay"><span id="preview-term-good-count">...</span> terms</b> over 90% accuracy</p>
-            <p id="preview-term-mid" class="hide"><b class="ohno"><span id="preview-term-mid-count">...</span> terms</b> 80-90% accuracy</p>
-            <p id="preview-term-bad" class="hide"><b class="ohno"><span id="preview-term-bad-count">...</span> terms</b> less than 80% accuracy</p>
-            <p id="preview-term-new" class="hide"><b><span id="preview-term-new-count">...</span></b> new/unreviewed terms</p>
+            <div class="flex" style="gap: 2rem;">
+              <div>
+                <p class="h4 yay" style="margin-bottom: 0.2rem;"><span id="preview-good-terms-count">...</span> terms</p>
+                <p style="margin-top: 0.2rem;">&ge; 90% accuracy</p>
+              </div>
+              <div>
+                <p class="h4 ohno" style="margin-bottom: 0.2rem;"><span id="preview-bad-terms-count">...</span> terms</p>
+                <p style="margin-top: 0.2rem;">&lt; 80% accuracy</p>
+              </div>
+              <div>
+                <p class="h4" style="margin-bottom: 0.2rem;"><span id="preview-new-terms-count">...</span> terms</p>
+                <p style="margin-top: 0.2rem;">new/unreviewed</p>
+              </div>
+            </div>
             <div class="flex" id="setup-split">
               <button class="button-box" id="split-true-button">
                 <p class="h4" style="margin-bottom:0px"><i class="nf nf-fa-pie_chart"></i></p>
@@ -64,27 +74,8 @@
               <button class="button-box" id="split-false-button">
                 <p class="h4" style="margin-bottom:0px"><i class="nf nf-fa-list_check"></i></p>
                 <p style="margin-top:0.4rem"><b>Review Entire Set</b></p>
-                <!--<p style="margin-top:0.4rem">Ni hao</p>-->
+                <!--<p style="margin-top:0.4rem">Una mattina mi son svegliato</p>-->
               </button>
-            </div>
-            <div id="setup-continue">
-              <div class="flex">
-                <button class="button-box" id="continue-continue-button">
-                  <p class="h4" style="margin-bottom:0px"><i class="nf nf-fa-pie_chart"></i></p>
-                  <p style="margin-top:0.8rem"><b>Split into Sections</b></p>
-                  <!--<p style="margin-top:0.4rem">Split the </p>-->
-                </button>
-                <button class="button-box" id="continue-stay-button">
-                  <p class="h4" style="margin-bottom:0px"><i class="nf nf-fa-fast_forward"></i></p>
-                  <p style="margin-top:0.4rem"><b>Review Entire Set</b></p>
-                  <!--<p style="margin-top:0.4rem">Ni hao</p>-->
-                </button>
-                <button class="button-box" id="continue-skip-button">
-                  <p class="h4" style="margin-bottom:0px"><i class="nf nf-fa-fast_forward"></i></p>
-                  <p style="margin-top:0.4rem"><b>Review Entire Set</b></p>
-                  <!--<p style="margin-top:0.4rem">Ni hao</p>-->
-                </button>
-              </div>
             </div>
           </div>
           <div id="review-mode-error-min-terms" class="hide">
