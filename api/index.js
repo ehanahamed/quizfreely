@@ -206,7 +206,9 @@ const schema = `
         termIncorrect: Int!
         defCorrect: Int!
         defIncorrect: Int!
+        firstReviewedAt: String!
         lastReviewedAt: String!
+        reviewSessionsCount: Int!
     }
     input StudysetProgressTermInput {
         term: String!
@@ -1046,7 +1048,9 @@ async function updateProgressByStudysetId(studysetId, progressChanges, authedUse
                         termIncorrect: progressChanges[i].termIncorrect,
                         defCorrect: progressChanges[i].defCorrect,
                         defIncorrect: progressChanges[i].defIncorrect,
-                        lastReviewedAt: rnDateTimeString
+                        firstReviewedAt: rnDateTimeString,
+                        lastReviewedAt: rnDateTimeString,
+                        reviewSessionsCount: 1
                     })
                 } else {
                     updatedProgress[existingIndex].termCorrect += progressChanges[i].termCorrect;
@@ -1054,6 +1058,7 @@ async function updateProgressByStudysetId(studysetId, progressChanges, authedUse
                     updatedProgress[existingIndex].defCorrect += progressChanges[i].defCorrect;
                     updatedProgress[existingIndex].defIncorrect += progressChanges[i].defIncorrect;
                     updatedProgress[existingIndex].lastReviewedAt = rnDateTimeString;
+                    updatedProgress[existingIndex].reviewSessionsCount++;
                 }
             }
             let updatedRecord = await client.query(
@@ -1083,7 +1088,9 @@ async function updateProgressByStudysetId(studysetId, progressChanges, authedUse
             let progress = progressChanges.map(function (term) {
                 return {
                     ...term,
-                    lastReviewedAt: rnDateTimeString
+                    firstReviewedAt: rnDateTimeString,
+                    lastReviewedAt: rnDateTimeString,
+                    reviewSessionsCount: 1
                 }
             });
             /* now add/insert the record */
