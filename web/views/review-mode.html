@@ -278,6 +278,15 @@
         document.getElementById("split-true-button").classList.remove("selected");
         document.getElementById("split-false-button").classList.add("selected");
       });
+      /* we run this function, startReview(), when users press start after selecting setup options,
+      which means this runs after setupStuff() shows users their current stats and asks them to select some settings */
+      startReview() {
+        /* we need to iterate over all the terms in the current */
+        for (var i = termRangeStart; i < termRangeEnd; i++) {
+
+        }
+        generateQuestion();
+      }
       function generateQuestion() {
 
       }
