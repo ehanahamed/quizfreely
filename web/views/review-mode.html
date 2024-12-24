@@ -53,12 +53,12 @@
             <p class="h3">There are <span id="total-terms-count">...</span> terms in this set</p>
             <div class="flex" style="gap: 2rem;">
               <div>
-                <p class="h4 yay" style="margin-bottom: 0.2rem;"><span id="preview-good-terms-count">...</span> terms</p>
-                <p style="margin-top: 0.2rem;">&ge; 90% accuracy</p>
+                <p id="preview-good-terms-count-parent" class="h4 yay" style="margin-bottom: 0.2rem;"><span id="preview-good-terms-count">...</span> terms</p>
+                <p id="preview-good-terms-count-parent-label" style="margin-top: 0.2rem;">&ge; 90% accuracy</p>
               </div>
               <div>
-                <p class="h4 ohno" style="margin-bottom: 0.2rem;"><span id="preview-bad-terms-count">...</span> terms</p>
-                <p style="margin-top: 0.2rem;">&lt; 80% accuracy</p>
+                <p id="preview-bad-terms-count-parent" class="h4 ohno" style="margin-bottom: 0.2rem;"><span id="preview-bad-terms-count">...</span> terms</p>
+                <p id="preview-bad-terms-count-parent-label" style="margin-top: 0.2rem;">&lt; 80% accuracy</p>
               </div>
               <div>
                 <p class="h4" style="margin-bottom: 0.2rem;"><span id="preview-new-terms-count">...</span> terms</p>
@@ -115,21 +115,18 @@
         (depending on the subject/context)
         so we record accuracy when answering with terms seperatly from accuracy when answering with definitions
       */
-      var termBad = [];
-      var termMid = [];
-      var termGood = [];
-      var defBad = []; /* "def" is short for "definition" for these variables */
-      var defMid = [];
-      var defGood = [];
+      var termBadCount = 0;
+      var termGoodCount = 0;
+      var defBadCount = 0; /* "def" is short for "definition" for these variables */
+      var defGoodCount = 0;
 
       /*
-        bad/mid/good "overall" means based on term-producing AND definition-producing accuracy
+        in this context, "overall" means based on term-producing AND definition-producing accuracy
         `(termCorrect + defCorrect) / (termCorrect + termIncorrect + defCorrect + defIncorrect)`
       */
-      var badTermsOverall = [];
-      var midTermsOverall = [];
-      var goodTermsOverall = [];
-      var newTerms = []; /* unreviewed terms */
+      var overallBadCount = 0;
+      var overallGoodCount = 0;
+      var newTerms = []; /* unreviewed terms, as an array */
       var oldLastReviewedAtTerms = []; /* terms that haven't been reviewed for more than a few weeks (from lastReviewedAt timestamp) */
 
       /*
@@ -144,7 +141,7 @@
       */
       function setupStuff(studysetTermsArray, progressTerms) {
         /* this function also checks if the studyset has enough terms or not and shows a user a message based on that if needed */
-        if (studysetTermsArray && studysetTermsArray.length > 2) {
+        if (studysetTermsArray && studysetTermsArray.length >= 4) {
           document.getElementById("total-terms-count").innerText = studysetTermsArray.length;
 
           if (progressTerms && progressTerms.length >= 1) {
@@ -169,7 +166,7 @@
               if (progressForThisTerm == null /* `undefined == null` is true, so this also checks for undefined */) {
                 newTerms.push(studysetTermsArray[i]);
               } else {
-                var accuracy = (
+                var overallAccuracy = (
                   (progressForThisTerm.termCorrect + progressForThisTerm.defCorrect) / (
                     progressForThisTerm.termCorrect +
                     progressForThisTerm.termIncorrect +
@@ -177,55 +174,96 @@
                     progressForThisTerm.defIncorrect
                   )
                 );
-                if (accuracy > 0.9) {
-                  termsGood.push({
-                    index: i,
-                    term: progressForThisTerm.term,
-                    def: progressForThisTerm.def,
-                    termCorrect: progressForThisTerm.termCorrect
-                  });
-                } else if (accuracy > 0.8) {
-                  termsMid.push(progressForThisTerm);
-                } else {
-                  termsBad.push(progressForThisTerm);
+                if (overallAccuracy >= 0.9) {
+                  overallGoodCount++;
+                } else if (overallAccuracy < 0.8) {
+                  overallBadCount++;
+                }
+
+                var termAccuracy = (
+                  progressForThisTerm.termCorrect / (
+                    progressForThisTerm.termCorrect +
+                    progressForThisTerm.termIncorrect
+                  )
+                )
+                if (termAccuracy >= 0.9) {
+                  termGoodCount++;
+                } else if (termAccuracy < 0.8) {
+                  termBadCount++;
+                }
+
+                var defAccuracy = (
+                  progressForThisTerm.defCorrect / (
+                    progressForThisTerm.defCorrect +
+                    progressForThisTerm.defIncorrect
+                  )
+                )
+                if (defAccuracy >= 0.9) {
+                  defGoodCount++;
+                } else if (defAccuracy < 0.8) {
+                  defBadCount++;
                 }
               }
             }
-            if (termsGood.length >= 1) {
-              document.getElementById("preview-term-good-count").innerText = termsGood.length;
-              document.getElementById("preview-term-good").classList.remove("hide");
+            /* after we finish adding to overallGoodCount and overallBadCount,
+            display those numbers in these text elements. (notice this is outside of the for-loop above) */
+            document.getElementById("preview-good-terms-count").innerText = overallGoodCount;
+            if (overallGoodCount == 0) {
+              /* good-terms-count text is green (`yay` class) by default, but we want it to be greyed out if 0 terms are good */
+              document.getElementById("preview-good-terms-count-parent").classList.remove("yay");
+              /* these css classes are added to and removed from the parent element, and the label visually under the parent element, but under the same div */
+              document.getElementById("preview-good-terms-count-parent").classList.add("fg0");
+              document.getElementById("preview-good-terms-count-parent-label").classList.add("fg0");
             }
-            if (termsMid.length >= 1) {
-              document.getElementById("preview-term-mid-count").innerText = termsMid.length;
-              document.getElementById("preview-term-mid").classList.remove("hide");
+            document.getElementById("preview-bad-terms-count").innerText = overallBadCount;
+            if (overallBadCount == 0) {
+              /* bad-terms-count is red (ohno) by default, but we want it to be greyed out if it's 0 */
+              document.getElementById("preview-bad-terms-count-parent").classList.remove("ohno");
+              document.getElementById("preview-bad-terms-count-parent").classList.add("fg0");
+              document.getElementById("preview-bad-terms-count-parent-label").classList.add("fg0");
             }
-            if (termsBad.length >= 1) {
-              document.getElementById("preview-term-bad-count").innerText = termsBad.length;
-              document.getElementById("preview-term-bad").classList.remove("hide");
-            }
-            if (newTerms.length >= 1) {
-              document.getElementById("preview-term-new-count").innerText = newTerms.length;
-              document.getElementById("preview-term-new").classList.remove("hide");
-            }
+            document.getElementById("preview-new-terms-count").innerText = newTerms.length;
           } else {
+            /* it reaches this else-statement when there is no progress,
+            which means all the terms are "new/unreviewed" */
             newTerms = studysetTermsArray;
+            document.getElementById("preview-good-terms-count").innerText = "0";
+            /* since good terms are 0 when all of them are new, make the text greyed out */
+            document.getElementById("preview-good-terms-count-parent").classList.remove("yay");
+            document.getElementById("preview-good-terms-count-parent").classList.add(
+              "fg0"
+            ); /* these classes are applied to and removed from the parent element */
+            document.getElementById("preview-good-terms-count-parent-label").classList.add(
+              "fg0"
+            ); /* this is the label underneath the parent elements text, under the same parent div */
+            document.getElementById("preview-bad-terms-count").innerText = "0";
+            /* since bad terms count is 0 when all of them are new, make the text greyed out
+            notice the classes are applied/removed to/from the parent element */
+            document.getElementById("preview-bad-terms-count-parent").classList.remove("ohno");
+            document.getElementById("preview-bad-terms-count-parent").classList.add("fg0");
+            document.getElementById("preview-bad-terms-count-parent-label").classList.add("fg0");
+            document.getElementById("preview-new-terms-count").innerText = newTerms.length;
           }
         } else {
+          /* this else-statement is reached when there are less than 4 terms in the studyset,
+          we need at least 4 terms to show users questions lol */
           document.getElementById("review-mode-error-min-terms").classList.remove("hide");
           document.getElementById("review-mode-setup").classList.add("hide");
+          /* we have a seperate element to use when there's only 1 term, because the grammar would be different ("term" instead of "terms")
+          so we show/hide error-min-terms-count-text-single or error-min-terms-count-text if theres 1 or more than 1 term */
           if (studysetTermsArray && studysetTermsArray.length == 1) {
+            /* this is only if there's one term */
             document.getElementById("error-min-terms-count-text").classList.add("hide");
             document.getElementById("error-min-terms-count-text-single").classList.remove("hide");
+            /* since this is only for 1, the number is part of the elements text already */
           } else {
+            /* this is if theres more than 1 term (but still less than 4 because this whole thing is within the bigger else-statement) */
             document.getElementById("error-min-terms-count-text").classList.remove("hide");
             document.getElementById("error-min-terms-count-text-single").classList.add("hide");
+            /* unlike the singular element, this message can have a bunch of different numbers, so we display the actual value from `.length` */
             document.getElementById("error-min-terms-count").innerText = studysetTermsArray.length;
           }
         }
-        console.log(termsBad)
-        console.log(termsGood)
-        console.log(termsMid)
-        console.log(newTerms)
       }
       document.getElementById("split-true-button").addEventListener("click", function () {
         document.getElementById("split-true-button").classList.add("selected");
