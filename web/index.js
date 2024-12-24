@@ -7,6 +7,7 @@ import fastifyCookie from "@fastify/cookie";
 import fastifyHttpProxy from "@fastify/http-proxy";
 import path from "path";
 import { Eta } from "eta";
+import { writeFile } from "node:fs";
 import { Cron } from "croner";
 import { createRequire } from "module";
 const require = createRequire(import.meta.url);
