@@ -207,7 +207,6 @@ const schema = `
         defCorrect: Int!
         defIncorrect: Int!
         lastReviewedAt: String!
-        reviewedAtHistory: [String!]!
     }
     input StudysetProgressTermInput {
         term: String!
@@ -1047,8 +1046,7 @@ async function updateProgressByStudysetId(studysetId, progressChanges, authedUse
                         termIncorrect: progressChanges[i].termIncorrect,
                         defCorrect: progressChanges[i].defCorrect,
                         defIncorrect: progressChanges[i].defIncorrect,
-                        lastReviewedAt: rnDateTimeString,
-                        reviewedAtHistory: [rnDateTimeString]
+                        lastReviewedAt: rnDateTimeString
                     })
                 } else {
                     updatedProgress[existingIndex].termCorrect += progressChanges[i].termCorrect;
@@ -1056,7 +1054,6 @@ async function updateProgressByStudysetId(studysetId, progressChanges, authedUse
                     updatedProgress[existingIndex].defCorrect += progressChanges[i].defCorrect;
                     updatedProgress[existingIndex].defIncorrect += progressChanges[i].defIncorrect;
                     updatedProgress[existingIndex].lastReviewedAt = rnDateTimeString;
-                    updatedProgress[existingIndex].reviewedAtHistory.push(rnDateTimeString);
                 }
             }
             let updatedRecord = await client.query(
@@ -1080,14 +1077,13 @@ async function updateProgressByStudysetId(studysetId, progressChanges, authedUse
         } else {
             /* if studyset progress doesn't already exist, add/insert a new record.
             
-            First add lastReviewedAt and reviewedAtHistory for every object in the array,
+            First add lastReviewedAt for every object in the array,
             because the client only sends the change in term/def correct/incorrect counts */
             let rnDateTimeString = (new Date()).toISOString();
             let progress = progressChanges.map(function (term) {
                 return {
                     ...term,
-                    lastReviewedAt: rnDateTimeString,
-                    reviewedAtHistory: [rnDateTimeString]
+                    lastReviewedAt: rnDateTimeString
                 }
             });
             /* now add/insert the record */
