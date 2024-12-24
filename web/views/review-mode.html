@@ -79,7 +79,7 @@
             </div>
           </div>
           <div id="review-mode-error-min-terms" class="hide">
-            <p id="error-min-terms-count-text" class="h3 hide">There are <span id="error-min-terms-count"></span> terms in this set</p>
+            <p id="error-min-terms-count-text" class="h3 hide">There are <span id="error-min-terms-count">...</span> terms in this set</p>
             <p id="error-min-terms-count-text-single" class="h3 hide">There's only 1 term in this set</p>
             <p>You need at least 4 terms to use review mode or practice quizzes, sorry :(</p>
           </div>
@@ -419,9 +419,9 @@
               }
               dbProgressGetReq.onsuccess = function (event) {
                 if (dbProgressGetReq.result === undefined) {
-                  setupStuff(apiResponse.data.terms);
+                  setupStuff(apiResponse.data.studyset.data.terms);
                 } else {
-                  setupStuff(apiResponse.data.terms, dbProgressGetReq.result.terms);
+                  setupStuff(apiResponse.data.studyset.data.terms, dbProgressGetReq.result.terms);
                 }
               }
             })
