@@ -108,15 +108,15 @@
               >
                 <eta> if (data.studyset && data.studyset.data && data.studyset.data.terms && data.studyset.data.terms.length >= 1) { </eta>
                 <div class="content">
-                  <div class="front" id="flashcard-front" style="white-space:pre-line"><eta>= data.studyset.data.terms[0][0] </eta></div>
-                  <div class="back" id="flashcard-back" style="white-space:pre-line"><eta>= data.studyset.data.terms[0][1] </eta></div>
+                  <div class="front" id="flashcard-front" style="white-space:pre-wrap"><eta>= data.studyset.data.terms[0][0] </eta></div>
+                  <div class="back" id="flashcard-back" style="white-space:pre-wrap"><eta>= data.studyset.data.terms[0][1] </eta></div>
                 </div>
                 <eta> } else { </eta>
                 <div class="content">
-                  <div class="front" id="flashcard-front" style="white-space:pre-line">
+                  <div class="front" id="flashcard-front" style="white-space:pre-wrap">
                     ...
                   </div>
-                  <div class="back" id="flashcard-back" style="white-space:pre-line">
+                  <div class="back" id="flashcard-back" style="white-space:pre-wrap">
                     ...
                   </div>
                 </div>
@@ -190,16 +190,18 @@
                   <th>Term</th>
                   <th>Definition</th>
                 </tr>
-                <eta> if (data.studyset && data.studyset.data && data.studyset.data.terms) { data.studyset.data.terms.forEach(function (term) { </eta>
+                <eta>
+                  if (data.studyset && data.studyset.data && data.studyset.data.terms) {
+                    data.studyset.data.terms.forEach(function (term) {
+                </eta>
                 <tr>
-                  <td style="white-space:pre-line">
-                    <eta>= term[0]</eta>
-                  </td>
-                  <td style="white-space:pre-line">
-                    <eta>= term[1]</eta>
-                  </td>
+                  <td style="white-space:pre-wrap"><eta>= term[0]</eta></td>
+                  <td style="white-space:pre-wrap"><eta>= term[1]</eta></td>
                 </tr>
-                <eta>}) } </eta>
+                <eta>
+                    })
+                  }
+                </eta>
               </tbody>
             </table>
           </div>
@@ -220,6 +222,7 @@
     <script src="/assets/js/indexedDB.js"></script>
     <script>
       openIndexedDB(function (db) {
+        /* load local studyset from indexeddb (this whole script tag is only there if `data.local` is true) */
         var studysetsObjectStore = db.transaction(["studysets"]).objectStore("studysets");
         var dbGetReq = studysetsObjectStore.get(<eta>= data.localId </eta>);
         dbGetReq.onerror = function (event) {
@@ -237,9 +240,9 @@
                 var newCell0 = newRow.insertCell();
                 var newCell1 = newRow.insertCell();
                 newCell0.innerText = dbGetReq.result.data.terms[i][0];
-                newCell0.style.whiteSpace = "pre-line";
+                newCell0.style.whiteSpace = "pre-wrap";
                 newCell1.innerText = dbGetReq.result.data.terms[i][1];
-                newCell1.style.whiteSpace = "pre-line";
+                newCell1.style.whiteSpace = "pre-wrap";
               }
               flashcardsChange();
             }
@@ -273,8 +276,8 @@
       
       function flashcardsChange() {
         var termsList = document.getElementById("terms-table").children[0];
-        document.getElementById("flashcard-front").innerText = termsList.children[flashcardsIndex + 1].children[0].innerText
-        document.getElementById("flashcard-back").innerText = termsList.children[flashcardsIndex + 1].children[1].innerText
+        document.getElementById("flashcard-front").innerHTML = termsList.children[flashcardsIndex + 1].children[0].innerHTML
+        document.getElementById("flashcard-back").innerHTML = termsList.children[flashcardsIndex + 1].children[1].innerHTML
         document.getElementById("flashcards-count").innerText = (flashcardsIndex + 1) + "/" + (termsList.children.length - 1);
       }
 
