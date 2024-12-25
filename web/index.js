@@ -127,8 +127,8 @@ fastify.get("/favicon.ico", function (request, reply) {
 fastify.get("/icon.svg", function (request, reply) {
   reply.sendFile("icon.svg", import.meta.dirname)
 })
-fastify.get("/apple-touch-icon.ico", function (request, reply) {
-  reply.sendFile("apple-touch-icon.ico", import.meta.dirname)
+fastify.get("/apple-touch-icon.png", function (request, reply) {
+  reply.sendFile("apple-touch-icon.png", import.meta.dirname)
 })
 
 function themeData(request) {
