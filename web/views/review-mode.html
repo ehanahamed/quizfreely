@@ -53,11 +53,11 @@
             <p class="h3">There are <span id="total-terms-count">...</span> terms in this set</p>
             <div class="flex" style="gap: 2rem;">
               <div>
-                <p id="preview-good-terms-count-parent" class="h4 yay" style="margin-bottom: 0.2rem;"><span id="preview-good-terms-count">...</span> terms</p>
+                <p id="preview-good-terms-count-parent" class="h4" style="margin-bottom: 0.2rem;"><span id="preview-good-terms-count">...</span> terms</p>
                 <p id="preview-good-terms-count-parent-label" style="margin-top: 0.2rem;">&ge; 90% accuracy</p>
               </div>
               <div>
-                <p id="preview-bad-terms-count-parent" class="h4 ohno" style="margin-bottom: 0.2rem;"><span id="preview-bad-terms-count">...</span> terms</p>
+                <p id="preview-bad-terms-count-parent" class="h4" style="margin-bottom: 0.2rem;"><span id="preview-bad-terms-count">...</span> terms</p>
                 <p id="preview-bad-terms-count-parent-label" style="margin-top: 0.2rem;">&lt; 80% accuracy</p>
               </div>
               <div>
@@ -65,17 +65,19 @@
                 <p id="preview-new-terms-count-parent-label" style="margin-top: 0.2rem;">new/unreviewed</p>
               </div>
             </div>
-            <div class="flex" id="setup-split">
-              <button class="button-box" id="split-true-button">
-                <p class="h4" style="margin-bottom:0px"><i class="nf nf-fa-pie_chart"></i></p>
-                <p style="margin-top:0.8rem"><b>Split into Sections</b></p>
-                <!--<p style="margin-top:0.4rem">Split the </p>-->
-              </button>
-              <button class="button-box" id="split-false-button">
-                <p class="h4" style="margin-bottom:0px"><i class="nf nf-fa-list_check"></i></p>
-                <p style="margin-top:0.4rem"><b>Review Entire Set</b></p>
-                <!--<p style="margin-top:0.4rem">Una mattina mi son svegliato</p>-->
-              </button>
+            <div class="hide" id="setup-split">
+              <div class="flex">
+                <button class="button-box" id="split-true-button">
+                  <p class="h4" style="margin-bottom:0px"><i class="nf nf-fa-pie_chart"></i></p>
+                  <p style="margin-top:0.8rem"><b>Split into Sections</b></p>
+                  <!--<p style="margin-top:0.4rem">Split the </p>-->
+                </button>
+                <button class="button-box" id="split-false-button">
+                  <p class="h4" style="margin-bottom:0px"><i class="nf nf-fa-list_check"></i></p>
+                  <p style="margin-top:0.4rem"><b>Review Entire Set</b></p>
+                  <!--<p style="margin-top:0.4rem">Una mattina mi son svegliato</p>-->
+                </button>
+              </div>
             </div>
             <div class="flex">
               <button id="start-button"><i class="nf nf-fa-check"></i> Start</button>
@@ -217,19 +219,25 @@
             display those numbers in these text elements. (notice this is outside of the for-loop above) */
             document.getElementById("preview-good-terms-count").innerText = overallGoodCount;
             if (overallGoodCount == 0) {
-              /* good-terms-count text is green (`yay` class) by default, but we want it to be greyed out if 0 terms are good */
-              document.getElementById("preview-good-terms-count-parent").classList.remove("yay");
-              /* these css classes are added to and removed from the parent element, and the label visually under the parent element, but under the same div */
+              /* make the text and label text underneath it greyed out when its 0
+              these css classes are added to and removed from the parent element, and the label visually under the parent element, but under the same div */
               document.getElementById("preview-good-terms-count-parent").classList.add("fg0");
               document.getElementById("preview-good-terms-count-parent-label").classList.add("fg0");
+            } else {
+              /* if it's not zero, make the number green (`yay` css class), but not the label underneath */
+              document.getElementById("preview-good-terms-count-parent").classList.add("yay");
             }
+
             document.getElementById("preview-bad-terms-count").innerText = overallBadCount;
             if (overallBadCount == 0) {
-              /* bad-terms-count is red (ohno) by default, but we want it to be greyed out if it's 0 */
-              document.getElementById("preview-bad-terms-count-parent").classList.remove("ohno");
+              /* make the text and label text underneath it greyed out when its 0 */
               document.getElementById("preview-bad-terms-count-parent").classList.add("fg0");
               document.getElementById("preview-bad-terms-count-parent-label").classList.add("fg0");
+            } else {
+              /* if it's not zero, make the number red (`ohno` css class) */
+              document.getElementById("preview-bad-terms-count-parent").classList.add("ohno");
             }
+
             document.getElementById("preview-new-terms-count").innerText = newTerms.length;
             if (newTerms.length == 0) {
               /* if there are no new terms, grey it out by adding css class fg0 to the parent element(s) and the other label element too */
@@ -242,7 +250,6 @@
             newTerms = studysetTermsArray;
             document.getElementById("preview-good-terms-count").innerText = "0";
             /* since good terms are 0 when all of them are new, make the text greyed out */
-            document.getElementById("preview-good-terms-count-parent").classList.remove("yay");
             document.getElementById("preview-good-terms-count-parent").classList.add(
               "fg0"
             ); /* these classes are applied to and removed from the parent element */
@@ -252,11 +259,18 @@
             document.getElementById("preview-bad-terms-count").innerText = "0";
             /* since bad terms count is 0 when all of them are new, make the text greyed out
             notice the classes are applied/removed to/from the parent element */
-            document.getElementById("preview-bad-terms-count-parent").classList.remove("ohno");
             document.getElementById("preview-bad-terms-count-parent").classList.add("fg0");
             document.getElementById("preview-bad-terms-count-parent-label").classList.add("fg0");
             document.getElementById("preview-new-terms-count").innerText = newTerms.length;
           }
+
+          /* this is inside the if-statement that checks if there are enough terms,
+          so the lines below run regardless of whether the user has progress or not */
+          if (studysetTermsArray.length > 20) {
+            /* if there are more than 20 terms, ask the user if they want to review the set in smaller sections */
+            document.getElementById("setup-split").classList.remove("hide");
+          }
+
         } else {
           /* this else-statement is reached when there are less than 4 terms in the studyset,
           we need at least 4 terms to show users questions lol */
@@ -294,13 +308,13 @@
 
       document.getElementById("start-button").addEventListener("click", function () {
         if (document.getElementById("split-true-button").classList.contains("selected")) {
-          for (var i = )
+          for (var i = 0; i < studysetTermsArray.length; i++) {
+            
+          }
         } else {
-      }
-        /* we need to iterate over all the terms in the current "range" (section or whole studyset depending on user-selected options) */
-        for (var i = termRangeStart; i < termRangeEnd; i++) {
-          
+
         }
+
         generateQuestion();
       })
 
