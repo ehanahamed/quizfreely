@@ -307,7 +307,10 @@
       });
 
       document.getElementById("start-button").addEventListener("click", function () {
-        if (document.getElementById("split-true-button").classList.contains("selected")) {
+        if (
+          document.getElementById("setup-split").classList.contains("hide") === false &&
+          document.getElementById("split-true-button").classList.contains("selected")
+        ) {
           for (var i = 0; i < studysetTermsArray.length; i++) {
             
           }
