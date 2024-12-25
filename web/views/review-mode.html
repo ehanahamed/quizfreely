@@ -289,6 +289,7 @@
         document.getElementById("split-true-button").classList.remove("selected");
         document.getElementById("split-false-button").classList.add("selected");
       });
+
       document.getElementById("start-button").addEventListener("click", function () {
         var termRangeStart = 0;
         var termRangeEnd = studysetTermsArray.length;
@@ -301,6 +302,7 @@
         }
         generateQuestion();
       })
+      
       function generateQuestion() {
 
       }
