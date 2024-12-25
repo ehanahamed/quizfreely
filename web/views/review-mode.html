@@ -113,6 +113,7 @@
     <eta>~ include("./partials/footer") </eta>
     <script>
       var studysetTermsArray;
+      var progressTermsMap;
       /*
         producing/answering-with the term given the definition and
         producing the definition from the term require different logic/brain power
@@ -157,7 +158,8 @@
               while using `.get()` on a map does not iterate over it
               this means we only have to iterate over the progress array once when creating the map
             */
-            progressTermsMap = new Map(progressTerms.map(function (term) {
+            progressTermsMap = new Map( /* notice progressTermsMap is declared outside of the function because it is used later in other functions */
+              progressTerms.map(function (term) {
               /*
                 the "key" of this map is the term and definition stringified as an array
               */
@@ -291,18 +293,17 @@
       });
 
       document.getElementById("start-button").addEventListener("click", function () {
-        var termRangeStart = 0;
-        var termRangeEnd = studysetTermsArray.length;
         if (document.getElementById("split-true-button").classList.contains("selected")) {
-
-        }
+          for (var i = )
+        } else {
+      }
         /* we need to iterate over all the terms in the current "range" (section or whole studyset depending on user-selected options) */
         for (var i = termRangeStart; i < termRangeEnd; i++) {
           
         }
         generateQuestion();
       })
-      
+
       function generateQuestion() {
 
       }
