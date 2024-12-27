@@ -27,6 +27,8 @@ const CRON_DELETE_EXPIRED_SESSIONS = process.env.CRON_DELETE_EXPIRED_SESSIONS ||
 const CRON_DELETE_EXPIRED_SESSIONS_INTERVAL = process.env.CRON_DELETE_EXPIRED_SESSIONS_INTERVAL;
 const CRON_CLEAR_LOGS = process.env.CRON_CLEAR_LOGS || "false";
 const CRON_CLEAR_LOGS_INTERVAL = process.env.CRON_CLEAR_LOGS_INTERVAL;
+let cronDeleteExpiredSessionsError = false;
+let cronClearLogsError = false;
 
 if (PORT == undefined || HOST == undefined) {
     console.error(
@@ -142,6 +144,8 @@ const schema = `
         searchQueries(q: String!, limit: Int, offset: Int): [SearchQuery]
         myStudysets(limit: Int, offset: Int): [Studyset]
         studysetProgress(studysetId: ID!): StudysetProgress
+        dbConnectionHealthy: Boolean
+        cronStatus: CronStatus
     }
     type Mutation {
         createStudyset(studyset: StudysetInput!): Studyset
@@ -217,6 +221,10 @@ const schema = `
         termIncorrect: Int
         defCorrect: Int
         defIncorrect: Int
+    }
+    type CronStatus {
+        errorCount: Int
+        anyEnabled: Boolean
     }
 `;
 
@@ -338,6 +346,35 @@ const resolvers = {
             } else {
                 throw new mercurius.ErrorWithProps("Not signed in while trying to get studyset progress", { code: "NOT_AUTHED" });
             }
+        },
+        dbConnectionHealthy: async function (_, _args, context) {
+            try {
+                const client = await pool.connect();
+                client.release();
+                return true;
+            } catch (error) {
+                context.reply.request.log.error(error);
+                return false;
+            }
+        },
+        cronStatus: function (_, _args, _context) {
+            if (CRON_CLEAR_LOGS == "true" || CRON_DELETE_EXPIRED_SESSIONS == "true") {
+                let errorCount = 0;
+                if (cronClearLogsError) {
+                    errorCount++;
+                }
+                if (cronDeleteExpiredSessionsError) {
+                    errorCount++;
+                }
+                return {
+                    errorCount: errorCount,
+                    anyEnabled: true
+                }
+            } else {
+                return {
+                    anyEnabled: false
+                }
+            }
         }
     },
     Mutation: {
@@ -456,49 +493,58 @@ async function context(request, reply) {
             We're using optional chaining (?.) with an OR (||), so that if the auth header isn't there, it uses the auth cookie
         */
         let authToken = request.headers?.authorization?.substring(7) || request.cookies.auth;
-        let client = await pool.connect();
         try {
-            await client.query("BEGIN");
-            await client.query("select set_config('qzfr_api.scope', 'auth', true)");
-            let session = await client.query(
-                "select user_id from auth.verify_session($1)",
-                [ authToken ]
-            );
-            if (session.rows.length == 1) {
-                let userData = await client.query(
-                    "select id, username, display_name, auth_type, oauth_google_email from auth.users " +
-                    "where id = $1",
-                    [
-                        session.rows[0].user_id
-                    ]
+            let client = await pool.connect();
+            try {
+                await client.query("BEGIN");
+                await client.query("select set_config('qzfr_api.scope', 'auth', true)");
+                let session = await client.query(
+                    "select user_id from auth.verify_session($1)",
+                    [ authToken ]
                 );
-                if (userData.rows.length == 1) {
-                    await client.query("COMMIT");
-                    return {
-                        authed: true,
-                        authedUser: userData.rows[0],
-                        token: authToken
-                    };
+                if (session.rows.length == 1) {
+                    let userData = await client.query(
+                        "select id, username, display_name, auth_type, oauth_google_email from auth.users " +
+                        "where id = $1",
+                        [
+                            session.rows[0].user_id
+                        ]
+                    );
+                    if (userData.rows.length == 1) {
+                        await client.query("COMMIT");
+                        return {
+                            authed: true,
+                            authedUser: userData.rows[0],
+                            token: authToken
+                        };
+                    } else {
+                        await client.query("ROLLBACK");
+                        return {
+                            authed: false
+                        };
+                    }
                 } else {
                     await client.query("ROLLBACK");
                     return {
                         authed: false
                     };
                 }
-            } else {
+            } catch (error) {
+                /* this catches errors after pool.connect() successfully runs */
                 await client.query("ROLLBACK");
+                request.log.error(error);
                 return {
                     authed: false
-                };
+                }
+            } finally {
+                client.release()
             }
         } catch (error) {
-            await client.query("ROLLBACK");
+            /* this catches errors from pool.connect() */
             request.log.error(error);
             return {
                 authed: false
             }
-        } finally {
-            client.release()
         }
     } else {
         return {
@@ -1933,6 +1979,7 @@ fastify.listen({
 if (CRON_CLEAR_LOGS == "true") {
     new Cron(CRON_CLEAR_LOGS_INTERVAL, async function () {
         try {
+            cronClearLogsError = false;
             writeFile(
                 path.join(import.meta.dirname, "quizfreely-api.log"),
                 "",
@@ -1941,7 +1988,8 @@ if (CRON_CLEAR_LOGS == "true") {
                 }
             )
         } catch (error) {
-            fastify.log.error(error, "error while trying to clear logs with cron job")
+            fastify.log.error(error, "error while trying to clear logs with cron job");
+            cronClearLogsError = true;
         }
     });
 }
@@ -1949,6 +1997,7 @@ if (CRON_CLEAR_LOGS == "true") {
 if (CRON_DELETE_EXPIRED_SESSIONS == "true") {
     new Cron(CRON_DELETE_EXPIRED_SESSIONS_INTERVAL, async function () {
         try {
+            cronDeleteExpiredSessionsError = false;
             let client = await pool.connect();
             try {
                 await client.query("BEGIN");
@@ -1958,11 +2007,13 @@ if (CRON_DELETE_EXPIRED_SESSIONS == "true") {
             } catch (error2) {
                 await client.query("ROLLBACK");
                 fastify.log.error(error2, "error while running cron job for auth.delete_expired_sessions()")
+                cronDeleteExpiredSessionsError = true;
             } finally {
                 client.release();
             }
         } catch (error) {
-            fastify.log.error(error, "error while connecting to pg pool client during cron job for auth.delete_expired_sessions()")
+            fastify.log.error(error, "error while connecting to pg pool client during cron job for auth.delete_expired_sessions()");
+            cronDeleteExpiredSessionsError = true;
         }
     });
 }
