@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=10, user-scalable=1"
+    />
+    <title>Quizfreely</title>
+    <link rel="icon" href="/favicon.ico" sizes="32x32">
+    <link rel="icon" href="/icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    <eta>~ data.themeCss </eta>
+    <link rel="stylesheet" href="/assets/fonts/fonts.css" />
+    <link
+      rel="stylesheet"
+      href="/assets/nerdfonts/webfont.css"
+    />
+  </head>
+
+  <body>
+    <eta>~ include("./partials/body-start", { theme: data.theme }) </eta>
+    <eta>~ include("./partials/navbar", { page: "home", authed: data.authed, authedUser: data.authedUser }) </eta>
+    <eta>~ include("./partials/noscript") </eta>
+    <main>
+      <div class="grid page">
+        <div class="content">
+            <div id="git-repo-sync-status">
+                <p id="git-repo-sync-status-synced">Codeberg and GitHub are both at <code id="git-repo-sync-status-synced-commit-sha"></code></p>
+                <p id="git-repo-sync-status-synced">Codeberg is at <code id="git-repo-sync-status-codeberg-sha"></code></p>
+            </div>
+            <div id="cookies-domain-warning" class="box ohno <eta> if (data.apiCookiesDomain == data.webCookiesDomain || !data.apiUp) { </eta> hide <eta> } </eta>">
+                <h4><i class="nf nf-fa-warning"></i> Check your/our dotenv file(s)</h4>
+                <p class="fg1">
+                    <eta> if (data.apiUp && data.apiCookiesDomain == data.webCookiesDomain) { </eta>
+                        In <code class="fg1">web/.env</code> and <code class="fg1">api/.env</code>, <code class="fg1">COOKIES_DOMAIN</code> is set to <code class="fg1"><eta>= data.webCookiesDomain </eta></code><br>
+                    <eta> } else if (data.apiUp && data.apiCookiesDomain) { </eta>
+                        In <code class="fg1">api/.env</code>, <code class="fg1">COOKIES_DOMAIN</code> is set to <code class="fg1"><eta>= data.apiCookiesDomain </eta></code><br>
+                        In <code class="fg1">web/.env</code>, <code class="fg1">COOKIES_DOMAIN</code> is set to <code class="fg1"><eta>= data.webCookiesDomain </eta></code><br>
+                    <eta> } else { </eta>
+                        In <code class="fg1">web/.env</code>, <code class="fg1">COOKIES_DOMAIN</code> is set to <code class="fg1"><eta>= data.webCookiesDomain </eta></code><br>
+                    <eta> } </eta>
+                    You're viewing this page from <code class="fg1" id="cookies-domain-warning-current-domain">...</code>
+                </p>
+                <p class="fg1">
+                    Qzfr-API's and qzfr-web's COOKIES_DOMAIN should be the same.
+                </p>
+            </div>
+
+            <eta> if (data.apiUp && data.apiResponseErrorNotJSON) { </eta>
+                <div class="box ohno">
+                    <p>Qzfr-API is running, but responded with invalid JSON</p>
+                </div>
+            <eta> } else if (data.apiUp && data.apiResponseErrorNoData) { </eta>
+                <div class="box ohno">
+                    <p>Qzfr-API is running, but responded with an error (and/or no data)</p>
+                </div>
+            <eta> } </eta>
+
+            <eta> if (data.apiUp) { </eta>
+            <h4>Quizfreely-API is <span class="yay">running</span></h4>
+            <eta> } else { </eta>
+            <h4>Quizfreely-API is <span class="ohno">down</span></h4>
+            <eta> } </eta>
+            <div class="flex" style="gap: 2rem;">
+                <div>
+                    <p style="margin-bottom: 0.2rem;">DB Connection</p>
+                    <eta> if (data.dbConnectionUp) { </eta>
+                    <p class="h4 yay" style="margin-top: 0.2rem;">Up</p>
+                    <eta> } else if (data.apiUp) { </eta>
+                        <p class="h4 ohno" style="margin-top: 0.2rem;">Down</p>
+                    <eta> } else { </eta>
+                        <p class="h4 fg0" style="margin-top: 0.2rem;">No Info</p>
+                    <eta> } </eta>
+                </div>
+                <div>
+                    <p style="margin-bottom: 0.2rem;">Cron Status</p>
+                    <eta> if (data.apiUp && (data.apiCronAnyEnabled === true || data.apiCronAnyEnabled === false)) { </eta>
+                        <eta> if (data.apiCronAnyEnabled) { </eta>
+                            <eta> if (data.apiCronErrorCount >= 1) { </eta>
+                                <p class="h4 ohno" style="margin-top: 0.2rem;">
+                                    <eta>= data.apiCronErrorCount </eta> Errors
+                                </p>
+                            <eta> } else { </eta>
+                                <p class="h4 yay" style="margin-top: 0.2rem;">No Errors</p>
+                            <eta> } </eta>
+                        <eta> } else { </eta>
+                            <p class="h4 fg0" style="margin-top: 0.2rem;">Disabled</p>
+                        <eta> } </eta>
+                    <eta> } else { </eta>
+                        <p class="h4 fg0" style="margin-top: 0.2rem;">No Info</p>
+                    <eta> } </eta>
+                </div>
+            </div>
+            
+            <h4>Quizfreely-web is <span class="yay">running</span></h4>
+            <div class="flex" style="gap: 2rem;">
+                <div>
+                    <p style="margin-bottom: 0.2rem;">Cron Status</p>
+                    <eta> if (data.webCronAnyEnabled) { </eta>
+                        <eta> if (data.webCronErrorCount == 1) { </eta>
+                            <p class="h4 ohno" style="margin-top: 0.2rem;">
+                                <eta>= data.webCronErrorCount </eta> Error
+                            </p>
+                        <eta> } else if (data.webCronErrorCount > 1) { </eta>
+                            <p class="h4 ohno" style="margin-top: 0.2rem;">
+                                <eta>= data.webCronErrorCount </eta> Errors
+                            </p>
+                        <eta> } else { </eta>
+                            <p class="h4 yay" style="margin-top: 0.2rem;">No Errors</p>
+                        <eta> } </eta>
+                    <eta> } else { </eta>
+                        <p class="h4 fg0" style="margin-top: 0.2rem;">Disabled</p>
+                    <eta> } </eta>
+                </div>
+            </div>
+        </div>
+      </div>
+    </main>
+    <eta>~ include("./partials/footer") </eta>
+    <script>
+        document.getElementById("cookies-domain-warning-current-domain").innerText = window.location.hostname;
+        if (window.location.hostname.includes("<eta>= data.webCookiesDomain </eta>") == false) {
+            document.getElementById("cookies-domain-warning").classList.remove("hide");
+        }
+        fetch("https://codeberg.org/api/v1/repos/<eta>= data.config.codeberg.owner </eta>/<eta>= data.config.codeberg.repo </eta>/branches/<eta>= data.config.codeberg.branch </eta>", {
+            method: "GET"
+        }).then(function (codebergRes) {
+            fetch("https://api.github.com/repos/<eta>= data.config.gh.owner </eta>/<eta>= data.config.gh.repo </eta>/commits?sha=<eta>= data.config.gh.branch </eta>&per_page=1&page=1", {
+                method: "GET"
+            }).then(function (ghRes) {
+                showGitRepoSyncStatus(
+                    codebergRes,
+                    ghRes
+                )
+            }).catch(ghApiError);
+        }).catch(codebergApiError);
+
+        function codebergApiError(error) {
+            console.error(error);
+        }
+        function ghApiError(error) {
+            console.error(error);
+        }
+
+        function showGitRepoSyncStatus(codebergApiResponse, ghApiResponse) {
+            var ghTotalCommitsCount = parseLastPageNumFromLinkHeader(
+                ghApiResponse.headers.get("Link")
+            );
+            if (codebergStuff.sha == ghStuff.sha) {
+                document.getElementById("git-repo-sync-status-synced-commit-sha").innerText = codebergSHA.substring(0, 11);
+                document.getElementById("git-repo-sync-status-synced").classList.remove("hide");
+            }
+        }
+
+        function parseLastPageNumFromLinkHeader(linkHeader) {
+            /*
+                The `Link` header (`linkHeader`) looks something like this:
+                <https://api.github.com/repositories/123/commits?sha=branch&per_page=1&page=2>; rel="next", <https://api.github.com/repositories/123/commits?sha=branch&per_page=1&page=161>; rel="last"
+
+                we split it by the comma (`,`) to get an array of both links
+                and then we use `.find(...)` to figure out which link has `rel="last"`
+            */
+            var lastLink = linkHeader.split(",").find(function (link) {
+                return link.includes("rel=\"last\"");
+            });
+        
+            /*
+                Now we take the page number from the rel="last" link
+                The url param will always start with `?` or `&`, thats why we have `[?&]` in this regex.
+                We use `\d` in the regex to match until the numbers end.
+            */
+            var page = lastLink.match(/[?&]page=(\d+)/);
+        
+            /*
+                Now we remove the `?page=` or `&page=` in the string
+                and then turn it into an integer
+            */
+            var pageNum = parseInt(page.replace("?page=", "").replace("&page=", ""));
+        }
+    </script>
+  </body>
+</html>
