@@ -146,6 +146,7 @@ const schema = `
         studysetProgress(studysetId: ID!): StudysetProgress
         dbConnectionHealthy: Boolean
         cronStatus: CronStatus
+        checkCookiesDomain: String
     }
     type Mutation {
         createStudyset(studyset: StudysetInput!): Studyset
@@ -375,6 +376,9 @@ const resolvers = {
                     anyEnabled: false
                 }
             }
+        },
+        checkCookiesDomain: function (_, _args, _context) {
+            return COOKIES_DOMAIN;
         }
     },
     Mutation: {
