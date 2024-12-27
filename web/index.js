@@ -362,6 +362,75 @@ fastify.get("/settings", function (request, reply) {
     })  
   })
 });
+
+fastify.get("/dev", function (request, reply) {
+  let webCronAnyEnabled = false;
+  let webCronErrorCount = 0;
+  if (CRON_CLEAR_LOGS == "true") {
+    webCronAnyEnabled = true;
+    if (cronClearLogsError) {
+      webCronErrorCount++;
+    }
+  }
+  fetch(API_URL + "/graphql", {
+    method: "POST",
+    headers: {
+      "Authorization": "Bearer " + request?.cookies?.auth,
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      query: `query {
+        authed
+        authedUser {
+          id
+          username
+          display_name
+          auth_type
+          oauth_google_email
+        }
+        dbConnectionHealthy
+        cronStatus {
+          errorCount
+          anyEnabled
+        }
+      }`
+    })
+  }).then(function (rawApiRes) {
+    rawApiRes.json().then(function (apiRes) {
+      reply.view("dev.html", {
+        ...themeData(request),
+        authed: apiRes?.data?.authed ?? false,
+        authedUser: apiRes?.data?.authedUser,
+        apiUp: true,
+        dbConnectionHealthy: apiRes.data.dbConnectionHealthy,
+        apiCronErrorCount: apiRes.data.cronStatus?.errorCount,
+        apiCronAnyEnabled: apiRes.data.cronStatus?.anyEnabled,
+        webCronErrorCount: webCronErrorCount,
+        webCronAnyEnabled: webCronAnyEnabled
+      })
+    }).catch(function (error) {
+      request.log.error(error);
+      reply.view("dev.html", {
+        ...themeData(request),
+        authed: false,
+        apiUp: true,
+        apiError: true,
+        webCronErrorCount: webCronErrorCount,
+        webCronAnyEnabled: webCronAnyEnabled
+      })
+    })
+  }).catch(function (error) {
+    request.log.error(error);
+    reply.view("dev.html", {
+      ...themeData(request),
+      authed: false,
+      apiUp: false,
+      webCronErrorCount: webCronErrorCount,
+      webCronAnyEnabled: webCronAnyEnabled
+    })
+  });
+})
+
 fastify.get("/sign-up", function (request, reply) {
   userData(request).then(function (userResult) {
     reply.view("account.html", {
@@ -790,9 +859,11 @@ fastify.listen({
   }
 })
 
+let cronClearLogsError = false;
 if (CRON_CLEAR_LOGS == "true") {
   new Cron(CRON_CLEAR_LOGS_INTERVAL, async function () {
     try {
+      cronClearLogsError = false;
         writeFile(
             path.join(import.meta.dirname, "quizfreely-web.log"),
             "",
@@ -801,6 +872,7 @@ if (CRON_CLEAR_LOGS == "true") {
             }
         )
     } catch (error) {
+        cronClearLogsError = true;
         fastify.log.error(error, "error while trying to clear logs with cron job")
     }
   });
