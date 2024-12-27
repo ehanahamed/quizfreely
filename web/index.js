@@ -13,6 +13,7 @@ import { createRequire } from "module";
 const require = createRequire(import.meta.url);
 const themes = require("./themes.json");
 const docs = require("./docs.json");
+const devDashboardConfig = require("./dev-dashboard.config.json");
 
 const PORT = process.env.PORT
 const HOST = process.env.HOST
@@ -363,7 +364,7 @@ fastify.get("/settings", function (request, reply) {
   })
 });
 
-fastify.get("/dev", function (request, reply) {
+fastify.get("/dev-dashboard", function (request, reply) {
   let webCronAnyEnabled = false;
   let webCronErrorCount = 0;
   if (CRON_CLEAR_LOGS == "true") {
@@ -388,37 +389,56 @@ fastify.get("/dev", function (request, reply) {
           auth_type
           oauth_google_email
         }
-        dbConnectionHealthy
+        dbConnectionStatus {
+          connectionUp
+        }
         cronStatus {
           errorCount
           anyEnabled
         }
+        checkCookiesDomain
       }`
     })
   }).then(function (rawApiRes) {
     rawApiRes.json().then(function (apiRes) {
-      reply.view("dev.html", {
-        ...themeData(request),
-        authed: apiRes?.data?.authed ?? false,
-        authedUser: apiRes?.data?.authedUser,
-        apiUp: true,
-        dbConnectionHealthy: apiRes.data.dbConnectionHealthy,
-        apiCronErrorCount: apiRes.data.cronStatus?.errorCount,
-        apiCronAnyEnabled: apiRes.data.cronStatus?.anyEnabled,
-        webCronErrorCount: webCronErrorCount,
-        webCronAnyEnabled: webCronAnyEnabled,
-        cookiesDomain: COOKIES_DOMAIN
-      })
+      if (apiRes && apiRes.data) {
+        reply.view("dev-dashboard.html", {
+          ...themeData(request),
+          authed: apiRes?.data?.authed ?? false,
+          authedUser: apiRes?.data?.authedUser,
+          apiUp: true,
+          dbConnectionUp: apiRes.data?.dbConnectionStatus?.connectionUp ?? false,
+          apiCronErrorCount: apiRes.data?.cronStatus?.errorCount,
+          apiCronAnyEnabled: apiRes.data?.cronStatus?.anyEnabled,
+          webCronErrorCount: webCronErrorCount,
+          webCronAnyEnabled: webCronAnyEnabled,
+          webCookiesDomain: COOKIES_DOMAIN,
+          apiCookiesDomain: apiRes.data?.checkCookiesDomain,
+          config: devDashboardConfig
+        })
+      } else {
+        reply.view("dev.html", {
+          ...themeData(request),
+          authed: false,
+          apiUp: true,
+          apiResponseErrorNoData: true,
+          webCronErrorCount: webCronErrorCount,
+          webCronAnyEnabled: webCronAnyEnabled,
+          webCookiesDomain: COOKIES_DOMAIN,
+          config: devDashboardConfig
+        })
+      }
     }).catch(function (error) {
       request.log.error(error);
       reply.view("dev.html", {
         ...themeData(request),
         authed: false,
         apiUp: true,
-        apiError: true,
+        apiResponseErrorNotJSON: true,
         webCronErrorCount: webCronErrorCount,
         webCronAnyEnabled: webCronAnyEnabled,
-        cookiesDomain: COOKIES_DOMAIN
+        webCookiesDomain: COOKIES_DOMAIN,
+        config: devDashboardConfig
       })
     })
   }).catch(function (error) {
@@ -429,7 +449,8 @@ fastify.get("/dev", function (request, reply) {
       apiUp: false,
       webCronErrorCount: webCronErrorCount,
       webCronAnyEnabled: webCronAnyEnabled,
-      cookiesDomain: COOKIES_DOMAIN
+      webCookiesDomain: COOKIES_DOMAIN,
+      config: devDashboardConfig
     })
   });
 })
