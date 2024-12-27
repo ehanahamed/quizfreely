@@ -406,7 +406,8 @@ fastify.get("/dev", function (request, reply) {
         apiCronErrorCount: apiRes.data.cronStatus?.errorCount,
         apiCronAnyEnabled: apiRes.data.cronStatus?.anyEnabled,
         webCronErrorCount: webCronErrorCount,
-        webCronAnyEnabled: webCronAnyEnabled
+        webCronAnyEnabled: webCronAnyEnabled,
+        cookiesDomain: COOKIES_DOMAIN
       })
     }).catch(function (error) {
       request.log.error(error);
@@ -416,7 +417,8 @@ fastify.get("/dev", function (request, reply) {
         apiUp: true,
         apiError: true,
         webCronErrorCount: webCronErrorCount,
-        webCronAnyEnabled: webCronAnyEnabled
+        webCronAnyEnabled: webCronAnyEnabled,
+        cookiesDomain: COOKIES_DOMAIN
       })
     })
   }).catch(function (error) {
@@ -426,7 +428,8 @@ fastify.get("/dev", function (request, reply) {
       authed: false,
       apiUp: false,
       webCronErrorCount: webCronErrorCount,
-      webCronAnyEnabled: webCronAnyEnabled
+      webCronAnyEnabled: webCronAnyEnabled,
+      cookiesDomain: COOKIES_DOMAIN
     })
   });
 })
