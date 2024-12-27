@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=10, user-scalable=1"
+    />
+    <title>Quizfreely</title>
+    <link rel="icon" href="/favicon.ico" sizes="32x32">
+    <link rel="icon" href="/icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    <eta>~ data.themeCss </eta>
+    <link rel="stylesheet" href="/assets/fonts/fonts.css" />
+    <link
+      rel="stylesheet"
+      href="/assets/nerdfonts/webfont.css"
+    />
+  </head>
+
+  <body>
+    <eta>~ include("./partials/body-start", { theme: data.theme }) </eta>
+    <eta>~ include("./partials/navbar", { page: "home", authed: data.authed, authedUser: data.authedUser }) </eta>
+    <eta>~ include("./partials/noscript") </eta>
+    <main>
+      <div class="grid page">
+        <div class="content">
+            <eta> if (data.apiUp) { </eta>
+            <h4>Quizfreely-API is <span class="yay">running</span></h4>
+            <eta> } else { </eta>
+            <h4>Quizfreely-API is <span class="ohno">down</span></h4>
+            <eta> } </eta>
+            <div class="flex" style="gap: 2rem;">
+                <div>
+                    <p style="margin-bottom: 0.2rem;">DB Connection</p>
+                    <eta> if (data.dbConnectionHealthy) { </eta>
+                    <p class="h4 yay" style="margin-top: 0.2rem;">Healthy</p>
+                    <eta> } else if (data.apiUp) { </eta>
+                        <p class="h4 ohno" style="margin-top: 0.2rem;">Down</p>
+                    <eta> } else { </eta>
+                        <p class="h4 fg0" style="margin-top: 0.2rem;">No Info</p>
+                    <eta> } </eta>
+                </div>
+                <div>
+                    <p style="margin-bottom: 0.2rem;">Cron Status</p>
+                    <eta> if (data.apiUp) { </eta>
+                        <eta> if (data.apiCronAnyEnabled) { </eta>
+                            <eta> if (data.apiCronErrorCount >= 1) { </eta>
+                                <p class="h4 ohno" style="margin-top: 0.2rem;">
+                                    <eta>= data.apiCronErrorCount </eta> Errors
+                                </p>
+                            <eta> } else { </eta>
+                                <p class="h4 yay" style="margin-top: 0.2rem;">No Errors</p>
+                            <eta> } </eta>
+                        <eta> } else { </eta>
+                            <p class="h4 fg0" style="margin-top: 0.2rem;">Disabled</p>
+                        <eta> } </eta>
+                    <eta> } else { </eta>
+                        <p class="h4 fg0" style="margin-top: 0.2rem;">No Info</p>
+                    <eta> } </eta>
+                </div>
+            </div>
+            
+            <h4>Quizfreely-web is <span class="yay">running</span></h4>
+            <div class="flex" style="gap: 2rem;">
+                <div>
+                    <p style="margin-bottom: 0.2rem;">Cron Status</p>
+                    <eta> if (data.webCronAnyEnabled) { </eta>
+                        <eta> if (data.webCronErrorCount == 1) { </eta>
+                            <p class="h4 ohno" style="margin-top: 0.2rem;">
+                                <eta>= data.webCronErrorCount </eta> Error
+                            </p>
+                        <eta> } else if (data.webCronErrorCount > 1) { </eta>
+                            <p class="h4 ohno" style="margin-top: 0.2rem;">
+                                <eta>= data.webCronErrorCount </eta> Errors
+                            </p>
+                        <eta> } else { </eta>
+                            <p class="h4 yay" style="margin-top: 0.2rem;">No Errors</p>
+                        <eta> } </eta>
+                    <eta> } else { </eta>
+                        <p class="h4 fg0" style="margin-top: 0.2rem;">Disabled</p>
+                    <eta> } </eta>
+                </div>
+            </div>
+        </div>
+      </div>
+    </main>
+    <eta>~ include("./partials/footer") </eta>
+  </body>
+</html>
