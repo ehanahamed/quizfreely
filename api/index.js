@@ -144,7 +144,7 @@ const schema = `
         searchQueries(q: String!, limit: Int, offset: Int): [SearchQuery]
         myStudysets(limit: Int, offset: Int): [Studyset]
         studysetProgress(studysetId: ID!): StudysetProgress
-        dbConnectionHealthy: Boolean
+        dbConnectionStatus: DBConnectionStatus
         cronStatus: CronStatus
         checkCookiesDomain: String
     }
@@ -222,6 +222,12 @@ const schema = `
         termIncorrect: Int
         defCorrect: Int
         defIncorrect: Int
+    }
+    type DBConnectionStatus {
+        connectionUp: Boolean
+        poolTotalCount: Int
+        poolIdleCount: Int
+        poolWaitingCount: Int
     }
     type CronStatus {
         errorCount: Int
@@ -348,14 +354,28 @@ const resolvers = {
                 throw new mercurius.ErrorWithProps("Not signed in while trying to get studyset progress", { code: "NOT_AUTHED" });
             }
         },
-        dbConnectionHealthy: async function (_, _args, context) {
+        dbConnectionStatus: async function (_, _args, context) {
+            let connectionUp = false;
+            let poolTotalCount = null;
+            let poolIdleCount = null;
+            let poolWaitingCount = null;
             try {
                 const client = await pool.connect();
                 client.release();
-                return true;
+                connectionUp = true;
+                poolTotalCount = pool.totalCount;
+                poolIdleCount = pool.idleCount;
+                poolWaitingCount = pool.waitingCount;
             } catch (error) {
                 context.reply.request.log.error(error);
-                return false;
+                connectionUp = false;
+            } finally {
+                return {
+                    connectionUp: connectionUp,
+                    poolTotalCount: poolTotalCount,
+                    poolIdleCount: poolIdleCount,
+                    poolWaitingCount: poolWaitingCount
+                }
             }
         },
         cronStatus: function (_, _args, _context) {
