@@ -1,4 +1,5 @@
 {
+    "enableGitRepoSyncStatus": true,
     "codeberg": {
         "owner": "ehanahamed",
         "repo": "quizfreely",
