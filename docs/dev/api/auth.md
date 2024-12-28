@@ -26,8 +26,6 @@ When client js code in quizfreely-web makes requests to quizfreely-api, the brow
 
 When SSR/server-side js code in quizfreely-web makes requests to quizfreely-api, the server processs sends the user's token in an `Authorization` header as a bearer token. (Like this: `Authorization: Bearer tokengoeshere`). Since quizfreely-web is at the root/base of a domain (like `https://quizfreely.com` or `http://localhost:8080`) and quizfreely-api is at `/api` on the same domain, (like `https://quizfreely.com/api/` or `http://localhost:8080/api/`), the `auth` cookie can be used by quizfreely-web (because the cookie has SameSite for `quizfreely.com` (or `localhost` for development)). So when quizfreely-web's server side js code needs to make a request to quizfreely-api for server-side rendering (SSR) or something, quizfreely-web gets the user's `auth` cookie, but it needs to "forward"/send the session token to quizfreely-api too, so it takes the token from the `auth` cookie and puts it into an `Authorization` http header in the server-side request to quizfreely-api.
 
-That SameSite attribute of the auth cookie is configured in quizfreely-api's `.env` file with `COOKIES_DOMAIN=`, so that they can be easily configured AND secure in production and development. See [developer docs > api > api-dotenv.md](./api-dotenv.md) for more documentation.
-
 ### PostgreSQL Roles
 
 When we setup our PostgreSQL database, we create a role named `quizfreely_api`. The server process/js code connects to the database as the `quizfreely_api` role, with the login info from qzfr-api's dotenv file.
