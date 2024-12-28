@@ -18,7 +18,6 @@ const devDashboardConfig = require("./dev-dashboard.config.json");
 const PORT = process.env.PORT
 const HOST = process.env.HOST
 const API_URL = process.env.API_URL
-const COOKIES_DOMAIN = process.env.COOKIES_DOMAIN
 const LOG_LEVEL = process.env.LOG_LEVEL
 const LOG_PRETTY = process.env.LOG_PRETTY || "false"
 const CACHE_VIEWS = process.env.CACHE_VIEWS || "false"
@@ -396,7 +395,6 @@ fastify.get("/dev-dashboard", function (request, reply) {
           errorCount
           anyEnabled
         }
-        checkCookiesDomain
       }`
     })
   }).then(function (rawApiRes) {
@@ -412,8 +410,6 @@ fastify.get("/dev-dashboard", function (request, reply) {
           apiCronAnyEnabled: apiRes.data?.cronStatus?.anyEnabled,
           webCronErrorCount: webCronErrorCount,
           webCronAnyEnabled: webCronAnyEnabled,
-          webCookiesDomain: COOKIES_DOMAIN,
-          apiCookiesDomain: apiRes.data?.checkCookiesDomain,
           config: devDashboardConfig
         })
       } else {
@@ -424,7 +420,6 @@ fastify.get("/dev-dashboard", function (request, reply) {
           apiResponseErrorNoData: true,
           webCronErrorCount: webCronErrorCount,
           webCronAnyEnabled: webCronAnyEnabled,
-          webCookiesDomain: COOKIES_DOMAIN,
           config: devDashboardConfig
         })
       }
@@ -437,7 +432,6 @@ fastify.get("/dev-dashboard", function (request, reply) {
         apiResponseErrorNotJSON: true,
         webCronErrorCount: webCronErrorCount,
         webCronAnyEnabled: webCronAnyEnabled,
-        webCookiesDomain: COOKIES_DOMAIN,
         config: devDashboardConfig
       })
     })
@@ -449,7 +443,6 @@ fastify.get("/dev-dashboard", function (request, reply) {
       apiUp: false,
       webCronErrorCount: webCronErrorCount,
       webCronAnyEnabled: webCronAnyEnabled,
-      webCookiesDomain: COOKIES_DOMAIN,
       config: devDashboardConfig
     })
   });
@@ -807,7 +800,6 @@ function cookieOptions() {
   /* 100 days * 24h * 60m * 60s = 8640000 sec for 100 days */
   time.setSeconds(time.getSeconds() + 8640000)
   return {
-    domain: COOKIES_DOMAIN,
     path: "/",
     signed: false,
     expires: time,
@@ -877,9 +869,6 @@ fastify.listen({
     link = link.replace("://[::]:", "://localhost:")
     link = link.replace("://127.0.0.1:", "://localhost:")
     console.log("Quizfreely-web is running at " + link);
-    if (link.includes(COOKIES_DOMAIN) == false) {
-      console.log("COOKIES_DOMAIN is " + COOKIES_DOMAIN)
-    }
   }
 })
 
