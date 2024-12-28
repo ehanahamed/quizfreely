@@ -26,12 +26,44 @@
       <div class="grid page">
         <div class="content">
             <eta> if (data.config.enableGitRepoSyncStatus) { </eta>
-            <div id="git-repo-sync-status">
+            <div id="git-repo-sync-status" style="margin-bottom: 2rem">
                 <p id="git-repo-sync-status-synced" class="hide">Codeberg and GitHub are both at <code id="git-repo-sync-status-synced-sha">...</code></p>
-                <p id="git-repo-sync-status-outdated" class="hide">
-                    Codeberg is at <code id="git-repo-sync-status-outdated-codeberg-sha">...</code><br>
-                    GitHub is at <code id="git-repo-sync-status-outdated-gh-sha">...</code>
-                </p>
+                <div id="git-repo-sync-status-outdated" class="hide">
+                    <p>Codeberg is at <code id="git-repo-sync-status-outdated-codeberg-sha">...</code></p>
+                    <div class="flex" style="gap: 2rem; margin-top: 0.4rem">
+                        <div>
+                            <p class="h6" style="margin-bottom: 0.2rem">Branch</p>
+                            <p style="margin-top: 0.2rem">
+                                <eta>= data.config.codeberg.branch </eta>
+                            </p>
+                        </div>
+                        <div>
+                            <p class="h6" style="margin-bottom: 0.2rem">Total commits</p>
+                            <p style="margin-top: 0.2rem" id="git-repo-sync-status-outdated-codeberg-commit-count">...</p>
+                        </div>
+                        <div>
+                            <p class="h6" style="margin-bottom: 0.2rem">Last committed</p>
+                            <p style="margin-top: 0.2rem" id="git-repo-sync-status-outdated-codeberg-timestamp">...</p>
+                        </div>
+                    </div>
+                    <p>GitHub is at <code id="git-repo-sync-status-outdated-gh-sha">...</code></p>
+                    <div class="flex" style="gap: 2rem; margin-top: 0.4rem">
+                        <div>
+                            <p class="h6" style="margin-bottom: 0.2rem">Branch</p>
+                            <p style="margin-top: 0.2rem">
+                                <eta>= data.config.gh.branch </eta>
+                            </p>
+                        </div>
+                        <div>
+                            <p class="h6" style="margin-bottom: 0.2rem">Total commits</p>
+                            <p style="margin-top: 0.2rem" id="git-repo-sync-status-outdated-gh-commit-count">...</p>
+                        </div>
+                        <div>
+                            <p class="h6" style="margin-bottom: 0.2rem">Last committed</p>
+                            <p style="margin-top: 0.2rem" id="git-repo-sync-status-outdated-gh-timestamp">...</p>
+                        </div>
+                    </div>
+                </div>
             </div>
             <eta> } </eta>
             <div id="cookies-domain-warning" class="box ohno <eta> if (data.apiCookiesDomain == data.webCookiesDomain || !data.apiUp) { </eta> hide <eta> } </eta>">
@@ -130,6 +162,7 @@
         }
     </script>
     <eta> if (data.config.enableGitRepoSyncStatus) { </eta>
+    <script src="/assets/js/fancyTimestamp.js"></script>
     <script>
         fetch("https://codeberg.org/api/v1/repos/<eta>= data.config.codeberg.owner </eta>/<eta>= data.config.codeberg.repo </eta>/commits?sha=<eta>= data.config.codeberg.branch </eta>&limit=1", {
             method: "GET"
@@ -155,32 +188,38 @@
 
         function showGitRepoSyncStatus(codebergApiResponse, ghApiResponse) {
             var codebergTotalCommitsCount = codebergApiResponse.headers.get("X-Total");
-            var ghTotalCommitsCount = parseLastPageFromLinkHeader(
+            var ghTotalCommitsCount = parseLastPageFromLinks(
                 ghApiResponse.headers.get("Link")
             );
             codebergApiResponse.json().then(function (codebergApiResJSON) {
                 ghApiResponse.json().then(function (ghApiResJSON) {
+                    fancyTimestamp.hours = 24;
                     if (codebergApiResJSON[0].sha == ghApiResJSON[0].sha) {
                         document.getElementById("git-repo-sync-status-synced").classList.remove("hide");
                         document.getElementById("git-repo-sync-status-synced-sha").innerText = codebergApiResJSON[0].sha.substring(0, 11);
+                        document.getElementById("git-repo-sync-status-synced-timestamp").innerText = fancyTimestamp.format(codebergApiResJSON[0].commit.committer.date);
                     } else {
                         document.getElementById("git-repo-sync-status-outdated").classList.remove("hide");
                         document.getElementById("git-repo-sync-status-outdated-codeberg-sha").innerText = codebergApiResJSON[0].sha.substring(0, 11);
+                        document.getElementById("git-repo-sync-status-outdated-codeberg-timestamp").innerText = fancyTimestamp.format(codebergApiResJSON[0].commit.committer.date);
+                        document.getElementById("git-repo-sync-status-outdated-codeberg-commit-count").innerText = codebergTotalCommitsCount;
                         document.getElementById("git-repo-sync-status-outdated-gh-sha").innerText = ghApiResJSON[0].sha.substring(0, 11);
+                        document.getElementById("git-repo-sync-status-outdated-gh-timestamp").innerText = fancyTimestamp.format(ghApiResJSON[0].commit.committer.date);
+                        document.getElementById("git-repo-sync-status-outdated-gh-commit-count").innerText = ghTotalCommitsCount;
                     }
                 })
             })
         }
 
-        function parseLastPageFromLinkHeader(linkHeader) {
+        function parseLastPageFromLinks(links) {
             /*
-                The `Link` header (`linkHeader`) looks something like this:
+                The `Link` header looks something like this:
                 <https://api.github.com/repositories/123/commits?sha=branch&per_page=1&page=2>; rel="next", <https://api.github.com/repositories/123/commits?sha=branch&per_page=1&page=161>; rel="last"
 
                 we split it by the comma (`,`) to get an array of both links
                 and then we use `.find(...)` to figure out which link has `rel="last"`
             */
-            var lastLink = linkHeader.split(",").find(function (link) {
+            var lastLink = links.split(",").find(function (link) {
                 return link.includes("rel=\"last\"");
             });
             /*
@@ -195,6 +234,7 @@
                 so we use `[0]` to get the first (and only) string in the array
             */
             var pageNum = page[0].replace("?page=", "").replace("&page=", "");
+            return pageNum;
         }
     </script>
     <eta> } </eta>
