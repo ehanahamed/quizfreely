@@ -25,24 +25,6 @@
     <main>
       <div class="grid page">
         <div class="content">
-            <div id="cookies-domain-warning" class="box ohno <eta> if (data.apiCookiesDomain == data.webCookiesDomain || !data.apiUp) { </eta> hide <eta> } </eta>">
-                <h4><i class="nf nf-fa-warning"></i> Check your/our dotenv file(s)</h4>
-                <p class="fg1">
-                    <eta> if (data.apiUp && data.apiCookiesDomain == data.webCookiesDomain) { </eta>
-                        In <code class="fg1">web/.env</code> and <code class="fg1">api/.env</code>, <code class="fg1">COOKIES_DOMAIN</code> is set to <code class="fg1"><eta>= data.webCookiesDomain </eta></code><br>
-                    <eta> } else if (data.apiUp && data.apiCookiesDomain) { </eta>
-                        In <code class="fg1">api/.env</code>, <code class="fg1">COOKIES_DOMAIN</code> is set to <code class="fg1"><eta>= data.apiCookiesDomain </eta></code><br>
-                        In <code class="fg1">web/.env</code>, <code class="fg1">COOKIES_DOMAIN</code> is set to <code class="fg1"><eta>= data.webCookiesDomain </eta></code><br>
-                    <eta> } else { </eta>
-                        In <code class="fg1">web/.env</code>, <code class="fg1">COOKIES_DOMAIN</code> is set to <code class="fg1"><eta>= data.webCookiesDomain </eta></code><br>
-                    <eta> } </eta>
-                    You're viewing this page from <code class="fg1" id="cookies-domain-warning-current-domain">...</code>
-                </p>
-                <p class="fg1">
-                    Qzfr-API's and qzfr-web's COOKIES_DOMAIN should be the same. And you should only access this using the url 
-                </p>
-            </div>
-
             <eta> if (data.config.enableGitRepoSyncStatus) { </eta>
             <div id="git-repo-sync-status" style="margin-bottom: 2rem">
                 <p id="git-repo-sync-status-synced" class="hide">Codeberg and GitHub are both at <code id="git-repo-sync-status-synced-sha">...</code></p>
@@ -156,12 +138,6 @@
       </div>
     </main>
     <eta>~ include("./partials/footer") </eta>
-    <script>
-        document.getElementById("cookies-domain-warning-current-domain").innerText = window.location.hostname;
-        if (window.location.hostname.includes("<eta>= data.webCookiesDomain </eta>") == false) {
-            document.getElementById("cookies-domain-warning").classList.remove("hide");
-        }
-    </script>
     <eta> if (data.config.enableGitRepoSyncStatus) { </eta>
     <script src="/assets/js/fancyTimestamp.js"></script>
     <script>
