@@ -15,7 +15,6 @@ const PORT = process.env.PORT;
 const HOST = process.env.HOST;
 const POSTGRES_URI = process.env.POSTGRES_URI;
 const CORS_ORIGIN = process.env.CORS_ORIGIN;
-const COOKIES_DOMAIN = process.env.COOKIES_DOMAIN;
 const LOG_LEVEL = process.env.LOG_LEVEL;
 const LOG_PRETTY = process.env.LOG_PRETTY || "false";
 const ENABLE_OAUTH_GOOGLE = process.env.ENABLE_OAUTH_GOOGLE || "false";
@@ -146,7 +145,6 @@ const schema = `
         studysetProgress(studysetId: ID!): StudysetProgress
         dbConnectionStatus: DBConnectionStatus
         cronStatus: CronStatus
-        checkCookiesDomain: String
     }
     type Mutation {
         createStudyset(studyset: StudysetInput!): Studyset
@@ -396,9 +394,6 @@ const resolvers = {
                     anyEnabled: false
                 }
             }
-        },
-        checkCookiesDomain: function (_, _args, _context) {
-            return COOKIES_DOMAIN;
         }
     },
     Mutation: {
@@ -1310,7 +1305,6 @@ if (ENABLE_OAUTH_GOOGLE == "true") {
                                 "auth",
                                 result.auth,
                                 {
-                                    domain: COOKIES_DOMAIN,
                                     path: "/",
                                     signed: false,
                                     /* 10 days * 24 h per day * 60 min per h * 60 sec per min = 864000 seconds in 10 days */
@@ -1372,7 +1366,6 @@ fastify.post("/auth/sign-up", {
                     "auth",
                     session.rows[0].token,
                     {
-                        domain: COOKIES_DOMAIN,
                         path: "/",
                         signed: false,
                         /* 10 days * 24 h per day * 60 min per h * 60 sec per min = 864000 seconds in 10 days */
@@ -1461,7 +1454,6 @@ fastify.post("/auth/sign-in", {
                 "auth",
                 session.rows[0].token,
                 {
-                    domain: COOKIES_DOMAIN,
                     path: "/",
                     signed: false,
                     /* 10 days * 24 h per day * 60 min per h * 60 sec per min = 864000 seconds in 10 days */
@@ -1546,7 +1538,6 @@ fastify.post("/auth/sign-out", async function (request, reply) {
             reply.clearCookie(
                 "auth",
                 {
-                    domain: COOKIES_DOMAIN,
                     path: "/",
                     signed: false,
                     maxAge: 864000,
@@ -1994,9 +1985,6 @@ fastify.listen({
         link = link.replace("://[::]:", "://localhost:")
         link = link.replace("://127.0.0.1:", "://localhost:")
         console.log("Quizfreely-API is running at " + link);
-        if (link.includes(COOKIES_DOMAIN) == false) {
-            console.log("COOKIES_DOMAIN is " + COOKIES_DOMAIN)
-        }
     }
 })
 
