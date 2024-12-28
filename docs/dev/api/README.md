@@ -107,11 +107,3 @@ npm run start
 quizfreely-api runs on http://localhost:8008 by default. You can change this in `.env`
 
 See [developer docs > web](../web/README.md) to set up quizfreely-web.
-
-## Domains and Forwarded Addresses
-
-In qzfr-api's dotenv file, `HOST=` is always an internal or localhost address.
-
-`COOKIES_DOMAIN=` is the forwarded address or user-facing/devleoper-facing domain. (For development, this might be `localhost`, but it might also be an actual domain. In production, we have `COOKIES_DOMAIN=quizfreely.com`, because the api is accessible from `https://quizfreely.com/api`)
-
-All details about Quizfreely-API's dotenv file is documented and explained under [developer docs > api > api-dotenv.md](./api-dotenv.md)

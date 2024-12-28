@@ -37,29 +37,10 @@ quizfreely-web runs on http://localhost:8080 by default. You can change this in 
 
 See [developer docs > api](../api/README.md) to set up quizfreely-api.
 
-## Domains and Forwarded Addresses
-
-In qzfr-web's dotenv file, we need to set COOKIES_DOMAIN to the url users/developers access from their browser. By default, this is `COOKIES_DOMAIN=localhost`, but if we're accessing it from something other than localhost, we need to change COOKIES_DOMAIN (for example, we have `COOKIES_DOMAIN=quizfreely.com` for production). See [developer docs > web > web-dotenv.md](./web-dotenv.md) for all dotenv configuration details.
-
-HOST is always an internal or localhost address.
-
-COOKIES_DOMAIN is the forwarded address or user-facing/devleoper-facing domain.
-
 ## Info for GitHub Codespaces
 
 When `PRETTY_PRINT` is `PRETTY_PRINT=true` (see [developer docs > web > web-dotenv.md](./web-dotenv.md)), Quizfreely-web will print our internal/localhost url.
 
 Codespaces should automatically send you to the correct forwarded address when you click a localhost link in our terminal. Codespaces also has a forwarded ports menu with the forwarded address and stuff.
 
-In qzfr-web's dotenv file, we need to set COOKIES_DOMAIN to the forwarded address. Edit quizfreely-web's dotenv file (`.env`) to have `COOKIES_DOMAIN=` set to our `...app.github.dev` url or other forwarded url:
-```sh
-PORT=8080
-HOST=0.0.0.0
-# ...
-# no protocol (`example.com`, NOT `https://example.com`)
-# and no trailing slash (`example.com` NOT `example.com/`)
-COOKIES_DOMAIN=abc-example-123456-8080.app.github.dev
-# ...
-```
-
-Most of the other dotenv default values for local development already work perfectly in codespaces. See [developer docs > web > web-dotenv.md](./web-dotenv.md) for all dotenv options and more details.
+The default dotenv configuration for local development already works perfectly in codespaces. See [developer docs > web > web-dotenv.md](./web-dotenv.md) for all dotenv options and more details.

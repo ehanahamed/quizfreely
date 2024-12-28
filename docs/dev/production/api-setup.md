@@ -120,12 +120,11 @@ Now edit `.env`:
 1. Set `HOST=` to `HOST=localhost`
 2. Replace `PASSWORD_GOES_HERE` with your/our password for the "quizfreely_api" postgres user in `POSTGRES_URI=`
 3. Set `CORS_ORIGIN=` to `CORS_ORIGIN=https://quizfreely.com`
-4. Set `COOKIES_DOMAIN=` to `COOKIES_DOMAIN=quizfreely.com`
-5. Set `LOG_PRETTY=` to `LOG_PRETTY=false`
-6. Get/find our client ID & secret for Google OAuth from Google Cloud Console Thingy, add them in `OAUTH_GOOGLE_CLIENT_ID=` and `OAUTH_GOOGLE_CLIENT_SECRET=`
-7. Set `ENABLE_OAUTH_GOOGLE=` to `ENABLE_OAUTH_GOOGLE=true`, also check quizfreely-web's dotenv file
-8. Set `OAUTH_GOOGLE_CALLBACK_URI=` to `OAUTH_GOOGLE_CALLBACK_URI=https://quizfreely.com/api/oauth/google/callback`
-9. Set `OAUTH_REDIRECT_URL=` to `OAUTH_REDIRECT_URL=https://quizfreely.com/sign-in`
+4. Set `LOG_PRETTY=` to `LOG_PRETTY=false`
+5. Get/find our client ID & secret for Google OAuth from Google Cloud Console Thingy, add them in `OAUTH_GOOGLE_CLIENT_ID=` and `OAUTH_GOOGLE_CLIENT_SECRET=`
+6. Set `ENABLE_OAUTH_GOOGLE=` to `ENABLE_OAUTH_GOOGLE=true`, also check quizfreely-web's dotenv file
+7. Set `OAUTH_GOOGLE_CALLBACK_URI=` to `OAUTH_GOOGLE_CALLBACK_URI=https://quizfreely.com/api/oauth/google/callback`
+8. Set `OAUTH_REDIRECT_URL=` to `OAUTH_REDIRECT_URL=https://quizfreely.com/sign-in`
 
 All details and options for quizfreely-api's .env file are documented in [api-dotenv.md](../api/api-dotenv.md)
 
@@ -151,12 +150,6 @@ POSTGRES_URI=postgres://quizfreely_api:ACTUAL_PASSWORD@localhost/quizfreely_db
 # for production: CORS_ORIGIN=https://quizfreely.com
 # for development: CORS_ORIGIN=http://localhost:8080
 CORS_ORIGIN=https://quizfreely.com
-
-# no trailing slash: example.com NOT example.com/
-# no protocol: example.com NOT https://example.com
-# for production: COOKIES_DOMAIN=quizfreely.com
-# for development: COOKIES_DOMAIN=localhost
-COOKIES_DOMAIN=quizfreely.com
 
 # enable or disable Google OAuth
 # when true, OAUTH_GOOGLE_CLIENT_ID and OAUTH_GOOGLE_CLIENT_SECRET must be set

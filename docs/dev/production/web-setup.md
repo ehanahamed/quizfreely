@@ -46,10 +46,9 @@ cp .env.example .env
 
 Now edit `.env`:
 1. Set `HOST=` to `HOST=localhost`
-2. Set `COOKIES_DOMAIN=` to `COOKIES_DOMAIN=quizfreely.com`
-3. Set `LOG_PRETTY=` to `LOG_PRETTY=false`
-4. Check your/our quizfreely-api dotenv and then set `ENABLE_OAUTH_GOOGLE=`
-5. Set `CACHE_VIEWS=` to `CACHE_VIEWS=true`
+2. Set `LOG_PRETTY=` to `LOG_PRETTY=false`
+3. Check your/our quizfreely-api dotenv and then set `ENABLE_OAUTH_GOOGLE=`
+4. Set `CACHE_VIEWS=` to `CACHE_VIEWS=true`
 
 Quizfreely-web's .env file is documented with detail in [web-dotenv.md](../web/web-dotenv.md)
 
@@ -74,12 +73,6 @@ LOG_PRETTY=false
 # production api on different host: API_URL=https://example.com
 # for development: API_URL=http://localhost:8008
 API_URL=http://localhost:8008
-
-# no trailing slash: example.com NOT example.com/
-# no protocol: example.com NOT https://example.com
-# for production: COOKIES_DOMAIN=quizfreely.com
-# for development: COOKIES_DOMAIN=localhost
-COOKIES_DOMAIN=quizfreely.com
 
 # for production: CACHE_VIEWS=true
 # for development: CACHE_VIEWS=false
