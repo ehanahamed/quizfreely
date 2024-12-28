@@ -83,7 +83,6 @@ cp .env.example .env
 <li>Set <code>HOST=</code> to <code>HOST=localhost</code></li>
 <li>Replace <code>PASSWORD_GOES_HERE</code> with your/our password for the "quizfreely_api" postgres user in <code>POSTGRES_URI=</code></li>
 <li>Set <code>CORS_ORIGIN=</code> to <code>CORS_ORIGIN=https://quizfreely.com</code></li>
-<li>Set <code>COOKIES_DOMAIN=</code> to <code>COOKIES_DOMAIN=quizfreely.com</code></li>
 <li>Set <code>LOG_PRETTY=</code> to <code>LOG_PRETTY=false</code></li>
 <li>Get/find our client ID &amp; secret for Google OAuth from Google Cloud Console Thingy, add them in <code>OAUTH_GOOGLE_CLIENT_ID=</code> and <code>OAUTH_GOOGLE_CLIENT_SECRET=</code></li>
 <li>Set <code>ENABLE_OAUTH_GOOGLE=</code> to <code>ENABLE_OAUTH_GOOGLE=true</code>, also check quizfreely-web's dotenv file</li>
@@ -112,12 +111,6 @@ POSTGRES_URI=postgres://quizfreely_api:ACTUAL_PASSWORD@localhost/quizfreely_db
 # for production: CORS_ORIGIN=https://quizfreely.com
 # for development: CORS_ORIGIN=http://localhost:8080
 CORS_ORIGIN=https://quizfreely.com
-
-# no trailing slash: example.com NOT example.com/
-# no protocol: example.com NOT https://example.com
-# for production: COOKIES_DOMAIN=quizfreely.com
-# for development: COOKIES_DOMAIN=localhost
-COOKIES_DOMAIN=quizfreely.com
 
 # enable or disable Google OAuth
 # when true, OAUTH_GOOGLE_CLIENT_ID and OAUTH_GOOGLE_CLIENT_SECRET must be set

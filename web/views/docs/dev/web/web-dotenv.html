@@ -32,12 +32,6 @@
 <li>Quizfreely-web's server js code makes requests to API<em>URL directly. Quizfreely-web's client js on users' browsers makes requests to <code>/api</code> on quizfreely-web's domain (like <code>https://quizfreely.com/api</code>), NOT directly to API</em>URL</li>
 <li>If quizfreely-web and quizfreely-api are running on different machines we/you might have <code>API_URL=https://123.234.123.234:8008</code> or <code>API_URL=https://api.example.com</code></li>
 <li>should be <code>API_URL=http://localhost:8008</code> for development AND PRODUCTION</li></ul></li>
-<li><code>COOKIES_DOMAIN=</code><ul>
-<li>domain attribute to use for cookies</li>
-<li>NO protocol (<code>example.com</code>, NOT <code>https://example.com</code>)</li>
-<li>NO trailing slash (<code>example.com</code>, NOT <code>example.com/</code>)</li>
-<li>should be <code>COOKIES_DOMAIN=quizfreely.com</code> for production</li>
-<li>should be <code>COOKIES_DOMAIN=localhost</code> for development</li></ul></li>
 <li><code>CACHE_VIEWS=</code><ul>
 <li>Enable or disable caching Eta views/templates &amp; rendering thingies with @fastify/view</li>
 <li><code>CACHE_VIEWS=true</code> for production</li>

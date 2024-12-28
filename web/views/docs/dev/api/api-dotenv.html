@@ -33,12 +33,6 @@
 <li>allowed CORS origin, see https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Allow-Origin</li>
 <li>should be <code>CORS_ORIGIN=https://quizfreely.com</code> for production</li>
 <li>should be <code>CORS_ORIGIN=http://localhost:8080</code> for development</li></ul></li>
-<li><code>COOKIES_DOMAIN=</code><ul>
-<li>This is used for the domain flag of auth cookies in api</li>
-<li>NO protocol (<code>example.com</code>, NOT <code>https://example.com</code>)</li>
-<li>NO trailing slash (<code>example.com</code>, NOT <code>example.com/</code>)</li>
-<li>should be <code>COOKIES_DOMAIN=quizfreely.com</code> for production</li>
-<li>should be <code>COOKIES_DOMAIN=localhost</code> for development</li></ul></li>
 <li><code>ENABLE_OAUTH_GOOGLE=</code><ul>
 <li>enable or disable Google OAuth</li>
 <li>When it's set to true, we must configure/set values for <code>OAUTH_GOOGLE_CLIENT_ID=</code>, <code>OAUTH_GOOGLE_CLIENT_SECRET=</code>, and <code>OAUTH_GOOGLE_CALLBACK_URI=</code></li></ul></li>

@@ -21,20 +21,7 @@ cp .env.example .env
 </code></pre>
 <p>quizfreely-web runs on http://localhost:8080 by default. You can change this in <code>.env</code></p>
 <p>See <a href="../api/README.md">developer docs > api</a> to set up quizfreely-api.</p>
-<h2 id="domains-and-forwarded-addresses">Domains and Forwarded Addresses</h2>
-<p>In qzfr-web's dotenv file, we need to set COOKIES<em>DOMAIN to the url users/developers access from their browser. By default, this is <code>COOKIES_DOMAIN=localhost</code>, but if we're accessing it from something other than localhost, we need to change COOKIES</em>DOMAIN (for example, we have <code>COOKIES_DOMAIN=quizfreely.com</code> for production). See <a href="./web-dotenv.md">developer docs > web > web-dotenv.md</a> for all dotenv configuration details.</p>
-<p>HOST is always an internal or localhost address.</p>
-<p>COOKIES_DOMAIN is the forwarded address or user-facing/devleoper-facing domain.</p>
 <h2 id="info-for-github-codespaces">Info for GitHub Codespaces</h2>
-<p>When <code>PRETTY_PRINT</code> is <code>PRETTY_PRINT=true</code> (see <a href="./web-dotenv.md">developer docs > web > web-dotenv.md</a>), Quizfreely-web will print our internal/localhost url.</p>
-<p>Codespaces should automatically send you to the correct forwarded address when you click a localhost link in our terminal. Codespaces also has a forwarded ports menu with the forwarded address and stuff.</p>
-<p>In qzfr-web's dotenv file, we need to set COOKIES_DOMAIN to the forwarded address. Edit quizfreely-web's dotenv file (<code>.env</code>) to have <code>COOKIES_DOMAIN=</code> set to our <code>...app.github.dev</code> url or other forwarded url:</p>
-<pre><code class="sh language-sh">PORT=8080
-HOST=0.0.0.0
-# ...
-# no protocol (`example.com`, NOT `https://example.com`)
-# and no trailing slash (`example.com` NOT `example.com/`)
-COOKIES_DOMAIN=abc-example-123456-8080.app.github.dev
-# ...
-</code></pre>
-<p>Most of the other dotenv default values for local development already work perfectly in codespaces. See <a href="./web-dotenv.md">developer docs > web > web-dotenv.md</a> for all dotenv options and more details.</p>
+<p>When <code>PRETTY_PRINT</code> is set to <code>true</code> (see <a href="./web-dotenv.md">developer docs > web > web-dotenv.md</a>), Quizfreely-web will print our internal/localhost url.</p>
+<p>Codespaces should automatically send you to the correct forwarded address when you click a localhost link in our terminal. Codespaces also has a forwarded ports menu with the forwarded address and stuff (in the same place as the terminal and debug console by default).</p>
+<p>See <a href="./web-dotenv.md">developer docs > web > web-dotenv.md</a> for all dotenv options and more details. The default values copied from <code>.env.example</code> should work fine (i think).</p>
