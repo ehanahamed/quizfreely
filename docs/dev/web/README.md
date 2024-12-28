@@ -39,8 +39,8 @@ See [developer docs > api](../api/README.md) to set up quizfreely-api.
 
 ## Info for GitHub Codespaces
 
-When `PRETTY_PRINT` is `PRETTY_PRINT=true` (see [developer docs > web > web-dotenv.md](./web-dotenv.md)), Quizfreely-web will print our internal/localhost url.
+When `PRETTY_PRINT` is set to `true` (see [developer docs > web > web-dotenv.md](./web-dotenv.md)), Quizfreely-web will print our internal/localhost url.
 
-Codespaces should automatically send you to the correct forwarded address when you click a localhost link in our terminal. Codespaces also has a forwarded ports menu with the forwarded address and stuff.
+Codespaces should automatically send you to the correct forwarded address when you click a localhost link in our terminal. Codespaces also has a forwarded ports menu with the forwarded address and stuff (in the same place as the terminal and debug console by default).
 
-The default dotenv configuration for local development already works perfectly in codespaces. See [developer docs > web > web-dotenv.md](./web-dotenv.md) for all dotenv options and more details.
+See [developer docs > web > web-dotenv.md](./web-dotenv.md) for all dotenv options and more details. The default values copied from `.env.example` should work fine (i think).
