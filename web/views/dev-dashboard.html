@@ -183,7 +183,6 @@
             var lastLink = linkHeader.split(",").find(function (link) {
                 return link.includes("rel=\"last\"");
             });
-        
             /*
                 Now we take the page number from the rel="last" link
                 The url param will always start with `?` or `&`, thats why we have `[?&]` in this regex.
@@ -192,7 +191,8 @@
             var page = lastLink.match(/[?&]page=\d+/);
             /*
                 Now we remove the `?page=` or `&page=` in the string
-                remember that String.prototype.match() returns an array
+                remember that String.prototype.match() returns an array,
+                so we use `[0]` to get the first (and only) string in the array
             */
             var pageNum = page[0].replace("?page=", "").replace("&page=", "");
         }
