@@ -417,7 +417,7 @@ fastify.get("/dev-dashboard", function (request, reply) {
           config: devDashboardConfig
         })
       } else {
-        reply.view("dev.html", {
+        reply.view("dev-dashboard.html", {
           ...themeData(request),
           authed: false,
           apiUp: true,
@@ -430,7 +430,7 @@ fastify.get("/dev-dashboard", function (request, reply) {
       }
     }).catch(function (error) {
       request.log.error(error);
-      reply.view("dev.html", {
+      reply.view("dev-dashboard.html", {
         ...themeData(request),
         authed: false,
         apiUp: true,
@@ -443,7 +443,7 @@ fastify.get("/dev-dashboard", function (request, reply) {
     })
   }).catch(function (error) {
     request.log.error(error);
-    reply.view("dev.html", {
+    reply.view("dev-dashboard.html", {
       ...themeData(request),
       authed: false,
       apiUp: false,
