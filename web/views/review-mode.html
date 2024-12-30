@@ -83,16 +83,16 @@
             <p>You need at least 4 terms to use review mode or practice quizzes, sorry :(</p>
           </div>
           <div id="review-mode-questions" class="hide">
-            <p class="h4" id="answer-with-term" class="hide">Select the matching term:</p>
-            <p class="h4" id="answer-with-definition" class="hide">Select the matching definition:</p>
+            <p class="h4" id="answer-with-term" class="hide">Select the matching term</p>
+            <p class="h4" id="answer-with-definition" class="hide">Select the matching definition</p>
             <div class="card">
               <div id="question" class="content">...</div>
             </div>
             <div class="flex">
-              <button id="answer-1" answer="incorrect" class="button-box">...</button>
-              <button id="answer-2" answer="incorrect" class="button-box">...</button>
-              <button id="answer-3" answer="incorrect" class="button-box">...</button>
-              <button id="answer-4" answer="incorrect" class="button-box">...</button>
+              <button id="answer-1" data-answer="incorrect" class="button-box">...</button>
+              <button id="answer-2" data-answer="incorrect" class="button-box">...</button>
+              <button id="answer-3" data-answer="incorrect" class="button-box">...</button>
+              <button id="answer-4" data-answer="incorrect" class="button-box">...</button>
             </div>
             <div class="caption">
               <div class="flex end">
@@ -110,6 +110,7 @@
     <script>
       var studysetTermsArray;
       var progressTermsMap;
+      var studysetTermsWithProgress = [];
       /*
         producing/answering-with the term given the definition and
         producing the definition from the term require different logic/brain power
@@ -128,7 +129,6 @@
       var overallBadCount = 0;
       var overallGoodCount = 0;
       var newTerms = []; /* unreviewed terms, as an array */
-      var oldLastReviewedAtTerms = []; /* terms that haven't been reviewed for more than a few weeks (from lastReviewedAt timestamp) */
 
       /*
         setupStuff() is called right after the studyset (and/or studyset progress) is/are loaded
@@ -207,6 +207,20 @@
                 } else if (defAccuracy < 0.8) {
                   defBadCount++;
                 }
+
+                var daysAgo = (new Date() - new Date(progressForThisTerm.lastReviewedAt)) / (1000 * 60 * 60 * 24)
+                studysetTermsWithProgress.push({
+                  term: progressForThisTerm.term,
+                  def: progressForThisTerm.def,
+                  termCorrect: progressForThisTerm.termCorrect,
+                  termIncorrect: progressForThisTerm.termIncorrect,
+                  defCorrect: progressForThisTerm.defCorrect,
+                  defIncorrect: progressForThisTerm.defIncorrect,
+                  lastReviewedAt: progressForThisTerm.lastReviewedAt,
+                  reviewSessionsCount: progressForThisTerm.reviewSessionsCount,
+                  daysAgo: daysAgo,
+                  priority: daysAgo - (overallAccuracy + (reviewSessionsCount * 0.5))
+                })
               }
             }
             /* after we finish adding to overallGoodCount and overallBadCount,
@@ -258,12 +272,12 @@
             document.getElementById("preview-new-terms-count").innerText = newTerms.length;
           }
 
-          /* this is inside the if-statement that checks if there are enough terms,
-          so the lines below run regardless of whether the user has progress or not */
-          if (studysetTermsArray.length > 20) {
-            /* if there are more than 20 terms, ask the user if they want to review the set in smaller sections */
-            document.getElementById("setup-split").classList.remove("hide");
-          }
+      //    /* this is inside the if-statement that checks if there are enough terms,
+      //    so the lines below run regardless of whether the user has progress or not */
+      //    if (studysetTermsArray.length > 20) {
+      //      /* if there are more than 20 terms, ask the user if they want to review the set in smaller sections */
+      //      document.getElementById("setup-split").classList.remove("hide");
+      //    }
 
         } else {
           /* this else-statement is reached when there are less than 4 terms in the studyset,
@@ -305,19 +319,31 @@
           document.getElementById("setup-split").classList.contains("hide") === false &&
           document.getElementById("split-true-button").classList.contains("selected")
         ) {
-          for (var i = 0; i < studysetTermsArray.length; i++) {
-            
-          }
+          alert("idk");
         } else {
-
+          studysetTermsWithProgress.sort(function (a, b) {
+            return a.priority - b.priority
+          });
         }
 
+        document.getElementById("review-mode-setup").classList.add("hide");
+        document.getElementById("review-mode-questions").classList.remove("hide");
         generateQuestion();
       })
 
+      currentQuestionNum = 0;
+      sessionPrevTermsMap = new Map();
+      sessionProgress = [];
       function generateQuestion() {
-
+        if (currentQuestionNum) {
+          /* random number 0 or 1 to answer with term or def (0 for term, 1 for def) */
+          answerWithTermOrDef = Math.floor(Math.random());
+          /* pick random number from 1 to 4 */
+          correctAnswer = Math.floor(Math.random() * 4) + 1;
+        }
+        
       }
+
       function checkAnswer(event) {
         if (event.target.dataset.answer == "correct") {
           event.target.classList.add("yay");
