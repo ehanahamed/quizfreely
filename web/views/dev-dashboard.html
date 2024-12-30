@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="/assets/fonts/fonts.css" />
     <link
       rel="stylesheet"
-      href="/assets/nerdfonts/webfont.css"
+      href="/assets/nerdfonts/css/webfont.css"
     />
   </head>
 
@@ -25,7 +25,27 @@
     <main>
       <div class="grid page">
         <div class="content">
-            <eta> if (data.config.enableGitRepoSyncStatus) { </eta>
+            <div class="flex" style="margin-top:1rem;margin-bottom:2rem">
+                <a href="/api/graphiql" class="button faint">
+                    <i class="nf nf-dev-graphql"></i> Quizfreely-API GraphiQL
+                </a>
+                <eta> if (data.config.codeberg && data.config.gh) { </eta>
+                    <a href="https://codeberg.org/<eta>= data.config.codeberg.owner </eta>/<eta>= data.config.codeberg.repo </eta>" class="button faint">
+                        <i class="nf nf-linux-codeberg"></i> Codeberg Repo
+                    </a>
+                    <a href="https://github.com/<eta>= data.config.gh.owner </eta>/<eta>= data.config.gh.repo </eta>" class="button faint">
+                        <i class="nf nf-dev-github_badge"></i> GitHub Repo
+                    </a>
+                <eta> } else { </eta>
+                    <a href="https://codeberg.org/<eta>= data.config.codeberg.owner </eta>/<eta>= data.config.codeberg.repo </eta>" class="button faint">
+                        <i class="nf nf-linux-codeberg"></i> Codeberg Repo
+                    </a>
+                    <a href="https://github.com/<eta>= data.config.gh.owner </eta>/<eta>= data.config.gh.repo </eta>" class="button faint">
+                        <i class="nf nf-dev-github_badge"></i> GitHub Repo
+                    </a>
+                <eta> } </eta>
+            </div>
+            <eta> if (data.config?.enableGitRepoSyncStatus) { </eta>
             <div id="git-repo-sync-status" style="margin-bottom: 2rem">
                 <p id="git-repo-sync-status-synced" class="hide">Codeberg and GitHub are both at <code id="git-repo-sync-status-synced-sha">...</code></p>
                 <div id="git-repo-sync-status-outdated" class="hide">
