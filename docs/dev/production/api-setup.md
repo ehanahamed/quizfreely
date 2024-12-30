@@ -133,8 +133,8 @@ When you're done, the edited .env file should look similar to this:
 PORT=8008
 
 # for production: HOST=localhost
-# for development (only IPv4): HOST=0.0.0.0
-# for development (IPv6 and IPv4): HOST="::"
+# for development (IPv6 (and IPv4 "depending on OS")): HOST="::"
+# for development (IPv4): HOST=0.0.0.0
 HOST=localhost
 
 # fatal, error, warn, info, debug, or trace
