@@ -111,6 +111,7 @@
       var studysetTermsArray;
       var progressTermsMap;
       var studysetTermsWithProgress = [];
+      var 
       /*
         producing/answering-with the term given the definition and
         producing the definition from the term require different logic/brain power
@@ -129,6 +130,7 @@
       var overallBadCount = 0;
       var overallGoodCount = 0;
       var newTerms = []; /* unreviewed terms, as an array */
+      var oldLastReviewedAtTerms = [];
 
       /*
         setupStuff() is called right after the studyset (and/or studyset progress) is/are loaded
@@ -322,6 +324,8 @@
           alert("idk");
         } else {
           studysetTermsWithProgress.sort(function (a, b) {
+            console.log(a.priority);
+            console.log(b.priority);
             return a.priority - b.priority
           });
         }
@@ -331,10 +335,10 @@
         nextQuestion();
       })
 
-      currentQuestionNum = 0;
-      sessionPrevTermsMap = new Map();
-      sessionIncorrectTerms;
-      sessionProgress = [];
+      var currentQuestionNum = 0;
+      var sessionPrevTermsMap = new Map();
+      var sessionIncorrectTerms = [];
+      var sessionProgress = [];
       function nextQuestion() {
         /* random number 0 or 1 to answer with term or def (0 for term, 1 for def) */
         answerWithTermOrDef = Math.floor(Math.random());
