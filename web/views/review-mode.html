@@ -328,21 +328,29 @@
 
         document.getElementById("review-mode-setup").classList.add("hide");
         document.getElementById("review-mode-questions").classList.remove("hide");
-        generateQuestion();
+        nextQuestion();
       })
 
       currentQuestionNum = 0;
       sessionPrevTermsMap = new Map();
+      sessionIncorrectTerms;
       sessionProgress = [];
-      function generateQuestion() {
-        if (currentQuestionNum) {
-          /* random number 0 or 1 to answer with term or def (0 for term, 1 for def) */
-          answerWithTermOrDef = Math.floor(Math.random());
-          /* pick random number from 1 to 4 */
-          correctAnswer = Math.floor(Math.random() * 4) + 1;
+      function nextQuestion() {
+        /* random number 0 or 1 to answer with term or def (0 for term, 1 for def) */
+        answerWithTermOrDef = Math.floor(Math.random());
+        /* pick random number from 1 to 4 */
+        correctAnswerPosition = Math.floor(Math.random() * 4) + 1;
+        if (currentQuestionNum >= 10 + sessionIncorrectTerms.length) {
+          document.getElementById("review-mode-questions").classList.add("hide");
+          document.getElementById("review-mode-summary").classList.remove("hide");
+        } else if (currentQuestionNum >= 10) {
+
+        } else {
+
         }
-        
+        currentQuestionNum++;
       }
+      document.getElementById("next-button").addEventListener("click", nextQuestion);
 
       function checkAnswer(event) {
         if (event.target.dataset.answer == "correct") {
@@ -352,6 +360,7 @@
         } else{
           alert("impossible error?")
         }
+        document.getElementById("next-button").classList.remove("hide");
       }
       document.getElementById("answer-1").addEventListener("click", checkAnswer);
       document.getElementById("answer-2").addEventListener("click", checkAnswer);
