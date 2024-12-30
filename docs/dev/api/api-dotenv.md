@@ -1,6 +1,6 @@
 # API Dotenv File
 
-This document/page has a bunch of details for quizfreely-api's dotenv file **for production and/or development**.
+This document/page documents quizfreely-api's dotenv file (`api/.env`) with instructions/explanations/stuff **for production and/or development**.
 
 For more details to setup quizfreely-api & it's .env file **for production** see [production > api-setup.md](../production/api-setup.md)
 
@@ -108,7 +108,7 @@ Should be `OAUTH_REDIRECT=https://quizfreely.com/sign-in` **for production**.
 Should be `OAUTH_REDIRECT=http://localhost:8080/sign-in` **for development**.
 
 ## CRON_CLEAR_LOGS
-`CRON_CLEAR_LOGS=` is `true` or `false` to enable or disable a cron job to clear logs (clears contents of `quizfreely-api.log`) every hour, day, week, or month, etc (interval set with `CRON_CLEAR_LOGS_INTERVAL=`)
+`CRON_CLEAR_LOGS=` is `true` or `false` to enable or disable a cron job to clear logs (clears contents of `api/quizfreely-api.log`) every hour, day, week, or month, etc (interval set with `CRON_CLEAR_LOGS_INTERVAL=`)
 
 Should be `CRON_CLEAR_LOGS=true` for production (it's also true default btw).
 
