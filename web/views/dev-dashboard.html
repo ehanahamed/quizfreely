@@ -37,10 +37,10 @@
                         <i class="nf nf-dev-github_badge"></i> GitHub Repo
                     </a>
                 <eta> } else { </eta>
-                    <a href="https://codeberg.org/<eta>= data.config.codeberg.owner </eta>/<eta>= data.config.codeberg.repo </eta>" class="button faint">
+                    <a href="https://codeberg.org/ehanahamed/quizfreely" class="button faint">
                         <i class="nf nf-linux-codeberg"></i> Codeberg Repo
                     </a>
-                    <a href="https://github.com/<eta>= data.config.gh.owner </eta>/<eta>= data.config.gh.repo </eta>" class="button faint">
+                    <a href="https://github.com/ehanahamed/quizfreely" class="button faint">
                         <i class="nf nf-dev-github_badge"></i> GitHub Repo
                     </a>
                 <eta> } </eta>
@@ -158,7 +158,7 @@
       </div>
     </main>
     <eta>~ include("./partials/footer") </eta>
-    <eta> if (data.config.enableGitRepoSyncStatus) { </eta>
+    <eta> if (data.config?.enableGitRepoSyncStatus) { </eta>
     <script src="/assets/js/fancyTimestamp.js"></script>
     <script>
         fetch("https://codeberg.org/api/v1/repos/<eta>= data.config.codeberg.owner </eta>/<eta>= data.config.codeberg.repo </eta>/commits?sha=<eta>= data.config.codeberg.branch </eta>&limit=1", {
