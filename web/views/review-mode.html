@@ -430,8 +430,14 @@
               /* answerWithTermOrDef is 0 for term and 1 for def,
               we ask the question with the opposite of what we want to answer with */
               document.getElementById("question").innerText = newTerms[currentNewTerm][1]
+              document.getElementById("question").dataset.answerwith = "term";
+              document.getElementById("question").dataset.array = "newTerms";
+              document.getElementById("question").dataset.index = currentNewTerm;
             } else {
               document.getElementById("question").innerText = newTerms[currentNewTerm][0]
+              document.getElementById("question").dataset.answerwith = "def";
+              document.getElementById("question").dataset.array = "newTerms";
+              document.getElementById("question").dataset.index = currentNewTerm;
             }
             correctAnswerContent = newTerms[currentNewTerm][answerWithTermOrDef]; /* answerWithTermOrDef is 0 for term and 1 for def, that's why we can use it as the index */
             document.getElementById("answer-" + correctAnswerPosition).innerText = correctAnswerContent;
@@ -446,9 +452,15 @@
             if (answerWithTermOrDef == 0) {
               /* answerWithTermOrDef is 0 for term and 1 for def, if it's term then we ask the definition */
               document.getElementById("question").innerText = studysetTermsWithProgress[currentTermWithProgress].def
+              document.getElementById("question").dataset.answerwith = "term";
+              document.getElementById("question").dataset.array = "studysetTermsWithProgress";
+              document.getElementById("question").dataset.index = currentTermWithProgress;
             } else {
               /* 0 for term, 1 for def. If it's 1 (not 0), then we need to ask with the temr */
               document.getElementById("question").innerText = studysetTermsWithProgress[currentTermWithProgress].term
+              document.getElementById("question").dataset.answerwith = "def";
+              document.getElementById("question").dataset.array = "studysetTermsWithProgress";
+              document.getElementById("question").dataset.index = currentTermWithProgress;
             }
             if (answerWithTermOrDef == 0) {
               correctAnswerContent = studysetTermsWithProgress[currentTermWithProgress].term;
