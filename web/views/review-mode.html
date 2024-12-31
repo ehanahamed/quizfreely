@@ -133,6 +133,9 @@
       based on how often existing terms have been reviewed,
       and minReviewSessionsCount is supposed to help us calculate */
       var minReviewSessionsCount = null;
+      /* weights for priority formula */
+      var timeWeight = 2;
+      var accuracyWeight = 3;
       /*
         setupStuff() is called right after the studyset (and/or studyset progress) is/are loaded
         to show the user their current progress and how many terms there are (or if there is no progress, just how many terms there are)
@@ -225,7 +228,7 @@
                   lastReviewedAt: progressForThisTerm.lastReviewedAt,
                   reviewSessionsCount: progressForThisTerm.reviewSessionsCount,
                   daysAgo: daysAgo,
-                  priority: daysAgo - (overallAccuracy * 100)
+                  priority: (daysAgo * timeWeight) * (1 - (overallAccuracy * accuracyWeight))
                 });
 
                 if (progressForThisTerm.reviewSessionsCount > maxReviewSessionsCount) {
@@ -359,8 +362,10 @@
           studysetTermsWithProgress.sort(function (a, b) {
             console.log(a.priority);
             console.log(b.priority);
-            return a.priority - b.priority
+            /* `b - a` to sort largest to smallest */
+            return b.priority - a.priority
           });
+          console.log(studysetTermsWithProgress)
         }
 
         document.getElementById("review-mode-setup").classList.add("hide");
