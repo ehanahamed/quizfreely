@@ -412,13 +412,20 @@
                 while (
                   alreadyUsedRandomIndexes.includes(randomIndex) ||
                   (
-                    studysetTermsArray[randomIndex][0] == newTerms[currentQuestionNumForNewTerms][0]
+                    studysetTermsArray[randomIndex][answerWithTermOrDef] == newTerms[currentQuestionNumForNewTerms][answerWithTermOrDef]
+                    /* answerWithTermOrDef is 0 for term and 1 for def
+                    and conveniently, the arrays' 0th elements are the terms and 1st are the defenitions */
                   )
                 ) {
-                  randomIndex = Math.floor(Math.random() * studysetTermsArray.length)
+                  randomIndex = Math.floor(Math.random() * studysetTermsArray.length);
+
                   if (extraWhileLoopCounterJustInCase > 100) {
-                    alert("Does your studyset have more than 100 duplicate terms or is Math.random() broken? 💀");
+                    if (i == 1) {
+                      alert("Did you put a lot of duplicate terms or is Math.random() broken? 💀");
+                    }
+                    break;
                   }
+                  extraWhileLoopCounterJustInCase++
                 }
                 if (answerWithTermOrDef == 0) {
                   document.getElementById("answer-" + i).innerText = studysetTermsArray[randomIndex][0];
