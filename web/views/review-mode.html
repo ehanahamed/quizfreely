@@ -85,14 +85,12 @@
           <div id="review-mode-questions" class="hide">
             <p class="h4" id="answer-with-term" class="hide">Select the matching term</p>
             <p class="h4" id="answer-with-def" class="hide">Select the matching definition</p>
-            <div class="card">
-              <div id="question" class="content">...</div>
-            </div>
+            <p id="question" style="white-space:pre-wrap">...</p>
             <div class="flex">
-              <button id="answer-1" data-answer="incorrect" class="button-box">...</button>
-              <button id="answer-2" data-answer="incorrect" class="button-box">...</button>
-              <button id="answer-3" data-answer="incorrect" class="button-box">...</button>
-              <button id="answer-4" data-answer="incorrect" class="button-box">...</button>
+              <button id="answer-1" data-answer="incorrect" class="button-box" style="white-space:pre-wrap">...</button>
+              <button id="answer-2" data-answer="incorrect" class="button-box" style="white-space:pre-wrap">...</button>
+              <button id="answer-3" data-answer="incorrect" class="button-box" style="white-space:pre-wrap">...</button>
+              <button id="answer-4" data-answer="incorrect" class="button-box" style="white-space:pre-wrap">...</button>
             </div>
             <div class="caption">
               <div class="flex end">
@@ -432,6 +430,7 @@
             }
             correctAnswerContent = newTerms[currentNewTerm][answerWithTermOrDef]; /* answerWithTermOrDef is 0 for term and 1 for def, that's why we can use it as the index */
             document.getElementById("answer-" + correctAnswerPosition).innerText = correctAnswerContent;
+            document.getElementById("answer-" + correctAnswerPosition).dataset.answer = "correct"; /* this data-answer="..." attribute is used by function checkAnswer() later */
             currentNewTerm++ /* increment currentNewTerm to keep a seperate question count just for new terms for use as the array index */
           } else { /* this else statement is for showing terms with progress (instead of new terms)*/
             if (currentTermWithProgress >= studysetTermsWithProgress.length) {
@@ -452,6 +451,7 @@
               correctAnswerContent = studysetTermsWithProgress[currentTermWithProgress].def;
             }
             document.getElementById("answer-" + correctAnswerPosition).innerText = correctAnswerContent;
+            document.getElementById("answer-" + correctAnswerPosition).dataset.answer = "correct"; /* this data-answer="..." attribute is used by function checkAnswer() later */
             currentTermWithProgress++ /* increment currentTermWithProgress to keep track of what index we are at */
           }
           var alreadyUsedRandomIndexes = [];
@@ -492,8 +492,14 @@
               }
               if (answerWithTermOrDef == 0) {
                 document.getElementById("answer-" + i).innerText = studysetTermsArray[randomIndex][0];
+                /* this element's `data-answer` attribute is used by our checkAnswer() function
+                `dataset.abc` in this js code is `data-abc` in the actual html and DOM */
+                document.getElementById("answer-" + i).dataset.answer = "incorrect";
               } else {
                 document.getElementById("answer-" + i).innerText = studysetTermsArray[randomIndex][1];
+                /* this element's `data-answer` attribute is used by our checkAnswer() function
+                `dataset.abc` in this js code is `data-abc` in the actual html and DOM */
+                document.getElementById("answer-" + i).dataset.answer = "incorrect";
               }
               /* record the randomly selected index so we dont show duplicate answer choices */
               alreadyUsedRandomIndexes.push(randomIndex);
@@ -505,7 +511,15 @@
       document.getElementById("next-button").addEventListener("click", nextQuestion);
 
       function checkAnswer(event) {
-        if (event.target.dataset.answer == "correct") {
+        if (
+          /* we use this if-statement to make sure nothing is already selected so that users can only select one answer choice */
+          document.getElementById("answer-1").classList.contains("selected") == false &&
+          document.getElementById("answer-2").classList.contains("selected") == false &&
+          document.getElementById("answer-3").classList.contains("selected") == false &&
+          document.getElementById("answer-4").classList.contains("selected") == false
+        ) {
+          event.target.classList.add("selected");
+          if (event.target.dataset.answer == "correct") {
           event.target.classList.add("yay");
         } else if (event.target.dataset.answer == "incorrect") {
           event.target.classList.add("ohno");
@@ -513,6 +527,7 @@
           alert("impossible error?")
         }
         document.getElementById("next-button").classList.remove("hide");
+        }
       }
       document.getElementById("answer-1").addEventListener("click", checkAnswer);
       document.getElementById("answer-2").addEventListener("click", checkAnswer);
