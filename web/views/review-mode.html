@@ -421,7 +421,7 @@
             if (currentNewTerm >= newTerms.length) {
               currentNewTerm = 0;
             }
-            
+
             correctAnswerContent = newTerms[currentNewTerm][answerWithTermOrDef]; /* answerWithTermOrDef is 0 for term and 1 for def, that's why we can use it as the index */
             document.getElementById("answer-" + correctAnswerPosition).innerText = correctAnswerContent;
             currentNewTerm++ /* increment currentNewTerm to keep a seperate question count just for new terms for use as the array index */
@@ -458,7 +458,7 @@
                 (
                   studysetTermsArray[randomIndex][answerWithTermOrDef] == correctAnswerContent
                   /* answerWithTermOrDef is 0 for term and 1 for def
-                  and conveniently, the array's 0th element is its term & 1st element is its defenition */
+                  and conveniently, the array's 0th element is its term & 1st element is its definition */
                 )
               ) {
                 randomIndex = Math.floor(Math.random() * studysetTermsArray.length);
