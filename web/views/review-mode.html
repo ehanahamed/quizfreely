@@ -125,7 +125,7 @@
       var overallBadCount = 0;
       var overallGoodCount = 0;
       var newTerms = []; /* unreviewed terms, as an array */
-      var termsThatAreNotOverallBadButHaveNotBeenReviewed1OrLessDaysAgoCount;
+      var termsThatAreNotOverallBadButHaveNotBeenReviewed1OrLessDaysAgoCount = 0;
 
       var maxReviewSessionsCount = 0;
       /* minReviewSessionsCount excludes terms with no progress
@@ -211,7 +211,7 @@
                   defBadCount++;
                 }
 
-                var daysAgo = (new Date() - new Date(progressForThisTerm.lastReviewedAt)) / (1000 * 60 * 60 * 24)
+                var daysAgo = (Date.now() - new Date(progressForThisTerm.lastReviewedAt)) / (1000 * 60 * 60 * 24)
                 if (daysAgo > 1 && overallAccuracy >= 0.8) {
                   termsThatAreNotOverallBadButHaveNotBeenReviewed1OrLessDaysAgoCount++;
                 }
@@ -225,7 +225,7 @@
                   lastReviewedAt: progressForThisTerm.lastReviewedAt,
                   reviewSessionsCount: progressForThisTerm.reviewSessionsCount,
                   daysAgo: daysAgo,
-                  priority: daysAgo - (overallAccuracy + (reviewSessionsCount * 0.5))
+                  priority: daysAgo - (overallAccuracy + (progressForThisTerm.reviewSessionsCount * 0.5))
                 });
 
                 if (progressForThisTerm.reviewSessionsCount > maxReviewSessionsCount) {
@@ -240,18 +240,16 @@
               }
             }
 
-            /* use max and min reviewSessionsCount to calculate how many new terms to add
+            /* use minReviewSessionsCount to calculate how many new terms to add
             this updates howManyNewTermsAreWeGoingToStartReviewingBasedOnAccuracyOfTermsWithProgressAndHowManyTimesTheyWereReviewed,
             that variable is used later to show users a combination of existing terms and a specific count of new terms
             but it wont show users new terms if they need to work on old or low-accuracy terms
             
             notice that this is outside the for-loop */
-            if (
-              maxReviewSessionsCount - minReviewSessionsCount < 20 ||
-              minReviewSessionsCount > 50
-            ) {
-              /* if there are overallBad terms, we need to review those before introducing new terms
-              if there are old terms even if they haven't been reviewed */
+            if (minReviewSessionsCount > 5 || studysetTermsWithProgress.length < 10) {
+              /* we need to review bad terms and old terms before introducing new terms
+              so if there's a few bad terms and/or old terms, we can do both new terms and old/bad terms in the same session 
+              we subtract them from 10 so that we have a max of 10 new terms if there are no other higher-priority terms */
               howManyNewTermsAreWeGoingToStartReviewingBasedOnAccuracyOfTermsWithProgressAndHowManyTimesTheyWereReviewed = (
                 10 - overallBadCount - termsThatAreNotOverallBadButHaveNotBeenReviewed1OrLessDaysAgoCount
               );
@@ -607,6 +605,8 @@
                 termIncorrect
                 defCorrect
                 defIncorrect
+                lastReviewedAt
+                reviewSessionsCount
               }
             }
            }`,
