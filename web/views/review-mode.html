@@ -380,11 +380,12 @@
       var sessionPrevTermsMap = new Map();
       var sessionIncorrectTerms = [];
       var sessionProgress = [];
-      var currentQuestionNumForNewTerms = 0;
+      var currentNewTerm = 0;
+      var currentTermWithProgress = 0;
       var newTermsStartedThisSessionCount = 0;
       function nextQuestion() {
         /* random number 0 or 1 to answer with term or def (0 for term, 1 for def) */
-        answerWithTermOrDef = Math.floor(Math.random());
+        answerWithTermOrDef = Math.floor(Math.random() * 2);
         /* pick random number from 1 to 4 */
         correctAnswerPosition = Math.floor(Math.random() * 4) + 1;
         if (currentQuestionNum >= 10 + sessionIncorrectTerms.length) {
@@ -393,6 +394,7 @@
         } else if (currentQuestionNum > 10) {
 
         } else {
+          var correctAnswerContent;
           if (
             (howManyNewTermsAreWeGoingToStartReviewingBasedOnAccuracyOfTermsWithProgressAndHowManyTimesTheyWereReviewed -
             newTermsStartedThisSessionCount) >= 1
@@ -400,39 +402,64 @@
             howManyNewTermsAreWeGoingToStartReviewing... records how many new terms we are going to start this session,
             so if subtracting them is greater than 1, then we need to introduce another new term
             
-            so the body of this if statement will show a question from our newTerms array */
+            so the body of this if-statement will show a question from our newTerms array */
           ) {
-            newTerms[currentQuestionNumForNewTerms]
-            var alreadyUsedRandomIndexes = [];
-            for (var i = 1; i <= 4; i++) {
-              if (correctAnswerPosition != i) {
-                var randomIndex = Math.floor(Math.random() * studysetTermsArray.length);
-                console.log(studysetTermsArray[randomIndex][0]);
-                extraWhileLoopCounterJustInCase = 0;
-                while (
-                  alreadyUsedRandomIndexes.includes(randomIndex) ||
-                  (
-                    studysetTermsArray[randomIndex][answerWithTermOrDef] == newTerms[currentQuestionNumForNewTerms][answerWithTermOrDef]
-                    /* answerWithTermOrDef is 0 for term and 1 for def
-                    and conveniently, the arrays' 0th elements are their terms & 1st elements are their defenitions */
-                  )
-                ) {
-                  randomIndex = Math.floor(Math.random() * studysetTermsArray.length);
-
-                  if (extraWhileLoopCounterJustInCase > 100) {
-                    if (i == 1) {
-                      alert("Did you put a lot of duplicate terms or is Math.random() broken? 💀");
-                    }
-                    break;
+            correctAnswerContent = newTerms[currentNewTerm][answerWithTermOrDef]; /* answerWithTermOrDef is 0 for term and 1 for def, that's why we can use it as the index */
+            document.getElementById("answer-" + correctAnswerPosition).innerText = correctAnswerContent;
+            currentNewTerm++ /* increment currentNewTerm to keep a seperate question count just for new terms for use as the array index */
+          } else {
+            /* this else statement is for showing terms with progress (instead of new terms)*/
+            if (answerWithTermOrDef == 0) {
+              correctAnswerContent = studysetTermsWithProgress[currentTermWithProgress].term;
+            } else {
+              correctAnswerContent = studysetTermsWithProgress[currentTermWithProgress].def;
+            }
+            document.getElementById("answer-" + correctAnswerPosition).innerText = correctAnswerContent;
+            currentTermWithProgress++ /* increment currentTermWithProgress to keep track of what index we are at */
+          }
+          var alreadyUsedRandomIndexes = [];
+          /* we iterate 4 times for each answer choice */
+          for (var i = 1; i <= 4; i++) {
+            /* this for-loop generates random, incorrect, answer choices
+            in this for loop, `i` is the visual/layout position of each answer choice,
+            and right before this for-loop, one correct answer choice was already put,
+            so we skip the correct answer's position by checking if correctAnswerPosition does not equal `i` */
+            if (correctAnswerPosition != i) {
+              /* select a random index and use a while-loop to avoid duplicate answer choices */
+              var randomIndex = Math.floor(Math.random() * studysetTermsArray.length);
+              extraWhileLoopCounterJustInCase = 0; /* avoid accidental infinite-while-loop-hanging by counting how many times the while-loop runs */
+              while (
+                /* this while-loop re-generates the random index if it is a duplicate answer choice
+                so we check alreadyUsedRandomIndexes to avoid duplicates of previous random choices,
+                and we also check correctAnswerContent to avoid a duplicate of the correct choice */
+                alreadyUsedRandomIndexes.includes(randomIndex) ||
+                (
+                  studysetTermsArray[randomIndex][answerWithTermOrDef] == correctAnswerContent
+                  /* answerWithTermOrDef is 0 for term and 1 for def
+                  and conveniently, the array's 0th element is its term & 1st element is its defenition */
+                )
+              ) {
+                randomIndex = Math.floor(Math.random() * studysetTermsArray.length);
+                
+                if (extraWhileLoopCounterJustInCase > 100) {
+                  /* if this while-loop ran more than 100 times, something is wrong
+                  the condition of this while-loop checks if a random term is a repeat answer choice or a duplicate of the correct answer.
+                  If a user inputs a bunch of duplicate terms, the while-loop would try to go on forever.
+                  We check if it ran too many times and then break the loop to prevent infinite loops. */
+                  if (i == 1) {
+                    alert("Did you put a lot of duplicate terms or is Math.random() broken? 💀");
                   }
-                  extraWhileLoopCounterJustInCase++
+                  break; /* Everything you say to me Takes me one step closer to the edge And I'm about to break I need a little room to breathe 'Cause I'm one step closer to the edge And I'm about to... break (break) (break) (break) */
                 }
-                if (answerWithTermOrDef == 0) {
-                  document.getElementById("answer-" + i).innerText = studysetTermsArray[randomIndex][0];
-                } else {
-                  document.getElementById("answer-" + i).innerText = studysetTermsArray[randomIndex][1];
-                }
+                extraWhileLoopCounterJustInCase++
               }
+              if (answerWithTermOrDef == 0) {
+                document.getElementById("answer-" + i).innerText = studysetTermsArray[randomIndex][0];
+              } else {
+                document.getElementById("answer-" + i).innerText = studysetTermsArray[randomIndex][1];
+              }
+              /* record the randomly selected index so we dont show duplicate answer choices */
+              alreadyUsedRandomIndexes.push(randomIndex);
             }
           }
         }
