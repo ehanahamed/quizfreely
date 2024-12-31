@@ -384,6 +384,12 @@
       var currentTermWithProgress = 0;
       var newTermsStartedThisSessionCount = 0;
       function nextQuestion() {
+        /* remove selected class and incorrect/correct styles cause we're going to the next question */
+        document.getElementById("answer-1").classList.remove("selected", "yay", "ohno");
+        document.getElementById("answer-2").classList.remove("selected", "yay", "ohno");
+        document.getElementById("answer-3").classList.remove("selected", "yay", "ohno");
+        document.getElementById("answer-4").classList.remove("selected", "yay", "ohno");
+
         /* random number 0 or 1 to answer with term or def (0 for term, 1 for def) */
         answerWithTermOrDef = Math.floor(Math.random() * 2);
         /* pick random number from 1 to 4 */
