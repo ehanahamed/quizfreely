@@ -84,7 +84,7 @@
           </div>
           <div id="review-mode-questions" class="hide">
             <p class="h4" id="answer-with-term" class="hide">Select the matching term</p>
-            <p class="h4" id="answer-with-definition" class="hide">Select the matching definition</p>
+            <p class="h4" id="answer-with-def" class="hide">Select the matching definition</p>
             <div class="card">
               <div id="question" class="content">...</div>
             </div>
@@ -389,15 +389,23 @@
         document.getElementById("answer-2").classList.remove("selected", "yay", "ohno");
         document.getElementById("answer-3").classList.remove("selected", "yay", "ohno");
         document.getElementById("answer-4").classList.remove("selected", "yay", "ohno");
+        /* hide the next button again (its shown again after the user picks an answer) */
+        document.getElementById("next-button").classList.add("hide");
 
         /* random number 0 or 1 to answer with term or def (0 for term, 1 for def) */
         answerWithTermOrDef = Math.floor(Math.random() * 2);
+
+        if (answerWithTermOrDef == 0) {
+          document.getElementById("answer-with-term").classList.remove("hide");
+          document.getElementById("answer-with-def").classList.add("hide");
+        } else {
+          document.getElementById("answer-with-term").classList.add("hide");
+          document.getElementById("answer-with-def").classList.remove("hide");
+        }
+
         /* pick random number from 1 to 4 */
         correctAnswerPosition = Math.floor(Math.random() * 4) + 1;
-        if (currentQuestionNum >= 10 + sessionIncorrectTerms.length) {
-          document.getElementById("review-mode-questions").classList.add("hide");
-          document.getElementById("review-mode-summary").classList.remove("hide");
-        } else if (currentQuestionNum > 10) {
+        if (currentQuestionNum > 10) {
           alert("congrats, i didn't implement this yet")
         } else {
           var correctAnswerContent;
@@ -410,10 +418,18 @@
             
             so the body of this if-statement will show a question from our newTerms array */
           ) {
+            if (currentNewTerm >= newTerms.length) {
+              currentNewTerm = 0;
+            }
+            
             correctAnswerContent = newTerms[currentNewTerm][answerWithTermOrDef]; /* answerWithTermOrDef is 0 for term and 1 for def, that's why we can use it as the index */
             document.getElementById("answer-" + correctAnswerPosition).innerText = correctAnswerContent;
             currentNewTerm++ /* increment currentNewTerm to keep a seperate question count just for new terms for use as the array index */
           } else {
+            if (currentTermWithProgress >= studysetTermsWithProgress.length) {
+              currentTermWithProgress = 0;
+            }
+
             /* this else statement is for showing terms with progress (instead of new terms)*/
             if (answerWithTermOrDef == 0) {
               correctAnswerContent = studysetTermsWithProgress[currentTermWithProgress].term;
