@@ -374,6 +374,9 @@
         nextQuestion();
       })
 
+      var sessionIncorrectCount = 0;
+      var sessionCorrectCount = 0;
+
       var currentQuestionNum = 1;
       var sessionPrevTermsMap = new Map();
       var sessionIncorrectTerms = [];
@@ -403,9 +406,14 @@
 
         /* pick random number from 1 to 4 */
         correctAnswerPosition = Math.floor(Math.random() * 4) + 1;
-        if (currentQuestionNum > 10 && sessionIncorrectTerms.length >= 1) {
-          /* after the first 10 questions, we repeat questions users got wrong this session */
-          alert("congrats, i didn't implement this yet")
+
+        //if (currentQuestionNum > 10 && sessionIncorrectTerms.length >= 1) {
+        //  /* after the first 10 questions, we repeat questions users got wrong this session */
+        //  alert("congrats, i didn't implement this yet")
+
+        if (currentQuestionNum > 10) {
+          document.getElementById("review-mode-questions").classList.add("hide");
+          document.getElementById("review-mode-summary").classList.remove("hide");
         } else {
           var correctAnswerContent;
           if (
