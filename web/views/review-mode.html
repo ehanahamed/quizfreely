@@ -111,7 +111,8 @@
       var studysetTermsArray;
       var progressTermsMap;
       var studysetTermsWithProgress = [];
-      var howManyNewTermsAreWeGoingToStartReviewingBasedOnHowAccurateTermsWithProgressAreAndHowManyTimesTheyWereReviewed = 0;
+      var howManyNewTermsAreWeGoingToStartReviewingBasedOnAccuracyOfTermsWithProgressAndHowManyTimesTheyWereReviewed = 0;
+
       /*
         producing/answering-with the term given the definition and
         producing the definition from the term require different logic/brain power
@@ -130,8 +131,14 @@
       var overallBadCount = 0;
       var overallGoodCount = 0;
       var newTerms = []; /* unreviewed terms, as an array */
-      var oldLastReviewedAtTerms = [];
+      var termsThatAreNotOverallBadButHaveNotBeenReviewed1OrLessDaysAgoCount;
 
+      var maxReviewSessionsCount = 0;
+      /* minReviewSessionsCount excludes terms with no progress
+      because we're going to use this to calculate how many unreviewed terms we should add this session
+      based on how often existing terms have been reviewed,
+      and minReviewSessionsCount is supposed to help us calculate */
+      var minReviewSessionsCount = null;
       /*
         setupStuff() is called right after the studyset (and/or studyset progress) is/are loaded
         to show the user their current progress and how many terms there are (or if there is no progress, just how many terms there are)
@@ -211,6 +218,9 @@
                 }
 
                 var daysAgo = (new Date() - new Date(progressForThisTerm.lastReviewedAt)) / (1000 * 60 * 60 * 24)
+                if (daysAgo > 1 && overallAccuracy >= 0.8) {
+                  termsThatAreNotOverallBadButHaveNotBeenReviewed1OrLessDaysAgoCount++;
+                }
                 studysetTermsWithProgress.push({
                   term: progressForThisTerm.term,
                   def: progressForThisTerm.def,
@@ -222,9 +232,37 @@
                   reviewSessionsCount: progressForThisTerm.reviewSessionsCount,
                   daysAgo: daysAgo,
                   priority: daysAgo - (overallAccuracy + (reviewSessionsCount * 0.5))
-                })
+                });
+
+                if (progressForThisTerm.reviewSessionsCount > maxReviewSessionsCount) {
+                  maxReviewSessionsCount = progressForThisTerm.reviewSessionsCount;
+                }
+                if (
+                  minReviewSessionsCount == null ||
+                  progressForThisTerm.reviewSessionsCount < minReviewSessionsCount
+                ) {
+                  minReviewSessionsCount = progressForThisTerm.reviewSessionsCount;
+                }
               }
             }
+
+            /* use max and min reviewSessionsCount to calculate how many new terms to add
+            this updates howManyNewTermsAreWeGoingToStartReviewingBasedOnAccuracyOfTermsWithProgressAndHowManyTimesTheyWereReviewed,
+            that variable is used later to show users a combination of existing terms and a specific count of new terms
+            but it wont show users new terms if they need to work on old or low-accuracy terms
+            
+            notice that this is outside the for-loop */
+            if (
+              maxReviewSessionsCount - minReviewSessionsCount < 20 ||
+              minReviewSessionsCount > 50
+            ) {
+              /* if there are overallBad terms, we need to review those before introducing new terms
+              if there are old terms even if they haven't been reviewed */
+              howManyNewTermsAreWeGoingToStartReviewingBasedOnAccuracyOfTermsWithProgressAndHowManyTimesTheyWereReviewed = (
+                10 - overallBadCount - termsThatAreNotOverallBadButHaveNotBeenReviewed1OrLessDaysAgoCount
+              );
+            }
+
             /* after we finish adding to overallGoodCount and overallBadCount,
             display those numbers in these text elements. (notice this is outside of the for-loop above) */
             document.getElementById("preview-good-terms-count").innerText = overallGoodCount;
@@ -258,6 +296,9 @@
             /* it reaches this else-statement when there is no progress,
             which means all the terms are "new/unreviewed" */
             newTerms = studysetTermsArray;
+            /* since all the terms are new, all the terms we're about to review are new, so set that (there are 10 terms every review session by default) */
+            howManyNewTermsAreWeGoingToStartReviewingBasedOnAccuracyOfTermsWithProgressAndHowManyTimesTheyWereReviewed = 10;
+
             document.getElementById("preview-good-terms-count").innerText = "0";
             /* since good terms are 0 when all of them are new, make the text greyed out */
             document.getElementById("preview-good-terms-count-parent").classList.add(
