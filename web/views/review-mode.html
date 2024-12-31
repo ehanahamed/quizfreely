@@ -87,10 +87,10 @@
             <p class="h4" id="answer-with-def" class="hide">Select the matching definition</p>
             <p id="question" style="white-space:pre-wrap">...</p>
             <div class="flex">
-              <button id="answer-1" data-answer="incorrect" class="button-box" style="white-space:pre-wrap">...</button>
-              <button id="answer-2" data-answer="incorrect" class="button-box" style="white-space:pre-wrap">...</button>
-              <button id="answer-3" data-answer="incorrect" class="button-box" style="white-space:pre-wrap">...</button>
-              <button id="answer-4" data-answer="incorrect" class="button-box" style="white-space:pre-wrap">...</button>
+              <button id="answer-1" data-answer="incorrect" class="button-box no-clickable-effect" style="white-space:pre-wrap">...</button>
+              <button id="answer-2" data-answer="incorrect" class="button-box no-clickable-effect" style="white-space:pre-wrap">...</button>
+              <button id="answer-3" data-answer="incorrect" class="button-box no-clickable-effect" style="white-space:pre-wrap">...</button>
+              <button id="answer-4" data-answer="incorrect" class="button-box no-clickable-effect" style="white-space:pre-wrap">...</button>
             </div>
             <div class="caption">
               <div class="flex end">
@@ -484,7 +484,7 @@
                   If a user inputs a bunch of duplicate terms, the while-loop would try to go on forever.
                   We check if it ran too many times and then break the loop to prevent infinite loops. */
                   if (i == 1) {
-                    alert("Did you put a lot of duplicate terms or is Math.random() broken? 💀");
+                    alert("Do you have an unreasonable amount of duplicate terms or is Math.random() broken? 💀");
                   }
                   break; /* Everything you say to me Takes me one step closer to the edge And I'm about to break I need a little room to breathe 'Cause I'm one step closer to the edge And I'm about to... break (break) (break) (break) */
                 }
