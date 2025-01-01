@@ -541,7 +541,18 @@
         ) {
           event.target.classList.add("selected");
           if (event.target.dataset.answer == "correct") {
-          event.target.classList.add("yay");
+            event.target.classList.add("yay");
+            if (event.target.dataset.array = "studysetTermsWithProgress") {
+              if (event.target.dataset.answerwith == "term") {
+                sessionProgress.push()
+              } else if (event.target.dataset.answerwith == "def") {
+                // ...
+              } else {
+                alert("question has invalid data-answerwith... this error isn't supposed to be possible 💀")
+              }
+            } else if (event.target.dataset.array = "") {
+
+            }
           } else if (event.target.dataset.answer == "incorrect") {
             event.target.classList.add("ohno");
           } else {
