@@ -377,9 +377,8 @@
       var sessionCorrectCount = 0;
 
       var currentQuestionNum = 1;
-      var sessionPrevTermsMap = new Map();
       var sessionIncorrectTerms = [];
-      var sessionProgress = [];
+      var sessionProgressMap = new Map();
       var currentNewTerm = 0;
       var currentTermWithProgress = 0;
       var newTermsStartedThisSessionCount = 0;
@@ -411,8 +410,7 @@
         //  alert("congrats, i didn't implement this yet")
 
         if (currentQuestionNum > 10) {
-          document.getElementById("review-mode-questions").classList.add("hide");
-          document.getElementById("review-mode-summary").classList.remove("hide");
+          showSummaryAndStuff()
         } else {
           var correctAnswerContent;
           if (
@@ -548,81 +546,45 @@
           var question = document.getElementById("question")
           if (event.target.dataset.answer == "correct") {
             event.target.classList.add("yay");
-            if (question.dataset.array = "studysetTermsWithProgress") {
-              if (question.dataset.answerwith == "term") {
-                sessionProgress.push({
-                  term: studysetTErmsWithProgress[question.dataset.index].term,
-                  def: studysetTErmsWithProgress[question.dataset.index].def,
-                  termCorrect: 1
-                })
-              } else if (question.dataset.answerwith == "def") {
-                sessionProgress.push({
-                  term: studysetTErmsWithProgress[question.dataset.index].term,
-                  def: studysetTErmsWithProgress[question.dataset.index].def,
-                  defCorrect: 1
-                })
-              } else {
-                /* this means there's an error in nextQuestion(),
-                because our nextQuestion function is supposed to set attribute data-answerwith */
-                alert("question has invalid data-answerwith... this error isn't supposed to be possible 💀")
-              }
-            } else if (event.target.dataset.array = "newTerms") {
-              if (question.dataset.answerwith == "term") {
-                sessionProgress.push({
-                  term: newTerms[question.dataset.index][0],
-                  def: newTerms[question.dataset.index][1],
-                  termCorrect: 1
-                })
-              } else if (question.dataset.answerwith == "def") {
-                sessionProgress.push({
-                  term: newTerms[question.dataset.index][0],
-                  def: newTerms[question.dataset.index][1],
-                  defCorrect: 1
-                })
-              } else {
-                /* this means there's an error in nextQuestion(),
-                because our nextQuestion function is supposed to set attribute data-answerwith */
-                alert("question has invalid data-answerwith... this error isn't supposed to be possible 💀")
-              }
+            sessionCorrectCount++;
+            
+            if (question.dataset.array == "studysetTermsWithProgress") {
+              updateSessionProgressMap(
+                studysetTermsArray[question.dataset.index].term,
+                studysetTermsArray[question.dataset.index].def,
+                question.dataset.answerwith,
+                true /* true for correct */
+              )
+            } else if (question.dataset.array == "newTerms") {
+              updateSessionProgressMap(
+                newTerms[question.dataset.index][0],
+                newTerms[question.dataset.index][1],
+                question.dataset.answerwith,
+                true /* true for correct */
+              )
+            } else {
+              alert("this question's data-array attribute is wrong? 💀")
             }
           } else if (event.target.dataset.answer == "incorrect") {
             event.target.classList.add("ohno");
+            sessionIncorrectCount++
 
-            if (question.dataset.array = "studysetTermsWithProgress") {
-              if (question.dataset.answerwith == "term") {
-                sessionProgress.push({
-                  term: studysetTErmsWithProgress[question.dataset.index].term,
-                  def: studysetTErmsWithProgress[question.dataset.index].def,
-                  termIncorrect: 1
-                })
-              } else if (question.dataset.answerwith == "def") {
-                sessionProgress.push({
-                  term: studysetTErmsWithProgress[question.dataset.index].term,
-                  def: studysetTErmsWithProgress[question.dataset.index].def,
-                  defIncorrect: 1
-                })
-              } else {
-                /* this means there's an error in nextQuestion(),
-                because our nextQuestion function is supposed to set attribute data-answerwith */
-                alert("question has invalid data-answerwith... this error isn't supposed to be possible 💀")
-              }
-            } else if (event.target.dataset.array = "newTerms") {
-              if (question.dataset.answerwith == "term") {
-                sessionProgress.push({
-                  term: newTerms[question.dataset.index][0],
-                  def: newTerms[question.dataset.index][1],
-                  termIncorrect: 1
-                })
-              } else if (question.dataset.answerwith == "def") {
-                sessionProgress.push({
-                  term: newTerms[question.dataset.index][0],
-                  def: newTerms[question.dataset.index][1],
-                  defIncorrect: 1
-                })
-              } else {
-                /* this data-answerwith attribute is set by nextQuestion() */
-                alert("data-answerwith is wrong 💀")
-              }
+            if (question.dataset.array == "studysetTermsWithProgress") {
+              updateSessionProgressMap(
+                studysetTermsArray[question.dataset.index].term,
+                studysetTermsArray[question.dataset.index].def,
+                question.dataset.answerwith,
+                false /* false for incorrect */
+              )
+            } else if (question.dataset.array == "newTerms") {
+              updateSessionProgressMap(
+                newTerms[question.dataset.index][0],
+                newTerms[question.dataset.index][1],
+                question.dataset.answerwith,
+                false /* false for incorrect */
+              )
+            } else {
+              alert("invalid data-array attribute i think 💀")
             }
           } else {
             alert("impossible error?")
@@ -634,6 +596,52 @@
       document.getElementById("answer-2").addEventListener("click", checkAnswer);
       document.getElementById("answer-3").addEventListener("click", checkAnswer);
       document.getElementById("answer-4").addEventListener("click", checkAnswer);
+
+      function updateSessionProgressMap(term, def, answerWith, correct) {
+        var mapKey = JSON.stringify([term, def]);
+        if (sessionProgressMap.has(mapKey)) {
+          var progress = sessionProgressMap.get(mapKey);
+          if (answerWith == "term" && correct) {
+            progress.termCorrect++;
+          } else if (answerWith == "term") {
+            progress.termIncorrect++;
+          } else if (correct) {
+            progress.defCorrect++;
+          } else {
+            progress.defIncorrect++;
+          }
+          sessionProgressMap.set(mapKey, progress)
+        } else {
+          var progress = {
+            term: term,
+            def: def,
+            termCorrect: 0,
+            termIncorrect: 0,
+            defCorrect: 0,
+            defIncorrect: 0
+          };
+          if (answerWith == "term" && correct) {
+            progress.termCorrect++;
+          } else if (answerWith == "term") {
+            progress.termIncorrect++;
+          } else if (correct) {
+            progress.defCorrect++;
+          } else {
+            progress.defIncorrect++;
+          }
+          sessionProgressMap.set(mapKey, progress)
+        }
+      }
+
+      function showSummaryAndStuff() {
+        document.getElementById("review-mode-questions").classList.add("hide");
+        document.getElementById("review-mode-summary").classList.remove("hide");
+        var sessionProgressArray = [];
+        sessionProgressMap.forEach(function (value, _key, _map) {
+          sessionProgressArray.push(value);
+        });
+
+      }
     </script>
     <eta> if (data.local) { </eta>
     <script src="/assets/js/indexedDB.js"></script>
