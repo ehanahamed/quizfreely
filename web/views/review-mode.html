@@ -542,12 +542,12 @@
           event.target.classList.add("selected");
           if (event.target.dataset.answer == "correct") {
           event.target.classList.add("yay");
-        } else if (event.target.dataset.answer == "incorrect") {
-          event.target.classList.add("ohno");
-        } else {
-          alert("impossible error?")
-        }
-        document.getElementById("next-button").classList.remove("hide");
+          } else if (event.target.dataset.answer == "incorrect") {
+            event.target.classList.add("ohno");
+          } else {
+            alert("impossible error?")
+          }
+          document.getElementById("next-button").classList.remove("hide");
         }
       }
       document.getElementById("answer-1").addEventListener("click", checkAnswer);
