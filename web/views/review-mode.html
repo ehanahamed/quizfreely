@@ -440,7 +440,7 @@
         //  alert("congrats, i didn't implement this yet")
 
         if (currentQuestionNum > 10) {
-          showSummaryAndStuff()
+          showSummaryAndSaveResults()
         } else {
           var correctAnswerContent;
           if (
@@ -663,7 +663,7 @@
         }
       }
 
-      function showSummaryAndStuff() {
+      function showSummaryAndSaveResults() {
         document.getElementById("review-mode-questions").classList.add("hide");
         document.getElementById("review-mode-summary").classList.remove("hide");
 
@@ -676,6 +676,7 @@
         } else if (percent < 80) {
           document.getElementById("summary-percent").classList.add("ohno");
         }
+        /* if it's not >= 90 or < 80, it will stay it's default color */
 
         document.getElementById("summary-session-correct-count").innerText = sessionCorrectCount;
         if (sessionCorrectCount == 0) {
@@ -697,6 +698,7 @@
         sessionProgressMap.forEach(function (value, _key, _map) {
           sessionProgressArray.push(value);
         });
+        updateStudysetProgress(sessionProgressArray);
       }
     </script>
     <eta> if (data.local) { </eta>
@@ -850,6 +852,109 @@
       }).catch(function (error) {
         console.error(error);
       })
+    </script>
+    <eta> } </eta>
+
+
+    <eta> if (data.local) { </eta>
+      <script>
+        /* notice the value is not quoted because local IDs are ints, not strings,
+        so when Eta (template engine) "renders" the value, the actual html the server sends will have the id as a number without quotes */
+        var studysetId = <eta>= data.localId </eta>
+      </script>
+    <eta> } else { </eta>
+      <script>
+        var studysetId = "<eta>= data.studysetId </eta>"
+      </script>
+    <eta> } </eta>
+
+    <!-- if the studyset is local, or if the user isn't signed in,
+     we need to save/update progress locally -->
+    <eta> if (data.local || !(data.authed)) { </eta>
+    <script>
+      function updateStudysetProgress(progressTermsArray) {
+        openIndexedDB(function (db) {
+          var studysetprogressObjStore = db.transaction("studysetprogress", "").objectStore("studysetprogress");
+          var dbProgressGetReq = studysetprogressObjStore.get(studysetId);
+          dbProgressGetReq.onerror = function (event) {
+            alert("indexeddb error while getting existing progress to update");
+          }
+          dbProgressGetReq.onsuccess = function (event) {
+            if (dbProgressGetReq.result === undefined) {
+              /* no existing progress, so we're adding new progress (not updating existing) */
+              dbProgressAddReq = studysetprogressObjStore.add({
+                studyset_id: studysetId,
+                terms: progressTermsArray,
+                updated_at: (new Date()).toISOString()
+              });
+            } else {
+              /* there is existing progress, so we're updating it */
+              var progressChanges = progressTermsArray;
+              var progress = dbProgressGetReq.result.terms;
+              var existingProgressMap = new Map(progress.map(function (term, index) {
+                return [JSON.stringify([term.term, term.def]), index];
+              }));
+              var rnDateTimeString = (new Date()).toISOString();
+              for (let i = 0; i < progressChanges.length; i++) {
+                let existingIndex = existingProgressMap.get(JSON.stringify([progressChanges[i].term, progressChanges[i].def]));
+                if (existingIndex == null /* undefined works with `== null` */) {
+                  progress.push({
+                    term: progressChanges[i].term,
+                    def: progressChanges[i].def,
+                    termCorrect: progressChanges[i].termCorrect,
+                    termIncorrect: progressChanges[i].termIncorrect,
+                    defCorrect: progressChanges[i].defCorrect,
+                    defIncorrect: progressChanges[i].defIncorrect,
+                    firstReviewedAt: rnDateTimeString,
+                    lastReviewedAt: rnDateTimeString,
+                    reviewSessionsCount: 1
+                  })
+                } else {
+                  progress[existingIndex].termCorrect += progressChanges[i].termCorrect;
+                  progress[existingIndex].termIncorrect += progressChanges[i].termIncorrect;
+                  progress[existingIndex].defCorrect += progressChanges[i].defCorrect;
+                  progress[existingIndex].defIncorrect += progressChanges[i].defIncorrect;
+                  progress[existingIndex].lastReviewedAt = rnDateTimeString;
+                  progress[existingIndex].reviewSessionsCount++;
+                }
+              }
+              dbProgressPutReq = studysetprogressObjStore.put({
+                studyset_id: studysetId,
+                terms: progress,
+                updated_at: (new Date()).toISOString()
+              });
+            }
+          }
+        })
+      }
+    </script>
+    <eta> } else { </eta>
+    <!-- the studyset is not local, and the user is signed in
+    so we're saving progress under the users account -->
+    <script>
+      function updateStudysetProgress(progressTermsArray) {
+        fetch("/api/graphql", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            query: `mutation updateStudysetProgress(
+              $studysetId: ID!,
+              $progressTermsArrayChanges: [StudysetProgressTermInput!]!
+            ) {
+              updateStudysetProgress(
+                studysetId: $studysetId,
+                progressChanges: $progressTermsArrayChanges
+              )
+            }`,
+            variables: {
+              "studysetId": "<eta>= data.studysetId </eta>",
+              "progressTermsArrayChanges": progressTermsArray
+            }
+          })
+        })
+      }
     </script>
     <eta> } </eta>
   </body>
