@@ -25,6 +25,15 @@ const CRON_CLEAR_LOGS = process.env.CRON_CLEAR_LOGS || "false";
 const CRON_CLEAR_LOGS_INTERVAL = process.env.CRON_CLEAR_LOGS_INTERVAL;
 const ENABLE_OAUTH_GOOGLE = process.env.ENABLE_OAUTH_GOOGLE || "false";
 
+/* COOKIES_DOMAIN is removed/depreciated,
+but we can not update cookies without the domain flag if that user had the cookie previously set with the domain flag,
+and if we want to delete/clear a cookie, we need to use the same options/flags that the cookie used to have
+
+so, if COOKIES_DOMAIN is still in our dotenv file,
+we delete the old cookie using the old COOKIES_DOMAIN
+and then recreate the cookie without the domain attribute */
+const COOKIES_DOMAIN = process.env.COOKIES_DOMAIN;
+
 if (PORT == undefined || HOST == undefined) {
   console.error(
     "quizfreely/web/.env is missing or invalid \n" +
@@ -796,14 +805,11 @@ fastify.get("/discord", function (request, reply) {
 })
 
 function cookieOptions() {
-  let time = new Date();
-  /* 100 days * 24h * 60m * 60s = 8640000 sec for 100 days */
-  time.setSeconds(time.getSeconds() + 8640000)
   return {
     path: "/",
     signed: false,
-    expires: time,
-    maxAge: 8640000,
+    /* 30 days * 24h * 60m * 60s = 2592000 sec for 30 days */
+    maxAge: 2592000,
     httpOnly: true,
     sameSite: "lax",
     /* when secure is true,
@@ -836,6 +842,22 @@ fastify.get("/docs/*", function (request, reply) {
 
 fastify.get("/settings/themes/:theme", function (request, reply) {
   if (themes.includes(request.params.theme)) {
+
+    /* backward-compatible behavoir for v0.27.4 */
+    if (COOKIES_DOMAIN) {
+      /* this clears the theme cookie if it had the old domain attribute */
+      reply.clearCookie(
+        "theme",
+        {
+          ...cookieOptions(),
+          domain: COOKIES_DOMAIN
+          /* notice how we need to use `domain: ...` here to be able to clear the cookie
+          before being able to update/recreate the cookie without `domain: ...` */
+        }
+      )
+    }
+
+    /* normal behavior */
     reply.setCookie(
       "theme",
       request.params.theme,
