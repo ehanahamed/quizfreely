@@ -874,7 +874,7 @@
     <script>
       function updateStudysetProgress(progressTermsArray) {
         openIndexedDB(function (db) {
-          var studysetprogressObjStore = db.transaction("studysetprogress", "").objectStore("studysetprogress");
+          var studysetprogressObjStore = db.transaction("studysetprogress", "readwrite").objectStore("studysetprogress");
           var dbProgressGetReq = studysetprogressObjStore.get(studysetId);
           dbProgressGetReq.onerror = function (event) {
             alert("indexeddb error while getting existing progress to update");
