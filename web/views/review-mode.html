@@ -95,7 +95,37 @@
             <button id="next-button" class="hide">Next</button>
           </div>
           <div id="review-mode-summary" class="hide" style="min-height:60vh">
-
+            <div class="flex" style="gap: 2rem;">
+              <div>
+                <p style="margin-top: 0.2rem;">Score</p>
+                <p id="summary-percent" class="h4" style="margin-bottom: 0.2rem;">...</p>
+              </div>
+              <div>
+                <p id="summary-session-correct-count-label" style="margin-top: 0.2rem;">Correct</p>
+                <p id="summary-session-correct-count" class="h4" style="margin-bottom: 0.2rem;">...</p>
+              </div>
+              <div>
+                <p id="summary-session-incorrect-count-label" style="margin-top: 0.2rem;">Incorrect</p>
+                <p id="summary-session-incorrect-count" class="h4" style="margin-bottom: 0.2rem;">...</p>
+              </div>
+            </div>
+            <div class="flex">
+              <eta> if (data.local) { </eta>
+              <a href="/studyset/local?id=<eta>= data.localId </eta>" class="button">
+                <i class="nf nf-fa-check"></i> Done
+              </a>
+              <a href="/studyset/local/review-mode?id=<eta>= data.localId </eta>" class="button alt">
+                <i class="nf nf-fa-repeat"></i> Keep Reviewing
+              </a>
+              <eta> } else { </eta>
+              <a href="/studysets/<eta>= data.studysetId </eta>" class="button">
+                <i class="nf nf-fa-check"></i> Done
+              </a>
+              <a href="/studysets/<eta>= data.studysetId </eta>/review-mode" class="button alt">
+                <i class="nf nf-fa-repeat"></i> Keep Reviewing
+              </a>
+              <eta> } </eta>
+            </div>
           </div>
         </div>
       </div>
@@ -636,11 +666,37 @@
       function showSummaryAndStuff() {
         document.getElementById("review-mode-questions").classList.add("hide");
         document.getElementById("review-mode-summary").classList.remove("hide");
+
+        var percent = Math.round(
+          (sessionCorrectCount / (sessionCorrectCount + sessionIncorrectCount)) * 100
+        );
+        document.getElementById("summary-percent").innerText = percent + "%";
+        if (percent >= 90) {
+          document.getElementById("summary-percent").classList.add("yay");
+        } else if (percent < 80) {
+          document.getElementById("summary-percent").classList.add("ohno");
+        }
+
+        document.getElementById("summary-session-correct-count").innerText = sessionCorrectCount;
+        if (sessionCorrectCount == 0) {
+          document.getElementById("summary-session-correct-count").classList.add("fg0");
+          document.getElementById("summary-session-correct-count-label").classList.add("fg0");
+        } else {
+          document.getElementById("summary-session-correct-count").classList.add("yay")
+        }
+
+        document.getElementById("summary-session-incorrect-count").innerText = sessionIncorrectCount;
+        if (sessionIncorrectCount == 0) {
+          document.getElementById("summary-session-incorrect-count").classList.add("fg0");
+          document.getElementById("summary-session-incorrect-count-label").classList.add("fg0");
+        } else {
+          document.getElementById("summary-session-incorrect-count").classList.add("ohno")
+        }
+
         var sessionProgressArray = [];
         sessionProgressMap.forEach(function (value, _key, _map) {
           sessionProgressArray.push(value);
         });
-
       }
     </script>
     <eta> if (data.local) { </eta>
