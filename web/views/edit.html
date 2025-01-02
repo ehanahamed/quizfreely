@@ -235,6 +235,7 @@
     })
     </script>
     <script src="/assets/js/indexedDB.js"></script>
+    <eta> if (data.authed && !(data.local)) { </eta>
     <script>
       document.getElementById("edit-private-false").addEventListener("click",
         function () {
@@ -249,6 +250,7 @@
         }
       )
     </script>
+    <eta> } </eta>
     <eta> if (data.new) { </eta>
     <script>
       editTermsTable.add();
