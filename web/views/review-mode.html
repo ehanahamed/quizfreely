@@ -284,7 +284,8 @@
               so if there's a few bad terms and/or old terms, we can do both new terms and old/bad terms in the same session 
               we subtract them from 10 so that we have a max of 10 new terms if there are no other higher-priority terms */
               howManyNewTermsAreWeGoingToStartReviewingBasedOnAccuracyOfTermsWithProgressAndHowManyTimesTheyWereReviewed = (
-                10 - overallBadCount - termsThatAreNotOverallBadButHaveNotBeenReviewed1OrLessDaysAgoCount
+                /* we use Math.min with newTerms to make sure we don't try to review new terms that don't exist */
+                Math.min(10, newTerms.length) - overallBadCount - termsThatAreNotOverallBadButHaveNotBeenReviewed1OrLessDaysAgoCount
               );
             }
 
