@@ -580,8 +580,8 @@
             
             if (question.dataset.array == "studysetTermsWithProgress") {
               updateSessionProgressMap(
-                studysetTermsArray[question.dataset.index].term,
-                studysetTermsArray[question.dataset.index].def,
+                studysetTermsWithProgress[question.dataset.index].term,
+                studysetTermsWithProgress[question.dataset.index].def,
                 question.dataset.answerwith,
                 true /* true for correct */
               )
@@ -933,6 +933,7 @@
     so we're saving progress under the users account -->
     <script>
       function updateStudysetProgress(progressTermsArray) {
+        console.log(progressTermsArray)
         fetch("/api/graphql", {
           method: "POST",
           headers: {
@@ -946,12 +947,18 @@
               updateStudysetProgress(
                 studysetId: $studysetId,
                 progressChanges: $progressTermsArrayChanges
-              )
+              ) {
+                id
+              }
             }`,
             variables: {
               "studysetId": "<eta>= data.studysetId </eta>",
               "progressTermsArrayChanges": progressTermsArray
             }
+          })
+        }).then(function (response) {
+          response.json().then(function (resJSON) {
+            console.log(resJSON)
           })
         })
       }
