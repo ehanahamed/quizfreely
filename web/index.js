@@ -267,6 +267,22 @@ function landingPage(request, reply) {
 }
 
 function dashboard(request, reply) {
+  /* backward-compatibility for v0.27.4 */
+  if (COOKIES_DOMAIN) {
+    /* clear dashboard cookie that had old domain attribute
+    we no longer use the domain attribute but we can't update or delete
+    the cookie without using the old domain attribute in clearCookie's parameters */
+    reply.clearCookie(
+      "dashboard",
+      {
+        ...cookieOptions(),
+        domain: COOKIES_DOMAIN
+        /* notice how we need to use `domain: ...` here to be able to clear the cookie
+        before being able to update/recreate the cookie without `domain: ...` */
+      }
+    )
+  }
+
   let themeDataObj = themeData(request);
   let cookieOptionsObj = cookieOptions();
   /*
@@ -866,17 +882,6 @@ fastify.get("/settings/themes/:theme", function (request, reply) {
   } else {
     reply.callNotFound()
   }
-})
-
-fastify.get("/settings/clear-cookies", function (request, reply) {
-  var cookieOptionsRn = cookieOptions()
-  reply.clearCookie("theme", cookieOptionsRn).clearCookie("dashboard", cookieOptionsRn).clearCookie("auth", cookieOptionsRn).view(
-    "settings.html",
-    {
-      ...themeData(request),
-      modal: "clearedCookies",
-    }
-  )
 })
 
 fastify.listen({
