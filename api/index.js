@@ -26,6 +26,15 @@ const CRON_DELETE_EXPIRED_SESSIONS = process.env.CRON_DELETE_EXPIRED_SESSIONS ||
 const CRON_DELETE_EXPIRED_SESSIONS_INTERVAL = process.env.CRON_DELETE_EXPIRED_SESSIONS_INTERVAL;
 const CRON_CLEAR_LOGS = process.env.CRON_CLEAR_LOGS || "false";
 const CRON_CLEAR_LOGS_INTERVAL = process.env.CRON_CLEAR_LOGS_INTERVAL;
+/* COOKIES_DOMAIN is removed/depreciated,
+but we can not update cookies without the domain flag if that user had the cookie previously set with the domain flag,
+and if we want to delete/clear a cookie, we need to use the same options/flags that the cookie used to have
+
+so, if COOKIES_DOMAIN is still in our dotenv file,
+we delete the old cookie using the old COOKIES_DOMAIN
+and then recreate the cookie without the domain attribute */
+const COOKIES_DOMAIN = process.env.COOKIES_DOMAIN;
+
 let cronDeleteExpiredSessionsError = false;
 let cronClearLogsError = false;
 
@@ -1301,6 +1310,21 @@ if (ENABLE_OAUTH_GOOGLE == "true") {
                             request.log.error(result.error)
                             reply.redirect(OAUTH_REDIRECT + "?error=oauth-error")
                         } else {
+                            if (COOKIES_DOMAIN) {
+                                /* for v0.27.4, clear old cookies that used to have COOKIES_DOMAIN */
+                                reply.clearCookie(
+                                    "auth",
+                                    {
+                                        domain: COOKIES_DOMAIN,
+                                        path: "/",
+                                        signed: false,
+                                        httpOnly: true,
+                                        sameSite: "lax",
+                                        secure: true
+                                    }
+                                );
+                            }
+                            
                             reply.setCookie(
                                 "auth",
                                 result.auth,
@@ -1362,6 +1386,21 @@ fastify.post("/auth/sign-up", {
                     [userId]
                 );
                 await client.query("COMMIT");
+                if (COOKIES_DOMAIN) {
+                    /* for v0.27.4, clear old cookies that used to have COOKIES_DOMAIN */
+                    reply.clearCookie(
+                        "auth",
+                        {
+                            domain: COOKIES_DOMAIN,
+                            path: "/",
+                            signed: false,
+                            httpOnly: true,
+                            sameSite: "lax",
+                            secure: true
+                        }
+                    )
+                }
+                            
                 reply.setCookie(
                     "auth",
                     session.rows[0].token,
