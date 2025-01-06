@@ -1489,6 +1489,20 @@ fastify.post("/auth/sign-in", {
                 [result.rows[0].id]
             )
             await client.query("COMMIT");
+            if (COOKIES_DOMAIN) {
+                /* for v0.27.4, clear old cookies that used to have COOKIES_DOMAIN */
+                reply.clearCookie(
+                    "auth",
+                    {
+                        domain: COOKIES_DOMAIN,
+                        path: "/",
+                        signed: false,
+                        httpOnly: true,
+                        sameSite: "lax",
+                        secure: true
+                    }
+                );
+            }
             reply.setCookie(
                 "auth",
                 session.rows[0].token,
@@ -1574,6 +1588,23 @@ fastify.post("/auth/sign-out", async function (request, reply) {
                 [ authToken ]
             );
             await client.query("COMMIT");
+            if (COOKIES_DOMAIN) {
+                /* for v0.27.4 compatability,
+                try to clear cookies using old domain attribute from COOKIES_DOMAIN dotenv value
+                before trying to clear without the domain attribute */
+                reply.clearCookie(
+                    "auth",
+                    {
+                        domain: COOKIES_DOMAIN,
+                        path: "/",
+                        signed: false,
+                        httpOnly: true,
+                        sameSite: "lax",
+                        secure: true
+                    }
+                )
+            }
+
             reply.clearCookie(
                 "auth",
                 {
