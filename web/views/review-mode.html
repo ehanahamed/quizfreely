@@ -901,7 +901,7 @@
               /* adding new progress (not updating existing) */
               dbProgressAddReq = studysetprogressObjStore.add({
                 studyset_id: studysetId,
-                terms: progressTermsArray,
+                terms: progressTermsArrayWithEverything,
                 updated_at: (new Date()).toISOString()
               });
             } else {
