@@ -881,6 +881,7 @@
             alert("indexeddb error while getting existing progress to update");
           }
           dbProgressGetReq.onsuccess = function (event) {
+            var rnDateTimeString = (new Date()).toISOString();
             if (dbProgressGetReq.result === undefined) {
               /* no existing progress, so we're adding new progress (not updating existing) */
               progressTermsArrayWithEverything = [];
@@ -911,7 +912,6 @@
               var existingProgressMap = new Map(progress.map(function (term, index) {
                 return [JSON.stringify([term.term, term.def]), index];
               }));
-              var rnDateTimeString = (new Date()).toISOString();
               for (let i = 0; i < progressChanges.length; i++) {
                 let existingIndex = existingProgressMap.get(JSON.stringify([progressChanges[i].term, progressChanges[i].def]));
                 if (existingIndex == null /* undefined works with `== null` */) {
