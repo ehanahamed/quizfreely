@@ -884,7 +884,7 @@
             if (dbProgressGetReq.result === undefined) {
               /* no existing progress, so we're adding new progress (not updating existing) */
               progressTermsArrayWithEverything = [];
-              for (var i = 0; i < progressTermsArray; i++) {
+              for (var i = 0; i < progressTermsArray.length; i++) {
                 /* we need to iterate over the array and add timestamps */
                 progressTermsArrayWithEverything.push({
                   term: progressTermsArray[i].term,
