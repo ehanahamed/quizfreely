@@ -1,47 +1,53 @@
-<eta>~ include("./partials/noscript") </eta>
+<script>
+    import Header from "$lib/components/Header.svelte";
+    let authed = true;
+    let data = {};
+</script>
+
+<!--<eta>~ include("./partials/noscript") </eta>-->
 <main>
   <div class="grid page">
     <div class="content">
       <div id="mainDashboarddiv">
-        <eta> if (data.authed == false) { </eta>
+        {#if !authed}
           <p id="dashboard-noaccount-alert" class="fg0">
             You're not signed in, so your sets will be saved locally (on your device)
           </p>
-        <eta> } </eta>
+        {/if}
         <div class="flex">
           <a href="/studyset/create" class="button">
             <i class="nf nf-oct-plus"></i>
             Create new
           </a>
         </div>
-        <eta> if (data.authed) { </eta>
+        {#if authed}
         <div class="grid list" id="studyset-list" style="overflow-wrap:anywhere">
-          <eta> if (data.studysetList && data.studysetList.length > 0 ) { </eta>
-            <eta> data.studysetList.forEach(function (studyset) { </eta>
+          {#if data.studysetList && data.studysetList.length > 0}
+            {#each data.studysetList as studyset}
               <div class="box">
-                <a href="/studysets/<eta>= studyset.id </eta>"><eta>= studyset.title </eta></a>
-                <p class="h6" data-timestamp="<eta>= studyset.updated_at </eta>">...</p>
+                <a href="/studysets/{ studyset.id }">{ studyset.title }</a>
+                <p class="h6" data-timestamp={ studyset.updated_at }>...</p>
               </div>
-            <eta> }) </eta>
-          <eta> } else { </eta>
-          <div class="box flex center-h center-v">
-            <div>Tap "create new" to create a studyset</div>
-          </div>
-          <eta> } </eta>
+            {/each}
+          {:else}
+            <div class="box flex center-h center-v">
+              <div>Tap "create new" to create a studyset</div>
+            </div>
+          {/if}
         </div>
-        <eta> } </eta>
-        <eta> if (data.authed) { </eta>
+        {/if}
+        {#if authed}
         <!-- only show "Local Studysets" title to tell the difference from studysets saved to an account when logged in -->
         <!-- also, the element has class="... hide" cause client/browser js only shows it if there are local studysets and the user is signed in -->
         <p class="h3 hide" id="local-list-title">Local Studysets</p>
-        <eta> } </eta>
+        {/if}
         <div class="grid list hide" id="local-list">
-          <eta> if (data.authed == false) { </eta>
+          {#if !authed}
           <!-- only show empty message if user is logged out and can therefore only have local studysets -->
           <div class="hide box flex center-h center-v" id="local-list-empty">
             <div>Tap "create new" to create a studyset</div>
           </div>
-          <eta> } </eta>
+          {/if}
         </div>
         <div id="mainDashboardImportother" class="modal hide">
           <div class="content">
@@ -73,7 +79,7 @@
               </button>
               <button
                 class="red"
-                onclick="document.getElementById('mainDashboardImportother').classList.add('hide')"
+                onclick={document.getElementById('mainDashboardImportother').classList.add('hide')}
               >
                 Cancel
               </button>
@@ -84,7 +90,7 @@
     </div>
   </div>
 </main>
-<eta>~ include("./partials/footer") </eta>
+<!--<eta>~ include("./partials/footer") </eta>
 <script src="/assets/js/fancyTimestamp.js"></script>
 <script>
   if (window.localStorage && (localStorage.getItem("settingTimeHour") == "24h")) {
@@ -142,4 +148,4 @@
       console.error(error);
     }
   })
-</script>
+</script>-->

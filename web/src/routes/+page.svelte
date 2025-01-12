@@ -1,2 +1,11 @@
-<h1>Welcome to SvelteKit</h1>
-<p>Visit <a href="https://svelte.dev/docs/kit">svelte.dev/docs/kit</a> to read the documentation</p>
+<script>
+    import Dashboard from "./Dashboard.svelte";
+    import LandingPage from "./LandingPage.svelte";
+    let authed = true;
+</script>
+
+{#if authed === true}
+<Dashboard />
+{:else}
+<LandingPage />
+{/if}
