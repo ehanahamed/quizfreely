@@ -1,7 +1,7 @@
 <script>
     import Dashboard from "./Dashboard.svelte";
     import LandingPage from "./LandingPage.svelte";
-    let authed = true;
+    let authed = false;
 </script>
 
 {#if authed === true}

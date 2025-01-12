@@ -1,6 +1,6 @@
 <script>
     import Header from "$lib/components/Header.svelte";
-    let authed = true;
+    let authed = false;
     let data = {};
 </script>
 
