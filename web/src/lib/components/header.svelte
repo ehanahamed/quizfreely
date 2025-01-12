@@ -1,3 +1,7 @@
+<script>
+    import Searchbar from "$lib/components/Searchbar.svelte";
+</script>
+
 <header class="navbar with-search with-status">
     <div class="menu nav">
       <div class={ data.page == "home" ? "current" : "" }>
@@ -18,7 +22,7 @@
         <div class="search"></div>
     {:else}
     <div class="search">
-      <!--<eta>~ include("./searchbar", { searchQuery: data.searchQuery }) </eta>-->
+        <Searchbar query={data.searchQuery} />
     </div>
     {/if}
     <div class="status">
