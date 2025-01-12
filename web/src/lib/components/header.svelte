@@ -14,36 +14,36 @@
         <a href="/settings" class="clickable-effect">Settings</a>
       </div>
     </div>
-    <eta> if (data.hideSearchbar) { </eta>
-    <div class="search"></div>
-    <eta> } else { </eta>
+    {#if data.hideSearchbar }
+        <div class="search"></div>
+    {:else}
     <div class="search">
-      <eta>~ include("./searchbar", { searchQuery: data.searchQuery }) </eta>
+      <!--<eta>~ include("./searchbar", { searchQuery: data.searchQuery }) </eta>-->
     </div>
-    <eta> } </eta>
+    {/if}
     <div class="status">
-      <eta> if (data.authed) { </eta>
-      <div class="dropdown" style="margin-top:0px;margin-bottom:0px;margin-left:1rem;margin-right:1rem">
-        <eta> if (data.authedUser.display_name.length < 10) { </eta>
-        <button class="faint">
-          <i class="nf nf-fa-user"></i>
-          <eta>= data.authedUser.display_name </eta>
-        </button>
-        <eta> } else { </eta>
-        <button class="faint">
-          <i class="nf nf-fa-user"></i>
-          Signed in
-        </button>
-        <eta> } </eta>
-        <div class="content" style="right:0">
-          <a href="/users/<eta>= data.authedUser.id </eta>" class="button">Profile</a>
-          <a href="/settings" class="button">Settings</a>
-        </div>
-      </div>
-      <eta> } else { </eta>
+        {#if data.authed }
+            <div class="dropdown" style="margin-top:0px;margin-bottom:0px;margin-left:1rem;margin-right:1rem">
+                {#if data.authedUser.display_name.length < 10 }
+                    <button class="faint">
+                      <i class="nf nf-fa-user"></i>
+                      <eta>= data.authedUser.display_name </eta>
+                    </button>
+                {:else}
+                    <button class="faint">
+                      <i class="nf nf-fa-user"></i>
+                      Signed in
+                    </button>
+                {/if}
+                <div class="content" style="right:0">
+                  <a href="/users/<eta>= data.authedUser.id </eta>" class="button">Profile</a>
+                  <a href="/settings" class="button">Settings</a>
+                </div>
+            </div>
+        {:else}
         <div class="flex" style="margin-top:0px;margin-bottom:0px;margin-left:1rem;margin-right:1rem">
           <a href="/sign-in" class="button alt">Sign in</a>
         </div>
-      <eta> } </eta>
+        {/if}
     </div>
-  </header>  
+</header>
