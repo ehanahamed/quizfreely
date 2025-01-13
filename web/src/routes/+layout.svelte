@@ -1,6 +1,7 @@
 <script>
     let { children, data } = $props();
     import Header from '$lib/components/Header.svelte';
+    import Footer from "$lib/components/Footer.svelte";
 </script>
 
 <svelte:head>
@@ -9,3 +10,4 @@
 
 <Header />
 {@render children()}
+<Footer />
