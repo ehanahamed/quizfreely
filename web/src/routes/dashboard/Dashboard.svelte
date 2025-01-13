@@ -91,7 +91,6 @@
     </div>
   </div>
 </main>
-<!--<eta>~ include("./partials/footer") </eta>
 <script src="/assets/js/fancyTimestamp.js"></script>
 <script>
   if (window.localStorage && (localStorage.getItem("settingTimeHour") == "24h")) {
@@ -149,4 +148,4 @@
       console.error(error);
     }
   })
-</script>-->
+</script>
