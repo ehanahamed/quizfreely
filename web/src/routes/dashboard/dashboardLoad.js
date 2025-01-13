@@ -1,6 +1,6 @@
 import { env } from '$env/dynamic/private';
 
-export default async function ({ cookies }, {authed, authedUser, theme }) {
+export default async function (cookies, theme) {
   
   /* backward-compatibility for v0.27.4 */
   if (env.COOKIES_DOMAIN) {
@@ -56,15 +56,21 @@ export default async function ({ cookies }, {authed, authedUser, theme }) {
       sameSite: "lax"
     }
   )
-  if (authed) {
-    fetch(env.API_URL + "/graphql", {
+  if (cookies.get("auth")) {
+    fetch(API_URL + "/graphql", {
       method: "POST",
       headers: {
-        "Authorization": "Bearer " + cookies.get(auth),
+        "Authorization": "Bearer " + request.cookies.auth,
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
         query: `query {
+          authed
+          authedUser {
+            id
+            username
+            display_name
+          }
           myStudysets {
             id
             title
@@ -76,35 +82,42 @@ export default async function ({ cookies }, {authed, authedUser, theme }) {
       })
     }).then(function (rawApiRes) {
       rawApiRes.json().then(function (apiRes) {
-        if (apiRes?.data?.myStudysets) {
-          return {
-            dashboard: true,
-            studysetList: apiRes.data.myStudysets
+        if (apiRes?.data?.authed) {
+          if (apiRes?.data?.myStudysets) {
+            reply.view("dashboard.html", {
+              ...themeDataObj,
+              authed: apiRes.data.authed,
+              authedUser: apiRes.data.authedUser,
+              studysetList: apiRes.data.myStudysets
+            })
           }
         } else {
-          return {
-            dashboard: true
-          };
+          reply.view("dashboard.html", {
+            ...themeDataObj,
+            authed: false
+          })
         }
       }).catch(function (error) {
-        //request.log.error(error);
+        request.log.error(error);
         //reply.send("work in progress error message error during api response json parse")
-        return {
-          dashboard: true
-        };
+        reply.view("dashboard.html", {
+          ...themeDataObj,
+          authed: false
+        })
       })
     }).catch(function (error) {
-      //request.log.error(error);
-      
+      request.log.error(error);
       //reply.send("work in progress error message error during api graphql fetch")
       // in addition to an error message, our dashboard.html view should still be sent so that stuff like local studysets are still usable
-      return {
-        dashboard: true
-      };
+      reply.view("dashboard.html", {
+        ...themeDataObj,
+        authed: false
+      })
     })
   } else {
-    return {
-      dashboard: true
-    };
+    reply.view("dashboard.html", {
+      ...themeDataObj,
+      authed: false
+    })
   }
 };
