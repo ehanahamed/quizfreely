@@ -1,6 +1,6 @@
 import { env } from '$env/dynamic/private';
 
-export default async function ({ cookies }, {authed, authedUser}) {
+export default async function ({ cookies }, {authed, authedUser, theme }) {
   
   /* backward-compatibility for v0.27.4 */
   if (env.COOKIES_DOMAIN) {
@@ -43,7 +43,7 @@ export default async function ({ cookies }, {authed, authedUser}) {
   );
   cookies.set(
     "theme",
-    themeDataObj.theme,
+    theme,
     {
       /* 30 days * 24h * 60m * 60s = 2592000 sec for 30 days */
       maxAge: 2592000,
@@ -78,24 +78,33 @@ export default async function ({ cookies }, {authed, authedUser}) {
       rawApiRes.json().then(function (apiRes) {
         if (apiRes?.data?.myStudysets) {
           return {
+            dashboard: true,
             studysetList: apiRes.data.myStudysets
           }
         } else {
-          return {};
+          return {
+            dashboard: true
+          };
         }
       }).catch(function (error) {
         //request.log.error(error);
         //reply.send("work in progress error message error during api response json parse")
-        return {};
+        return {
+          dashboard: true
+        };
       })
     }).catch(function (error) {
       //request.log.error(error);
       
       //reply.send("work in progress error message error during api graphql fetch")
       // in addition to an error message, our dashboard.html view should still be sent so that stuff like local studysets are still usable
-      return {};
+      return {
+        dashboard: true
+      };
     })
   } else {
-    return {};
+    return {
+      dashboard: true
+    };
   }
 };

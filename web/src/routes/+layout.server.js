@@ -4,8 +4,6 @@ export async function load({ cookies }) {
       theme = cookies.theme;
     }
     let themeCss = `/themes/ehui-${theme}.min.css`;
-    
-    console.log("\n\nran\n\n");
     return {
       theme: theme,
       themeCss: themeCss
