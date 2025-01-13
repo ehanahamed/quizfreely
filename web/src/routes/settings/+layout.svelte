@@ -51,7 +51,7 @@
             <span class="h6">Display name:</span><br />
             <span id="account-display-name">{ data.authedUser.display_name }</span>
           </p>
-          <button class="icon-only-button" id="display-name-edit-button"><i class="nf nf-fa-pencil"></i></button>
+          <button class="icon-only-button" id="display-name-edit-button" aria-label="Edit"><i class="nf nf-fa-pencil"></i></button>
         </div>
         <div id="display-name-edit-div" class="hide" style="margin-top:0px">
           <p class="h6" style="margin-bottom:0.6rem">Display Name:</p>
