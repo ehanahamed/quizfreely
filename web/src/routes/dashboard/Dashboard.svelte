@@ -1,10 +1,11 @@
 <script>
     import Header from "$lib/components/Header.svelte";
+    import Noscript from "$lib/components/Noscript.svelte";
     let authed = false;
     let data = {};
 </script>
 
-<!--<eta>~ include("./partials/noscript") </eta>-->
+<Noscript />
 <main>
   <div class="grid page">
     <div class="content">
