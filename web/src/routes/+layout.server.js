@@ -1,11 +1,13 @@
+import themesList from "$lib/themes"
+
 export async function load({ cookies }) {
     let theme = "auto";
-    if (cookies.theme !== undefined && themes.includes(cookies.theme)) {
+    let themeCookie = cookies.get("theme");
+    if (themeCookie !== undefined && themesList.includes(themeCookie)) {
         theme = cookies.theme;
     }
-    let themeCss = `/themes/ehui-${theme}.min.css`;
     return {
         theme: theme,
-        themeCss: themeCss
+        themeCCSSHref: `/themes/ehui-${theme}.min.css`
     }
 }

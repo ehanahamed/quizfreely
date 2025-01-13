@@ -1,11 +1,9 @@
 <script>
     let { children, data } = $props();
-    import Footer from "$lib/components/Footer.svelte";
 </script>
 
 <svelte:head>
-    <link rel="stylesheet" href={ data.themeCss } />
+    <link rel="stylesheet" href={ data.themeCSSHref } />
 </svelte:head>
 
 {@render children()}
-<Footer />

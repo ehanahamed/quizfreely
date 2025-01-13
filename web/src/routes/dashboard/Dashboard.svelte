@@ -1,10 +1,17 @@
 <script>
     import Header from "$lib/components/Header.svelte";
     import Noscript from "$lib/components/Noscript.svelte";
+    import Footer from "$lib/components/Footer.svelte";
     let authed = false;
-    let data = {};
+    let { data } = $props();
+
+    import { onMount } from "svelte";
+    onMount(function () {
+      
+    })
 </script>
 
+<Header />
 <Noscript />
 <main>
   <div class="grid page">
@@ -91,6 +98,8 @@
     </div>
   </div>
 </main>
+<Footer />
+
 <script src="/assets/js/fancyTimestamp.js"></script>
 <script>
   if (window.localStorage && (localStorage.getItem("settingTimeHour") == "24h")) {
