@@ -4,7 +4,7 @@
     let { data } = $props();
 </script>
 
-{#if data.dashboard == true}
+{#if data?.dashboard == true}
 <Dashboard />
 {:else}
 <LandingPage />
