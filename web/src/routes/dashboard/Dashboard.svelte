@@ -4,10 +4,60 @@
     import Footer from "$lib/components/Footer.svelte";
     let { data } = $props();
 
+    import { fancyTimestamp } from "$lib/fancyTimestamp";
     import { openIndexedDB } from "$lib/indexedDB";
     import { onMount } from "svelte";
     onMount(function () {
-      
+      if (window.localStorage && (localStorage.getItem("settingTimeHour") == "24h")) {
+        fancyTimestamp.hours = 24;
+      } else if (window.localStorage && (localStorage.getItem("settingTimeHour") == "12h")) {
+        fancyTimestamp.hours = 12;
+      }
+
+      for (var i = 0; i < document.getElementById("studyset-list").children.length; i++) {
+        var timestampElement = document.getElementById("studyset-list").children[i].children[1]
+        timestampElement.innerText = fancyTimestamp.format(timestampElement.dataset.timestamp);
+      }
+
+      openIndexedDB(function (db) {
+        var studysetsObjectStore = db.transaction(["studysets"], "readonly").objectStore("studysets");
+        var dbStudysetsReq = studysetsObjectStore.getAll();
+        dbStudysetsReq.onsuccess = function (event) {
+          var studysets = dbStudysetsReq.result;
+          if (studysets.length >= 1) {
+            var localListTitleElement = document.getElementById("local-list-title");
+            if (localListTitleElement) {
+              localListTitleElement.classList.remove("hide");
+            }
+            document.getElementById("local-list").classList.remove("hide");
+            for (var i = 0; i < studysets.length; i++) {
+              var div = document.createElement("div");
+              div.classList.add("box");
+              var title = document.createElement("a");
+              title.innerText = studysets[i].title;
+              title.href = "/studyset/local?id=" + studysets[i].id;
+              div.appendChild(title);
+              if (studysets[i].updated_at) {
+                var timestamp = document.createElement("p");
+                timestamp.classList.add("h6");
+                timestamp.innerText = fancyTimestamp.format(studysets[i].updated_at);
+                div.appendChild(timestamp);
+              }
+              document.getElementById("local-list").appendChild(div);
+            }
+          } else {
+            var emptyMessageElement = document.getElementById("local-list-empty");
+            if (emptyMessageElement) {
+              document.getElementById("local-list").classList.remove("hide");
+              emptyMessageElement.classList.remove("hide");
+            }
+          }
+        }
+        dbStudysetsReq.onerror = function (error) {
+          alert("error getting local studysets list from indexeddb");
+          console.error(error);
+        }
+      })
     })
 </script>
 
@@ -99,63 +149,3 @@
   </div>
 </main>
 <Footer />
-
-<!--<script src="/assets/js/fancyTimestamp.js"></script>
-<script>
-  if (window.localStorage && (localStorage.getItem("settingTimeHour") == "24h")) {
-    fancyTimestamp.hours = 24;
-  } else if (window.localStorage && (localStorage.getItem("settingTimeHour") == "12h")) {
-    fancyTimestamp.hours = 12;
-  }
-</script>
-<eta> if (data.data.authed && data.studysetList && data.studysetList.length > 0) { </eta>
-<script>
-  for (var i = 0; i < document.getElementById("studyset-list").children.length; i++) {
-    var timestampElement = document.getElementById("studyset-list").children[i].children[1]
-    timestampElement.innerText = fancyTimestamp.format(timestampElement.dataset.timestamp);
-  }
-</script>
-<eta> } </eta>
-<script src="/assets/js/indexedDB.js"></script>
-<script>
-  openIndexedDB(function (db) {
-    var studysetsObjectStore = db.transaction(["studysets"], "readonly").objectStore("studysets");
-    var dbStudysetsReq = studysetsObjectStore.getAll();
-    dbStudysetsReq.onsuccess = function (event) {
-      var studysets = dbStudysetsReq.result;
-      if (studysets.length >= 1) {
-        var localListTitleElement = document.getElementById("local-list-title");
-        if (localListTitleElement) {
-          localListTitleElement.classList.remove("hide");
-        }
-        document.getElementById("local-list").classList.remove("hide");
-        for (var i = 0; i < studysets.length; i++) {
-          var div = document.createElement("div");
-          div.classList.add("box");
-          var title = document.createElement("a");
-          title.innerText = studysets[i].title;
-          title.href = "/studyset/local?id=" + studysets[i].id;
-          div.appendChild(title);
-          if (studysets[i].updated_at) {
-            var timestamp = document.createElement("p");
-            timestamp.classList.add("h6");
-            timestamp.innerText = fancyTimestamp.format(studysets[i].updated_at);
-            div.appendChild(timestamp);
-          }
-          document.getElementById("local-list").appendChild(div);
-        }
-      } else {
-        var emptyMessageElement = document.getElementById("local-list-empty");
-        if (emptyMessageElement) {
-          document.getElementById("local-list").classList.remove("hide");
-          emptyMessageElement.classList.remove("hide");
-        }
-      }
-    }
-    dbStudysetsReq.onerror = function (error) {
-      alert("error getting local studysets list from indexeddb");
-      console.error(error);
-    }
-  })
-</script>
--->
