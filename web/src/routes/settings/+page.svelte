@@ -2,7 +2,6 @@
     import Header from "$lib/components/Header.svelte";
     import Footer from "$lib/components/Footer.svelte";
     let { data } = $props();
-    console.log(data)
 </script>
 
 <Header />
@@ -14,21 +13,15 @@
       <h3>Appearance</h3>
       <p>Theme</p>
       <div class="grid list">
-        <a href="/settings/themes/auto" class={
-            "button button-box no-clickable-effect" + (data.theme == "auto" ? "selected" : "")
-        }>
+        <a href="/settings/themes/auto" class="button button-box no-clickable-effect {data.theme == 'auto' ? 'selected' : ''}">
           <img src="/assets/img/themes/theme-preview-auto.png" style="width:100%;border-radius:0.8rem" alt="Auto Dark/Light Theme Preview">
           <p>Auto</p>
         </a>
-        <a href="/settings/themes/dark" class={
-            "button button-box no-clickable-effect" + (data.theme == "dark" ? "selected" : "")
-        }>
+        <a href="/settings/themes/dark" class="button button-box no-clickable-effect {data.theme == 'dark' ? 'selected' : ''}">
           <img src="/assets/img/themes/theme-preview-dark.png" style="width:100%;border-radius:0.8rem" alt="Dark Theme Preview">
           <p>Dark</p>
         </a>
-        <a href="/settings/themes/light" class={
-            "button button-box no-clickable-effect" + (data.theme == "light" ? "selected" : "")
-        }>
+        <a href="/settings/themes/light" class="button button-box no-clickable-effect {data.theme == 'light' ? 'selected' : ''}">
           <img src="/assets/img/themes/theme-preview-light.png" style="width:100%;border-radius:0.8rem" alt="Light Theme Preview">
           <p>Light</p>
         </a>

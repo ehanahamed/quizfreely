@@ -6,7 +6,6 @@ export function handle ({ event, resolve }) {
     if (themeCookie !== undefined && themesList.includes(themeCookie)) {
         theme = themeCookie;
     }
-    console.log(theme);
     event.locals.theme = theme;
     return resolve(event, {
         transformPageChunk: function ({ html }) {
