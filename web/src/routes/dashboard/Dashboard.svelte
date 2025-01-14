@@ -2,7 +2,6 @@
     import Header from "$lib/components/Header.svelte";
     import Noscript from "$lib/components/Noscript.svelte";
     import Footer from "$lib/components/Footer.svelte";
-    let authed = false;
     let { data } = $props();
 
     import { onMount } from "svelte";
@@ -17,7 +16,7 @@
   <div class="grid page">
     <div class="content">
       <div id="mainDashboarddiv">
-        {#if !authed}
+        {#if !data.authed}
           <p id="dashboard-noaccount-alert" class="fg0">
             You're not signed in, so your sets will be saved locally (on your device)
           </p>
@@ -28,7 +27,7 @@
             Create new
           </a>
         </div>
-        {#if authed}
+        {#if data.authed}
         <div class="grid list" id="studyset-list" style="overflow-wrap:anywhere">
           {#if data.studysetList && data.studysetList.length > 0}
             {#each data.studysetList as studyset}
@@ -44,13 +43,13 @@
           {/if}
         </div>
         {/if}
-        {#if authed}
+        {#if data.authed}
         <!-- only show "Local Studysets" title to tell the difference from studysets saved to an account when logged in -->
         <!-- also, the element has class="... hide" cause client/browser js only shows it if there are local studysets and the user is signed in -->
         <p class="h3 hide" id="local-list-title">Local Studysets</p>
         {/if}
         <div class="grid list hide" id="local-list">
-          {#if !authed}
+          {#if !data.authed}
           <!-- only show empty message if user is logged out and can therefore only have local studysets -->
           <div class="hide box flex center-h center-v" id="local-list-empty">
             <div>Tap "create new" to create a studyset</div>
@@ -108,7 +107,7 @@
     fancyTimestamp.hours = 12;
   }
 </script>
-<eta> if (data.authed && data.studysetList && data.studysetList.length > 0) { </eta>
+<eta> if (data.data.authed && data.studysetList && data.studysetList.length > 0) { </eta>
 <script>
   for (var i = 0; i < document.getElementById("studyset-list").children.length; i++) {
     var timestampElement = document.getElementById("studyset-list").children[i].children[1]
