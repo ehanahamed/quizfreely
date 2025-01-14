@@ -84,40 +84,35 @@ export default async function (cookies, theme) {
       rawApiRes.json().then(function (apiRes) {
         if (apiRes?.data?.authed) {
           if (apiRes?.data?.myStudysets) {
-            reply.view("dashboard.html", {
-              ...themeDataObj,
+            return {
               authed: apiRes.data.authed,
               authedUser: apiRes.data.authedUser,
               studysetList: apiRes.data.myStudysets
-            })
+            }
           }
         } else {
-          reply.view("dashboard.html", {
-            ...themeDataObj,
+          return {
             authed: false
-          })
+          }
         }
       }).catch(function (error) {
         request.log.error(error);
         //reply.send("work in progress error message error during api response json parse")
-        reply.view("dashboard.html", {
-          ...themeDataObj,
+        return {
           authed: false
-        })
+        }
       })
     }).catch(function (error) {
       request.log.error(error);
       //reply.send("work in progress error message error during api graphql fetch")
       // in addition to an error message, our dashboard.html view should still be sent so that stuff like local studysets are still usable
-      reply.view("dashboard.html", {
-        ...themeDataObj,
+      return {
         authed: false
-      })
+      }
     })
   } else {
-    reply.view("dashboard.html", {
-      ...themeDataObj,
+    return {
       authed: false
-    })
+    }
   }
 };
