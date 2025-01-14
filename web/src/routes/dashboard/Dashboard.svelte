@@ -99,7 +99,7 @@
 </main>
 <Footer />
 
-<script src="/assets/js/fancyTimestamp.js"></script>
+<!--<script src="/assets/js/fancyTimestamp.js"></script>
 <script>
   if (window.localStorage && (localStorage.getItem("settingTimeHour") == "24h")) {
     fancyTimestamp.hours = 24;
@@ -157,3 +157,4 @@
     }
   })
 </script>
+-->

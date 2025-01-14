@@ -1,4 +1,6 @@
 <script>
+    import Header from "$lib/components/Header.svelte";
+    import Footer from "$lib/components/Footer.svelte";
     let { data } = $props();
 </script>
 
@@ -9,6 +11,7 @@
     <link rel="canonical" href="https://quizfreely.com" />
 </svelte:head>
 
+<Header />
 <main>
 <div class="grid intro" style="margin-bottom: 0px; padding-bottom: 0px; border:none">
     <div class="logotype">
@@ -102,3 +105,4 @@
     </div>
   </div>
 </main>
+<Footer />

@@ -3,6 +3,13 @@
     let { data } = $props();
 </script>
 
+<style>
+.current::before {
+	/* other existing rules */
+	view-transition-name: active-page;
+}
+</style>
+
 <header class="navbar with-search with-status">
     <div class="menu nav">
       <div class={ data?.page == "home" ? "current" : "" }>

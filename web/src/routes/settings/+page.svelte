@@ -1,4 +1,11 @@
+<script>
+    import Header from "$lib/components/Header.svelte";
+    import Footer from "$lib/components/Footer.svelte";
+    let { data } = $props();
+    console.log(data)
+</script>
 
+<Header />
 <!-- <eta>~ include("./partials/noscript") </eta> -->
 <main>
   <div class="grid page">
@@ -111,7 +118,8 @@
     </div>
   </div>
 </main>
-<script>
+<Footer />
+<!--<script>
   document.getElementById("time-24h").addEventListener("click", function () {
     document.getElementById("time-24h").classList.add("selected")
     document.getElementById("time-12h").classList.remove("selected")
@@ -174,4 +182,4 @@
     })
   })
 </script>
-{/if}
+{/if}-->

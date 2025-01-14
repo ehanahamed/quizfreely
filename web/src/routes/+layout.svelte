@@ -1,9 +1,5 @@
 <script>
-    let { children, data } = $props();
+    let { children } = $props();
 </script>
-
-<svelte:head>
-    <link rel="stylesheet" href={ data.themeCSSHref } />
-</svelte:head>
 
 {@render children()}
