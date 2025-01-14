@@ -4,6 +4,7 @@
     import Footer from "$lib/components/Footer.svelte";
     let { data } = $props();
 
+    import { openIndexedDB } from "$lib/indexedDB";
     import { onMount } from "svelte";
     onMount(function () {
       
