@@ -1,6 +1,7 @@
 <script>
     import Searchbar from "$lib/components/Searchbar.svelte";
-    let { data } = $props();
+    import { page } from '$app/state';
+    console.log(page);
 </script>
 
 <style>
@@ -12,30 +13,32 @@
 
 <header class="navbar with-search with-status">
     <div class="menu nav">
-      <div class={ data?.page == "home" ? "current" : "" }>
+      <div class={
+        (page.data?.page == "landingPage" || page.data?.page == "dashboard") ? "current" : ""
+      }>
         <a href="/home" class="clickable-effect">Home</a>
       </div>
-      <div class={ data?.page == "explore" ? "current" : "" }>
+      <div class={ page.data?.page == "explore" ? "current" : "" }>
         <a href="/explore" class="clickable-effect">Explore</a>
       </div>
-      <div class={ data?.page == "settings" ? "current" : "" }>
+      <div class={ page.data?.page == "settings" ? "current" : "" }>
         <a href="/settings" class="clickable-effect">Settings</a>
       </div>
     </div>
-    {#if data?.hideSearchbar }
+    {#if page.data?.hideSearchbar }
         <div class="search"></div>
     {:else}
     <div class="search">
-        <Searchbar query={data?.searchQuery} />
+        <Searchbar query={page.data?.searchQuery} />
     </div>
     {/if}
     <div class="status">
-        {#if data?.authed }
+        {#if page.data?.authed }
             <div class="dropdown" style="margin-top:0px;margin-bottom:0px;margin-left:1rem;margin-right:1rem">
-                {#if data.authedUser.display_name.length < 10 }
+                {#if page.data.authedUser.display_name.length < 10 }
                     <button class="faint">
                       <i class="nf nf-fa-user"></i>
-                      <eta>= data.authedUser.display_name </eta>
+                      <eta>= page.data.authedUser.display_name </eta>
                     </button>
                 {:else}
                     <button class="faint">
