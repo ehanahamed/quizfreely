@@ -1,7 +1,6 @@
 <script>
     import Searchbar from "$lib/components/Searchbar.svelte";
     import { page } from '$app/state';
-    console.log(page);
 </script>
 
 <style>
