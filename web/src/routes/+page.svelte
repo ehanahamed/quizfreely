@@ -1,6 +1,6 @@
 <script>
-    import Dashboard from "./dashboard/Dashboard.svelte";
-    import LandingPage from "./landing-page/LandingPage.svelte";
+    import Dashboard from "./dashboard/+page.svelte";
+    import LandingPage from "./landing-page/+page.svelte";
     let { data } = $props();
 </script>
 
