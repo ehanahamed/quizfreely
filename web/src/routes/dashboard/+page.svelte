@@ -60,7 +60,7 @@
 </script>
 
 <svelte:head>
-  <title></title>
+  <title>Quizfreely</title>
 </svelte:head>
 
 <Noscript />
