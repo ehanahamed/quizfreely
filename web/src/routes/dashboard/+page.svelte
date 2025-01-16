@@ -12,9 +12,11 @@
         fancyTimestamp.hours = 12;
       }
 
-      for (var i = 0; i < document.getElementById("studyset-list").children.length; i++) {
-        var timestampElement = document.getElementById("studyset-list").children[i].children[1]
-        timestampElement.innerText = fancyTimestamp.format(timestampElement.dataset.timestamp);
+      if (data.authed) {
+        for (var i = 0; i < document.getElementById("studyset-list").children.length; i++) {
+          var timestampElement = document.getElementById("studyset-list").children[i].children[1]
+          timestampElement.innerText = fancyTimestamp.format(timestampElement.dataset.timestamp);
+        }
       }
 
       openIndexedDB(function (db) {
