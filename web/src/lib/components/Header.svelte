@@ -5,7 +5,6 @@
 
 <style>
 .current::before {
-	/* other existing rules */
 	view-transition-name: active-page;
 }
 </style>

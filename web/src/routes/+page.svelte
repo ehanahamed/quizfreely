@@ -5,7 +5,7 @@
 </script>
 
 {#if data?.dashboard == true}
-<Dashboard />
+<Dashboard data={ data } />
 {:else}
-<LandingPage />
+<LandingPage data={ data } />
 {/if}

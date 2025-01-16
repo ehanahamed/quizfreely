@@ -59,6 +59,10 @@
     })
 </script>
 
+<svelte:head>
+  <title></title>
+</svelte:head>
+
 <Noscript />
 <main>
   <div class="grid page">
