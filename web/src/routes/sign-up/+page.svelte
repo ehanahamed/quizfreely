@@ -187,7 +187,7 @@
           </div>
           <div class="grid thin-centered">
             <div class="content">
-              <p class="center"><span class="fg0">By creating an account, you accept<br />our </span><a href="/privacy">Privacy Policy</a><span class="fg0"> & </span><a href="/terms">Terms of Service</a></p>
+              <p class="center"><span class="fg0">By creating an account, you accept<br />our&nbsp;</span><a href="/privacy">Privacy Policy</a><span class="fg0">&nbsp;&amp;&nbsp;</span><a href="/terms">Terms of Service</a></p>
               <p class="center">Already have an account? <a href="./sign-in">Sign in</a></p>
             </div>
           </div>
