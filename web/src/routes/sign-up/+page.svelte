@@ -1,8 +1,10 @@
 <script>
     import Noscript from "$lib/components/Noscript.svelte";
+    import { onMount } from "svelte";
 
     let { data } = $props();
-    if (!data.authed) {
+    onMount(function () {
+      if (!data.authed) {
         if (window.location.search.includes("?error")) {
           var urlParams = new URLSearchParams(window.location.search);
           document.getElementById("error-div").classList.remove("hide");
@@ -58,6 +60,7 @@
         }
       );
     }
+    })
 </script>
 
 <style>

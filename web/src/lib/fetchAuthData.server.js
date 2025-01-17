@@ -1,6 +1,9 @@
-export default async function ({ cookies,  }) {
+import { API_URL } from "$env/static/private";
+
+export default async function ({ cookies }) {
   let authed = false;
   let authedUser;
+  let apiError = false;
   if (cookies.get("auth")) {
     try {
       let rawAuthedRes = await fetch(API_URL + "/graphql", {
@@ -27,12 +30,15 @@ export default async function ({ cookies,  }) {
         authed = authedRes.data.authed;
         authedUser = authedRes.data?.authedUser
       }
+      apiError = false;
     } catch (error) {
-      request.log.error(error);
+      console.error(error);
+      apiError = true;
     }
   }
   return {
     authed: authed,
-    authedUser: authedUser
+    authedUser: authedUser,
+    apiError: apiError
   }
 }
