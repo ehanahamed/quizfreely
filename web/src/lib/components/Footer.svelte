@@ -26,7 +26,7 @@
         <div class="flex col compact-gap" style="width:fit-content">
           <a href="https://codeberg.org/ehanahamed/quizfreely">Source Code (Codeberg)</a>
           <a href="https://github.com/ehanahamed/quizfreely">Source Code (GitHub)</a>
-          <a href="/dev-dashboard">Developer Dashboard</a>
+          <a href="/api-status">API Status</a>
         </div>
       </div>
       <div>
