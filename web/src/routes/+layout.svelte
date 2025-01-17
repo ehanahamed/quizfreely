@@ -5,12 +5,12 @@ import { fade } from "svelte/transition";
 let { children, data } = $props();
 </script>
 
-<div style="min-height: 80vh">
-    <Header />
-    {#key data.urlPathname}
-    <div in:fade={{ duration: 250, delay: 250 }} out:fade={{ duration: 250 }}>
+<Header />
+{#key data.urlPathname}
+<div in:fade={{ duration: 250, delay: 250 }} out:fade={{ duration: 250 }}>
+    <div style="min-height: 70vh">
         {@render children()}
     </div>
-    {/key}
+    <Footer />
 </div>
-<Footer />
+{/key}
