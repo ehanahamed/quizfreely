@@ -1,5 +1,5 @@
 [Unit]
-Description=Quizfreely API
+Description=Quizfreely Web
 After=network.target
 StartLimitBurst=3
 StartLimitIntervalSec=10
@@ -7,10 +7,11 @@ StartLimitIntervalSec=10
 [Service]
 Restart=always
 RestartSec=1
-WorkingDirectory=/root/quizfreely/api/
+WorkingDirectory=/opt/quizfreely/web/
 Environment="NODE_ENV=production"
-ExecStart=/usr/bin/npm run start
+ExecStart=/usr/bin/node build/index.js
 TimeoutStopSec=1
+User=quizfreely
 
 [Install]
 WantedBy=multi-user.target
