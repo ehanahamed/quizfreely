@@ -6,7 +6,7 @@ export default defineConfig({
 	server: {
 		port: process?.env?.PORT ?? 8080,
 		proxy: {
-			"/api": {
+			"/api/": {
 				target: process?.env?.API_URL ?? "http://localhost:8008",
 				changeOrigin: true,
 				rewrite: function (path) {
@@ -18,7 +18,7 @@ export default defineConfig({
 	preview: {
 		port: process?.env?.PORT ?? 8080,
 		proxy: {
-			"/api": {
+			"/api/": {
 				target: process?.env?.API_URL ?? "http://localhost:8008",
 				changeOrigin: true,
 				rewrite: function (path) {
