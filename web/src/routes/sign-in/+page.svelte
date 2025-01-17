@@ -118,7 +118,7 @@
     </div>
     {:else}
       <div id="account-div">
-        <div class="grid screen">
+        <div class="grid thin-centered">
           <div class="content">
           <h2>Sign In</h2>
           <div>
@@ -166,7 +166,7 @@
           </div>
         </div>
       </div>
-      <div class="grid screen">
+      <div class="grid thin-centered">
         <div class="content">
           <p><a href="./sign-up">Sign up</a> to create an account</p>
           <p id="mainSignupErrortext" class="box red hide">Error</p>
