@@ -248,12 +248,14 @@
             <div class="flex justifyselfcenter">
               <button
                 id="flashcards-prev-button"
+                aria-label="Previous Card"
               >
                 <i class="nf nf-cod-arrow_left"></i>
               </button>
               <button id="flashcards-flip-button">Flip</button>
               <button
                 id="flashcards-next-button"
+                aria-label="Next Card"
               >
                 <i class="nf nf-cod-arrow_right"></i>
               </button>
