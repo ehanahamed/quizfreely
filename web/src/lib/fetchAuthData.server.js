@@ -1,4 +1,4 @@
-import { API_URL } from "$env/static/private";
+import { env } from "$env/dynamic/private";
 
 export default async function ({ cookies }) {
   let authed = false;
@@ -6,7 +6,7 @@ export default async function ({ cookies }) {
   let apiError = false;
   if (cookies.get("auth")) {
     try {
-      let rawAuthedRes = await fetch(API_URL + "/graphql", {
+      let rawAuthedRes = await fetch(env.API_URL + "/graphql", {
         method: "POST",
         headers: {
           "Authorization": "Bearer " + cookies.get("auth"),

@@ -1,4 +1,4 @@
-import { COOKIES_DOMAIN } from "$env/static/private";
+import { env } from "$env/dynamic/private";
 import themes from '$lib/themes.js';
 import { redirect, error } from "@sveltejs/kit";
 
@@ -6,12 +6,12 @@ export function GET({ params, cookies }) {
     if (themes.includes(params.theme)) {
 
         /* backward-compatible behavoir for v0.27.4 */
-        if (COOKIES_DOMAIN) {
+        if (env.COOKIES_DOMAIN) {
           /* this clears the theme cookie if it had the old domain attribute */
           cookies.delete(
             "theme",
             {
-                domain: COOKIES_DOMAIN,
+                domain: env.COOKIES_DOMAIN,
                 path: "/",
                 httpOnly: true,
                 secure: true,

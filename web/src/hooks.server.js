@@ -1,14 +1,14 @@
 import themesList from "$lib/themes";
-import { PORT, API_URL } from "$env/static/private";
+import { env } from "$env/dynamic/private";
 
 export function init() {
-    if (PORT == null || API_URL == null) {
+    if (env.PORT == null || env.API_URL == null) {
         let missingVars = "";
-        if (PORT == null && API_URL == null) {
+        if (env.PORT == null && env.API_URL == null) {
             missingVars = "PORT and API_URL";
-        } else if (PORT == null) {
+        } else if (env.PORT == null) {
             missingVars = "PORT";
-        } else if (API_URL == null) {
+        } else if (env.API_URL == null) {
             missingVars = "API_URL";
         }
         console.log(

@@ -1,15 +1,15 @@
-import { COOKIES_DOMAIN } from '$env/dynamic/private';
+import { env } from '$env/dynamic/private';
 
 export async function load({ cookies, locals }) {
   /* backward-compatibility for v0.27.4 */
-  if (COOKIES_DOMAIN) {
+  if (env.COOKIES_DOMAIN) {
     /* clear dashboard cookie that had old domain attribute
     we no longer use the domain attribute but we can't update or delete
     the cookie without using the old domain attribute in clearCookie's parameters */
     cookies.delete(
       "dashboard",
       {
-        domain: COOKIES_DOMAIN,
+        domain: env.COOKIES_DOMAIN,
         path: "/",
         httpOnly: true,
         secure: true,

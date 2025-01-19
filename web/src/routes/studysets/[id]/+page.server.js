@@ -1,4 +1,4 @@
-import { API_URL } from "$env/static/private";
+import { env } from "$env/dynamic/private";
 import { error } from "@sveltejs/kit";
 
 export async function load({ params, cookies }) {
@@ -12,7 +12,7 @@ export async function load({ params, cookies }) {
         };
       }
       try {
-        let rawApiRes = await fetch(API_URL + "/graphql", {
+        let rawApiRes = await fetch(env.API_URL + "/graphql", {
           method: "POST",
           headers: headers,
           body: JSON.stringify({
