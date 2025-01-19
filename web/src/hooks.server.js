@@ -12,11 +12,19 @@ export function init() {
             missingVars = "API_URL";
         }
         console.log(
-            "\n\x1b[31m%s\x1b[0m",
-            "!! Oh no\n" +
+            "\x1b[31m%s\x1b[0m", /* red color, and then afterwords reset color */
+            "\n!! Oh no\n" +
             `Quizfreely-web's dotenv file is missing ${ missingVars }\n` +
             "We can copy web/.env.example to web/.env\n"
         );
+        if (env.PORT == null && env.API_URL == null) {
+            /* show --env-file flag warning if both are null (cause if both are null, then mabye the whole env file is missing) */
+            console.log(
+                "\x1b[31m%s\x1b[0m", /* red color, and then afterwords reset color */
+                "For production, use `node --env-file=.env build`\n" +
+                "For development, vite loads dotenv files by default\n"
+            )
+        }
     }
 }
 
