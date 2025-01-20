@@ -37,7 +37,7 @@ export function handle({ event, resolve }) {
     event.locals.theme = theme;
     return resolve(event, {
         transformPageChunk: function ({ html }) {
-            return html.replace("%theme%", `/themes/ehui-${theme}.min.css`);
+            return html.replace("%theme%", `/themes/${theme}.min.css`);
         }
     });
 }
