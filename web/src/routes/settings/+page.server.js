@@ -1,8 +1,8 @@
 import fetchAuthData from "$lib/fetchAuthData.server"
 
-export async function load({ locals }) {
+export async function load({ locals, cookies }) {
     return {
-        ...await fetchAuthData,
+        ...await fetchAuthData({ cookies }),
         theme: locals.theme
     }
 }
