@@ -12,14 +12,14 @@
 <header class="navbar with-search with-status">
     <div class="menu nav">
       <div class={
-        (page.data?.page == "landingPage" || page.data?.page == "dashboard") ? "current" : ""
+        (page.data?.activePage == "home") ? "current" : ""
       }>
         <a href="/home" class="clickable-effect">Home</a>
       </div>
-      <div class={ page.data?.page == "explore" ? "current" : "" }>
+      <div class={ page.data?.activePage == "explore" ? "current" : "" }>
         <a href="/explore" class="clickable-effect">Explore</a>
       </div>
-      <div class={ page.data?.page == "settings" ? "current" : "" }>
+      <div class={ page.data?.activePage == "settings" ? "current" : "" }>
         <a href="/settings" class="clickable-effect">Settings</a>
       </div>
     </div>

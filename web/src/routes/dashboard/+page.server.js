@@ -88,19 +88,22 @@ export async function load({ cookies, locals }) {
             return {
               authed: apiRes.data.authed,
               authedUser: apiRes.data.authedUser,
-              studysetList: apiRes.data.myStudysets
+              studysetList: apiRes.data.myStudysets,
+      activePage: "home"
             }
           }
         } else {
           return {
-            authed: false
+            authed: false,
+      activePage: "home"
           }
         }
       } catch (error) {
         //request.log.error(error);
         //reply.send("work in progress error message error during api response json parse")
         return {
-          authed: false
+          authed: false,
+      activePage: "home"
         }
       }
     } catch (error) {
@@ -108,12 +111,14 @@ export async function load({ cookies, locals }) {
       //reply.send("work in progress error message error during api graphql fetch")
       // in addition to an error message, our dashboard.html view should still be sent so that stuff like local studysets are still usable
       return {
-        authed: false
+        authed: false,
+      activePage: "home"
       }
     }
   } else {
     return {
-      authed: false
+      authed: false,
+      activePage: "home"
     }
   }
 };
