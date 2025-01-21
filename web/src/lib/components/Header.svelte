@@ -4,8 +4,11 @@
 </script>
 
 <style>
-.current::before {
-	view-transition-name: active-page;
+.menu.nav > div {
+  transition-duration: 0.4s;
+}
+.current {
+  transition-duration: 0.4s;
 }
 </style>
 
