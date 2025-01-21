@@ -1,7 +1,8 @@
 import { env } from '$env/dynamic/private';
 
 export async function load() {
-  fetch(env.API_URL + "/graphql", {
+  try {
+  let response = await fetch(env.API_URL + "/graphql", {
     method: "POST",
     headers: {
       "Content-Type": "application/json"
@@ -18,8 +19,9 @@ export async function load() {
         }
       }`
     })
-  }).then(function (response) {
-    response.json().then(function (responseJson) {
+  })
+  try {
+  let responseJson = await response.json()
       if (responseJson?.data?.featuredStudysets?.length >= 0) {
         return {
           featuredRows: responseJson.data.featuredStudysets,
@@ -31,18 +33,18 @@ export async function load() {
       activePage: "home"
         }
       }
-    }).catch(function (error) {
+    } catch (error) {
       //request.log.error(error);
       return {
         featuredRows: false,
       activePage: "home"
       }
-    });
-  }).catch(function (error) {
+    };
+  } catch (error) {
     //request.log.error(error);
     return {
       featuredRows: false,
       activePage: "home"
     }
-  });
+  };
 }
