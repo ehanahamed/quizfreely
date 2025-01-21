@@ -56,10 +56,11 @@ export async function load({ cookies, locals }) {
     }
   )
   if (cookies.get("auth")) {
-    fetch(API_URL + "/graphql", {
+    try {
+    let rawApiRes = await fetch(env.API_URL + "/graphql", {
       method: "POST",
       headers: {
-        "Authorization": "Bearer " + request.cookies.auth,
+        "Authorization": "Bearer " + cookies.get("auth"),
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
@@ -79,8 +80,9 @@ export async function load({ cookies, locals }) {
           }
         }`
       })
-    }).then(function (rawApiRes) {
-      rawApiRes.json().then(function (apiRes) {
+    });
+    try {
+    let apiRes = await rawApiRes.json();
         if (apiRes?.data?.authed) {
           if (apiRes?.data?.myStudysets) {
             return {
@@ -94,21 +96,21 @@ export async function load({ cookies, locals }) {
             authed: false
           }
         }
-      }).catch(function (error) {
-        request.log.error(error);
+      } catch (error) {
+        //request.log.error(error);
         //reply.send("work in progress error message error during api response json parse")
         return {
           authed: false
         }
-      })
-    }).catch(function (error) {
-      request.log.error(error);
+      }
+    } catch (error) {
+      //request.log.error(error);
       //reply.send("work in progress error message error during api graphql fetch")
       // in addition to an error message, our dashboard.html view should still be sent so that stuff like local studysets are still usable
       return {
         authed: false
       }
-    })
+    }
   } else {
     return {
       authed: false
