@@ -2,6 +2,7 @@
     import Noscript from "$lib/components/Noscript.svelte";
     import { onMount } from "svelte";
     import { openIndexedDB } from "$lib/indexedDB";
+    import { goto } from "$app/navigation";
     let { data } = $props();
 
     onMount(function () {
@@ -41,7 +42,7 @@
           studysetsObjectStore = db.transaction(["studysets"], "readwrite").objectStore("studysets");
           var dbDeleteReq = studysetsObjectStore.delete(data.localId);
           dbDeleteReq.onsuccess = function (event) {
-            window.location.replace("/dashboard");
+            goto("/dashboard");
           }
           dbDeleteReq.onerror = function (error) {
             console.error(error);
@@ -121,7 +122,7 @@
               console.log(response)
               alert(response.error)
             } else {
-              window.location.replace("/dashboard");
+              goto("/dashboard");
             }
           }).catch(function (error) {
             console.error(error);
