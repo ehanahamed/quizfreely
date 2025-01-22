@@ -3,4 +3,4 @@
     let { data } = $props();
 </script>
 
-<ReviewMode data={{ ...data,  }} />
+<ReviewMode data={{ ...data, local: false }} />
