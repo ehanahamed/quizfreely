@@ -1,5 +1,5 @@
 <script>
-    import Noscript from "$lib/components/";
+    import Noscript from "$lib/components/Noscript.svelte";
     import { onMount } from "svelte";
     import { openIndexedDB } from "$lib/indexedDB"
     let { data } = $props();
