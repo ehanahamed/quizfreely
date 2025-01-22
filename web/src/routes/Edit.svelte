@@ -370,11 +370,6 @@
             </div>
             {/if}
             <table class="outer" id="edit-terms-table">
-              <!--
-                IMPORTANT:
-                the html below is also used in buttons.js, (its copied into a string)
-                if this html is updated, change it there too
-              -->
               <thead>
                 <tr>
                   <th class="center">Term</th>
