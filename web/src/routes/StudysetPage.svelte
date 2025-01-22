@@ -193,11 +193,11 @@
         </div>
         {:else if (data.local) }
         <div id="edit-menu" class="flex">
-          <a href="/studyset/edit-local?id={ data.localId }" class="button">
+          <a href="/studyset/local/edit?id={ data.localId }" class="button">
             <i class="nf nf-fa-pencil"></i>
             Edit
           </a>
-          <a href="/studyset/edit-local?id={ data.localId }" class="button alt">
+          <a href="/studyset/local/edit?id={ data.localId }" class="button alt">
             <i class="nf nf-md-cog"></i>
             Settings
           </a>
