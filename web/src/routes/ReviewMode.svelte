@@ -1,0 +1,953 @@
+<script>
+    import { onMount } from "svelte";
+    import { openIndexedDB } from "$lib/indexedDB";
+
+    onMount(function() {
+      var studysetTermsArray;
+      var progressTermsMap;
+      var studysetTermsWithProgress = [];
+      var howManyNewTermsAreWeGoingToStartReviewingBasedOnAccuracyOfTermsWithProgressAndHowManyTimesTheyWereReviewed = 0;
+
+      /*
+        producing/answering-with the term given the definition and
+        producing the definition from the term require different logic/brain power
+        (depending on the subject/context)
+        so we record accuracy when answering with terms seperatly from accuracy when answering with definitions
+      */
+      var termBadCount = 0;
+      var termGoodCount = 0;
+      var defBadCount = 0; /* "def" is short for "definition" for these variables */
+      var defGoodCount = 0;
+
+      /*
+        in this context, "overall" means based on term-producing AND definition-producing accuracy
+        `(termCorrect + defCorrect) / (termCorrect + termIncorrect + defCorrect + defIncorrect)`
+      */
+      var overallBadCount = 0;
+      var overallGoodCount = 0;
+      var newTerms = []; /* unreviewed terms, as an array */
+      var termsThatAreNotOverallBadButHaveNotBeenReviewed1OrLessDaysAgoCount = 0;
+
+      var maxReviewSessionsCount = 0;
+      /* minReviewSessionsCount excludes terms with no progress
+      because we're going to use this to calculate how many unreviewed terms we should add this session
+      based on how often existing terms have been reviewed,
+      and minReviewSessionsCount is supposed to help us calculate */
+      var minReviewSessionsCount = null;
+      /* weights for priority formula */
+      var timeWeight = 4;
+      var accuracyWeight = 5;
+      /*
+        setupStuff() is called right after the studyset (and/or studyset progress) is/are loaded
+        to show the user their current progress and how many terms there are (or if there is no progress, just how many terms there are)
+        then, with that information the user will select whether to review the studyset in chunks for long-term studying or all at once
+        
+        so this function, setupStuff(), calculates and displays terms' accuracy and how long ago each term was last reviewed
+        and puts/sorts terms into different arrays based on their accuracy and last reviewed date/time
+        so that other parts of this client/browser js code can then use those arrays to display each question
+        and proritize terms that have low accuracy or haven't been reviewed in a while
+      */
+      function setupStuff(studysetTermsArrayParam, progressTerms) {
+        /* this function also checks if the studyset has enough terms or not and shows a user a message based on that if needed */
+        if (studysetTermsArrayParam && studysetTermsArrayParam.length >= 4) {
+          document.getElementById("total-terms-count").innerText = studysetTermsArrayParam.length;
+          /* put the whole array into the variable to use it in other functions later */
+          studysetTermsArray = studysetTermsArrayParam;
+
+          if (progressTerms && progressTerms.length >= 1) {
+            /*
+              we create a map for the progress array so that we can get data by they term and definition name,
+              using `.find()` on an array iterates over the whole array each time,
+              while using `.get()` on a map does not iterate over it
+              this means we only have to iterate over the progress array once when creating the map
+            */
+            progressTermsMap = new Map( /* notice progressTermsMap is declared outside of the function because it is used later in other functions */
+              progressTerms.map(function (term) {
+              /*
+                the "key" of this map is the term and definition stringified as an array
+              */
+              return [JSON.stringify([term.term, term.def]), term]
+            }))
+            /*
+              we iterate over terms in the studyset array and check if progress exists for each term in the progress map
+              this means we only iterate over the studyset once, and the progress once (to create the map)
+            */
+            for (var i = 0; i < studysetTermsArray.length; i++) {
+              var progressForThisTerm = progressTermsMap.get(JSON.stringify(studysetTermsArray[i]))
+              if (progressForThisTerm == null /* `undefined == null` is true, so this also checks for undefined */) {
+                newTerms.push(studysetTermsArray[i]);
+              } else {
+                var overallAccuracy = (
+                  (progressForThisTerm.termCorrect + progressForThisTerm.defCorrect) / (
+                    progressForThisTerm.termCorrect +
+                    progressForThisTerm.termIncorrect +
+                    progressForThisTerm.defCorrect +
+                    progressForThisTerm.defIncorrect
+                  )
+                );
+                if (overallAccuracy >= 0.9) {
+                  overallGoodCount++;
+                } else if (overallAccuracy < 0.8) {
+                  overallBadCount++;
+                }
+
+                var termAccuracy = (
+                  progressForThisTerm.termCorrect / (
+                    progressForThisTerm.termCorrect +
+                    progressForThisTerm.termIncorrect
+                  )
+                )
+                if (termAccuracy >= 0.9) {
+                  termGoodCount++;
+                } else if (termAccuracy < 0.8) {
+                  termBadCount++;
+                }
+
+                var defAccuracy = (
+                  progressForThisTerm.defCorrect / (
+                    progressForThisTerm.defCorrect +
+                    progressForThisTerm.defIncorrect
+                  )
+                )
+                if (defAccuracy >= 0.9) {
+                  defGoodCount++;
+                } else if (defAccuracy < 0.8) {
+                  defBadCount++;
+                }
+
+                var daysAgo = (Date.now() - new Date(progressForThisTerm.lastReviewedAt)) / (1000 * 60 * 60 * 24)
+                if (daysAgo > 1 && overallAccuracy >= 0.8) {
+                  termsThatAreNotOverallBadButHaveNotBeenReviewed1OrLessDaysAgoCount++;
+                }
+                studysetTermsWithProgress.push({
+                  term: progressForThisTerm.term,
+                  def: progressForThisTerm.def,
+                  termCorrect: progressForThisTerm.termCorrect,
+                  termIncorrect: progressForThisTerm.termIncorrect,
+                  defCorrect: progressForThisTerm.defCorrect,
+                  defIncorrect: progressForThisTerm.defIncorrect,
+                  lastReviewedAt: progressForThisTerm.lastReviewedAt,
+                  reviewSessionsCount: progressForThisTerm.reviewSessionsCount,
+                  daysAgo: daysAgo,
+                  priority: (daysAgo * timeWeight) * (1 - (overallAccuracy * accuracyWeight))
+                });
+
+                if (progressForThisTerm.reviewSessionsCount > maxReviewSessionsCount) {
+                  maxReviewSessionsCount = progressForThisTerm.reviewSessionsCount;
+                }
+                if (
+                  minReviewSessionsCount == null ||
+                  progressForThisTerm.reviewSessionsCount < minReviewSessionsCount
+                ) {
+                  minReviewSessionsCount = progressForThisTerm.reviewSessionsCount;
+                }
+              }
+            }
+
+            /* use minReviewSessionsCount to calculate how many new terms to add
+            this updates howManyNewTermsAreWeGoingToStartReviewingBasedOnAccuracyOfTermsWithProgressAndHowManyTimesTheyWereReviewed,
+            that variable is used later to show users a combination of existing terms and a specific count of new terms
+            but it wont show users new terms if they need to work on old or low-accuracy terms
+            
+            notice that this is outside the for-loop */
+            if (minReviewSessionsCount > 5 || studysetTermsWithProgress.length < 10) {
+              /* we need to review bad terms and old terms before introducing new terms
+              so if there's a few bad terms and/or old terms, we can do both new terms and old/bad terms in the same session 
+              we subtract them from 10 so that we have a max of 10 new terms if there are no other higher-priority terms */
+              howManyNewTermsAreWeGoingToStartReviewingBasedOnAccuracyOfTermsWithProgressAndHowManyTimesTheyWereReviewed = (
+                /* we use Math.min with newTerms to make sure we don't try to review new terms that don't exist */
+                Math.min(10, newTerms.length) - overallBadCount - termsThatAreNotOverallBadButHaveNotBeenReviewed1OrLessDaysAgoCount
+              );
+            }
+
+            /* after we finish adding to overallGoodCount and overallBadCount,
+            display those numbers in these text elements. (notice this is outside of the for-loop above) */
+            document.getElementById("preview-good-terms-count").innerText = overallGoodCount;
+            if (overallGoodCount == 0) {
+              /* make the text and label text underneath it greyed out when its 0
+              these css classes are added to and removed from the parent element, and the label visually under the parent element, but under the same div */
+              document.getElementById("preview-good-terms-count-parent").classList.add("fg0");
+              document.getElementById("preview-good-terms-count-parent-label").classList.add("fg0");
+            } else {
+              /* if it's not zero, make the number green (`yay` css class), but not the label underneath */
+              document.getElementById("preview-good-terms-count-parent").classList.add("yay");
+            }
+
+            document.getElementById("preview-bad-terms-count").innerText = overallBadCount;
+            if (overallBadCount == 0) {
+              /* make the text and label text underneath it greyed out when its 0 */
+              document.getElementById("preview-bad-terms-count-parent").classList.add("fg0");
+              document.getElementById("preview-bad-terms-count-parent-label").classList.add("fg0");
+            } else {
+              /* if it's not zero, make the number red (`ohno` css class) */
+              document.getElementById("preview-bad-terms-count-parent").classList.add("ohno");
+            }
+
+            document.getElementById("preview-new-terms-count").innerText = newTerms.length;
+            if (newTerms.length == 0) {
+              /* if there are no new terms, grey it out by adding css class fg0 to the parent element(s) and the other label element too */
+              document.getElementById("preview-new-terms-count-parent").classList.add("fg0");
+              document.getElementById("preview-new-terms-count-parent-label").classList.add("fg0");
+            }
+          } else {
+            /* it reaches this else-statement when there is no progress,
+            which means all the terms are "new/unreviewed" */
+            newTerms = studysetTermsArray;
+            /* since all the terms are new, all the terms we're about to review are new, so set that (there are 10 terms every review session by default) */
+            howManyNewTermsAreWeGoingToStartReviewingBasedOnAccuracyOfTermsWithProgressAndHowManyTimesTheyWereReviewed = 10;
+
+            document.getElementById("preview-good-terms-count").innerText = "0";
+            /* since good terms are 0 when all of them are new, make the text greyed out */
+            document.getElementById("preview-good-terms-count-parent").classList.add(
+              "fg0"
+            ); /* these classes are applied to and removed from the parent element */
+            document.getElementById("preview-good-terms-count-parent-label").classList.add(
+              "fg0"
+            ); /* this is the label underneath the parent elements text, under the same parent div */
+            document.getElementById("preview-bad-terms-count").innerText = "0";
+            /* since bad terms count is 0 when all of them are new, make the text greyed out
+            notice the classes are applied/removed to/from the parent element */
+            document.getElementById("preview-bad-terms-count-parent").classList.add("fg0");
+            document.getElementById("preview-bad-terms-count-parent-label").classList.add("fg0");
+            document.getElementById("preview-new-terms-count").innerText = newTerms.length;
+          }
+
+      //    /* this is inside the if-statement that checks if there are enough terms,
+      //    so the lines below run regardless of whether the user has progress or not */
+      //    if (studysetTermsArray.length > 20) {
+      //      /* if there are more than 20 terms, ask the user if they want to review the set in smaller sections */
+      //      document.getElementById("setup-split").classList.remove("hide");
+      //    }
+
+        } else {
+          /* this else-statement is reached when there are less than 4 terms in the studyset,
+          we need at least 4 terms to show users questions lol */
+          document.getElementById("review-mode-error-min-terms").classList.remove("hide");
+          document.getElementById("review-mode-setup").classList.add("hide");
+          /* we have a seperate element to use when there's only 1 term, because the grammar would be different ("term" instead of "terms")
+          so we show/hide error-min-terms-count-text-single or error-min-terms-count-text if theres 1 or more than 1 term */
+          if (
+            /* studysetTermsArray isn't populated in this else-statement,
+            so we're using studysetTermsArrayParam directly.
+            The seperate array is for use in other functions that don't have this parameter */
+            studysetTermsArrayParam && studysetTermsArrayParam.length == 1
+          ) {
+            /* this is only if there's one term */
+            document.getElementById("error-min-terms-count-text").classList.add("hide");
+            document.getElementById("error-min-terms-count-text-single").classList.remove("hide");
+            /* since this is only for 1, the number is part of the elements text already */
+          } else {
+            /* this is if theres more than 1 term (but still less than 4 because this whole thing is within the bigger else-statement) */
+            document.getElementById("error-min-terms-count-text").classList.remove("hide");
+            document.getElementById("error-min-terms-count-text-single").classList.add("hide");
+            /* unlike the singular element, this message can have a bunch of different numbers, so we display the actual value from `.length` */
+            document.getElementById("error-min-terms-count").innerText = studysetTermsArrayParam.length;
+          }
+        }
+      }
+      document.getElementById("split-true-button").addEventListener("click", function () {
+        document.getElementById("split-true-button").classList.add("selected");
+        document.getElementById("split-false-button").classList.remove("selected");
+      });
+      document.getElementById("split-false-button").addEventListener("click", function () {
+        document.getElementById("split-true-button").classList.remove("selected");
+        document.getElementById("split-false-button").classList.add("selected");
+      });
+
+      document.getElementById("start-button").addEventListener("click", function () {
+        if (
+          document.getElementById("setup-split").classList.contains("hide") === false &&
+          document.getElementById("split-true-button").classList.contains("selected")
+        ) {
+          alert("idk");
+        } else {
+          studysetTermsWithProgress.sort(function (a, b) {
+            console.log(a.priority);
+            console.log(b.priority);
+            /* `b - a` to sort largest to smallest */
+            return b.priority - a.priority
+          });
+          console.log(studysetTermsWithProgress)
+        }
+
+        document.getElementById("review-mode-setup").classList.add("hide");
+        document.getElementById("review-mode-questions").classList.remove("hide");
+        nextQuestion();
+      })
+
+      var sessionIncorrectCount = 0;
+      var sessionCorrectCount = 0;
+
+      var currentQuestionNum = 1;
+      var sessionIncorrectTerms = [];
+      var sessionProgressMap = new Map();
+      var currentNewTerm = 0;
+      var currentTermWithProgress = 0;
+      var newTermsStartedThisSessionCount = 0;
+      function nextQuestion() {
+        /* remove selected class and incorrect/correct styles cause we're going to the next question */
+        document.getElementById("answer-1").classList.remove("selected", "yay", "ohno");
+        document.getElementById("answer-2").classList.remove("selected", "yay", "ohno");
+        document.getElementById("answer-3").classList.remove("selected", "yay", "ohno");
+        document.getElementById("answer-4").classList.remove("selected", "yay", "ohno");
+        /* hide the next button again (its shown again after the user picks an answer) */
+        document.getElementById("next-button").classList.add("hide");
+
+        /* random number 0 or 1 to answer with term or def (0 for term, 1 for def) */
+        answerWithTermOrDef = Math.floor(Math.random() * 2);
+
+        if (answerWithTermOrDef == 0) {
+          document.getElementById("answer-with-term").classList.remove("hide");
+          document.getElementById("answer-with-def").classList.add("hide");
+        } else {
+          document.getElementById("answer-with-term").classList.add("hide");
+          document.getElementById("answer-with-def").classList.remove("hide");
+        }
+
+        /* pick random number from 1 to 4 */
+        correctAnswerPosition = Math.floor(Math.random() * 4) + 1;
+
+        //if (currentQuestionNum > 10 && sessionIncorrectTerms.length >= 1) {
+        //  /* after the first 10 questions, we repeat questions users got wrong this session */
+        //  alert("congrats, i didn't implement this yet")
+
+        if (currentQuestionNum > 10) {
+          showSummaryAndSaveResults()
+        } else {
+          var correctAnswerContent;
+          if (
+            (howManyNewTermsAreWeGoingToStartReviewingBasedOnAccuracyOfTermsWithProgressAndHowManyTimesTheyWereReviewed -
+            newTermsStartedThisSessionCount) >= 1
+            /* newTermsStartedThisSessionCount records how many new terms we already started this session
+            howManyNewTermsAreWeGoingToStartReviewing... records how many new terms we are going to start this session,
+            so if subtracting them is greater than 1, then we need to introduce another new term
+            
+            so the body of this if-statement will show a question from our newTerms array */
+          ) {
+            if (currentNewTerm >= newTerms.length) {
+              currentNewTerm = 0;
+            }
+
+            /* put the term/def from newTerms into the actual element(s) */
+            if (answerWithTermOrDef == 0) {
+              /* answerWithTermOrDef is 0 for term and 1 for def,
+              we ask the question with the opposite of what we want to answer with */
+              document.getElementById("question").innerText = newTerms[currentNewTerm][1]
+              document.getElementById("question").dataset.answerwith = "term";
+              document.getElementById("question").dataset.array = "newTerms";
+              document.getElementById("question").dataset.index = currentNewTerm;
+            } else {
+              document.getElementById("question").innerText = newTerms[currentNewTerm][0]
+              document.getElementById("question").dataset.answerwith = "def";
+              document.getElementById("question").dataset.array = "newTerms";
+              document.getElementById("question").dataset.index = currentNewTerm;
+            }
+            correctAnswerContent = newTerms[currentNewTerm][answerWithTermOrDef]; /* answerWithTermOrDef is 0 for term and 1 for def, that's why we can use it as the index */
+            document.getElementById("answer-" + correctAnswerPosition).innerText = correctAnswerContent;
+            document.getElementById("answer-" + correctAnswerPosition).dataset.answer = "correct"; /* this data-answer="..." attribute is used by function checkAnswer() later */
+            currentNewTerm++ /* increment currentNewTerm to keep a seperate question count just for new terms for use as the array index */
+            newTermsStartedThisSessionCount++ /* increment newTermsStartedThisSessionCount to later calculate how many new terms left to introduce this session */
+          } else { /* this else statement is for showing terms with progress (instead of new terms)*/
+            if (currentTermWithProgress >= studysetTermsWithProgress.length) {
+              currentTermWithProgress = 0;
+            }
+
+            /* put the term/def from newTerms into the actual element(s) */
+            if (answerWithTermOrDef == 0) {
+              /* answerWithTermOrDef is 0 for term and 1 for def, if it's term then we ask the definition */
+              document.getElementById("question").innerText = studysetTermsWithProgress[currentTermWithProgress].def
+              document.getElementById("question").dataset.answerwith = "term";
+              document.getElementById("question").dataset.array = "studysetTermsWithProgress";
+              document.getElementById("question").dataset.index = currentTermWithProgress;
+            } else {
+              /* 0 for term, 1 for def. If it's 1 (not 0), then we need to ask with the temr */
+              document.getElementById("question").innerText = studysetTermsWithProgress[currentTermWithProgress].term
+              document.getElementById("question").dataset.answerwith = "def";
+              document.getElementById("question").dataset.array = "studysetTermsWithProgress";
+              document.getElementById("question").dataset.index = currentTermWithProgress;
+            }
+            if (answerWithTermOrDef == 0) {
+              correctAnswerContent = studysetTermsWithProgress[currentTermWithProgress].term;
+            } else {
+              correctAnswerContent = studysetTermsWithProgress[currentTermWithProgress].def;
+            }
+            document.getElementById("answer-" + correctAnswerPosition).innerText = correctAnswerContent;
+            document.getElementById("answer-" + correctAnswerPosition).dataset.answer = "correct"; /* this data-answer="..." attribute is used by function checkAnswer() later */
+            currentTermWithProgress++ /* increment currentTermWithProgress to keep track of what index we are at */
+          }
+          var alreadyUsedRandomIndexes = [];
+          /* we iterate 4 times for each answer choice */
+          for (var i = 1; i <= 4; i++) {
+            /* this for-loop generates random, incorrect, answer choices
+            in this for loop, `i` is the visual/layout position of each answer choice,
+            and right before this for-loop, one correct answer choice was already put,
+            so we skip the correct answer's position by checking if correctAnswerPosition does not equal `i` */
+            if (correctAnswerPosition != i) {
+              /* select a random index and use a while-loop to avoid duplicate answer choices */
+              var randomIndex = Math.floor(Math.random() * studysetTermsArray.length);
+              extraWhileLoopCounterJustInCase = 0; /* avoid accidental infinite-while-loop-hanging by counting how many times the while-loop runs */
+              while (
+                /* this while-loop re-generates the random index if it is a duplicate answer choice
+                so we check alreadyUsedRandomIndexes to avoid duplicates of previous random choices,
+                and we also check correctAnswerContent to avoid a duplicate of the correct choice */
+                alreadyUsedRandomIndexes.includes(randomIndex) ||
+                (
+                  studysetTermsArray[randomIndex][answerWithTermOrDef] == correctAnswerContent
+                  /* answerWithTermOrDef is 0 for term and 1 for def
+                  and conveniently, the array's 0th element is its term & 1st element is its definition */
+                )
+              ) {
+                randomIndex = Math.floor(Math.random() * studysetTermsArray.length);
+                
+                if (extraWhileLoopCounterJustInCase > 100) {
+                  /* if this while-loop ran more than 100 times, something is wrong
+                  the condition of this while-loop checks if a random term is a repeat answer choice or a duplicate of the correct answer.
+                  If a user inputs a bunch of duplicate terms, the while-loop would try to go on forever.
+                  We check if it ran too many times and then break the loop to prevent infinite loops. */
+                  if (i == 1) {
+                    alert("Do you have an unreasonable amount of duplicate terms or is Math.random() broken? 💀");
+                  }
+                  break; /* Everything you say to me Takes me one step closer to the edge And I'm about to break I need a little room to breathe 'Cause I'm one step closer to the edge And I'm about to... break (break) (break) (break) */
+                }
+                extraWhileLoopCounterJustInCase++
+              }
+              if (answerWithTermOrDef == 0) {
+                document.getElementById("answer-" + i).innerText = studysetTermsArray[randomIndex][0];
+                /* this element's `data-answer` attribute is used by our checkAnswer() function
+                `dataset.abc` in this js code is `data-abc` in the actual html and DOM */
+                document.getElementById("answer-" + i).dataset.answer = "incorrect";
+              } else {
+                document.getElementById("answer-" + i).innerText = studysetTermsArray[randomIndex][1];
+                /* this element's `data-answer` attribute is used by our checkAnswer() function
+                `dataset.abc` in this js code is `data-abc` in the actual html and DOM */
+                document.getElementById("answer-" + i).dataset.answer = "incorrect";
+              }
+              /* record the randomly selected index so we dont show duplicate answer choices */
+              alreadyUsedRandomIndexes.push(randomIndex);
+            }
+          }
+        }
+        currentQuestionNum++;
+      }
+      document.getElementById("next-button").addEventListener("click", nextQuestion);
+
+      function checkAnswer(event) {
+        if (
+          /* we use this if-statement to make sure nothing is already selected so that users can only select one answer choice */
+          document.getElementById("answer-1").classList.contains("selected") == false &&
+          document.getElementById("answer-2").classList.contains("selected") == false &&
+          document.getElementById("answer-3").classList.contains("selected") == false &&
+          document.getElementById("answer-4").classList.contains("selected") == false
+        ) {
+          event.target.classList.add("selected");
+
+          /* the question element has attributes data-answerwith, data-array, and data-index
+          we use those attributes to find the question's data from arrays studysetTermsWithProgress or newTerms
+          those arrays are populated/modified by setupStuff() and `start-button`'s onclick event,
+          and then the indexes of those arrays are used by nextQuestion() and checkAnswer() */
+          var question = document.getElementById("question")
+          if (event.target.dataset.answer == "correct") {
+            event.target.classList.add("yay");
+            sessionCorrectCount++;
+            
+            if (question.dataset.array == "studysetTermsWithProgress") {
+              updateSessionProgressMap(
+                studysetTermsWithProgress[question.dataset.index].term,
+                studysetTermsWithProgress[question.dataset.index].def,
+                question.dataset.answerwith,
+                true /* true for correct */
+              )
+            } else if (question.dataset.array == "newTerms") {
+              updateSessionProgressMap(
+                newTerms[question.dataset.index][0],
+                newTerms[question.dataset.index][1],
+                question.dataset.answerwith,
+                true /* true for correct */
+              )
+            } else {
+              alert("this question's data-array attribute is wrong? 💀")
+            }
+          } else if (event.target.dataset.answer == "incorrect") {
+            event.target.classList.add("ohno");
+            sessionIncorrectCount++
+
+            if (question.dataset.array == "studysetTermsWithProgress") {
+              updateSessionProgressMap(
+                studysetTermsWithProgress[question.dataset.index].term,
+                studysetTermsWithProgress[question.dataset.index].def,
+                question.dataset.answerwith,
+                false /* false for incorrect */
+              )
+            } else if (question.dataset.array == "newTerms") {
+              updateSessionProgressMap(
+                newTerms[question.dataset.index][0],
+                newTerms[question.dataset.index][1],
+                question.dataset.answerwith,
+                false /* false for incorrect */
+              )
+            } else {
+              alert("invalid data-array attribute i think 💀")
+            }
+          } else {
+            alert("impossible error?")
+          }
+          document.getElementById("next-button").classList.remove("hide");
+        }
+      }
+      document.getElementById("answer-1").addEventListener("click", checkAnswer);
+      document.getElementById("answer-2").addEventListener("click", checkAnswer);
+      document.getElementById("answer-3").addEventListener("click", checkAnswer);
+      document.getElementById("answer-4").addEventListener("click", checkAnswer);
+
+      function updateSessionProgressMap(term, def, answerWith, correct) {
+        var mapKey = JSON.stringify([term, def]);
+        var progress;
+        if (sessionProgressMap.has(mapKey)) {
+          progress = sessionProgressMap.get(mapKey);
+          if (answerWith == "term" && correct) {
+            progress.termCorrect++;
+          } else if (answerWith == "term") {
+            progress.termIncorrect++;
+          } else if (correct) {
+            progress.defCorrect++;
+          } else {
+            progress.defIncorrect++;
+          }
+          sessionProgressMap.set(mapKey, progress)
+        } else {
+          progress = {
+            term: term,
+            def: def,
+            termCorrect: 0,
+            termIncorrect: 0,
+            defCorrect: 0,
+            defIncorrect: 0
+          };
+          if (answerWith == "term" && correct) {
+            progress.termCorrect++;
+          } else if (answerWith == "term") {
+            progress.termIncorrect++;
+          } else if (correct) {
+            progress.defCorrect++;
+          } else {
+            progress.defIncorrect++;
+          }
+          sessionProgressMap.set(mapKey, progress)
+        }
+      }
+
+      function showSummaryAndSaveResults() {
+        document.getElementById("review-mode-questions").classList.add("hide");
+        document.getElementById("review-mode-summary").classList.remove("hide");
+
+        var percent = Math.round(
+          (sessionCorrectCount / (sessionCorrectCount + sessionIncorrectCount)) * 100
+        );
+        document.getElementById("summary-percent").innerText = percent + "%";
+        if (percent >= 90) {
+          document.getElementById("summary-percent").classList.add("yay");
+        } else if (percent < 80) {
+          document.getElementById("summary-percent").classList.add("ohno");
+        }
+        /* if it's not >= 90 or < 80, it will stay it's default color */
+
+        document.getElementById("summary-session-correct-count").innerText = sessionCorrectCount;
+        if (sessionCorrectCount == 0) {
+          document.getElementById("summary-session-correct-count").classList.add("fg0");
+          document.getElementById("summary-session-correct-count-label").classList.add("fg0");
+        } else {
+          document.getElementById("summary-session-correct-count").classList.add("yay")
+        }
+
+        document.getElementById("summary-session-incorrect-count").innerText = sessionIncorrectCount;
+        if (sessionIncorrectCount == 0) {
+          document.getElementById("summary-session-incorrect-count").classList.add("fg0");
+          document.getElementById("summary-session-incorrect-count-label").classList.add("fg0");
+        } else {
+          document.getElementById("summary-session-incorrect-count").classList.add("ohno")
+        }
+
+        var sessionProgressArray = [];
+        sessionProgressMap.forEach(function (value, _key, _map) {
+          sessionProgressArray.push(value);
+        });
+        updateStudysetProgress(sessionProgressArray);
+      }
+    if (data.local) {
+      openIndexedDB(function (db) {
+        var dbTransaction = db.transaction(["studysets", "studysetprogress"]);
+        var studysetsObjectStore = dbTransaction.objectStore("studysets");
+        var studysetprogressObjectStore = dbTransaction.objectStore("studysetprogress");
+        var dbStudysetGetReq = studysetsObjectStore.get(data.localId);
+        dbStudysetGetReq.onerror = function (event) {
+          alert("oopsie woopsie, indexeddb error");
+        }
+        dbStudysetGetReq.onsuccess = function (event) {
+          if (dbStudysetGetReq.result) {
+            if (dbStudysetGetReq.result.data && dbStudysetGetReq.result.data.terms && dbStudysetGetReq.result.data.terms.length >= 1) {
+              var dbProgressGetReq = studysetprogressObjectStore.get(data.localId);
+              dbProgressGetReq.onerror = function (event) {
+                alert("indexeddb error while trying to get studyset progress");
+              }
+              dbProgressGetReq.onsuccess = function (event) {
+                if (dbProgressGetReq.result === undefined) {
+                  setupStuff(dbStudysetGetReq.result.data.terms);
+                } else {
+                  setupStuff(dbStudysetGetReq.result.data.terms, dbProgressGetReq.result.terms);
+                }
+              }
+            } else {
+              alert("oopsie woopsie no terms?")
+            }
+          } else {
+            alert("studyset not found :(")
+          }
+        }
+      })
+    } else if (data.authed) {
+      fetch("/api/graphql", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          query: `query getStudysetAndProgress($id: ID!) {
+            studyset(id: $id) {
+              data {
+                terms
+              }
+            }
+            studysetProgress(studysetId: $id) {
+              terms {
+                term
+                def
+                termCorrect
+                termIncorrect
+                defCorrect
+                defIncorrect
+                lastReviewedAt
+                reviewSessionsCount
+              }
+            }
+           }`,
+          variables: {
+            "id": "<eta>= data.studysetId </eta>"
+          }
+        })
+      }).then(function (rawApiRes) {
+        rawApiRes.json().then(function (apiResponse) {
+          if (
+            apiResponse.data &&
+            apiResponse.data.studyset &&
+            apiResponse.data.studyset.data &&
+            apiResponse.data.studyset.data.terms &&
+            apiResponse.data.studyset.data.terms.length >= 1
+          ) {
+            if (apiResponse.data.studysetProgress && apiResponse.data.studysetProgress.terms) {
+              setupStuff(apiResponse.data.studyset.data.terms, apiResponse.data.studysetProgress.terms)
+            } else {
+              setupStuff(apiResponse.data.studyset.data.terms)
+            }
+          } else if (apiResponse.data && apiResponse.data.studyset) {
+            alert("oopsie woopsie, your studyset has zero terms?")
+          } else {
+            if (apiResponse.errors) {
+              console.log(apiResponse.errors);
+            }
+            alert("oh no, studyset failed to load");
+          }
+        }).catch(function (error) {
+          console.error(error);
+        })
+      }).catch(function (error) {
+        console.error(error);
+      })
+    } else {
+      fetch("/api/graphql", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          query: `query getStudyset($id: ID!) {
+            studyset(id: $id) {
+              data {
+                terms
+              }
+            }
+           }`,
+          variables: {
+            "id": "<eta>= data.studysetId </eta>"
+          }
+        })
+      }).then(function (rawApiRes) {
+        rawApiRes.json().then(function (apiResponse) {
+          if (
+            apiResponse.data &&
+            apiResponse.data.studyset &&
+            apiResponse.data.studyset.data &&
+            apiResponse.data.studyset.data.terms &&
+            apiResponse.data.studyset.data.terms.length >= 1
+          ) {
+            openIndexedDB(function (db) {
+              var studysetprogressObjStore = db.transaction("studysetprogress").objectStore("studysetprogress");
+              var dbProgressGetReq = studysetprogressObjStore.get("<eta>= data.studysetId </eta>");
+              dbProgressGetReq.onerror = function (event) {
+                alert("indexeddb error while trying to get progress for non-local studyset");
+              }
+              dbProgressGetReq.onsuccess = function (event) {
+                if (dbProgressGetReq.result === undefined) {
+                  setupStuff(apiResponse.data.studyset.data.terms);
+                } else {
+                  setupStuff(apiResponse.data.studyset.data.terms, dbProgressGetReq.result.terms);
+                }
+              }
+            })
+          } else if (apiResponse.data && apiResponse.data.studyset) {
+            alert("oopsie woopsie, studyset has zero terms????")
+          } else {
+            if (apiResponse.errors) {
+              console.log(apiResponse.errors);
+            }
+            alert("oopsie woopsie, studyset failed to load?")
+          }
+        }).catch(function (error) {
+          console.error(error);
+        })
+      }).catch(function (error) {
+        console.error(error);
+      })
+    }
+
+    var studysetId;
+    if (data.local) {
+        studysetId = data.localId;
+    } else {
+        studysetId = data.studysetId;
+    }
+
+    function updateStudysetProgress(progressTermsArray) {
+        if (data.local || !(data.authed)) {
+        /* if the studyset is local, or if the user isn't signed in,
+        we need to save/update progress locally */
+        openIndexedDB(function (db) {
+          var studysetprogressObjStore = db.transaction("studysetprogress", "readwrite").objectStore("studysetprogress");
+          var dbProgressGetReq = studysetprogressObjStore.get(studysetId);
+          dbProgressGetReq.onerror = function (event) {
+            alert("indexeddb error while getting existing progress to update");
+          }
+          dbProgressGetReq.onsuccess = function (event) {
+            var rnDateTimeString = (new Date()).toISOString();
+            if (dbProgressGetReq.result === undefined) {
+              /* no existing progress, so we're adding new progress (not updating existing) */
+              progressTermsArrayWithEverything = [];
+              for (var i = 0; i < progressTermsArray.length; i++) {
+                /* we need to iterate over the array and add timestamps */
+                progressTermsArrayWithEverything.push({
+                  term: progressTermsArray[i].term,
+                  def: progressTermsArray[i].def,
+                  termCorrect: progressTermsArray[i].termCorrect,
+                  termIncorrect: progressTermsArray[i].termIncorrect,
+                  defCorrect: progressTermsArray[i].defCorrect,
+                  defIncorrect: progressTermsArray[i].defIncorrect,
+                  firstReviewedAt: rnDateTimeString,
+                  lastReviewedAt: rnDateTimeString,
+                  reviewSessionsCount: 1
+                })
+              }
+              /* adding new progress (not updating existing) */
+              dbProgressAddReq = studysetprogressObjStore.add({
+                studyset_id: studysetId,
+                terms: progressTermsArrayWithEverything,
+                updated_at: (new Date()).toISOString()
+              });
+            } else {
+              /* there is existing progress, so we're updating it */
+              var progressChanges = progressTermsArray;
+              var progress = dbProgressGetReq.result.terms;
+              var existingProgressMap = new Map(progress.map(function (term, index) {
+                return [JSON.stringify([term.term, term.def]), index];
+              }));
+              for (let i = 0; i < progressChanges.length; i++) {
+                let existingIndex = existingProgressMap.get(JSON.stringify([progressChanges[i].term, progressChanges[i].def]));
+                if (existingIndex == null /* undefined works with `== null` */) {
+                  progress.push({
+                    term: progressChanges[i].term,
+                    def: progressChanges[i].def,
+                    termCorrect: progressChanges[i].termCorrect,
+                    termIncorrect: progressChanges[i].termIncorrect,
+                    defCorrect: progressChanges[i].defCorrect,
+                    defIncorrect: progressChanges[i].defIncorrect,
+                    firstReviewedAt: rnDateTimeString,
+                    lastReviewedAt: rnDateTimeString,
+                    reviewSessionsCount: 1
+                  })
+                } else {
+                  progress[existingIndex].termCorrect += progressChanges[i].termCorrect;
+                  progress[existingIndex].termIncorrect += progressChanges[i].termIncorrect;
+                  progress[existingIndex].defCorrect += progressChanges[i].defCorrect;
+                  progress[existingIndex].defIncorrect += progressChanges[i].defIncorrect;
+                  progress[existingIndex].lastReviewedAt = rnDateTimeString;
+                  progress[existingIndex].reviewSessionsCount++;
+                }
+              }
+              dbProgressPutReq = studysetprogressObjStore.put({
+                studyset_id: studysetId,
+                terms: progress,
+                updated_at: (new Date()).toISOString()
+              });
+            }
+          }
+        })
+        } else {
+    /* the studyset is not local, and the user is signed in
+    so we're saving progress under the users account */
+        console.log(progressTermsArray)
+        fetch("/api/graphql", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            query: `mutation updateStudysetProgress(
+              $studysetId: ID!,
+              $progressTermsArrayChanges: [StudysetProgressTermInput!]!
+            ) {
+              updateStudysetProgress(
+                studysetId: $studysetId,
+                progressChanges: $progressTermsArrayChanges
+              ) {
+                id
+              }
+            }`,
+            variables: {
+              "studysetId": "<eta>= data.studysetId </eta>",
+              "progressTermsArrayChanges": progressTermsArray
+            }
+          })
+        }).then(function (response) {
+          response.json().then(function (resJSON) {
+            console.log(resJSON)
+          })
+        })
+      }
+    }
+    })
+</script>
+
+<svelte:head>
+    {#if (data.studyset) }
+        <title>{ data.studyset.title } - Quizfreely</title>
+    {:else}
+        <title>Quizfreely Review Mode</title>
+    {/if}
+</svelte:head>
+
+
+    {#if (data.local)}
+    <Noscript />
+    {/if}
+    <main>
+      <div class="grid page">
+        <div class="content">
+          <div>
+            {#if (data.local) }
+            <a href="/studyset/local?id={ data.localId }" class="button faint">
+              <i class="nf nf-fa-long_arrow_left"></i> Back
+            </a>
+            {:else}
+            <a href="/studysets/<eta>= data.studysetId </eta>" class="button faint">
+              <i class="nf nf-fa-long_arrow_left"></i> Back
+            </a>
+            {/if}
+          </div>
+          <div id="review-mode-setup" style="min-height:60vh">
+            <p class="h3">There are <span id="total-terms-count">...</span> terms in this set</p>
+            <div class="flex" style="gap: 2rem;">
+              <div>
+                <p id="preview-good-terms-count-parent" class="h4" style="margin-bottom: 0.2rem;"><span id="preview-good-terms-count">...</span> terms</p>
+                <p id="preview-good-terms-count-parent-label" style="margin-top: 0.2rem;">&ge; 90% accuracy</p>
+              </div>
+              <div>
+                <p id="preview-bad-terms-count-parent" class="h4" style="margin-bottom: 0.2rem;"><span id="preview-bad-terms-count">...</span> terms</p>
+                <p id="preview-bad-terms-count-parent-label" style="margin-top: 0.2rem;">&lt; 80% accuracy</p>
+              </div>
+              <div>
+                <p id="preview-new-terms-count-parent" class="h4" style="margin-bottom: 0.2rem;"><span id="preview-new-terms-count">...</span> terms</p>
+                <p id="preview-new-terms-count-parent-label" style="margin-top: 0.2rem;">new/unreviewed</p>
+              </div>
+            </div>
+            <div class="hide" id="setup-split">
+              <p>Do you want to review this studyset in smaller chunks over time, or review the entire set?</p>
+              <div class="flex">
+                <button class="button-box" id="split-true-button">
+                  <p class="h4" style="margin-bottom:0px"><i class="nf nf-fa-pie_chart"></i></p>
+                  <p style="margin-top:0.8rem"><b>Split into Sections</b></p>
+                  <!--<p style="margin-top:0.4rem">Split the </p>-->
+                </button>
+                <button class="button-box" id="split-false-button">
+                  <p class="h4" style="margin-bottom:0px"><i class="nf nf-fa-list_check"></i></p>
+                  <p style="margin-top:0.4rem"><b>Review Entire Set</b></p>
+                  <!--<p style="margin-top:0.4rem">Una mattina mi son svegliato</p>-->
+                </button>
+              </div>
+            </div>
+            <div class="flex">
+              <button id="start-button"><i class="nf nf-fa-check"></i> Start</button>
+            </div>
+          </div>
+          <div id="review-mode-error-min-terms" class="hide" style="min-height:60vh">
+            <p id="error-min-terms-count-text" class="h3 hide">There are <span id="error-min-terms-count">...</span> terms in this set</p>
+            <p id="error-min-terms-count-text-single" class="h3 hide">There's only 1 term in this set</p>
+            <p>You need at least 4 terms to use review mode or practice quizzes, sorry :(</p>
+          </div>
+          <div id="review-mode-questions" class="hide" style="min-height:60vh">
+            <p class="h4 hide" id="answer-with-term">Select the matching term</p>
+            <p class="h4 hide" id="answer-with-def">Select the matching definition</p>
+            <p id="question" style="white-space:pre-wrap">...</p>
+            <div class="flex">
+              <button id="answer-1" data-answer="incorrect" class="button-box no-clickable-effect" style="white-space:pre-wrap">...</button>
+              <button id="answer-2" data-answer="incorrect" class="button-box no-clickable-effect" style="white-space:pre-wrap">...</button>
+              <button id="answer-3" data-answer="incorrect" class="button-box no-clickable-effect" style="white-space:pre-wrap">...</button>
+              <button id="answer-4" data-answer="incorrect" class="button-box no-clickable-effect" style="white-space:pre-wrap">...</button>
+            </div>
+            <button id="next-button" class="hide">Next</button>
+          </div>
+          <div id="review-mode-summary" class="hide" style="min-height:60vh">
+            <div class="flex" style="gap: 2rem;">
+              <div>
+                <p style="margin-top: 0.2rem;">Score</p>
+                <p id="summary-percent" class="h4" style="margin-bottom: 0.2rem;">...</p>
+              </div>
+              <div>
+                <p id="summary-session-correct-count-label" style="margin-top: 0.2rem;">Correct</p>
+                <p id="summary-session-correct-count" class="h4" style="margin-bottom: 0.2rem;">...</p>
+              </div>
+              <div>
+                <p id="summary-session-incorrect-count-label" style="margin-top: 0.2rem;">Incorrect</p>
+                <p id="summary-session-incorrect-count" class="h4" style="margin-bottom: 0.2rem;">...</p>
+              </div>
+            </div>
+            <div class="flex">
+              {#if (data.local) }
+              <a href="/studyset/local?id={ data.localId }" class="button">
+                <i class="nf nf-fa-check"></i> Done
+              </a>
+              <a href="/studyset/local/review-mode?id={ data.localId }" class="button alt">
+                <i class="nf nf-fa-repeat"></i> Keep Reviewing
+              </a>
+              {:else}
+              <a href="/studysets/{ data.studysetId }" class="button">
+                <i class="nf nf-fa-check"></i> Done
+              </a>
+              <a href="/studysets/{ data.studysetId }/review-mode" class="button alt">
+                <i class="nf nf-fa-repeat"></i> Keep Reviewing
+              </a>
+              {/if}
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+    <eta>~ include("./partials/footer") </eta>
+    
