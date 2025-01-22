@@ -2,6 +2,7 @@
     import Noscript from "$lib/components/";
     import { onMount } from "svelte";
     import { openIndexedDB } from "$lib/indexedDB"
+    let { data } = $props();
 
     onMount(function () {
       var editTermsTable = {
