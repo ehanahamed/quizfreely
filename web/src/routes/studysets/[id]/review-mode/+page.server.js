@@ -1,9 +1,9 @@
 import fetchAuthData from '$lib/fetchAuthData.server'
 
-export async function load({ cookies }) {
+export async function load({ cookies, params}) {
     let userResult = await fetchAuthData({ cookies })
     return {
-      studysetId: request.params.studyset,
+      studysetId: params.id,
       authed: userResult.authed,
       authedUser: userResult?.authedUser
     }
