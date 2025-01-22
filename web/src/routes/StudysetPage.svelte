@@ -39,7 +39,7 @@
       })
       document.getElementById("delete-confirm-button").addEventListener("click", function () {
         openIndexedDB(function (db) {
-          studysetsObjectStore = db.transaction(["studysets"], "readwrite").objectStore("studysets");
+          var studysetsObjectStore = db.transaction(["studysets"], "readwrite").objectStore("studysets");
           var dbDeleteReq = studysetsObjectStore.delete(data.localId);
           dbDeleteReq.onsuccess = function (event) {
             goto("/dashboard");
