@@ -1,7 +1,7 @@
 import fetchAuthData from '$lib/fetchAuthData.server'
 
 export async function load({ cookies, url }) {
-    let localId = url.searchParams.get("id");
+    let localId = parseInt(url.searchParams.get("id"));
     let userResult = await fetchAuthData({ cookies });
     return {
       localId: localId,

@@ -1,4 +1,5 @@
 <script>
+    import Noscript from "$lib/components/Noscript.svelte"
     import { onMount } from "svelte";
     import { openIndexedDB } from "$lib/indexedDB";
     let { data } = $props();
@@ -632,7 +633,7 @@
             }
            }`,
           variables: {
-            "id": "<eta>= data.studysetId </eta>"
+            "id": data.studysetId
           }
         })
       }).then(function (rawApiRes) {
@@ -678,7 +679,7 @@
             }
            }`,
           variables: {
-            "id": "<eta>= data.studysetId </eta>"
+            "id": data.studysetId
           }
         })
       }).then(function (rawApiRes) {
@@ -822,7 +823,7 @@
               }
             }`,
             variables: {
-              "studysetId": "<eta>= data.studysetId </eta>",
+              "studysetId": data.studysetId,
               "progressTermsArrayChanges": progressTermsArray
             }
           })
@@ -857,7 +858,7 @@
               <i class="nf nf-fa-long_arrow_left"></i> Back
             </a>
             {:else}
-            <a href="/studysets/<eta>= data.studysetId </eta>" class="button faint">
+            <a href="/studysets/{ data.studysetId }" class="button faint">
               <i class="nf nf-fa-long_arrow_left"></i> Back
             </a>
             {/if}
@@ -950,5 +951,3 @@
         </div>
       </div>
     </main>
-    <eta>~ include("./partials/footer") </eta>
-    
