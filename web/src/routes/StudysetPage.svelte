@@ -112,7 +112,7 @@
 
     if (data?.studyset?.id) {
         document.getElementById("delete-confirm-button").addEventListener("click", function () {
-        fetch("/api/v0/studysets/<eta>= data.studyset.id </eta>", {
+        fetch("/api/v0/studysets/" + data.studyset.id, {
           method: "DELETE",
           credentials: "same-origin"
         }).then(function (rawResponse) {
@@ -154,13 +154,13 @@
     <div class="content">
       <div id="title-and-menu-outer-div">
         {#if (data?.studyset?.title) }
-        <h2 class="caption" style="overflow-wrap:anywhere"><eta>= data.studyset.title </eta></h2>
+        <h2 class="caption" style="overflow-wrap:anywhere">{ data.studyset.title }</h2>
         {:else}
         <h2 id="studyset-title" class="caption" style="overflow-wrap:anywhere">Title</h2>
         {/if}
         {#if (data.studyset && data.studyset.private == false && data.studyset.user_display_name) }
         <p>
-          Created by <a href="/users/<eta>= data.studyset.user_id</eta>"><eta>= data.studyset.user_display_name </eta></a>
+          Created by <a href="/users/{ data.studyset.user_id }">{ data.studyset.user_display_name }</a>
         </p>
         {:else if (data.studyset && data.studyset.private) }
         <p class="fg0">
@@ -173,11 +173,11 @@
         {/if}
         {#if (data.studyset && data.authed && (data.authedUser.id == data.studyset.user_id)) }
         <div id="edit-menu" class="flex">
-          <a href="/studyset/edit/<eta>= data.studyset.id </eta>" class="button">
+          <a href="/studyset/edit/{ data.studyset.id }" class="button">
             <i class="nf nf-fa-pencil"></i>
             Edit
           </a>
-          <a href="/studyset/edit/<eta>= data.studyset.id </eta>" class="button alt">
+          <a href="/studyset/edit/{ data.studyset.id }" class="button alt">
             <i class="nf nf-md-cog"></i>
             Settings
           </a>
@@ -192,11 +192,11 @@
         </div>
         {:else if (data.local) }
         <div id="edit-menu" class="flex">
-          <a href="/studyset/edit-local?id=<eta>= data.localId </eta>" class="button">
+          <a href="/studyset/edit-local?id={ data.localId }" class="button">
             <i class="nf nf-fa-pencil"></i>
             Edit
           </a>
-          <a href="/studyset/edit-local?id=<eta>= data.localId </eta>" class="button alt">
+          <a href="/studyset/edit-local?id={ data.localId }" class="button alt">
             <i class="nf nf-md-cog"></i>
             Settings
           </a>
@@ -222,8 +222,8 @@
           >
             {#if (data.studyset && data.studyset.data && data.studyset.data.terms && data.studyset.data.terms.length >= 1) }
             <div class="content">
-              <div class="front" id="flashcard-front" style="white-space:pre-wrap"><eta>= data.studyset.data.terms[0][0] </eta></div>
-              <div class="back" id="flashcard-back" style="white-space:pre-wrap"><eta>= data.studyset.data.terms[0][1] </eta></div>
+              <div class="front" id="flashcard-front" style="white-space:pre-wrap">{ data.studyset.data.terms[0][0] }</div>
+              <div class="back" id="flashcard-back" style="white-space:pre-wrap">{ data.studyset.data.terms[0][1] }</div>
             </div>
             {:else}
             <div class="content">
@@ -239,7 +239,7 @@
           <div class="caption centerThree">
             {#if (data.studyset && data.studyset.data && data.studyset.data.terms) }
             <p id="flashcards-count">
-              1/<eta>= data.studyset.data.terms.length </eta>
+              1/{ data.studyset.data.terms.length }
             </p>
             {:else}
             <p id="flashcards-count">
@@ -279,7 +279,7 @@
             Flashcards
           </button>
           {#if (data.local) }
-          <a href="/studyset/local/review-mode?id=<eta>= data.localId </eta>" class="button alt">
+          <a href="/studyset/local/review-mode?id={ data.localId }" class="button alt">
             <i class="nf nf-fa-book"></i>
             Review Mode
           </a>
@@ -288,7 +288,7 @@
             Practice Test
           </a>-->
           {:else if (data.studyset) }
-            <a href="/studysets/<eta>= data.studyset.id </eta>/review-mode" class="button alt">
+            <a href="/studysets/{ data.studyset.id }/review-mode" class="button alt">
               <i class="nf nf-fa-book"></i>
               Review Mode
             </a>
@@ -309,8 +309,8 @@
             {#if (data.studyset && data.studyset.data && data.studyset.data.terms) }
                 {#each data.studyset.data.terms as term }
                     <tr>
-                      <td style="white-space:pre-wrap"><eta>= term[0]</eta></td>
-                      <td style="white-space:pre-wrap"><eta>= term[1]</eta></td>
+                      <td style="white-space:pre-wrap">{ term[0] }</td>
+                      <td style="white-space:pre-wrap">{ term[1] }</td>
                     </tr>
                 {/each}
             {/if}
