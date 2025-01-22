@@ -296,7 +296,7 @@
         document.getElementById("next-button").classList.add("hide");
 
         /* random number 0 or 1 to answer with term or def (0 for term, 1 for def) */
-        answerWithTermOrDef = Math.floor(Math.random() * 2);
+        var answerWithTermOrDef = Math.floor(Math.random() * 2);
 
         if (answerWithTermOrDef == 0) {
           document.getElementById("answer-with-term").classList.remove("hide");
@@ -307,7 +307,7 @@
         }
 
         /* pick random number from 1 to 4 */
-        correctAnswerPosition = Math.floor(Math.random() * 4) + 1;
+        var correctAnswerPosition = Math.floor(Math.random() * 4) + 1;
 
         //if (currentQuestionNum > 10 && sessionIncorrectTerms.length >= 1) {
         //  /* after the first 10 questions, we repeat questions users got wrong this session */
@@ -387,7 +387,7 @@
             if (correctAnswerPosition != i) {
               /* select a random index and use a while-loop to avoid duplicate answer choices */
               var randomIndex = Math.floor(Math.random() * studysetTermsArray.length);
-              extraWhileLoopCounterJustInCase = 0; /* avoid accidental infinite-while-loop-hanging by counting how many times the while-loop runs */
+              var extraWhileLoopCounterJustInCase = 0; /* avoid accidental infinite-while-loop-hanging by counting how many times the while-loop runs */
               while (
                 /* this while-loop re-generates the random index if it is a duplicate answer choice
                 so we check alreadyUsedRandomIndexes to avoid duplicates of previous random choices,
@@ -742,7 +742,7 @@
             var rnDateTimeString = (new Date()).toISOString();
             if (dbProgressGetReq.result === undefined) {
               /* no existing progress, so we're adding new progress (not updating existing) */
-              progressTermsArrayWithEverything = [];
+              var progressTermsArrayWithEverything = [];
               for (var i = 0; i < progressTermsArray.length; i++) {
                 /* we need to iterate over the array and add timestamps */
                 progressTermsArrayWithEverything.push({
@@ -758,7 +758,7 @@
                 })
               }
               /* adding new progress (not updating existing) */
-              dbProgressAddReq = studysetprogressObjStore.add({
+              var dbProgressAddReq = studysetprogressObjStore.add({
                 studyset_id: studysetId,
                 terms: progressTermsArrayWithEverything,
                 updated_at: (new Date()).toISOString()
@@ -793,7 +793,7 @@
                   progress[existingIndex].reviewSessionsCount++;
                 }
               }
-              dbProgressPutReq = studysetprogressObjStore.put({
+              var dbProgressPutReq = studysetprogressObjStore.put({
                 studyset_id: studysetId,
                 terms: progress,
                 updated_at: (new Date()).toISOString()
@@ -935,14 +935,14 @@
               <a href="/studyset/local?id={ data.localId }" class="button">
                 <i class="nf nf-fa-check"></i> Done
               </a>
-              <a href="/studyset/local/review-mode?id={ data.localId }" class="button alt">
+              <a href="/studyset/local/review-mode?id={ data.localId }" class="button alt" data-sveltekit-reload>
                 <i class="nf nf-fa-repeat"></i> Keep Reviewing
               </a>
               {:else}
               <a href="/studysets/{ data.studysetId }" class="button">
                 <i class="nf nf-fa-check"></i> Done
               </a>
-              <a href="/studysets/{ data.studysetId }/review-mode" class="button alt">
+              <a href="/studysets/{ data.studysetId }/review-mode" class="button alt" data-sveltekit-reload>
                 <i class="nf nf-fa-repeat"></i> Keep Reviewing
               </a>
               {/if}
