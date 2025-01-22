@@ -1,7 +1,8 @@
 <script>
     import Noscript from "$lib/components/Noscript.svelte";
     import { onMount } from "svelte";
-    import { openIndexedDB } from "$lib/indexedDB"
+    import { openIndexedDB } from "$lib/indexedDB";
+    import { goto } from "$app/navigation";
     let { data } = $props();
 
     onMount(function () {
@@ -171,7 +172,7 @@
               the value of the request's result property is the key
               for the new record" (https://developer.mozilla.org/en-US/docs/Web/API/IDBObjectStore/add)
             */
-            window.location.replace("/studyset/local?id=" + dbAddReq.result)
+            goto("/studyset/local?id=" + dbAddReq.result)
           }
           dbAddReq.onerror = function (error) {
             console.error(error);
@@ -202,7 +203,7 @@
           }).then(function (rawRes) {
             rawRes.json().then(function (result) {
               if (result.data && result.data.studyset) {
-                window.location.replace("/studysets/" + result.data.studyset.id)
+                goto("/studysets/" + result.data.studyset.id)
               } else if (result.error) {
                 var errorModal = document.createElement("div");
                 errorModal.classList.add("modal")
@@ -264,7 +265,7 @@
               if (result.error) {
                 alert("error while trying to update studyset")
               } else {
-                window.location.replace("/studysets/" + result.data.studyset.id)
+                goto("/studysets/" + result.data.studyset.id)
               }
             })
           })
@@ -310,7 +311,7 @@
                 var studysetsObjectStore = db.transaction(["studysets"], "readwrite").objectStore("studysets");
                 var dbPutReq = studysetsObjectStore.put(updatedStudyset);
                 dbPutReq.onsuccess = function (event) {
-                  window.location.replace("/studyset/local?id=" + data.localId);
+                  goto("/studyset/local?id=" + data.localId);
                 }
                 dbPutReq.onerror = function (error) {
                   console.error(error);
