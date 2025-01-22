@@ -274,7 +274,7 @@
       var studysetIDBRecord;
       openIndexedDB(function (db) {
         var studysetsObjectStore = db.transaction(["studysets"], "readonly").objectStore("studysets");
-        var dbGetReq = studysetsObjectStore.get(<eta>= data.localId </eta>);
+        var dbGetReq = studysetsObjectStore.get(data.localId);
         dbGetReq.onsuccess = function (event) {
           if (dbGetReq.result) {
             document.getElementById("edit-title").value = dbGetReq.result.title;
@@ -298,7 +298,7 @@
                   title = newTitle;
               }
               var updatedStudyset = {
-                id: <eta>= data.localId </eta>,
+                id: data.localId,
                 title: title,
                 data: {
                   terms: editTermsTable.arrayFromTable()
@@ -309,7 +309,7 @@
                 var studysetsObjectStore = db.transaction(["studysets"], "readwrite").objectStore("studysets");
                 var dbPutReq = studysetsObjectStore.put(updatedStudyset);
                 dbPutReq.onsuccess = function (event) {
-                  window.location.replace("/studyset/local?id=" + <eta>= data.localId </eta>);
+                  window.location.replace("/studyset/local?id=" + data.localId);
                 }
                 dbPutReq.onerror = function (error) {
                   console.error(error);
@@ -355,7 +355,7 @@
               </div>
             </div>
             <input id="edit-title" type="text" placeholder="Title" />
-            <eta> if (data.authed && !data.local) { </eta>
+            {#if (data.authed && !data.local) }
             <div id="edit-private-div">
               <div class="combo-select">
                 <button class="left selected" id="edit-private-false">
@@ -368,7 +368,7 @@
                 </button>
               </div>
             </div>
-            <eta> } </eta>
+            {/if}
             <table class="outer" id="edit-terms-table">
               <!--
                 IMPORTANT:
@@ -396,7 +396,7 @@
                 </tr>
               </tbody>
             </table>
-            <eta> if (data.new && data.authed) { </eta>
+            {#if (data.new && data.authed) }
             <button id="create-button-authed">
               <i class="nf nf-oct-check"></i>
               Create
@@ -409,17 +409,17 @@
                 <button id="create-button-local"><i class="nf nf-fa-download"></i> Save Locally </button>
               </div>
             </div>
-            <eta> } else if (data.new) { </eta>
+            {:else if (data.new) }
             <button id="create-button-local">
               <i class="nf nf-oct-check"></i>
               Create
             </button>
-            <eta> } else { </eta>
+            {:else}
             <button id="save-button">
               <i class="nf nf-oct-check"></i>
               Save Changes
             </button>
-            <eta> } </eta>
+            {/if}
         </div>
       </div>
     </main>
