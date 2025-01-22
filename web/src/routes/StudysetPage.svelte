@@ -109,7 +109,6 @@
       }
       document.getElementById("flashcards-maximize").addEventListener("click", maximizeFlashcards);
       document.getElementById("flashcards-unmaximize").addEventListener("click", unmaximizeFlashcards);
-    })
 
     if (data?.studyset?.id) {
         document.getElementById("delete-confirm-button").addEventListener("click", function () {
@@ -136,6 +135,7 @@
         })
       })
     }
+    })
 </script>
 
 <svelte:head>
