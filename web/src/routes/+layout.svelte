@@ -7,7 +7,7 @@ let { children, data } = $props();
 
 <Header />
 {#key data.urlPathname}
-<div in:fade={{ duration: 120, delay: 120 }} out:fade={{ duration: 120 }}>
+<div in:fade={{ duration: 140, delay: 140 }} out:fade={{ duration: 140 }}>
     <div style="min-height: 70vh">
         {@render children()}
     </div>
