@@ -37,4 +37,4 @@ sudo systemctl start caddy
 # sudo systemctl reload caddy
 ```
 
-Caddy automatically renews certificates for https. We usually don't need any extra caddy plugins/modules (for example, on our production server, we do not need digitalocean-dns for caddy even though we use digitalocean; caddy can get our SSL certificate and everything without those dns thingies)
+Caddy automatically renews certificates for https. We usually don't need any extra caddy plugins/modules (for example, on our production server, we do not need digitalocean-dns for caddy even though we use digitalocean; caddy serves everything and can get our SSL certificate automatically and everything without those dns thingies)
