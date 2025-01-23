@@ -10,13 +10,7 @@ quizfreely.org {
                 reverse_proxy localhost:8008
         }
 }
-www.quizfreely.org {
-        redir https://quizfreely.org{uri} permanent
-}
-quizfreely.com {
-        redir https://quizfreely.org{uri} permanent
-}
-www.quizfreely.com {
+www.quizfreely.org, quizfreely.com, www.quizfreely.com {
         redir https://quizfreely.org{uri} permanent
 }
 ```
