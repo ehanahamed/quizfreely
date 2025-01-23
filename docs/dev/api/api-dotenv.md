@@ -18,7 +18,7 @@ Use `HOST="::"` to listen on all IPv6 addresses (and all IPv4 addresses "dependi
 
 Use `HOST=localhost` to only listen on the same machine, IPv6 and IPv4 (this is the **default for production**).
 
-Quizfreely-API's server process is proxied by quizfreely-web so that it can be accessed from `/api` on quizfreely-web (like https://quizfreely.com/api). In production, if quizfreely-api and quizfreely-web are running on the same machine, then quizfreely-api should have `HOST=localhost`, because quizfreely-web will proxy quizfreely-api's process from `localhost:8008`. For production if quizfreely-api and quizfreely-web are on different machines, we will still have `HOST=localhost` and we will use a server, like caddy, to reverse-proxy quizfreely-web's process (that listens on localhost) so it can be accessed from a domain with https and stuff (see [developer docs > production > README.md](../production/README.md) and [developer docs > production > caddy-setup.md](../production/caddy-setup.md)) and then quizfreely-web lets that domain be accessed from `/api`. (Requests between quizfreely-api and quizfreely-web on the same machine use localhost with http, but requests between quizfreely-api and quizfreely-web on different machines use https)
+Quizfreely-API's server process is proxied by quizfreely-web so that it can be accessed from `/api` on quizfreely-web (like https://quizfreely.org/api). In production, if quizfreely-api and quizfreely-web are running on the same machine, then quizfreely-api should have `HOST=localhost`, because quizfreely-web will proxy quizfreely-api's process from `localhost:8008`. For production if quizfreely-api and quizfreely-web are on different machines, we will still have `HOST=localhost` and we will use a server, like caddy, to reverse-proxy quizfreely-web's process (that listens on localhost) so it can be accessed from a domain with https and stuff (see [developer docs > production > README.md](../production/README.md) and [developer docs > production > caddy-setup.md](../production/caddy-setup.md)) and then quizfreely-web lets that domain be accessed from `/api`. (Requests between quizfreely-api and quizfreely-web on the same machine use localhost with http, but requests between quizfreely-api and quizfreely-web on different machines use https)
 
 We only need caddy and it's reverse-proxy for production when web and api are running on different machines, developers can just access the server process itself (like with `localhost`) for development.
 
@@ -57,7 +57,7 @@ This should be `LOG_PRETTY=true` for **development**.
 
 Quizfreely-API's CORS_ORIGIN should be set to quizfreely-web's address/origin. (so that qzfr-web is allowed to make requests to qzfr-API)
 
-Use `CORS_ORIGIN=https://quizfreely.com` for **production**.
+Use `CORS_ORIGIN=https://quizfreely.org` for **production**.
 
 Use `CORS_ORIGIN=http://localhost:8080` for **development**.
 
@@ -93,7 +93,7 @@ Remember to put this url under "Authorized redirect URIs" in google cloud someth
     - It used to be named "APIs & Services" > "Credidentials" > "OAuth 2.0 Client IDs" > "Authorized redirect URIs"
     - You have to put the full uri (`http://localhost:1234/abc/def`, NOT `http://localhost:1234`)
 
-This should be `OAUTH_GOOGLE_CALLBACK_URI=https://quizfreely.com/api/oauth/google/callback` for **production**.
+This should be `OAUTH_GOOGLE_CALLBACK_URI=https://quizfreely.org/api/oauth/google/callback` for **production**.
 
 This should be `OAUTH_GOOGLE_CALLBACK_URI=http://localhost:8080/api/oauth/google/callback` for **development**.
 
@@ -103,7 +103,7 @@ This should be `OAUTH_GOOGLE_CALLBACK_URI=http://localhost:8080/api/oauth/google
 
 This does NOT need to be added as an authorized redirect thingy under that google cloud thingy.
 
-Should be `OAUTH_REDIRECT=https://quizfreely.com/sign-in` **for production**.
+Should be `OAUTH_REDIRECT=https://quizfreely.org/sign-in` **for production**.
 
 Should be `OAUTH_REDIRECT=http://localhost:8080/sign-in` **for development**.
 

@@ -119,12 +119,12 @@ cp .env.example .env
 Now edit `.env`:
 1. Set `HOST=` to `HOST=localhost`
 2. Replace `PASSWORD_GOES_HERE` with your/our password for the "quizfreely_api" postgres user in `POSTGRES_URI=`
-3. Set `CORS_ORIGIN=` to `CORS_ORIGIN=https://quizfreely.com`
+3. Set `CORS_ORIGIN=` to `CORS_ORIGIN=https://quizfreely.org`
 4. Set `LOG_PRETTY=` to `LOG_PRETTY=false`
 5. Get/find our client ID & secret for Google OAuth from Google Cloud Console Thingy, add them in `OAUTH_GOOGLE_CLIENT_ID=` and `OAUTH_GOOGLE_CLIENT_SECRET=`
 6. Set `ENABLE_OAUTH_GOOGLE=` to `ENABLE_OAUTH_GOOGLE=true`, also check quizfreely-web's dotenv file
-7. Set `OAUTH_GOOGLE_CALLBACK_URI=` to `OAUTH_GOOGLE_CALLBACK_URI=https://quizfreely.com/api/oauth/google/callback`
-8. Set `OAUTH_REDIRECT_URL=` to `OAUTH_REDIRECT_URL=https://quizfreely.com/sign-in`
+7. Set `OAUTH_GOOGLE_CALLBACK_URI=` to `OAUTH_GOOGLE_CALLBACK_URI=https://quizfreely.org/api/oauth/google/callback`
+8. Set `OAUTH_REDIRECT_URL=` to `OAUTH_REDIRECT_URL=https://quizfreely.org/sign-in`
 
 All details and options for quizfreely-api's .env file are documented in [api-dotenv.md](../api/api-dotenv.md)
 
@@ -147,9 +147,9 @@ LOG_PRETTY=true
 # replace PASSWORD_GOES_HERE and check database name
 POSTGRES_URI=postgres://quizfreely_api:ACTUAL_PASSWORD@localhost/quizfreely_db
 
-# for production: CORS_ORIGIN=https://quizfreely.com
+# for production: CORS_ORIGIN=https://quizfreely.org
 # for development: CORS_ORIGIN=http://localhost:8080
-CORS_ORIGIN=https://quizfreely.com
+CORS_ORIGIN=https://quizfreely.org
 
 # enable or disable Google OAuth
 # when true, OAUTH_GOOGLE_CLIENT_ID and OAUTH_GOOGLE_CLIENT_SECRET must be set
@@ -158,13 +158,13 @@ ENABLE_OAUTH_GOOGLE=true
 OAUTH_GOOGLE_CLIENT_ID=ACTUAL_ID_GOES_HERE
 OAUTH_GOOGLE_CLIENT_SECRET=ACTUAL_SECRET_GOES_HERE
 
-# production: OAUTH_GOOGLE_CALLBACK_URI=https://quizfreely.com/api/oauth/google/callback
+# production: OAUTH_GOOGLE_CALLBACK_URI=https://quizfreely.org/api/oauth/google/callback
 # development: OAUTH_GOOGLE_CALLBACK_URI=http://localhost:8080/api/oauth/google/callback
-OAUTH_GOOGLE_CALLBACK_URI=https://quizfreely.com/api/oauth/google/callback
+OAUTH_GOOGLE_CALLBACK_URI=https://quizfreely.org/api/oauth/google/callback
 
-# production: OAUTH_REDIRECT_URL=https://quizfreely.com/sign-in
+# production: OAUTH_REDIRECT_URL=https://quizfreely.org/sign-in
 # development: OAUTH_REDIRECT_URL=http://localhost:8080/sign-in
-OAUTH_REDIRECT_URL=https://quizfreely.com/sign-in
+OAUTH_REDIRECT_URL=https://quizfreely.org/sign-in
 ```
 
 For more details about quizfreely-api's .env file, see [api-dotenv.md](../api/api-dotenv.md)
@@ -195,7 +195,7 @@ sudo systemctl start quizfreely-api
 
 If the systemd service is running successfully, quizfreely-api should be on port `:8008` by default.
 
-We use Caddy to let quizfreely-web's process on port `:8080` be accessed from `quizfreely.com`, and quizfreely-web proxies quizfreely-api's process on port `:8008` to be accessed from `quizfreely.com/api` with https and stuff. See [caddy-setup.md](./caddy-setup.md) to finish setting up quizfreely-api and quizfreely-web.
+We use Caddy to let quizfreely-web's process on port `:8080` be accessed from `quizfreely.org`, and quizfreely-web proxies quizfreely-api's process on port `:8008` to be accessed from `quizfreely.org/api` with https and stuff. See [caddy-setup.md](./caddy-setup.md) to finish setting up quizfreely-api and quizfreely-web.
 
 For instructions to manage & backup the database see [db.md](./db.md)
 

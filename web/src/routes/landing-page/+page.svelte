@@ -6,7 +6,7 @@
     <title>Quizfreely: Free & Open Source Studying Tool</title>
     <meta name="description" content="Quizfreely is a free and open source learning app with flashcards, practice tests, and more tools to help you study." />
     <meta name=”robots” content="index, follow" />
-    <link rel="canonical" href="https://quizfreely.com" />
+    <link rel="canonical" href="https://quizfreely.org" />
 </svelte:head>
 
 <main>
