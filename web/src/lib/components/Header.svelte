@@ -52,6 +52,10 @@
                   <a href="/settings" class="button">Settings</a>
                 </div>
             </div>
+        {:else if page.data?.header?.showSignUpLink}
+        <div class="flex" style="margin-top:0px;margin-bottom:0px;margin-left:1rem;margin-right:1rem">
+          <a href="/sign-up" class="button alt">Sign up</a>
+        </div>
         {:else}
         <div class="flex" style="margin-top:0px;margin-bottom:0px;margin-left:1rem;margin-right:1rem">
           <a href="/sign-in" class="button alt">Sign in</a>
