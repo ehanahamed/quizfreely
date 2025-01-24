@@ -25,26 +25,26 @@ export async function load() {
       if (responseJson?.data?.featuredStudysets?.length >= 0) {
         return {
           featuredRows: responseJson.data.featuredStudysets,
-      activePage: "home"
+      header: { activePage: "home" }
         };
       } else {
         return {
           featuredRows: false,
-      activePage: "home"
+      header: { activePage: "home" }
         }
       }
     } catch (error) {
       //request.log.error(error);
       return {
         featuredRows: false,
-      activePage: "home"
+      header: { activePage: "home" }
       }
     };
   } catch (error) {
     //request.log.error(error);
     return {
       featuredRows: false,
-      activePage: "home"
+      header: { activePage: "home" }
     }
   };
 }

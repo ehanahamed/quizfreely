@@ -70,13 +70,13 @@ export async function load({ cookies, locals }) {
               authed: apiRes.data.authed,
               authedUser: apiRes.data.authedUser,
               studysetList: apiRes.data.myStudysets,
-      activePage: "home"
+        header: { activePage: "home" }
             }
           }
         } else {
           return {
             authed: false,
-      activePage: "home"
+      header: { activePage: "home" }
           }
         }
       } catch (error) {
@@ -84,7 +84,7 @@ export async function load({ cookies, locals }) {
         //reply.send("work in progress error message error during api response json parse")
         return {
           authed: false,
-      activePage: "home"
+      header: { activePage: "home" }
         }
       }
     } catch (error) {
@@ -93,13 +93,13 @@ export async function load({ cookies, locals }) {
       // in addition to an error message, our dashboard.html view should still be sent so that stuff like local studysets are still usable
       return {
         authed: false,
-      activePage: "home"
+      header: { activePage: "home" }
       }
     }
   } else {
     return {
       authed: false,
-      activePage: "home"
+      header: { activePage: "home" }
     }
   }
 };
