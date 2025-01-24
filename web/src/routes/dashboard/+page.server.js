@@ -1,25 +1,6 @@
 import { env } from '$env/dynamic/private';
 
 export async function load({ cookies, locals }) {
-  /* backward-compatibility for v0.27.4 */
-  if (env.COOKIES_DOMAIN) {
-    /* clear dashboard cookie that had old domain attribute
-    we no longer use the domain attribute but we can't update or delete
-    the cookie without using the old domain attribute in clearCookie's parameters */
-    cookies.delete(
-      "dashboard",
-      {
-        domain: env.COOKIES_DOMAIN,
-        path: "/",
-        httpOnly: true,
-        secure: true,
-        sameSite: "lax"
-        /* notice how we need to use `domain: ...` here to be able to clear the cookie
-        before being able to update/recreate the cookie without `domain: ...` */
-      }
-    )
-  }
-
   /*
     cookies are not permanent, they eventually expire
     resetting the expiration date on every page doesn't make sense

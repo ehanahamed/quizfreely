@@ -4,25 +4,6 @@ import { redirect, error } from "@sveltejs/kit";
 
 export function GET({ params, cookies }) {
     if (themes.includes(params.theme)) {
-
-        /* backward-compatible behavoir for v0.27.4 */
-        if (env.COOKIES_DOMAIN) {
-          /* this clears the theme cookie if it had the old domain attribute */
-          cookies.delete(
-            "theme",
-            {
-                domain: env.COOKIES_DOMAIN,
-                path: "/",
-                httpOnly: true,
-                secure: true,
-                sameSite: "lax"
-              /* notice how we need to use `domain: ...` here to be able to clear the cookie
-              before being able to update/recreate the cookie without `domain: ...` */
-            }
-          )
-        }
-    
-        /* normal behavior */
         cookies.set(
           "theme",
           params.theme,
