@@ -15,22 +15,22 @@
 <header class="navbar with-search with-status">
     <div class="menu nav">
       <div class={
-        (page.data?.activePage == "home") ? "current" : ""
+        (page.data?.header?.activePage == "home") ? "current" : ""
       }>
         <a href="/home" class="clickable-effect">Home</a>
       </div>
-      <div class={ page.data?.activePage == "explore" ? "current" : "" }>
+      <div class={ page.data?.header?.activePage == "explore" ? "current" : "" }>
         <a href="/explore" class="clickable-effect">Explore</a>
       </div>
-      <div class={ page.data?.activePage == "settings" ? "current" : "" }>
+      <div class={ page.data?.header?.activePage == "settings" ? "current" : "" }>
         <a href="/settings" class="clickable-effect">Settings</a>
       </div>
     </div>
-    {#if page.data?.hideSearchbar }
+    {#if page.data?.header?.hideSearchbar }
         <div class="search"></div>
     {:else}
     <div class="search">
-        <Searchbar query={page.data?.searchQuery} />
+        <Searchbar query={page.data?.header?.searchQuery} />
     </div>
     {/if}
     <div class="status">
