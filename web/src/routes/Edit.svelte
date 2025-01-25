@@ -224,7 +224,7 @@
     } else if (data.studysetId) {
     /* data.new is false (updating an existing studyset, not creating one) */
     if (data.authed) {
-        fetch("/api/v0/studysets/<eta>= data.studysetId </eta>", {
+        fetch("/api/v0/studysets/" + data.studysetId, {
           method: "GET",
           credentials: "same-origin"
         }).then(function (rawResponse) {
@@ -245,7 +245,7 @@
           })
         })
         document.getElementById("save-button").addEventListener("click", function () {
-          fetch("/api/v0/studysets/<eta>= data.studysetId </eta>", {
+          fetch("/api/v0/studysets/" + data.studysetId, {
             method: "PUT",
             credentials: "same-origin",
             headers: {
