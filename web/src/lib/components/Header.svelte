@@ -39,7 +39,7 @@
                 {#if page.data.authedUser.display_name.length < 10 }
                     <button class="faint">
                       <i class="nf nf-fa-user"></i>
-                      <eta>= page.data.authedUser.display_name </eta>
+                      { page.data.authedUser.display_name }
                     </button>
                 {:else}
                     <button class="faint">
@@ -48,7 +48,7 @@
                     </button>
                 {/if}
                 <div class="content" style="right:0">
-                  <a href="/users/<eta>= data.authedUser.id </eta>" class="button">Profile</a>
+                  <a href="/users/{ page.data.authedUser.id }" class="button">Profile</a>
                   <a href="/settings" class="button">Settings</a>
                 </div>
             </div>
