@@ -1,5 +1,5 @@
 import { env } from "$env/dynamic/private";
-import { error } from "@sveltejs/kit";
+import { error } from '@sveltejs/kit';
 
 export async function load({ params, cookies }) {
     let headers = {
@@ -61,8 +61,7 @@ export async function load({ params, cookies }) {
               message: "Not Found"
             })
           }
-      } catch (error) {
-        console.error(error);
+      } catch (err) {
         error(404, {
           message: "Not Found"
         })
