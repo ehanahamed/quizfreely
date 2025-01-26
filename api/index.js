@@ -131,7 +131,7 @@ fastify.setNotFoundHandler(function (request, reply) {
     error: {
         code: "NOT_FOUND",
         statusCode: 404,
-        message: "404 Not Found"
+        message: "404 Not Found, url: " + request.url
     }
   });
 })
