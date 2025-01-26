@@ -55,7 +55,10 @@ export async function load({ cookies }) {
             featuredStudysets: featuredStudysets,
             recentStudysets: recentStudysets,
             authed: authed,
-            authedUser: authedUser
+            authedUser: authedUser,
+            header: {
+                activePage: "explore"
+            }
         }
       } catch (err) {
         console.error(err);
