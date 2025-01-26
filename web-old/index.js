@@ -529,66 +529,7 @@ fastify.get("/tos", function (request, reply) {
 
 fastify.get("/explore", async function (request, reply) {
   /* this is async, remember to use `return reply.send()` instead of just `reply.send()` */
-  try {
-    let rawApiRes = await fetch(API_URL + "/graphql", {
-      method: "POST",
-      headers: {
-        "Authorization": "Bearer " + request?.cookies?.auth,
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        query: `query {
-          authed
-          authedUser {
-            id
-            username
-            display_name
-            auth_type
-            oauth_google_email
-          }
-          featuredStudysets {
-            id
-            title
-            user_display_name
-            terms_count
-            updated_at
-          }
-          recentStudysets {
-            id
-            title
-            user_display_name
-            terms_count
-            updated_at
-          }
-        }`
-      })
-    });
-    let apiRes = await rawApiRes.json();
-    let authed = false;
-    let authedUser;
-    let featuredStudysets = [];
-    let recentStudysets = [];
-    if (apiRes?.data?.authed) {
-      authed = apiRes.data.authed;
-      authedUser = apiRes.data?.authedUser;
-    }
-    if (apiRes?.data?.featuredStudysets?.length >= 0) {
-      featuredStudysets = apiRes.data.featuredStudysets;
-    }
-    if (apiRes?.data?.recentStudysets?.length >= 0) {
-      recentStudysets = apiRes.data.recentStudysets;
-    }
-    return reply.view("explore.html", {
-        ...themeData(request),
-        featuredStudysets: featuredStudysets,
-        recentStudysets: recentStudysets,
-        authed: authed,
-        authedUser: authedUser
-    });
-  } catch (error) {
-    request.log.error(error);
-    return reply.callNotFound();
-  }
+  
 })
 
 fastify.get("/studyset/create", function (request, reply) {
