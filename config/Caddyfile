@@ -1,6 +1,6 @@
 quizfreely.org {
         reverse_proxy localhost:8080
-        handle /api/* {
+        handle_path /api/* {
                 reverse_proxy localhost:8008
         }
 }
