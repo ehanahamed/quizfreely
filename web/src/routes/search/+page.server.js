@@ -30,7 +30,7 @@ if (url.searchParams.get("q")?.length >= 1) {
             }
           }`,
           variables: {
-            q: url.queryString.get("q")
+            q: url.searchParams.get("q")
           }
         })
       });
@@ -43,7 +43,10 @@ if (url.searchParams.get("q")?.length >= 1) {
       }
       if (apiRes?.data?.searchStudysets?.length >= 0) {
         return {
-          query: url.queryString.get("q"),
+          query: url.searchParams.get("q"),
+          header: {
+            searchQuery: url.searchParams.get("q")
+          },
           results: apiRes.data.searchStudysets,
           authed: authed,
           authedUser: authedUser
@@ -65,7 +68,10 @@ if (url.searchParams.get("q")?.length >= 1) {
     return {
       query: false,
       authed: userResult.authed,
-      authedUser: userResult?.authedUser
+      authedUser: userResult?.authedUser,
+      header: {
+        hideSearchBar: true
+      }
     }
   }
 }
