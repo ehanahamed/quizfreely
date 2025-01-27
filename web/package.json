@@ -2,6 +2,8 @@
 	"name": "quizfreely-web",
 	"private": true,
 	"version": "0.29.0",
+	"author": "Ehan Ahamed",
+	"license": "AGPL-3.0-or-later",
 	"type": "module",
 	"scripts": {
 		"dev": "vite dev",
