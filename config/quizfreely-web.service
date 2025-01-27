@@ -7,7 +7,7 @@ StartLimitIntervalSec=10
 [Service]
 Restart=always
 RestartSec=1
-WorkingDirectory=/opt/quizfreely/web/
+WorkingDirectory=/home/quizfreely/quizfreely/web/
 Environment="NODE_ENV=production"
 ExecStart=/usr/bin/node --env-file=.env build/index.js
 TimeoutStopSec=1
