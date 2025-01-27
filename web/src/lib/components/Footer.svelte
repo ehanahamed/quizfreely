@@ -33,7 +33,7 @@
         <p class="h4">Community</p>
         <div class="flex col compact-gap" style="width:fit-content">
           <a href="https://matrix.to/#/#quizfreely-space:matrix.org">Matrix Space</a>
-          <a href="/discord">Discord Server</a>
+          <a href="https://quizfreely.org/discord">Discord Server</a>
         </div>
       </div>
     </div>
