@@ -1648,15 +1648,30 @@ fastify.post("/auth/sign-out", async function (request, reply) {
     }
 })
 
-/* request.body.confirmPassword is required when auth_type is not "oauth_google" */
+/*
+    request.body.deleteAllMyPublicStudysets is a boolean
+    request.body.confirmPassword is required when auth_type is not "oauth_google"
+*/
 fastify.post("/auth/delete-account", async function (request, reply) {
     let authContext = await context(request, reply);
     if (authContext.authed) {
-        if (authContext.authedUser.auth_type == "oauth_google") {
-            let client = await pool.connect();
-            try {
-                await client.query("BEGIN");
-                await client.query("select set_config('qzfr_api.scope', 'auth', true)");
+        let client = await pool.connect();
+        try {
+            await client.query("BEGIN");
+
+            if (request.body.deleteAllMyPublicStudysets === true) {
+                await client.query("select set_config('qzfr_api.scope', 'user', true)");
+                await client.query("select set_config('qzfr_api.user_id', $1, true)", [
+                    authContext.authedUser.id
+                ]);
+                await client.query(
+                    "delete from public.studysets where user_id = $1",
+                    [authContext.authedUser.id]
+                )
+            }
+
+            await client.query("select set_config('qzfr_api.scope', 'auth', true)");
+            if (authContext.authedUser.auth_type == "oauth_google") {
                 await client.query(
                     "delete from auth.users where id = $1 limit 1",
                     [authContext.authedUser.id]
@@ -1667,20 +1682,7 @@ fastify.post("/auth/delete-account", async function (request, reply) {
                         authed: false
                     }
                 })
-            } catch (error) {
-                await client.query("ROLLBACK");
-                request.log.error(error);
-                return reply.code(500).send({
-                    error: error
-                })
-            } finally {
-                client.release();
-            }
-        } else {
-            let client = await pool.connect();
-            try {
-                await client.query("BEGIN");
-                await client.query("select set_config('qzfr_api.scope', 'auth', true)");
+            } else {
                 let result = await client.query(
                     "delete from auth.users where id = $1 and encrypted_password = crypt($2, encrypted_password) limit 1",
                     [authContext.authedUser.id, request.body.confirmPassword]
@@ -1702,15 +1704,15 @@ fastify.post("/auth/delete-account", async function (request, reply) {
                         }
                     })
                 }
-            } catch (error) {
-                await client.query("ROLLBACK");
-                request.log.error(error);
-                return reply.code(500).send({
-                    error: error
-                })
-            } finally {
-                client.release();
             }
+        } catch (error) {
+            await client.query("ROLLBACK");
+            request.log.error(error);
+            return reply.code(500).send({
+                error: error
+            })
+        } finally {
+            client.release();
         }
     } else {
         return reply.code(401).send({
