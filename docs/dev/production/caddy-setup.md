@@ -1,14 +1,15 @@
 # Caddy setup
 
-Install caddy using caddy's official packages, binaries, or other stuff idk. (On quizfreely.org's production server, we use their debian package)
+Install caddy using caddy's official packages, binaries, or other stuff idk. (On quizfreely.org's production server, we use caddy's debian package)
 
-After installing caddy, we can copy our caddy configuration: ([config/Caddyfile](../../../config/Caddyfile) in Quizfreely's source code)
+After installing caddy, we can copy our caddy configuration from [config/Caddyfile](../../../config/Caddyfile) in Quizfreely's repository:
 ```
 quizfreely.org {
         reverse_proxy localhost:8080
-        handle /api/* {
+        handle_path /api/* {
                 reverse_proxy localhost:8008
         }
+        redir /discord https://discord.gg/123abc1234
 }
 www.quizfreely.org, quizfreely.com, www.quizfreely.com {
         redir https://quizfreely.org{uri} permanent

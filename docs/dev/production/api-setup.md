@@ -1,28 +1,11 @@
 ## Production setup for api
 
-Clone `ehanahamed/quizfreely` without downloading the whole repo:
+Clone `ehanahamed/quizfreely` from Codeberg or GitHub, if you haven't already:
 ```sh
-# for main branch:
-git clone --filter=blob:none --no-checkout --depth 1 --sparse https://github.com/ehanahamed/quizfreely
-# OR for dist branch:
-# git clone --filter=blob:none --no-checkout --depth 1 --sparse https://github.com/ehanahamed/quizfreely --branch dist
+git clone https://codeberg.org/ehanahamed/quizfreely.git
 ```
 
-Add the `api/` folder and then checkout:
-```sh
-# for api/:
-cd quizfreely
-git sparse-checkout add api
-git checkout
-# OR for api/ and web/:
-# cd quizfreely
-# git sparse-checkout add web api
-# git checkout
-```
-
-Now you will have `quizfreely/api/` without downloading the whole source code repository.
-
-For the production server/droplet, we usually run these commands in `/root/` (`root` user's home dir), which means we get `/root/quizfreely/api/`.
+For our production server/droplet, we usually clone it inside `/root/` (`root` user's home dir), which means we get `/root/quizfreely/api/`.
 
 ### Installing dependencies
 
@@ -203,7 +186,7 @@ For instructions to manage & backup the database see [db.md](./db.md)
 
 Temporarily stop quizfreely-api:
 ```sh
-sudo systemctl stop quizfreely-api
+sudo systemctl status quizfreely-api
 # and if it's running, stop quizfreely-web:
 # sudo systemctl stop quizfreely-web
 ```
@@ -213,12 +196,12 @@ Pull changes with git:
 cd /root/quizfreely/api
 git pull
 # if there are changes to .env.example
-# see api-setup.md > Dotenv config, and run:
+# check api-setup.md > Dotenv config, and run:
 # cp .env.example .env
 
 # if there are changes to quizfreely-api.service:
-# see api-setup.md > Service file, and run:
-# cp quizfreely-api.service /etc/systemd/system/
+# check api-setup.md > Service file, and run:
+# cp config/quizfreely-api.service /etc/systemd/system/
 ```
 
 Check `api/quizfreely-api.log`, and delete/clear it if needed. (a new `quizfreely-api.log` will be created when the server process starts if you/we delete the whole file)
@@ -231,7 +214,7 @@ After all changes are made, start quizfreely-api again:
 ```sh
 sudo systemctl start quizfreely-api
 # if there were any changes to caddy,
-# see developer docs > production > caddy-setup.md
+# check developer docs > production > caddy-setup.md
 # and when you're/we're done run:
 # sudo systemctl reload caddy
 ```
