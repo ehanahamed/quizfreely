@@ -67,6 +67,30 @@
             document.getElementById("show-delete-account-modal").addEventListener("click", function () {
                 document.getElementById("delete-account-modal").classList.remove("hide");
             })
+            document.getElementById("hide-delete-account-modal").addEventListener("click", function () {
+                document.getElementById("delete-account-modal").classList.add("hide");
+                document.getElementById("delete-account-confirm-password-input").value = "";
+            })
+            document.getElementById("delete-account-delete-all-my-studysets-false").addEventListener("click", function () {
+                document.getElementById("delete-account-delete-all-my-studysets-true").classList.remove("selected");
+                document.getElementById("delete-account-delete-all-my-studysets-false").classList.add("selected");
+            })
+            document.getElementById("delete-account-delete-all-my-studysets-true").addEventListener("click", function () {
+                document.getElementById("delete-account-delete-all-my-studysets-true").classList.add("selected");
+                document.getElementById("delete-account-delete-all-my-studysets-false").classList.remove("selected");
+            })
+            document.getElementById("delete-account-confirm-button").addEventListener("click", function () {
+                if (data.authedUser.auth_type == "oauth_google") {
+                    fetch("/api/v0/auth/delete-account", {
+                        method: "POST",
+                        body: JSON.stringify({
+                            deleteAllMyStudysets: document.getElementById("delete-account-delete-all-my-studysets-true")
+                        })
+                    })
+                } else {
+
+                }
+            })
         }
     })
 </script>
@@ -148,10 +172,10 @@
           <button id="account-sign-out-button" class="ohno">Sign out</button>
         </div>
         <details>
-            <summary>More Actions</summary>
+            <summary>More actions</summary>
             <div>
-                <p>If you want to delete your account, you can choose if you want to keep your public studysets or delete all of your data before confirming.</p>
-                <button id="show-delete-account-modal" class="ohno"><i class="nf nf-fa-trash_o"></i> Delete Account</button>
+                <p>If you want to delete your account, you can choose if you want to keep your public studysets or delete all of your content before confirming.</p>
+                <button id="show-delete-account-modal" class="ohno alt"><i class="nf nf-fa-trash_o"></i> Delete Account</button>
             </div>
         </details>
       </div>
@@ -167,24 +191,24 @@
       <div class="modal hide" id="delete-account-modal">
         <div class="content">
             <p class="h4">Are you sure you want to delete your account?</p>
-            <p>You can choose to keep your public studysets or delete all of your studysets.</p>
+            <p>You can keep your public studysets or delete all your studysets (public and private). <br>This will not delete local studysets saved on your device (not in your account).</p>
             <div class="combo-select">
-                <button id="delete-account-delete-my-studysets-false" class="left selected">
+                <button id="delete-account-delete-all-my-studysets-false" class="left selected">
                   <i class="combo-selected-icon nf nf-fa-check"></i>
                   Keep public sets
                 </button>
-                <button id="delete-account-delete-my-studysets-true" class="right">
+                <button id="delete-account-delete-all-my-studysets-true" class="right">
                   <i class="combo-selected-icon nf nf-fa-check"></i>
                   Delete all sets
                 </button>
             </div>
             <br>
-            <p class="fg0">This will delete all data/content in your account. <br>Even if you keep your public studysets, all your account/profile info will be deleted. <br>This will not delete local studysets saved on your device (not in your account).</p>
+            <p class="fg0">This will delete all data/content in your account. <br>Even if you keep your public studysets, all your account/profile info will be deleted.</p>
             {#if !(data.authedUser.auth_type == "oauth_google") }
                 <div><input type="password" placeholder="Enter password to confirm" id="delete-account-confirm-password-input"></div>
             {/if}
             <div class="flex">
-                <button id="delete-account-confirm-button" class="ohno"><i class="nf nf-fa-trash_o"></i> Delete Account</button>
+                <button id="delete-account-confirm-button" class="ohno alt"><i class="nf nf-fa-trash_o"></i> Delete Account</button>
                 <button id="hide-delete-account-modal" class="alt">Cancel</button>
             </div>
         </div>
