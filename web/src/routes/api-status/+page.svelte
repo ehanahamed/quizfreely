@@ -6,10 +6,10 @@
     console.log(data);
     if (data.config?.enableGitRepoSyncStatus) {
     onMount(function () {
-        fetch("https://codeberg.org/api/v1/repos/<eta>= data.config.codeberg.owner </eta>/<eta>= data.config.codeberg.repo </eta>/commits?sha=<eta>= data.config.codeberg.branch </eta>&limit=1", {
+        fetch("https://codeberg.org/api/v1/repos/"+ data.config.codeberg.owner +"/"+ data.config.codeberg.repo +"/commits?sha=" + data.config.codeberg.branch + "&limit=1", {
             method: "GET"
         }).then(function (codebergRes) {
-            fetch("https://api.github.com/repos/<eta>= data.config.gh.owner </eta>/<eta>= data.config.gh.repo </eta>/commits?sha=<eta>= data.config.gh.branch </eta>&per_page=1&page=1", {
+            fetch("https://api.github.com/repos/"+ data.config.gh.owner +"/"+ data.config.gh.repo +"/commits?sha=" + data.config.gh.branch +"&per_page=1&page=1", {
                 method: "GET"
             }).then(function (ghRes) {
                 showGitRepoSyncStatus(
@@ -95,10 +95,10 @@
                     <i class="nf nf-dev-graphql"></i> Qzfr-API GraphiQL
                 </a>
                 {#if (data.config.codeberg && data.config.gh) }
-                    <a href="https://codeberg.org/<eta>= data.config.codeberg.owner </eta>/<eta>= data.config.codeberg.repo </eta>" class="button faint">
+                    <a href="https://codeberg.org/{ data.config.codeberg.owner }/{ data.config.codeberg.repo }" class="button faint">
                         <i class="nf nf-linux-codeberg"></i> Codeberg Repo
                     </a>
-                    <a href="https://github.com/<eta>= data.config.gh.owner </eta>/<eta>= data.config.gh.repo </eta>" class="button faint">
+                    <a href="https://github.com/{ data.config.gh.owner }/{ data.config.gh.repo }" class="button faint">
                         <i class="nf nf-dev-github_badge"></i> GitHub Repo
                     </a>
                 {:else}
@@ -119,7 +119,7 @@
                         <div>
                             <p class="h6" style="margin-bottom: 0.2rem">Branch</p>
                             <p style="margin-top: 0.2rem">
-                                <eta>= data.config.codeberg.branch </eta>
+                                { data.config.codeberg.branch }
                             </p>
                         </div>
                         <div>
@@ -136,7 +136,7 @@
                         <div>
                             <p class="h6" style="margin-bottom: 0.2rem">Branch</p>
                             <p style="margin-top: 0.2rem">
-                                <eta>= data.config.gh.branch </eta>
+                                { data.config.gh.branch }
                             </p>
                         </div>
                         <div>
@@ -184,7 +184,7 @@
                         {#if (data.apiCronAnyEnabled) }
                             {#if (data.apiCronErrorCount >= 1) }
                                 <p class="h4 ohno" style="margin-top: 0.2rem;">
-                                    <eta>= data.apiCronErrorCount </eta> Errors
+                                    { data.apiCronErrorCount } Errors
                                 </p>
                             {:else}
                                 <p class="h4 yay" style="margin-top: 0.2rem;">No Errors</p>
