@@ -1649,7 +1649,7 @@ fastify.post("/auth/sign-out", async function (request, reply) {
 })
 
 /*
-    request.body.deleteAllMyPublicStudysets is a boolean
+    request.body.deleteAllMyStudysets is a boolean
     request.body.confirmPassword is required when auth_type is not "oauth_google"
 */
 fastify.post("/auth/delete-account", async function (request, reply) {
@@ -1659,7 +1659,7 @@ fastify.post("/auth/delete-account", async function (request, reply) {
         try {
             await client.query("BEGIN");
 
-            if (request.body.deleteAllMyPublicStudysets === true) {
+            if (request.body.deleteAllMyStudysets === true) {
                 await client.query("select set_config('qzfr_api.scope', 'user', true)");
                 await client.query("select set_config('qzfr_api.user_id', $1, true)", [
                     authContext.authedUser.id
