@@ -1648,6 +1648,81 @@ fastify.post("/auth/sign-out", async function (request, reply) {
     }
 })
 
+/* request.body.confirmPassword is required when auth_type is not "oauth_google" */
+fastify.post("/auth/delete-account", async function (request, reply) {
+    let authContext = await context(request, reply);
+    if (authContext.authed) {
+        if (authContext.authedUser.auth_type == "oauth_google") {
+            let client = await pool.connect();
+            try {
+                await client.query("BEGIN");
+                await client.query("select set_config('qzfr_api.scope', 'auth', true)");
+                await client.query(
+                    "delete from auth.users where id = $1 limit 1",
+                    [authContext.authedUser.id]
+                )
+                await client.query("COMMIT");
+                return reply.send({
+                    data: {
+                        authed: false
+                    }
+                })
+            } catch (error) {
+                await client.query("ROLLBACK");
+                request.log.error(error);
+                return reply.code(500).send({
+                    error: error
+                })
+            } finally {
+                client.release();
+            }
+        } else {
+            let client = await pool.connect();
+            try {
+                await client.query("BEGIN");
+                await client.query("select set_config('qzfr_api.scope', 'auth', true)");
+                let result = await client.query(
+                    "delete from auth.users where id = $1 and encrypted_password = crypt($2, encrypted_password) limit 1",
+                    [authContext.authedUser.id, request.body.confirmPassword]
+                )
+                if (result.rowCount == 1) {
+                    await client.query("COMMIT");
+                    return reply.send({
+                        data: {
+                            authed: false
+                        }
+                    })
+                } else {
+                    await client.query("ROLLBACK");
+                    return reply.code(403).send({
+                        error: {
+                            code: "INCORRECT_PASSWORD",
+                            statusCode: 403,
+                            message: "Wrong password confirmation while trying to delete account"
+                        }
+                    })
+                }
+            } catch (error) {
+                await client.query("ROLLBACK");
+                request.log.error(error);
+                return reply.code(500).send({
+                    error: error
+                })
+            } finally {
+                client.release();
+            }
+        }
+    } else {
+        return reply.code(401).send({
+            error: {
+                code: "NOT_AUTHED",
+                statusCode: 401,
+                message: "You are not signed in, so you cannot delete your account"
+            }
+        })
+    }
+})
+
 fastify.get("/auth/user", async function (request, reply) {
     const authContext = await context(request, reply);
     if (authContext.authed) {
