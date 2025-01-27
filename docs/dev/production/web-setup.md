@@ -1,11 +1,20 @@
 ## Production setup for web
 
+You should probably create a user first, for our production server we made an unprivileged user, `quizfreely`, to run the server processes, with a home dir/folder at `/home/quizfreely/`: (our systemd service/unit which we configure later will use this user)
+```bash
+sudo useradd -m -s /bin/bash quizfreely
+```
+
 Clone `ehanahamed/quizfreely` from Codeberg or GitHub, if you haven't already:
 ```sh
+sudo su quizfreely
+cd ~
 git clone https://codeberg.org/ehanahamed/quizfreely.git
 ```
 
-For our production server/droplet, we usually clone it inside `/root/` (`root` user's home dir), which means we get `/root/quizfreely/web/`.
+For our production server/droplet, we clone it inside `/home/quizfreely/` which means we get `/home/quizfreely/quizfreely/web/`, so we can have a seperate user with different permissions for our systemd unit/service that we configure later.
+
+Make sure to like clone, copy, edit, run commands, and everything throughout this like doc after doing `su quizfreely` so you do it as the correct user and stuff. Some commands need you to `exit` back to a different user that can use `sudo`, when it's like mentioned.
 
 ### Install Dependencies & Bulid
 
@@ -15,7 +24,8 @@ For more nodejs installation info, see [install-nodejs.md](./install-nodejs.md)
 
 Install node modules
 ```sh
-cd /root/quizfreely/web/
+sudo su quizfreely
+cd ~/quizfreely/web/
 npm install
 ```
 
@@ -28,7 +38,7 @@ npm run build
 
 Copy the .env.example file:
 ```sh
-cd /root/quizfreely/web/
+cd ~/quizfreely/web/
 cp .env.example .env
 ```
 
@@ -60,11 +70,11 @@ For more details about the .env file, see [web-dotenv.md](../web/web-dotenv.md)
 
 Copy the systemd service file into its correct location (usually `/etc/systemd/system/`)
 ```sh
-cd /root/quizfreely/
+cd ~/quizfreely/
 sudo cp config/quizfreely-web.service /etc/systemd/system/
 ```
 
-The systemd service file runs quizfreely-web from `/root/quizfreely/web/`. If you have `quizfreely/web/` under a different path, change the path in the `WorkingDir=` line of the systemd file.
+The systemd service file runs quizfreely-web from `/home/quizfreely/quizfreely/web/`. If you have `quizfreely/web/` under a different path, change the path in the `WorkingDir=` line of the systemd file.
 
 After you create and/or edit the service file, reload systemd thingies:
 ```sh
@@ -95,7 +105,8 @@ sudo systemctl status quizfreely-web
 
 Pull changes with git:
 ```sh
-cd /root/quizfreely
+sudo su quizfreely
+cd ~/quizfreely/
 git pull
 # if there are changes to web/.env.example
 # check web-setup.md > Dotenv config, and run:

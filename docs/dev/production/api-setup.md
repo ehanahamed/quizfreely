@@ -1,11 +1,20 @@
 ## Production setup for api
 
+You should probably create a user first, for our production server we made an unprivileged user, `quizfreely`, to run the server processes, with a home dir/folder at `/home/quizfreely/`: (our systemd service/unit which we configure later will use this user)
+```bash
+sudo useradd -m -s /bin/bash quizfreely
+```
+
 Clone `ehanahamed/quizfreely` from Codeberg or GitHub, if you haven't already:
 ```sh
+sudo su quizfreely
+cd ~
 git clone https://codeberg.org/ehanahamed/quizfreely.git
 ```
 
-For our production server/droplet, we usually clone it inside `/root/` (`root` user's home dir), which means we get `/root/quizfreely/api/`.
+For our production server/droplet, we clone it inside `/home/quizfreely/` which means we get `/home/quizfreely/quizfreely/api/`, so we can have a seperate user with different permissions for our systemd unit/service that we configure later.
+
+Make sure to like clone, copy, edit, run commands, and everything throughout this like doc after doing `su quizfreely` so you do it as the correct user and stuff. Some commands need you to `exit` back to a different user that can use `sudo`, when it's like mentioned.
 
 ### Installing dependencies
 
@@ -15,7 +24,7 @@ For more nodejs installation info, see [install-nodejs.md](./install-nodejs.md)
 
 Install node modules
 ```sh
-cd /root/quizfreely/api/
+cd ~/quizfreely/api/
 npm install
 ```
 
@@ -30,6 +39,7 @@ sudo apt install postgresql
 
 Check if `postgresql.service` is running
 ```sh
+exit
 sudo systemctl status postgresql.service
 # if it's not running, run:
 # sudo systemctl start postgresql.service
@@ -47,6 +57,7 @@ sudo systemctl status postgresql.service
 
 Then switch to the `postgres` linux user (do it again, if you already did)
 ```sh
+exit
 sudo su postgres
 cd ~
 ```
@@ -95,7 +106,8 @@ exit
 
 Copy the .env.example file:
 ```sh
-cd /root/quizfreely/api/
+sudo su quizfreely
+cd ~/quizfreely/api/
 cp .env.example .env
 ```
 
@@ -156,11 +168,12 @@ For more details about quizfreely-api's .env file, see [api-dotenv.md](../api/ap
 
 Copy the systemd service file into its correct location (usually `/etc/systemd/system/`)
 ```sh
-cd /root/quizfreely/api/
-sudo cp ./quizfreely-api.service /etc/systemd/system/
+exit # back to a user that can sudo, we don't want to give user `quizfreely` sudo permission for security or something
+cd /home/quizfreely/quizfreely/
+sudo cp config/quizfreely-api.service /etc/systemd/system/
 ```
 
-The systemd service file runs quizfreely-api from `/root/quizfreely/api/`. If you have `quizfreely/api/` under a different path, change the path in the `WorkingDir=` line of the systemd file.
+The systemd service file runs quizfreely-api from `/home/quizfreely/quizfreely/api/`. If you have `quizfreely/api/` under a different path, change the path in the `WorkingDir=` line of the systemd file.
 
 After you create and/or edit the service file, reload systemd thingies:
 ```sh
@@ -193,7 +206,7 @@ sudo systemctl status quizfreely-api
 
 Pull changes with git:
 ```sh
-cd /root/quizfreely/api
+cd ~/quizfreely/api
 git pull
 # if there are changes to .env.example
 # check api-setup.md > Dotenv config, and run:
