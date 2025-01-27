@@ -159,17 +159,17 @@
         {:else}
         <h2 id="studyset-title" class="caption" style="overflow-wrap:anywhere">Title</h2>
         {/if}
-        {#if (data.studyset && data.studyset.private == false && data.studyset.user_display_name) }
-        <p>
-          Created by <a href="/users/{ data.studyset.user_id }">{ data.studyset.user_display_name }</a>
+        {#if data.local}
+        <p class="fg0">
+          <i class="nf nf-fa-download"></i> Local Studyset
         </p>
-        {:else if (data.studyset && data.studyset.private) }
+        {:else if data?.studyset?.private}
         <p class="fg0">
           <i class="nf nf-fa-eye_slash"></i> Private Studyset
         </p>
-        {:else if (data.local) }
-        <p class="fg0">
-          <i class="nf nf-fa-download"></i> Local Studyset
+        {:else if data?.studyset?.user_display_name}
+        <p>
+          Created by <a href="/users/{ data.studyset.user_id }">{ data.studyset.user_display_name }</a>
         </p>
         {/if}
         {#if (data.studyset && data.authed && (data.authedUser.id == data.studyset.user_id)) }
