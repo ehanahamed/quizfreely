@@ -1,6 +1,6 @@
 ## Production setup for web
 
-You should probably create a user first, for our production server we made an unprivileged user, `quizfreely`, to run the server processes, with a home dir/folder at `/home/quizfreely/`: (our systemd service/unit which we configure later will use this user)
+You should probably create a user first. For our production server we made an unprivileged user, `quizfreely`, to run the server processes, with a home dir/folder at `/home/quizfreely/`: (our systemd service/unit which we configure later will use this user)
 ```bash
 sudo useradd -m -s /bin/bash quizfreely
 ```
@@ -24,7 +24,6 @@ For more nodejs installation info, see [install-nodejs.md](./install-nodejs.md)
 
 Install node modules
 ```sh
-sudo su quizfreely
 cd ~/quizfreely/web/
 npm install
 ```
@@ -70,7 +69,8 @@ For more details about the .env file, see [web-dotenv.md](../web/web-dotenv.md)
 
 Copy the systemd service file into its correct location (usually `/etc/systemd/system/`)
 ```sh
-cd ~/quizfreely/
+exit # back to user with sudo permissions
+cd /home/quizfreely/quizfreely/
 sudo cp config/quizfreely-web.service /etc/systemd/system/
 ```
 
@@ -119,6 +119,7 @@ git pull
 
 After all changes are made, start quizfreely-web again:
 ```sh
+exit # back to user with sudo permissions
 sudo systemctl start quizfreely-web
 # if there were any changes to caddy,
 # check developer docs > production > caddy-setup.md

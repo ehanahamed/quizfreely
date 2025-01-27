@@ -1,6 +1,6 @@
 ## Production setup for api
 
-You should probably create a user first, for our production server we made an unprivileged user, `quizfreely`, to run the server processes, with a home dir/folder at `/home/quizfreely/`: (our systemd service/unit which we configure later will use this user)
+You should probably create a user first. For our production server we made an unprivileged user, `quizfreely`, to run the server processes, with a home dir/folder at `/home/quizfreely/`: (our systemd service/unit which we configure later will use this user)
 ```bash
 sudo useradd -m -s /bin/bash quizfreely
 ```
@@ -32,6 +32,7 @@ npm install
 
 Install PostgreSQL from your/our package manager
 ```sh
+exit # back to a different user that can use sudo, we shouldn't let the user that runs our server process have sudo
 sudo apt install postgresql
 # or
 # sudo pacman -S postgresql
@@ -39,7 +40,6 @@ sudo apt install postgresql
 
 Check if `postgresql.service` is running
 ```sh
-exit
 sudo systemctl status postgresql.service
 # if it's not running, run:
 # sudo systemctl start postgresql.service
@@ -57,7 +57,6 @@ sudo systemctl status postgresql.service
 
 Then switch to the `postgres` linux user (do it again, if you already did)
 ```sh
-exit
 sudo su postgres
 cd ~
 ```
@@ -206,6 +205,7 @@ sudo systemctl status quizfreely-api
 
 Pull changes with git:
 ```sh
+sudo su quizfreely
 cd ~/quizfreely/api
 git pull
 # if there are changes to .env.example
@@ -225,6 +225,7 @@ Also make sure to keep `public.search_queries` and `quizfreely/config/db/search-
 
 After all changes are made, start quizfreely-api again:
 ```sh
+exit # back to user with sudo permissions
 sudo systemctl start quizfreely-api
 # if there were any changes to caddy,
 # check developer docs > production > caddy-setup.md
