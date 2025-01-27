@@ -35,7 +35,7 @@
     {/if}
     <div class="status">
         {#if page.data?.authed }
-            <div class="dropdown" style="margin-top:0px;margin-bottom:0px;margin-left:1rem;margin-right:1rem">
+            <!--<div class="dropdown" style="margin-top:0px;margin-bottom:0px;margin-left:1rem;margin-right:1rem">
                 {#if page.data.authedUser.display_name.length < 10 }
                     <button class="faint">
                       <i class="nf nf-fa-user"></i>
@@ -51,6 +51,19 @@
                   <a href="/users/{ page.data.authedUser.id }" class="button">Profile</a>
                   <a href="/settings" class="button">Settings</a>
                 </div>
+            </div>-->
+            <div style="margin-top:0px;margin-bottom:0px;margin-left:1rem;margin-right:1rem">
+              {#if page.data.authedUser.display_name.length < 10 }
+                  <a href="/settings" class="button faint">
+                    <i class="nf nf-fa-user"></i>
+                    { page.data.authedUser.display_name }
+                  </a>
+              {:else}
+                  <a href="/settings" class="button faint">
+                    <i class="nf nf-fa-user"></i>
+                    Signed in
+                  </a>
+              {/if}
             </div>
         {:else if page.data?.header?.showSignUpLink}
         <div class="flex" style="margin-top:0px;margin-bottom:0px;margin-left:1rem;margin-right:1rem">
