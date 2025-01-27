@@ -83,12 +83,26 @@
                 if (data.authedUser.auth_type == "oauth_google") {
                     fetch("/api/v0/auth/delete-account", {
                         method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
                         body: JSON.stringify({
-                            deleteAllMyStudysets: document.getElementById("delete-account-delete-all-my-studysets-true")
+                            deleteAllMyStudysets: document.getElementById("delete-account-delete-all-my-studysets-true").contains("selected")
                         })
                     })
                 } else {
-
+                    if (document.getElementById("delete-account-confirm-password-input").value.length > 0) {
+                        fetch("/api/v0/auth/delete-account", {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json"
+                            },
+                            body: JSON.stringify({
+                                deleteAllMyStudysets: document.getElementById("delete-account-delete-all-my-studysets-true").contains("selected"),
+                                confirmPassword: document.getElementById("delete-account-confirm-password-input").value
+                            })
+                        })
+                    }
                 }
             })
         }
