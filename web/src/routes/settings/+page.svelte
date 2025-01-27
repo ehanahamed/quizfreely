@@ -80,29 +80,37 @@
                 document.getElementById("delete-account-delete-all-my-studysets-false").classList.remove("selected");
             })
             document.getElementById("delete-account-confirm-button").addEventListener("click", function () {
-                if (data.authedUser.auth_type == "oauth_google") {
+                if (data.authedUser.auth_type == "oauth_google" || document.getElementById("delete-account-confirm-password-input").value.length > 0) {
+                    var reqBody = {
+                        deleteAllMyStudysets: document.getElementById("delete-account-delete-all-my-studysets-true").classList.contains("selected"),
+                    };
+                    if (data.authedUser.auth_type != "oauth_google") {
+                        reqBody.confirmPassword = document.getElementById("delete-account-confirm-password-input").value
+                    };
                     fetch("/api/v0/auth/delete-account", {
                         method: "POST",
                         headers: {
                             "Content-Type": "application/json"
                         },
-                        body: JSON.stringify({
-                            deleteAllMyStudysets: document.getElementById("delete-account-delete-all-my-studysets-true").contains("selected")
+                        body: JSON.stringify(reqBody)
+                    }).then(function (response) {
+                        response.json().then(function (responseJSON) {
+                            if (responseJSON.error) {
+                                console.error(responseJSON.error);
+                                if (data.authedUser.auth_type == "oauth_google") {
+                                    alert("API Error, idk why skull emoji")
+                                } else {
+                                    alert("API Errored (but nicely), check your password mabye?");
+                                }
+                            } else {
+                                window.location.reload();
+                            }
+                        }).catch(function (error) {
+                            alert("Error while parsing API response JSON")
                         })
+                    }).catch(function error() {
+                        alert("Error making request, mabye qzfr-api is down?")
                     })
-                } else {
-                    if (document.getElementById("delete-account-confirm-password-input").value.length > 0) {
-                        fetch("/api/v0/auth/delete-account", {
-                            method: "POST",
-                            headers: {
-                                "Content-Type": "application/json"
-                            },
-                            body: JSON.stringify({
-                                deleteAllMyStudysets: document.getElementById("delete-account-delete-all-my-studysets-true").contains("selected"),
-                                confirmPassword: document.getElementById("delete-account-confirm-password-input").value
-                            })
-                        })
-                    }
                 }
             })
         }
