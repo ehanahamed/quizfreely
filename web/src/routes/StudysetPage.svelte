@@ -168,8 +168,11 @@
           <i class="nf nf-fa-eye_slash"></i> Private Studyset
         </p>
         {:else if data?.studyset?.user_display_name}
-        <p>
+        <!--<p>
           Created by <a href="/users/{ data.studyset.user_id }">{ data.studyset.user_display_name }</a>
+        </p>-->
+        <p>
+          Created by { data.studyset.user_display_name }
         </p>
         {/if}
         {#if (data.studyset && data.authed && (data.authedUser.id == data.studyset.user_id)) }
