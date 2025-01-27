@@ -693,7 +693,7 @@
           ) {
             openIndexedDB(function (db) {
               var studysetprogressObjStore = db.transaction("studysetprogress").objectStore("studysetprogress");
-              var dbProgressGetReq = studysetprogressObjStore.get("<eta>= data.studysetId </eta>");
+              var dbProgressGetReq = studysetprogressObjStore.get(data.studysetId);
               dbProgressGetReq.onerror = function (event) {
                 alert("indexeddb error while trying to get progress for non-local studyset");
               }
