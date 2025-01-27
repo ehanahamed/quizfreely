@@ -7,7 +7,7 @@ git clone https://codeberg.org/ehanahamed/quizfreely.git
 
 For our production server/droplet, we usually clone it inside `/root/` (`root` user's home dir), which means we get `/root/quizfreely/web/`.
 
-### Installing dependencies
+### Install Dependencies & Bulid
 
 Make sure you have nodejs v20 LTS (or higher) installed.
 Make sure it exists in `/usr/bin/` (`/usr/bin/node` and `/usr/bin/npm`)
@@ -17,6 +17,11 @@ Install node modules
 ```sh
 cd /root/quizfreely/web/
 npm install
+```
+
+Now generate/compile our build:
+```bash
+npm run build
 ```
 
 ### Dotenv config
