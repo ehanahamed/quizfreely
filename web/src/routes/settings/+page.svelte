@@ -4,67 +4,70 @@
     let { data } = $props();
 
     onMount(function () {
-      document.getElementById("time-24h").addEventListener("click", function () {
-    document.getElementById("time-24h").classList.add("selected")
-    document.getElementById("time-12h").classList.remove("selected")
-    if (window.localStorage) {
-      localStorage.setItem("settingTimeHour", "24h")
-    }
-  })
-  document.getElementById("time-12h").addEventListener("click", function () {
-    document.getElementById("time-24h").classList.remove("selected")
-    document.getElementById("time-12h").classList.add("selected")
-    if (window.localStorage) {
-      localStorage.setItem("settingTimeHour", "12h")
-    }
-  })
-  if (window.localStorage && (localStorage.getItem("settingTimeHour") == "24h")) {
-    document.getElementById("time-24h").classList.add("selected")
-    document.getElementById("time-12h").classList.remove("selected")
-  } else if (window.localStorage && (localStorage.getItem("settingTimeHour") == "12h")) {
-    document.getElementById("time-24h").classList.remove("selected")
-    document.getElementById("time-12h").classList.add("selected")
-  }
-
-  if (data.authed) {
-    document.getElementById("display-name-edit-button").addEventListener("click", function () {
-    document.getElementById("display-name-edit").value = document.getElementById("account-display-name").innerText;
-    document.getElementById("display-name-edit-div").classList.remove("hide");
-    document.getElementById("display-name-view-div").classList.add("hide");
-  })
-  document.getElementById("display-name-edit-save-button").addEventListener("click", function () {
-    fetch("/api/v0/auth/user", {
-      method: "PATCH",
-      credentials: "same-origin",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        display_name: document.getElementById("display-name-edit").value
-      })
-    }).then(function (rawResponse) {
-      rawResponse.json().then(function (response) {
-        if (response.data && response.data.user) {
-          document.getElementById("account-display-name").innerText = response.data.user.display_name;
+        document.getElementById("time-24h").addEventListener("click", function () {
+            document.getElementById("time-24h").classList.add("selected")
+            document.getElementById("time-12h").classList.remove("selected")
+            if (window.localStorage) {
+                localStorage.setItem("settingTimeHour", "24h")
+            }
+        })
+        document.getElementById("time-12h").addEventListener("click", function () {
+            document.getElementById("time-24h").classList.remove("selected")
+            document.getElementById("time-12h").classList.add("selected")
+            if (window.localStorage) {
+                localStorage.setItem("settingTimeHour", "12h")
+            }
+        })
+        if (window.localStorage && (localStorage.getItem("settingTimeHour") == "24h")) {
+            document.getElementById("time-24h").classList.add("selected")
+            document.getElementById("time-12h").classList.remove("selected")
+        } else if (window.localStorage && (localStorage.getItem("settingTimeHour") == "12h")) {
+            document.getElementById("time-24h").classList.remove("selected")
+            document.getElementById("time-12h").classList.add("selected")
         }
-        document.getElementById("display-name-view-div").classList.remove("hide");
-        document.getElementById("display-name-edit-div").classList.add("hide");
-      })
-    })
-  })
-  document.getElementById("display-name-edit-cancel-button").addEventListener("click", function () {
-    document.getElementById("display-name-view-div").classList.remove("hide");
-    document.getElementById("display-name-edit-div").classList.add("hide");
-  })
-  document.getElementById("account-sign-out-button").addEventListener("click", function () {
-    fetch("/api/v0/auth/sign-out", {
-      method: "POST",
-      credentials: "same-origin",
-    }).then(function (rawResponse) {
-      window.location.reload();
-    })
-  })
-  }
+
+        if (data.authed) {
+            document.getElementById("display-name-edit-button").addEventListener("click", function () {
+                document.getElementById("display-name-edit").value = document.getElementById("account-display-name").innerText;
+                document.getElementById("display-name-edit-div").classList.remove("hide");
+                document.getElementById("display-name-view-div").classList.add("hide");
+            })
+            document.getElementById("display-name-edit-save-button").addEventListener("click", function () {
+                fetch("/api/v0/auth/user", {
+                    method: "PATCH",
+                    credentials: "same-origin",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        display_name: document.getElementById("display-name-edit").value
+                    })
+                }).then(function (rawResponse) {
+                    rawResponse.json().then(function (response) {
+                        if (response.data && response.data.user) {
+                            document.getElementById("account-display-name").innerText = response.data.user.display_name;
+                        }
+                        document.getElementById("display-name-view-div").classList.remove("hide");
+                        document.getElementById("display-name-edit-div").classList.add("hide");
+                    })
+                })
+            })
+            document.getElementById("display-name-edit-cancel-button").addEventListener("click", function () {
+                document.getElementById("display-name-view-div").classList.remove("hide");
+                document.getElementById("display-name-edit-div").classList.add("hide");
+            })
+            document.getElementById("account-sign-out-button").addEventListener("click", function () {
+                fetch("/api/v0/auth/sign-out", {
+                    method: "POST",
+                    credentials: "same-origin",
+                }).then(function (rawResponse) {
+                    window.location.reload();
+                })
+            })
+            document.getElementById("account-delete-account-button").addEventListener("click", function () {
+
+            })
+        }
     })
 </script>
 
