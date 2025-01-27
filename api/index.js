@@ -1658,14 +1658,19 @@ fastify.post("/auth/delete-account", async function (request, reply) {
         let client = await pool.connect();
         try {
             await client.query("BEGIN");
-
+            
+            await client.query("select set_config('qzfr_api.scope', 'user', true)");
+            await client.query("select set_config('qzfr_api.user_id', $1, true)", [
+                authContext.authedUser.id
+            ]);
             if (request.body.deleteAllMyStudysets === true) {
-                await client.query("select set_config('qzfr_api.scope', 'user', true)");
-                await client.query("select set_config('qzfr_api.user_id', $1, true)", [
-                    authContext.authedUser.id
-                ]);
                 await client.query(
                     "delete from public.studysets where user_id = $1",
+                    [authContext.authedUser.id]
+                )
+            } else {
+                await client.query(
+                    "delete from public.studysets where user_id = $1 and private = true",
                     [authContext.authedUser.id]
                 )
             }
