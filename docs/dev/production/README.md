@@ -5,11 +5,8 @@ Right now, Quizfreely's website and api run on the same server/droplet.
 Important thingies:
 - `/root/quizfreely/api/`
     - `.env`
-    - `quizfreely-api.service`
-    - `quizfreely-db-setup.sql`
 - `/root/quizfreely/web/`
     - `.env`
-    - `quizfreely-web.service`
 - `/etc/caddy/Caddyfile`
 - `/etc/systemd/system/`
     - `quizfreely-web.service`
@@ -37,10 +34,3 @@ Right now our digitalocean droplet has:
 - 1GB memory
 - 1 AMD vCPU
 - 25GB NVMe SSD storage
-
-With those specs, while quizfreely-web, quizfreely-api, and caddy are all running and reciving traffic, we usually have:
-- 1% or less cpu usage (usually less)
-- 40% memory usage
-- 8% disk usage
-
-Stress-testing with hundreds of requests raises all of those by less than 1% (and 99% of those requests took less than 240ms to respond/load (that's faster than 1/4th of a second))
