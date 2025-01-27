@@ -1673,7 +1673,7 @@ fastify.post("/auth/delete-account", async function (request, reply) {
             await client.query("select set_config('qzfr_api.scope', 'auth', true)");
             if (authContext.authedUser.auth_type == "oauth_google") {
                 await client.query(
-                    "delete from auth.users where id = $1 limit 1",
+                    "delete from auth.users where id = $1",
                     [authContext.authedUser.id]
                 )
                 await client.query("COMMIT");
@@ -1684,7 +1684,7 @@ fastify.post("/auth/delete-account", async function (request, reply) {
                 })
             } else {
                 let result = await client.query(
-                    "delete from auth.users where id = $1 and encrypted_password = crypt($2, encrypted_password) limit 1",
+                    "delete from auth.users where id = $1 and encrypted_password = crypt($2, encrypted_password)",
                     [authContext.authedUser.id, request.body.confirmPassword]
                 )
                 if (result.rowCount == 1) {
