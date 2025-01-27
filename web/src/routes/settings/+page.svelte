@@ -156,6 +156,29 @@
         </p>
       </div>
       {/if}
+      {#if data.authed}
+      <div class="modal hide" id="delete-account-modal">
+        <div class="content">
+            <p>Are you sure you want to delete your account?</p>
+            <div class="combo-select">
+                <button id="delete-account-delete-my-studysets-false" class="left selected">
+                  <i class="combo-selected-icon nf nf-fa-check"></i>
+                  Keep my public studysets
+                </button>
+                <button id="delete-account-delete-my-studysets-true" class="right">
+                  <i class="combo-selected-icon nf nf-fa-check"></i>
+                  Also delete all studysets
+                </button>
+              </div>
+            {#if data.authedUser.auth_type == "oauth_google"}
+                <button id="delete-account-confirm-button-oauth-google"><i class="nf nf-fa-trash_o"></i> Delete Account</button>
+            {:else}
+                <input type="password" placeholder="Enter password to confirm" id="delete-account-confirm-password-input">
+                <button id="delete-account-confirm-button-username-password"><i class="nf nf-fa-trash_o"></i> Delete Account</button>
+            {/if}
+        </div>
+      </div>
+      {/if}
       <!--<h3>Data & Privacy</h3>
       <div class="box">
         <p>Some settings are stored as cookies.<br />
