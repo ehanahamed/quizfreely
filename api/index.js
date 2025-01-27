@@ -611,8 +611,9 @@ async function getStudyset(id, authed, authedUserId) {
                 [ authedUserId ]
             );
             let selectedStudyset = await client.query(
-                "select id, user_id, title, private, data, to_char(updated_at, 'YYYY-MM-DD\"T\"HH24:MI:SS.MSTZH:TZM') as updated_at from public.studysets " +
-                "where id = $1 and (private = false or user_id = $2)",
+                "select s.id, s.title, s.private, s.data, s.terms_count, s.user_id, u.display_name as user_display_name, to_char(s.updated_at, 'YYYY-MM-DD\"T\"HH24:MI:SS.MSTZH:TZM') as updated_at " +
+                "from public.studysets s inner join public.profiles u on s.user_id = u.id " +
+                "where (s.id = $1 and (s.private = false or s.user_id = $2)) limit 1",
                 [ id, authedUserId ]
             );
             if (selectedStudyset.rows.length == 1) {
@@ -638,9 +639,9 @@ async function getStudyset(id, authed, authedUserId) {
     } else {
         try {
             let result = await pool.query(
-                "select s.id, s.user_id, u.display_name as user_display_name, s.title, s.data, to_char(s.updated_at, 'YYYY-MM-DD\"T\"HH24:MI:SS.MSTZH:TZM') as updated_at, s.terms_count " +
+                "select s.id, s.title, s.private, s.data, s.terms_count, s.user_id, u.display_name as user_display_name, to_char(s.updated_at, 'YYYY-MM-DD\"T\"HH24:MI:SS.MSTZH:TZM') as updated_at " +
                 "from public.studysets s inner join public.profiles u on s.user_id = u.id " +
-                "where s.id = $1 and s.private = false limit 1",
+                "where (s.id = $1 and s.private = false) limit 1",
                 [ id ]
             )
             
