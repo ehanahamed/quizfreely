@@ -6,6 +6,7 @@ Important thingies:
 - `/root/quizfreely/api/`
     - `.env`
 - `/root/quizfreely/web/`
+    - `build/`
     - `.env`
 - `/etc/caddy/Caddyfile`
 - `/etc/systemd/system/`
