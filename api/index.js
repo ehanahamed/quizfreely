@@ -612,7 +612,7 @@ async function getStudyset(id, authed, authedUserId) {
             );
             let selectedStudyset = await client.query(
                 "select s.id, s.title, s.private, s.data, s.terms_count, s.user_id, u.display_name as user_display_name, to_char(s.updated_at, 'YYYY-MM-DD\"T\"HH24:MI:SS.MSTZH:TZM') as updated_at " +
-                "from public.studysets s inner join public.profiles u on s.user_id = u.id " +
+                "from public.studysets s left join public.profiles u on s.user_id = u.id " +
                 "where (s.id = $1 and (s.private = false or s.user_id = $2)) limit 1",
                 [ id, authedUserId ]
             );
@@ -640,7 +640,7 @@ async function getStudyset(id, authed, authedUserId) {
         try {
             let result = await pool.query(
                 "select s.id, s.title, s.private, s.data, s.terms_count, s.user_id, u.display_name as user_display_name, to_char(s.updated_at, 'YYYY-MM-DD\"T\"HH24:MI:SS.MSTZH:TZM') as updated_at " +
-                "from public.studysets s inner join public.profiles u on s.user_id = u.id " +
+                "from public.studysets s left join public.profiles u on s.user_id = u.id " +
                 "where (s.id = $1 and s.private = false) limit 1",
                 [ id ]
             )
@@ -864,7 +864,7 @@ async function featuredStudysets(limit, offset) {
     try {
         let result = await pool.query(
             "select s.id, s.user_id, u.display_name as user_display_name, s.title, to_char(s.updated_at, 'YYYY-MM-DD\"T\"HH24:MI:SS.MSTZH:TZM') as updated_at, s.terms_count " +
-            "from public.studysets s inner join public.profiles u on s.user_id = u.id " +
+            "from public.studysets s left join public.profiles u on s.user_id = u.id " +
             "where s.featured = true and s.private = false order by s.updated_at desc limit $1 offset $2",
             [ limit, offset ]
         )
@@ -882,7 +882,7 @@ async function recentStudysets(limit, offset) {
     try {
         let result = await pool.query(
             "select s.id, s.user_id, u.display_name as user_display_name, s.title, to_char(s.updated_at, 'YYYY-MM-DD\"T\"HH24:MI:SS.MSTZH:TZM') as updated_at, s.terms_count " +
-            "from public.studysets s inner join public.profiles u on s.user_id = u.id " +
+            "from public.studysets s left join public.profiles u on s.user_id = u.id " +
             "where s.private = false order by s.updated_at desc limit $1 offset $2",
             [ limit, offset ]
         )
@@ -956,7 +956,7 @@ async function searchStudysets(query, limit, offset) {
     try {
         let result = await pool.query(
             "select s.id, s.user_id, u.display_name, s.title, to_char(s.updated_at, 'YYYY-MM-DD\"T\"HH24:MI:SS.MSTZH:TZM') as updated_at, s.terms_count " +
-            "from public.studysets s inner join public.profiles u on s.user_id = u.id " +
+            "from public.studysets s left join public.profiles u on s.user_id = u.id " +
             "where s.private = false and tsvector_title @@ websearch_to_tsquery('english', $1) " +
             "limit $2 offset $3",
             [
@@ -1658,7 +1658,7 @@ fastify.post("/auth/delete-account", async function (request, reply) {
         let client = await pool.connect();
         try {
             await client.query("BEGIN");
-            
+
             await client.query("select set_config('qzfr_api.scope', 'user', true)");
             await client.query("select set_config('qzfr_api.user_id', $1, true)", [
                 authContext.authedUser.id
