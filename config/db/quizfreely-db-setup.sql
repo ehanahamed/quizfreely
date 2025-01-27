@@ -161,7 +161,7 @@ $$;
 
 create table public.studysets (
   id uuid primary key default gen_random_uuid(),
-  user_id uuid references auth.users (id) on delete cascade,
+  user_id uuid references auth.users (id) on delete set null,
   title text not null,
   private boolean not null,
   data jsonb not null,
