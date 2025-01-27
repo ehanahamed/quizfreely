@@ -41,8 +41,16 @@
               } else {
                 window.location.reload();
               }
+            }).catch(function (error) {
+              document.getElementById("error-div").classList.remove("hide");
+              document.getElementById("error-text").innerHTML =
+              "<b>Error</b>: Can't connect to API? Or mabye it's response is invalid?";
             })
-          })
+          }).catch(function (error) {
+            document.getElementById("error-div").classList.remove("hide");
+            document.getElementById("error-text").innerHTML =
+            "<b>Error</b>: Can't connect to Quizfreely's API???";
+          });
         } else {
           document.getElementById("error-div").classList.remove("hide");
           document.getElementById("error-text").innerHTML =
