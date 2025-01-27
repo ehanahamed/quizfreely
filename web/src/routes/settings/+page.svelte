@@ -72,8 +72,7 @@
 <main>
   <div class="grid page">
     <div class="content">
-      <h2>Settings</h2>
-      <h3>Appearance</h3>
+      <h3>Settings</h3>
       <p>Theme</p>
       <div class="grid list">
         <a href="/settings/themes/auto" class="button button-box no-clickable-effect {data.theme == 'auto' ? 'selected' : ''}">
@@ -106,7 +105,7 @@
           </button>
         </div>
       </div>
-      <h3>Account</h3>
+      <h3>Account Settings</h3>
       {#if data.authed}
       <div id="account-signedin-div" class="box">
         <div class="flex compact-gap align-end" id="display-name-view-div">
