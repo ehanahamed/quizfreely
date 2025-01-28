@@ -1,4 +1,5 @@
 quizfreely.org {
+        encode zstd gzip
         reverse_proxy localhost:8080
         handle_path /api/* {
                 reverse_proxy localhost:8008
