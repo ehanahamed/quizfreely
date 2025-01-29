@@ -1,7 +1,6 @@
 import "dotenv/config";
 import Fastify from "fastify";
 import mercurius from "mercurius";
-import fastifyCompress from "@fastify/compress";
 import fastifyCors from "@fastify/cors";
 import fastifyCookie from "@fastify/cookie";
 import fastifyOauth2 from "@fastify/oauth2";
@@ -64,9 +63,6 @@ const fastify = Fastify({
     logger: loggerConfig
 })
 
-await fastify.register(
-    fastifyCompress
-);
 await fastify.register(fastifyCors, {
     origin: CORS_ORIGIN
 });
