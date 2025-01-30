@@ -11,10 +11,15 @@
 		"preview": "vite preview"
 	},
 	"devDependencies": {
-		"@sveltejs/adapter-node": "^5.2.9",
-		"@sveltejs/kit": "^2.0.0",
-		"@sveltejs/vite-plugin-svelte": "^4.0.0",
-		"svelte": "^5.0.0",
-		"vite": "^5.4.11"
+		"@iconify/json": "^2.2.300",
+		"@sveltejs/adapter-node": "^5.2.12",
+		"@sveltejs/kit": "^2.16.1",
+		"@sveltejs/vite-plugin-svelte": "^5.0.3",
+		"svelte": "^5.19.5",
+		"vite": "^6.0.11"
+	},
+	"dependencies": {
+		"@monicon/svelte": "^1.2.2",
+		"@monicon/vite": "^1.2.2"
 	}
 }
