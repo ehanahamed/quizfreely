@@ -60,26 +60,34 @@
       </div>
       {:else if !(data.featuredStudysets?.length >= 1 || data.recentStudysets?.length >= 1) }
         {#if data?.apiStatus?.apiUp}
-          {#if data?.apiStatus?.dbConnectionUp}
-            {#if data?.graphQLErrors?.length >= 1}
-            <div class="box ohno">
-              <h4>Oh no!!</h4>
-              <p class="fg1">Quizfreely's API sent us an error via GraphQL.</p>
-              <p class="fg1">That usually means the API is running, but something is wrong in qzfr-web's query or qzfr-api's resolver (i don't know which one while i'm writing this error message)</p>
-            </div>
-            {:else}
-              <div class="box">
-                There are no public studysets to show here. <br>
-                Everything loaded correctly tho (i think)
-              </div>
-            {/if}
-          {:else}
+          {#if data?.apiStatus?.apiResponseErrorNotJSON}
           <div class="box ohno">
             <h4>Oh no!!</h4>
-            <p class="fg1">We couldn't load anything because our API's database connection is down.</p>
-            <p class="fg1">Quizfreely's API is running correctly and everything, but the DB isn't :(</p>
-            <p class="fg1">Check <a href="/api-status">API Status</a> for more info</p>
+            <p class="fg1">We couldn't load anything because our API sent an invalid response that couldn't be parsed as JSON.</p>
+            <p class="fg1">Mabye check <a href="/api-status">API Status</a> for more info</p>
           </div>
+          {:else}
+            {#if data?.apiStatus?.dbConnectionUp}
+              {#if data?.graphQLErrors?.length >= 1}
+              <div class="box ohno">
+                <h4>Oh no!!</h4>
+                <p class="fg1">Quizfreely's API sent us an error via GraphQL.</p>
+                <p class="fg1">That usually means the API is running, but something is wrong in qzfr-web's query or qzfr-api's resolver (i can't know for sure which part has an error while i'm writing this error message, sorry 😿)</p>
+              </div>
+              {:else}
+                <div class="box">
+                  There are no public studysets to show here. <br>
+                  Everything loaded correctly tho (i think 🤔)
+                </div>
+              {/if}
+            {:else}
+            <div class="box ohno">
+              <h4>Oh no!!</h4>
+              <p class="fg1">We couldn't load anything because our API's database connection is down.</p>
+              <p class="fg1">Quizfreely's API is running correctly and everything, but the DB isn't :(</p>
+              <p class="fg1">Check <a href="/api-status">API Status</a> for more info</p>
+            </div>
+            {/if}
           {/if}
         {:else}
           <div class="box ohno">
