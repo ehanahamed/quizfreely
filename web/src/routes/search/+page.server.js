@@ -3,7 +3,12 @@ import { error } from '@sveltejs/kit';
 import fetchAuthData from '$lib/fetchAuthData.server';
 
 export async function load({ cookies, url }) {
-if (url.searchParams.get("q")?.length >= 1) {
+let searchQuery = (url.searchParams.get("q") ?? "")
+if (searchQuery.replace(/\s+/g, '') == "") {
+  searchQuery = "";
+}
+
+if (searchQuery.length >= 1) {
     try {
       let rawApiRes = await fetch(env.API_URL + "/graphql", {
         method: "POST",
@@ -43,9 +48,10 @@ if (url.searchParams.get("q")?.length >= 1) {
       }
       if (apiRes?.data?.searchStudysets?.length >= 0) {
         return {
-          query: url.searchParams.get("q"),
+          query: searchQuery,
           header: {
-            searchQuery: url.searchParams.get("q")
+            activePage: "explore",
+            searchQuery: searchQuery
           },
           results: apiRes.data.searchStudysets,
           authed: authed,
@@ -66,11 +72,12 @@ if (url.searchParams.get("q")?.length >= 1) {
   } else {
     let userResult = await fetchAuthData({ cookies });
     return {
-      query: false,
+      query: "",
       authed: userResult.authed,
       authedUser: userResult?.authedUser,
       header: {
-        hideSearchBar: true
+        activePage: "explore",
+        hideSearchbar: true
       }
     }
   }
