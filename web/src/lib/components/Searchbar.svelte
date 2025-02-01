@@ -1,6 +1,7 @@
 <script>
     let props = $props();
-    let searchQuery = props.searchQuery ?? "";
+    /* remove whitespace so textbox's placeholder/label shows if empty and use ?? to default to empty string instead of throwing error on undefined */
+    let query = (props.query ?? "").replace(/\s+/g, '');;
 
     function onSearchbarInput(event) {
         if (event.target.value.length > 0 && event.target.value.length < 50) {
@@ -54,7 +55,7 @@
         autocomplete="off"
         autocapitalize="off"
         spellcheck="false"
-        value={ props.searchQuery }
+        value={ query }
         oninput={
             onSearchbarInput
         }
