@@ -994,7 +994,7 @@ async function searchQueries(query, limit, offset) {
             result = await pool.query(
                 "select query, subject from public.search_queries " +
                 "where similarity(query, $1) > 0.15 " +
-                "order by similarity(query, $1) desc limit $2 limit $3",
+                "order by similarity(query, $1) desc limit $2 offset $3",
                 [
                     inputQuery,
                     limit,
