@@ -36,7 +36,7 @@ sudo systemctl status postgresql.service
 # sudo systemctl start postgresql.service
 ```
 
-Then switch to the `postgres` linux user (do it again, if you already did)
+Switch to the `postgres` linux user (again if you did some thingies above)
 ```sh
 sudo su postgres
 cd ~
