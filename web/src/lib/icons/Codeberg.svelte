@@ -1,14 +1,4 @@
 <script>
     let { width = "1rem", height = "1rem" } = $props();
 </script>
-<svg xmlns="http://www.w3.org/2000/svg" width={width} height={height} viewBox="0 0 4.233 4.233">
-	<defs>
-		<style>
-			.codeberg-stop-color { stop-color: currentcolor; }
-            .codeberg-fill { fill: currentcolor; }
-		</style>
-		<linearGradient id="A" x1="42519.285" y1="-7078.789" x2="42575.336" y2="-6966.931" gradientUnits="userSpaceOnUse"><stop offset="0" class="codeberg-stop-color" stop-opacity="0"/><stop offset=".495" class="codeberg-stop-color" stop-opacity=".3"/></linearGradient>
-	</defs>
-	<path d="M42519.285-7078.789c-.225.002-.437.078-.58.208s-.2.3-.158.465l33.586 125.889a87.18 87.18 0 0 0 39.381-33.764l-71.565-92.52c-.138-.175-.392-.282-.664-.279z" transform="matrix(.024279 0 0 .024279 -1030.151335 172.969984)" fill="url(#A)" paint-order="stroke markers fill"/>
-	<path d="M2.113.12C.944.12-.004 1.067-.004 2.236c0 .398.112.787.323 1.124l1.765-2.282c.013-.016.045-.016.057 0l1.765 2.282c.211-.337.323-.727.323-1.124C4.23 1.067 3.282.12 2.113.12z" class="codeberg-fill" paint-order="markers fill stroke"/>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" width={width} height={height} viewBox="0 0 4.233 4.233"><defs><linearGradient id="A" x1="42519.285" y1="-7078.789" x2="42575.336" y2="-6966.931" gradientUnits="userSpaceOnUse"><stop offset="0" class="codeberg-stop-color" stop-opacity="0"/><stop offset=".495" class="codeberg-stop-color" stop-opacity=".3"/></linearGradient><style>.codeberg-stop-color{stop-color:currentcolor}</style></defs><path d="M42519.285-7078.789c-.225.002-.437.078-.58.208s-.2.3-.158.465l33.586 125.889a87.18 87.18 0 0 0 39.381-33.764l-71.565-92.52c-.138-.175-.392-.282-.664-.279z" transform="matrix(.02428 0 0 .02428 -1030.151 172.97)" fill="url(#A)" paint-order="stroke markers fill"/><path d="M2.113.12A2.116 2.116 0 0 0 .319 3.36l1.765-2.282c.013-.016.045-.016.057 0L3.906 3.36A2.115 2.115 0 0 0 2.113.12z" paint-order="markers fill stroke" style="fill:currentcolor"/></svg>
