@@ -1,14 +1,19 @@
+<script>
+  import IconCodeberg from "$lib/icons/Codeberg.svelte";
+  import IconGitHub from "$lib/icons/GitHub.svelte";
+</script>
+
 <div id="footer-wave" class="wave-top bg0"></div>
 <footer id="footer" class="background-bg0" style="border: none; margin: 0px; padding-top: 1rem; padding-bottom: 8rem;">
     <h2>Quizfreely</h2>
     <p>Quizfreely is free and open source <br> Made by Ehan A & contributors</p>
     <div class="flex center compact-gap">
       <a href="https://codeberg.org/ehanahamed/quizfreely" class="button icon-only-button">
-        <i class="nf nf nf-linux-codeberg"></i>
+        <IconCodeberg />
         Codeberg
       </a>
       <a href="https://github.com/ehanahamed/quizfreely" class="button icon-only-button">
-        <i class="nf nf nf-dev-github_badge"></i>
+        <IconGitHub />
         GitHub
       </a>
     </div>

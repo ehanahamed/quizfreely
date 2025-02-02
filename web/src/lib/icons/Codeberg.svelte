@@ -1,0 +1,4 @@
+<script>
+    let { width = "1rem", height = "1rem" } = $props();
+</script>
+<svg width={width} height={height} viewBox="0 0 4.233 4.233" xmlns="http://www.w3.org/2000/svg"><g style="opacity:1"><path style="fill-opacity:1;stroke:none;stroke-width:.0660874;paint-order:markers fill stroke;stop-color:#000" d="M46.984 76.122a2.117 2.117 0 0 0-1.793 3.242l1.764-2.281c.013-.017.045-.017.057 0l.737.952h-.527l.011.042h.55l.155.201h-.648l.018.066h.68l.138.177h-.769l.024.085h.81l.123.158h-.889l.03.104h.938l.108.138h-1.009l.033.115h1.065l.099.128H47.56l.033.115h1.184a2.117 2.117 0 0 0-1.793-3.242zm.644 3.37.033.115h.939c.03-.036.062-.077.09-.115zm.068.243.032.115h.629a2.54 2.54 0 0 0 .125-.115zm.068.243.032.114h.212c.063-.036.121-.072.184-.114z" transform="translate(-44.867 -75.99)" fill="currentcolor" /></g></svg>
