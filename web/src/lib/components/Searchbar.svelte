@@ -1,5 +1,6 @@
 <script>
     let props = $props();
+    import IconSearch from "$lib/icons/Search.svelte";
     
     function onSearchbarInput(event) {
         if (event.target.value.length > 0 && event.target.value.length < 50) {
@@ -45,7 +46,7 @@
 </script>
 
 <form action="/search" method="get" class="searchbar with-autocomplete" style="margin-bottom:0px">
-    <i class="searchbar-icon nf nf-fa-search"></i>
+    <IconSearch />
     <input type="text"
         name="q"
         id="searchbar-input"
