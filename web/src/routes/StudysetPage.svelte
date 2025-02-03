@@ -13,6 +13,7 @@
     import IconArrowLeft from "$lib/icons/ArrowLeft.svelte";
     import IconArrowRight from "$lib/icons/ArrowRight.svelte";
     import IconMoreDotsHorizontal from "$lib/icons/MoreDotsHorizontal.svelte";
+    import IconBook from "$lib/icons/Book.svelte";
 
     onMount(function () {
         if (data.local) {
@@ -293,7 +294,7 @@
           </button>
           {#if (data.local) }
           <a href="/studyset/local/review-mode?id={ data.localId }" class="button alt">
-            <i class="nf nf-fa-book"></i>
+            <IconBook />
             Review Mode
           </a>
           <!--<a href="/studyset/local/quiz?id=<eta>= data.localId </eta>" class="button alt">

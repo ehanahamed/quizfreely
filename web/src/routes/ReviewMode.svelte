@@ -6,6 +6,7 @@
 
     import IconCheckmark from "$lib/icons/Checkmark.svelte";
     import IconBackArrow from "$lib/icons/BackArrow.svelte";
+    import IconRepeat from "$lib/icons/Repeat.svelte";
 
     onMount(function() {
       var studysetTermsArray;
@@ -939,14 +940,14 @@
                 <IconCheckmark /> Done
               </a>
               <a href="/studyset/local/review-mode?id={ data.localId }" class="button alt" data-sveltekit-reload>
-                <i class="nf nf-fa-repeat"></i> Keep Reviewing
+                <IconRepeat /> Keep Reviewing
               </a>
               {:else}
               <a href="/studysets/{ data.studysetId }" class="button">
                 <IconCheckmark /> Done
               </a>
               <a href="/studysets/{ data.studysetId }/review-mode" class="button alt" data-sveltekit-reload>
-                <i class="nf nf-fa-repeat"></i> Keep Reviewing
+                <IconRepeat /> Keep Reviewing
               </a>
               {/if}
             </div>
