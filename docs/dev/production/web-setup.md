@@ -117,6 +117,12 @@ git pull
 # cp config/quizfreely-web.service /etc/systemd/system/
 ```
 
+Build/compile it:
+```sh
+cd ~/quizfreely/web/
+npm run build
+```
+
 After all changes are made, start quizfreely-web again:
 ```sh
 exit # back to user with sudo permissions
