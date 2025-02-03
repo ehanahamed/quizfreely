@@ -3,7 +3,11 @@
     import { onMount } from "svelte";
     import { fancyTimestamp } from "$lib/fancyTimestamp";
     let { data } = $props();
-    console.log(data);
+    
+    import IconCodeberg from "$lib/icons/Codeberg.svelte";
+    import IconGitHub from "$lib/icons/GitHub.svelte";
+    import IconGraphQL from "$lib/icons/GraphQL.svelte";
+
     if (data.config?.enableGitRepoSyncStatus) {
     onMount(function () {
         fetch("https://codeberg.org/api/v1/repos/"+ data.config.codeberg.owner +"/"+ data.config.codeberg.repo +"/commits?sha=" + data.config.codeberg.branch + "&limit=1", {
@@ -92,21 +96,21 @@
         <div class="content">
             <div class="flex compact-gap" style="margin-top:1rem;margin-bottom:2rem">
                 <a href="/api/graphiql" class="button faint">
-                    <i class="nf nf-dev-graphql"></i> Qzfr-API GraphiQL
+                    <IconGraphQL /> Qzfr-API GraphiQL
                 </a>
                 {#if (data.config.codeberg && data.config.gh) }
                     <a href="https://codeberg.org/{ data.config.codeberg.owner }/{ data.config.codeberg.repo }" class="button faint">
-                        <i class="nf nf-linux-codeberg"></i> Codeberg Repo
+                        <IconCodeberg /> Codeberg Repo
                     </a>
                     <a href="https://github.com/{ data.config.gh.owner }/{ data.config.gh.repo }" class="button faint">
-                        <i class="nf nf-dev-github_badge"></i> GitHub Repo
+                        <IconGitHub /> GitHub Repo
                     </a>
                 {:else}
                     <a href="https://codeberg.org/ehanahamed/quizfreely" class="button faint">
-                        <i class="nf nf-linux-codeberg"></i> Codeberg Repo
+                        <IconCodeberg /> Codeberg Repo
                     </a>
                     <a href="https://github.com/ehanahamed/quizfreely" class="button faint">
-                        <i class="nf nf-dev-github_badge"></i> GitHub Repo
+                        <IconGitHub /> GitHub Repo
                     </a>
                 {/if}
             </div>
