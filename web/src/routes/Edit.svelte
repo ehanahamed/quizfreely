@@ -403,7 +403,7 @@
             </table>
             {#if (data.new && data.authed) }
             <button id="create-button-authed">
-              <i class="nf nf-oct-check"></i>
+              <IconCheckmark />
               Create
             </button>
             <div class="dropdown">
@@ -419,12 +419,12 @@
             </div>
             {:else if (data.new) }
             <button id="create-button-local">
-              <i class="nf nf-oct-check"></i>
+              <IconCheckmark />
               Create
             </button>
             {:else}
             <button id="save-button">
-              <i class="nf nf-oct-check"></i>
+              <IconCheckmark />
               Save Changes
             </button>
             {/if}
