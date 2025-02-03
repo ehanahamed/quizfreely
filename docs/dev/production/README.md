@@ -5,7 +5,7 @@ Right now, Quizfreely's website and api run on the same server/droplet.
 Important thingies:
 - `/home/quizfreely/quizfreely/api/`
     - `.env`
-- `home/quizfreely/quizfreely/web/`
+- `/home/quizfreely/quizfreely/web/`
     - `build/`
     - `.env`
 - `/etc/caddy/Caddyfile`
