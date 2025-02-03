@@ -5,6 +5,9 @@
     import { fancyTimestamp } from "$lib/fancyTimestamp";
     import { openIndexedDB } from "$lib/indexedDB";
     import { onMount } from "svelte";
+
+    import IconPlus from "$lib/icons/Plus.svelte";
+
     onMount(function () {
       if (window.localStorage && (localStorage.getItem("settingTimeHour") == "24h")) {
         fancyTimestamp.hours = 24;
@@ -77,7 +80,7 @@
         {/if}
         <div class="flex">
           <a href="/studyset/create" class="button">
-            <i class="nf nf-oct-plus"></i>
+            <IconPlus />
             Create new
           </a>
         </div>

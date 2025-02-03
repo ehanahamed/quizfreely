@@ -9,8 +9,9 @@
     import IconCheckmark from "$lib/icons/Checkmark.svelte";
     import IconTrash from "$lib/icons/Trash.svelte";
     import IconMoreDotsHorizontal from "$lib/icons/MoreDotsHorizontal.svelte";
-    import IconArrowUp from "$lib/icons/ArrowUp.svelte"
-    import IconArrowDown from "$lib/icons/ArrowDown.svelte"
+    import IconArrowUp from "$lib/icons/ArrowUp.svelte";
+    import IconArrowDown from "$lib/icons/ArrowDown.svelte";
+    import IconPlus from "$lib/icons/Plus.svelte";
 
     onMount(function () {
       var editTermsTable = {
@@ -405,7 +406,7 @@
                   <td>
                     <div class="flex">
                       <button id="edit-terms-add-row-button">
-                        <i class="nf nf-oct-plus"></i>
+                        <IconPlus />
                         Add row
                       </button>
                     </div>
