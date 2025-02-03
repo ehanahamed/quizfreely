@@ -4,6 +4,7 @@
     let { data } = $props();
 
     import IconPencil from "$lib/icons/Pencil.svelte";
+    import IconCheckmark from "$lib/icons/Checkmark.svelte";
 
     onMount(function () {
         document.getElementById("time-24h").addEventListener("click", function () {
@@ -143,7 +144,7 @@
       <div>
         <div class="combo-select">
           <button id="time-24h" class="left">
-            <i class="combo-selected-icon nf nf-fa-check"></i>
+            <IconCheckmark class="combo-selected-icon" />
             24 Hour
           </button>
           <!--
@@ -151,7 +152,7 @@
             because everywhere else also defaults to 12h if the setting isn't set in localStorage
           -->
           <button id="time-12h" class="right selected">
-            <i class="combo-selected-icon nf nf-fa-check"></i>
+            <IconCheckmark class="combo-selected-icon" />
             12 Hour (AM/PM)
           </button>
         </div>
@@ -218,11 +219,11 @@
             <p>You can keep your public studysets or delete all your studysets (public and private). <br>This will not delete local studysets saved on your device (not in your account).</p>
             <div class="combo-select">
                 <button id="delete-account-delete-all-my-studysets-false" class="left selected">
-                  <i class="combo-selected-icon nf nf-fa-check"></i>
+                  <IconCheckmark class="combo-selected-icon" />
                   Keep public sets
                 </button>
                 <button id="delete-account-delete-all-my-studysets-true" class="right">
-                  <i class="combo-selected-icon nf nf-fa-check"></i>
+                  <IconCheckmark class="combo-selected-icon" />
                   Delete all sets
                 </button>
             </div>

@@ -4,6 +4,8 @@
     import { openIndexedDB } from "$lib/indexedDB";
     let { data } = $props();
 
+    import IconCheckmark from "$lib/icons/Checkmark.svelte";
+
     onMount(function() {
       var studysetTermsArray;
       var progressTermsMap;
@@ -895,7 +897,7 @@
               </div>
             </div>
             <div class="flex">
-              <button id="start-button"><i class="nf nf-fa-check"></i> Start</button>
+              <button id="start-button"><IconCheckmark /> Start</button>
             </div>
           </div>
           <div id="review-mode-error-min-terms" class="hide" style="min-height:60vh">
@@ -933,14 +935,14 @@
             <div class="flex">
               {#if (data.local) }
               <a href="/studyset/local?id={ data.localId }" class="button">
-                <i class="nf nf-fa-check"></i> Done
+                <IconCheckmark /> Done
               </a>
               <a href="/studyset/local/review-mode?id={ data.localId }" class="button alt" data-sveltekit-reload>
                 <i class="nf nf-fa-repeat"></i> Keep Reviewing
               </a>
               {:else}
               <a href="/studysets/{ data.studysetId }" class="button">
-                <i class="nf nf-fa-check"></i> Done
+                <IconCheckmark /> Done
               </a>
               <a href="/studysets/{ data.studysetId }/review-mode" class="button alt" data-sveltekit-reload>
                 <i class="nf nf-fa-repeat"></i> Keep Reviewing
