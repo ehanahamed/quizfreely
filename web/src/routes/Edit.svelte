@@ -5,6 +5,8 @@
     import { goto } from "$app/navigation";
     let { data } = $props();
 
+    import IconLocal from "$lib/icons/Local.svelte";
+
     onMount(function () {
       var editTermsTable = {
       insert: function (index) {
@@ -403,7 +405,10 @@
                 <i class="nf nf-md-dots_horizontal"></i>
               </button>
               <div class="content">
-                <button id="create-button-local"><i class="nf nf-fa-download"></i> Save Locally </button>
+                <button id="create-button-local">
+                  <IconLocal />
+                  Save Locally
+                </button>
               </div>
             </div>
             {:else if (data.new) }

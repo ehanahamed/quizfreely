@@ -5,6 +5,8 @@
     import { goto } from "$app/navigation";
     let { data } = $props();
 
+    import IconLocal from "$lib/icons/Local.svelte";
+
     onMount(function () {
         if (data.local) {
         openIndexedDB(function (db) {
@@ -161,7 +163,7 @@
         {/if}
         {#if data.local}
         <p class="fg0">
-          <i class="nf nf-fa-download"></i> Local Studyset
+          <IconLocal /> Local Studyset
         </p>
         {:else if data?.studyset?.private}
         <p class="fg0">
