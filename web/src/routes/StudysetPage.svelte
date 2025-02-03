@@ -7,6 +7,7 @@
 
     import IconLocal from "$lib/icons/Local.svelte";
     import IconPencil from "$lib/icons/Pencil.svelte";
+    import IconEyeSlash from "$lib/icons/EyeSlash.svelte";
 
     onMount(function () {
         if (data.local) {
@@ -168,7 +169,7 @@
         </p>
         {:else if data?.studyset?.private}
         <p class="fg0">
-          <i class="nf nf-fa-eye_slash"></i> Private Studyset
+          <IconEyeSlash /> Private Studyset
         </p>
         {:else if data?.studyset?.user_display_name}
         <!--<p>

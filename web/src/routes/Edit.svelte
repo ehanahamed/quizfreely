@@ -1,12 +1,13 @@
 <script>
     import Noscript from "$lib/components/Noscript.svelte";
-    import { onMount } from "svelte";
+    import { onMount, mount } from "svelte";
     import { openIndexedDB } from "$lib/indexedDB";
     import { goto } from "$app/navigation";
     let { data } = $props();
 
     import IconLocal from "$lib/icons/Local.svelte";
     import IconCheckmark from "$lib/icons/Checkmark.svelte";
+    import IconTrash from "$lib/icons/Trash.svelte";
 
     onMount(function () {
       var editTermsTable = {
@@ -29,9 +30,13 @@
           "  <div class='content'>" +
           "    <button><i class='nf nf-cod-arrow_up'></i> Move Up </button>" +
           "    <button><i class='nf nf-cod-arrow_down'></i> Move Down </button>" +
-          "    <button class='ohno'><i class='nf nf-fa-trash_o'></i> Delete </button>" +
+          "    <button class='ohno'></button>" +
           "  </div>" +
           "</div></div>";
+        mount(IconTrash, {
+          target: actions.children[0].children[0].children[1].children[2]
+        })
+        actions.children[0].children[0].children[1].children[2].innerHTML += " Delete"
         actions.children[0].children[0].children[1].children[0].addEventListener("click", function (event) {
           editTermsTable.move(
             event.target.parentElement.parentElement
