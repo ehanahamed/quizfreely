@@ -303,7 +303,7 @@
           </a>-->
           {:else if (data.studyset) }
             <a href="/studysets/{ data.studyset.id }/review-mode" class="button alt">
-              <i class="nf nf-fa-book"></i>
+              <IconBook />
               Review Mode
             </a>
             <!--<a href="/studysets/<eta>= data.studyset.id </eta>/test" class="button alt">
