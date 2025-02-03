@@ -3,6 +3,8 @@
     import { onMount } from "svelte";
     let { data } = $props();
 
+    import IconPencil from "$lib/icons/Pencil.svelte";
+
     onMount(function () {
         document.getElementById("time-24h").addEventListener("click", function () {
             document.getElementById("time-24h").classList.add("selected")
@@ -162,7 +164,7 @@
             <span class="h6">Display name:</span><br />
             <span id="account-display-name">{ data.authedUser.display_name }</span>
           </p>
-          <button class="icon-only-button" id="display-name-edit-button" aria-label="Edit"><i class="nf nf-fa-pencil"></i></button>
+          <button class="icon-only-button" id="display-name-edit-button" aria-label="Edit"><IconPencil /></button>
         </div>
         <div id="display-name-edit-div" class="hide" style="margin-top:0px">
           <p class="h6" style="margin-bottom:0.6rem">Display Name:</p>

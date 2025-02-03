@@ -6,6 +6,7 @@
     let { data } = $props();
 
     import IconLocal from "$lib/icons/Local.svelte";
+    import IconPencil from "$lib/icons/Pencil.svelte";
 
     onMount(function () {
         if (data.local) {
@@ -180,7 +181,7 @@
         {#if (data.studyset && data.authed && (data.authedUser.id == data.studyset.user_id)) }
         <div id="edit-menu" class="flex">
           <a href="/studyset/edit/{ data.studyset.id }" class="button">
-            <i class="nf nf-fa-pencil"></i>
+            <IconPencil />
             Edit
           </a>
           <a href="/studyset/edit/{ data.studyset.id }" class="button alt">
@@ -199,7 +200,7 @@
         {:else if (data.local) }
         <div id="edit-menu" class="flex">
           <a href="/studyset/local/edit?id={ data.localId }" class="button">
-            <i class="nf nf-fa-pencil"></i>
+            <IconPencil />
             Edit
           </a>
           <a href="/studyset/local/edit?id={ data.localId }" class="button alt">
