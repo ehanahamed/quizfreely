@@ -5,6 +5,7 @@
 
     import IconPencil from "$lib/icons/Pencil.svelte";
     import IconCheckmark from "$lib/icons/Checkmark.svelte";
+    import IconTrash from "$lib/icons/Trash.svelte";
 
     onMount(function () {
         document.getElementById("time-24h").addEventListener("click", function () {
@@ -200,7 +201,7 @@
             <summary>More actions</summary>
             <div>
                 <p>If you want to delete your account, you can choose if you want to keep your public studysets or delete all of your content before confirming.</p>
-                <button id="show-delete-account-modal" class="ohno alt"><i class="nf nf-fa-trash_o"></i> Delete Account</button>
+                <button id="show-delete-account-modal" class="ohno alt"><IconTrash /> Delete Account</button>
             </div>
         </details>
       </div>
@@ -233,7 +234,7 @@
                 <div><input type="password" placeholder="Enter password to confirm" id="delete-account-confirm-password-input"></div>
             {/if}
             <div class="flex">
-                <button id="delete-account-confirm-button" class="ohno alt"><i class="nf nf-fa-trash_o"></i> Delete Account</button>
+                <button id="delete-account-confirm-button" class="ohno alt"><IconTrash /> Delete Account</button>
                 <button id="hide-delete-account-modal" class="alt">Cancel</button>
             </div>
         </div>

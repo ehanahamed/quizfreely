@@ -8,6 +8,7 @@
     import IconLocal from "$lib/icons/Local.svelte";
     import IconPencil from "$lib/icons/Pencil.svelte";
     import IconEyeSlash from "$lib/icons/EyeSlash.svelte";
+    import IconTrash from "$lib/icons/Trash.svelte";
 
     onMount(function () {
         if (data.local) {
@@ -194,7 +195,7 @@
               <i class="nf nf-md-dots_horizontal"></i>
             </button>
             <div class="content">
-              <button class="ohno" id="delete-button"><i class="nf nf-fa-trash_o"></i> Delete </button>
+              <button class="ohno" id="delete-button"><IconTrash /> Delete </button>
             </div>
           </div>
         </div>
@@ -213,7 +214,7 @@
               <i class="nf nf-md-dots_horizontal"></i>
             </button>
             <div class="content">
-              <button class="ohno" id="delete-button"><i class="nf nf-fa-trash_o"></i> Delete </button>
+              <button class="ohno" id="delete-button"><IconTrash /> Delete </button>
             </div>
           </div>
         </div>
