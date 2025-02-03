@@ -8,6 +8,7 @@
     import IconLocal from "$lib/icons/Local.svelte";
     import IconCheckmark from "$lib/icons/Checkmark.svelte";
     import IconTrash from "$lib/icons/Trash.svelte";
+    import IconMoreDotsHorizontal from "$lib/icons/MoreDotsHorizontal.svelte";
 
     onMount(function () {
       var editTermsTable = {
@@ -26,13 +27,16 @@
         var actions = newRow.insertCell(2);
         actions.innerHTML =
           "<div class='flex center'><div class='dropdown'>" +
-          "  <button class='dropdown-toggle'><i class='nf nf-md-dots_horizontal'></i></button>" +
+          "  <button class='dropdown-toggle'></button>" +
           "  <div class='content'>" +
           "    <button><i class='nf nf-cod-arrow_up'></i> Move Up </button>" +
           "    <button><i class='nf nf-cod-arrow_down'></i> Move Down </button>" +
           "    <button class='ohno'></button>" +
           "  </div>" +
           "</div></div>";
+        mount(IconMoreDotsHorizontal, {
+          target: actions.children[0].children[0].children[0]
+        })
         mount(IconTrash, {
           target: actions.children[0].children[0].children[1].children[2]
         })
@@ -408,7 +412,7 @@
             </button>
             <div class="dropdown">
               <button class="dropdown-toggle" aria-label="saving options dropdown">
-                <i class="nf nf-md-dots_horizontal"></i>
+                <IconMoreDotsHorizontal />
               </button>
               <div class="content">
                 <button id="create-button-local">

@@ -10,6 +10,7 @@
     import IconEyeSlash from "$lib/icons/EyeSlash.svelte";
     import IconTrash from "$lib/icons/Trash.svelte";
     import IconBackArrow from "$lib/icons/BackArrow.svelte";
+    import IconMoreDotsHorizontal from "$lib/icons/MoreDotsHorizontal.svelte";
 
     onMount(function () {
         if (data.local) {
@@ -193,7 +194,7 @@
           </a>
           <div class="dropdown">
             <button class="dropdown-toggle" aria-label="More Options Dropdown">
-              <i class="nf nf-md-dots_horizontal"></i>
+              <IconMoreDotsHorizontal />
             </button>
             <div class="content">
               <button class="ohno" id="delete-button"><IconTrash /> Delete </button>
@@ -212,7 +213,7 @@
           </a>
           <div class="dropdown">
             <button class="dropdown-toggle" aria-label="More Options Dropdown">
-              <i class="nf nf-md-dots_horizontal"></i>
+              <IconMoreDotsHorizontal />
             </button>
             <div class="content">
               <button class="ohno" id="delete-button"><IconTrash /> Delete </button>
