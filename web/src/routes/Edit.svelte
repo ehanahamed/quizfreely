@@ -6,6 +6,7 @@
     let { data } = $props();
 
     import IconLocal from "$lib/icons/Local.svelte";
+    import IconCheckmark from "$lib/icons/Checkmark.svelte";
 
     onMount(function () {
       var editTermsTable = {
@@ -363,11 +364,11 @@
             <div id="edit-private-div">
               <div class="combo-select">
                 <button class="left selected" id="edit-private-false">
-                  <i class="combo-selected-icon nf nf-fa-check"></i>
+                  <IconCheckmark class="combo-selected-icon" />
                   Public
                 </button>
                 <button class="right" id="edit-private-true">
-                  <i class="combo-selected-icon nf nf-fa-check"></i>
+                  <IconCheckmark class="combo-selected-icon" />
                   Private
                 </button>
               </div>
