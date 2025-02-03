@@ -9,6 +9,8 @@
     import IconCheckmark from "$lib/icons/Checkmark.svelte";
     import IconTrash from "$lib/icons/Trash.svelte";
     import IconMoreDotsHorizontal from "$lib/icons/MoreDotsHorizontal.svelte";
+    import IconArrowUp from "$lib/icons/ArrowUp.svelte"
+    import IconArrowDown from "$lib/icons/ArrowDown.svelte"
 
     onMount(function () {
       var editTermsTable = {
@@ -29,14 +31,22 @@
           "<div class='flex center'><div class='dropdown'>" +
           "  <button class='dropdown-toggle'></button>" +
           "  <div class='content'>" +
-          "    <button><i class='nf nf-cod-arrow_up'></i> Move Up </button>" +
-          "    <button><i class='nf nf-cod-arrow_down'></i> Move Down </button>" +
+          "    <button></button>" +
+          "    <button></button>" +
           "    <button class='ohno'></button>" +
           "  </div>" +
           "</div></div>";
         mount(IconMoreDotsHorizontal, {
           target: actions.children[0].children[0].children[0]
         })
+        mount(IconArrowUp, {
+          target: actions.children[0].children[0].children[1].children[0]
+        })
+        actions.children[0].children[0].children[1].children[0].innerHTML += " Move Up"
+        mount(IconArrowDown, {
+          target: actions.children[0].children[0].children[1].children[1]
+        })
+        actions.children[0].children[0].children[1].children[1].innerHTML += " Move Down"
         mount(IconTrash, {
           target: actions.children[0].children[0].children[1].children[2]
         })

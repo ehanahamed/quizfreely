@@ -10,6 +10,8 @@
     import IconEyeSlash from "$lib/icons/EyeSlash.svelte";
     import IconTrash from "$lib/icons/Trash.svelte";
     import IconBackArrow from "$lib/icons/BackArrow.svelte";
+    import IconArrowLeft from "$lib/icons/ArrowLeft.svelte";
+    import IconArrowRight from "$lib/icons/ArrowRight.svelte";
     import IconMoreDotsHorizontal from "$lib/icons/MoreDotsHorizontal.svelte";
 
     onMount(function () {
@@ -262,14 +264,14 @@
                 id="flashcards-prev-button"
                 aria-label="Previous Card"
               >
-              <IconBackArrow />
+              <IconArrowLeft />
               </button>
               <button id="flashcards-flip-button">Flip</button>
               <button
                 id="flashcards-next-button"
                 aria-label="Next Card"
               >
-              <IconBackArrow />
+              <IconArrowRight />
               </button>
             </div>
             <div class="flex end">
