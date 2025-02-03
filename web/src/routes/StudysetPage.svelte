@@ -9,6 +9,7 @@
     import IconPencil from "$lib/icons/Pencil.svelte";
     import IconEyeSlash from "$lib/icons/EyeSlash.svelte";
     import IconTrash from "$lib/icons/Trash.svelte";
+    import IconBackArrow from "$lib/icons/BackArrow.svelte";
 
     onMount(function () {
         if (data.local) {
@@ -222,7 +223,7 @@
       </div>
       <div id="flashcards-outer-div">
         <button id="flashcards-unmaximize" class="faint hide">
-          <i class="nf nf-fa-long_arrow_left"></i> Back
+          <IconBackArrow /> Back
         </button>
         <div>
           <div
@@ -260,14 +261,14 @@
                 id="flashcards-prev-button"
                 aria-label="Previous Card"
               >
-                <i class="nf nf-cod-arrow_left"></i>
+              <IconBackArrow />
               </button>
               <button id="flashcards-flip-button">Flip</button>
               <button
                 id="flashcards-next-button"
                 aria-label="Next Card"
               >
-                <i class="nf nf-cod-arrow_right"></i>
+              <IconBackArrow />
               </button>
             </div>
             <div class="flex end">

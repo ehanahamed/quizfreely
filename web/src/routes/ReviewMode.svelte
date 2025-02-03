@@ -5,6 +5,7 @@
     let { data } = $props();
 
     import IconCheckmark from "$lib/icons/Checkmark.svelte";
+    import IconBackArrow from "$lib/icons/BackArrow.svelte";
 
     onMount(function() {
       var studysetTermsArray;
@@ -857,11 +858,11 @@
           <div>
             {#if (data.local) }
             <a href="/studyset/local?id={ data.localId }" class="button faint">
-              <i class="nf nf-fa-long_arrow_left"></i> Back
+              <IconBackArrow /> Back
             </a>
             {:else}
             <a href="/studysets/{ data.studysetId }" class="button faint">
-              <i class="nf nf-fa-long_arrow_left"></i> Back
+              <IconBackArrow /> Back
             </a>
             {/if}
           </div>
