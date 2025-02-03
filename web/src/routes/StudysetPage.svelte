@@ -13,7 +13,9 @@
     import IconArrowLeft from "$lib/icons/ArrowLeft.svelte";
     import IconArrowRight from "$lib/icons/ArrowRight.svelte";
     import IconMoreDotsHorizontal from "$lib/icons/MoreDotsHorizontal.svelte";
-    import IconBook from "$lib/icons/Book.svelte";
+    import IconReviewModeBook from "$lib/icons/ReviewModeBook.svelte";
+    import IconFlashcards from "$lib/icons/Flashcards.svelte";
+    import IconSettingsGear from "$lib/icons/SettingsGear.svelte";
 
     onMount(function () {
         if (data.local) {
@@ -192,7 +194,7 @@
             Edit
           </a>
           <a href="/studyset/edit/{ data.studyset.id }" class="button alt">
-            <i class="nf nf-md-cog"></i>
+            <IconSettingsGear />
             Settings
           </a>
           <div class="dropdown">
@@ -211,7 +213,7 @@
             Edit
           </a>
           <a href="/studyset/local/edit?id={ data.localId }" class="button alt">
-            <i class="nf nf-md-cog"></i>
+            <IconSettingsGear />
             Settings
           </a>
           <div class="dropdown">
@@ -289,25 +291,25 @@
       <div id="terms-and-stuff-outer-div">
         <div class="caption grid list">
           <button id="flashcards-maximize" class="alt">
-            <i class="nf nf-md-card_multiple"></i>
+            <IconFlashcards />
             Flashcards
           </button>
           {#if (data.local) }
           <a href="/studyset/local/review-mode?id={ data.localId }" class="button alt">
-            <IconBook />
+            <IconReviewModeBook />
             Review Mode
           </a>
           <!--<a href="/studyset/local/quiz?id=<eta>= data.localId </eta>" class="button alt">
-            <i class="nf nf-md-list_status"></i>
+            <IconCheckXMark />
             Practice Test
           </a>-->
           {:else if (data.studyset) }
             <a href="/studysets/{ data.studyset.id }/review-mode" class="button alt">
-              <IconBook />
+              <IconReviewModeBook />
               Review Mode
             </a>
             <!--<a href="/studysets/<eta>= data.studyset.id </eta>/test" class="button alt">
-              <i class="nf nf-md-list_status"></i>
+              <IconCheckXMark />
               Practice Test
             </a>-->
           {/if}
