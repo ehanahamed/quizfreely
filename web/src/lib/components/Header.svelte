@@ -1,6 +1,8 @@
 <script>
     import Searchbar from "$lib/components/Searchbar.svelte";
     import { page } from '$app/state';
+
+    import IconUser from "$lib/icons/User.svelte";
 </script>
 
 <style>
@@ -38,12 +40,12 @@
             <!--<div class="dropdown" style="margin-top:0px;margin-bottom:0px;margin-left:1rem;margin-right:1rem">
                 {#if page.data.authedUser.display_name.length < 10 }
                     <button class="faint">
-                      <i class="nf nf-fa-user"></i>
+                      <IconUser />
                       { page.data.authedUser.display_name }
                     </button>
                 {:else}
                     <button class="faint">
-                      <i class="nf nf-fa-user"></i>
+                      <IconUser />
                       Signed in
                     </button>
                 {/if}
@@ -55,12 +57,12 @@
             <div style="margin-top:0px;margin-bottom:0px;margin-left:1rem;margin-right:1rem">
               {#if page.data.authedUser.display_name.length < 10 }
                   <a href="/settings" class="button faint">
-                    <i class="nf nf-fa-user"></i>
+                    <IconUser />
                     { page.data.authedUser.display_name }
                   </a>
               {:else}
                   <a href="/settings" class="button faint">
-                    <i class="nf nf-fa-user"></i>
+                    <IconUser />
                     Signed in
                   </a>
               {/if}
