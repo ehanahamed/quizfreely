@@ -1,8 +1,24 @@
 <script>
     import Searchbar from "$lib/components/Searchbar.svelte";
     import { page } from '$app/state';
+    import { fly } from 'svelte/transition';
 
+    import IconMenu from "$lib/icons/Menu.svelte";
     import IconUser from "$lib/icons/User.svelte";
+    import IconCloseXMark from "$lib/icons/CloseXMark.svelte";
+    import { afterNavigate } from "$app/navigation";
+
+    let sideBarNavMenuThingyVisible = $state(false);
+    function openSideBarNavMenuThingy() {
+      sideBarNavMenuThingyVisible = true;
+      //document.body.addEventListener("click", closeSideBarNavMenuThingy);
+    }
+    function closeSideBarNavMenuThingy() {
+      sideBarNavMenuThingyVisible = false;
+    }
+    afterNavigate(function () {
+      closeSideBarNavMenuThingy();
+    })
 </script>
 
 <style>
@@ -12,10 +28,27 @@
 .current {
   transition-duration: 0.4s;
 }
+.side-bar-nav-menu-thingy {
+  margin: 0px;
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  padding: 1rem;
+  background-color: var(--bg1);
+}
 </style>
 
 <header class="navbar with-search with-status">
     <div class="menu nav">
+      <div class="side-bar-nav-menu-thingy-open-div">
+        <button class="icon-only-button side-bar-nav-menu-thingy-open-button" onclick={openSideBarNavMenuThingy} aria-label="Menu">
+          <IconMenu />
+        </button>
+      </div>
       <div class={
         (page.data?.header?.activePage == "home") ? "current" : ""
       }>
@@ -78,3 +111,15 @@
         {/if}
     </div>
 </header>
+{#if sideBarNavMenuThingyVisible}
+<div class="side-bar-nav-menu-thingy" transition:fly={{ x: -200, duration: 240 }}>
+  <button class="icon-only-button" onclick={closeSideBarNavMenuThingy} aria-label="Close Menu">
+    <IconCloseXMark />
+  </button>
+  <a href="/home">Home</a>
+  <a href="/explore">Explore</a>
+  <a href="/settings">Settings</a>
+  <a href="/abc">Nothing</a>
+  <a href="/search">Search</a>
+</div>
+{/if}
