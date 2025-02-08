@@ -9,7 +9,7 @@ Restart=always
 RestartSec=1
 WorkingDirectory=/home/quizfreely/quizfreely/web/
 Environment="NODE_ENV=production"
-ExecStart=/usr/bin/node --env-file=.env build/index.js
+ExecStart=/usr/bin/node --env-file=.env build/
 TimeoutStopSec=1
 User=quizfreely
 
