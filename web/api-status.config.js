@@ -1,12 +1,12 @@
 export default {
     "enableGitRepoSyncStatus": true,
     "codeberg": {
-        "owner": "ehanahamed",
+        "owner": "quizfreely",
         "repo": "quizfreely",
         "branch": "main"
     },
     "gh": {
-        "owner": "ehanahamed",
+        "owner": "quizfreely",
         "repo": "quizfreely",
         "branch": "main"
     }
