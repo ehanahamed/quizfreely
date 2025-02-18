@@ -43,10 +43,10 @@
           You can see our source code and contribute on Codeberg or GitHub.
         </p>
         <div class="flex">
-          <a class="button extra" href="https://codeberg.org/ehanahamed/quizfreely">
+          <a class="button extra" href="https://codeberg.org/quizfreely/quizfreely">
             Codeberg
           </a>
-          <a class="button extra alt" href="https://github.com/ehanahamed/quizfreely">
+          <a class="button extra alt" href="https://github.com/quizfreely/quizfreely">
             GitHub
           </a>
         </div>

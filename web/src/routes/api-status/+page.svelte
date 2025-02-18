@@ -106,10 +106,10 @@
                         <IconGitHub /> GitHub Repo
                     </a>
                 {:else}
-                    <a href="https://codeberg.org/ehanahamed/quizfreely" class="button faint">
+                    <a href="https://codeberg.org/quizfreely/quizfreely" class="button faint">
                         <IconCodeberg /> Codeberg Repo
                     </a>
-                    <a href="https://github.com/ehanahamed/quizfreely" class="button faint">
+                    <a href="https://github.com/quizfreely/quizfreely" class="button faint">
                         <IconGitHub /> GitHub Repo
                     </a>
                 {/if}

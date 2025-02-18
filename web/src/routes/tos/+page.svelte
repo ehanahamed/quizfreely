@@ -9,7 +9,7 @@
       <p>Updated September 15, 2024 (2024-09-15)</p>
       <p>
         Quizfreely is free and open source. That means anyone can see Quizfreely's source code, contribute to and help develop Quizfreely, and make their own modified version or copy of Quizfreely.<br />
-        See Quizfreely's <a href="/license">license</a> and source code on <a href="https://github.com/ehanahamed/quizfreely">GitHub</a> or <a href="https://codeberg.org/ehanahamed/quizfreely">Codeberg</a>.
+        See Quizfreely's <a href="/license">license</a> and source code on <a href="https://github.com/quizfreely/quizfreely">GitHub</a> or <a href="https://codeberg.org/quizfreely/quizfreely">Codeberg</a>.
       </p>
       <p>
         Users can post public content on Quizfreely and can save private content under their accounts.<br />
