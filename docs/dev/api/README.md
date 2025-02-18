@@ -10,9 +10,9 @@ To set up quizfreely-api (and database) for production see [developer docs > pro
 
 Clone Quizfreely's source code repo (if you didn't already)
 ```sh
-git clone https://github.com/ehanahamed/quizfreely
+git clone https://github.com/quizfreely/quizfreely
 # or, from codeberg:
-# git clone https://codeberg.org/ehanahamed/quizfreely
+# git clone https://codeberg.org/quizfreely/quizfreely
 ```
 
 ### Postgres

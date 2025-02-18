@@ -8,9 +8,9 @@ To setup quizfreely-web for production see [developer docs > production > web-se
 
 Clone Quizfreely's source code repo (if you didn't already)
 ```sh
-git clone https://codeberg.org/ehanahamed/quizfreely
+git clone https://codeberg.org/quizfreely/quizfreely
 # or, from github:
-# git clone https://github.com/ehanahamed/quizfreely
+# git clone https://github.com/quizfreely/quizfreely
 ```
 
 Copy the .env.example file:

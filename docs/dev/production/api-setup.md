@@ -5,11 +5,11 @@ You should probably create a user first. For our production server we made an un
 sudo useradd -m -s /bin/bash quizfreely
 ```
 
-Clone `ehanahamed/quizfreely` from Codeberg or GitHub, if you haven't already:
+Clone `quizfreely/quizfreely` from Codeberg or GitHub, if you haven't already:
 ```sh
 sudo su quizfreely
 cd ~
-git clone https://codeberg.org/ehanahamed/quizfreely.git
+git clone https://codeberg.org/quizfreely/quizfreely.git
 ```
 
 For our production server/droplet, we clone it inside `/home/quizfreely/` which means we get `/home/quizfreely/quizfreely/api/`, so we can have a seperate user with different permissions for our systemd unit/service that we configure later.
